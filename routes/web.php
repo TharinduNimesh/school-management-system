@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TeacherController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -161,4 +163,7 @@ Route::post('logout', function() {
 })->name('logout');
 
 // admin functions
-Route::post('add/student', [StudentController::class, 'add'])->name('add.student');
+Route::prefix('add')->group(function() {
+    Route::post('add/student', [StudentController::class, 'add'])->name('add.student');
+    Route::post('add/teacher', [TeacherController::class, 'add'])->name('add.teacher');
+});

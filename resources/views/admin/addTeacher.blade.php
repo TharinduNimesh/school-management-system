@@ -24,17 +24,11 @@
             @include('admin.components.navbar')
             <!-- Navbar End -->
 
-
             <!-- form Start -->
             <div class="container-fluid pt-4 px-4">
-                <div class="row d-flex justify-content-center">
-                    <div class="alert alert-danger rounded col-12 col-md-8 text-center" id="studentAdded" role="alert">
-                        <span><i class="bi bi-database-fill-add"></i></span>&#9888; NOTE:
-                        Don't use '0' to beginning when enter a mobile number.
-                    </div>
-                </div>
 
                 <!-- teacher Details Start -->
+                <form id="teacher-details">
                 <div class="accordion" id="accordionExample">
                     <div class="accordion-item bg-secondary">
                         <h2 class="accordion-header" id="headingOne">
@@ -50,68 +44,82 @@
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                                 <div class="row">
+                                    @csrf
                                     <div class="form-floating mb-3 col-12 col-md-6">
                                         <input type="text" class="form-control bg-secondary text-dark"
-                                            id="teacherFirstName" placeholder="name@example.com" />
+                                            name="teacherFirstName" placeholder="name@example.com" />
                                         <label class="ms-3">First Name</label>
                                     </div>
                                     <div class="form-floating mb-3 col-12 col-md-6">
                                         <input type="text" class="form-control bg-secondary text-dark"
-                                            id="teacherLastName" placeholder="name@example.com" />
+                                            name="teacherLastName" placeholder="name@example.com" />
                                         <label for=" " class="ms-3">Last Name</label>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-floating mb-3 col-12 col-md-6">
                                         <input type="text" class="form-control bg-secondary text-dark"
-                                            id="teacherFullName" placeholder="name@example.com" />
+                                            name="teacherFullName" placeholder="name@example.com" />
                                         <label for=" " class="ms-3">Full Name</label>
                                     </div>
                                     <div class="form-floating mb-3 col-12 col-md-6">
                                         <input type="date" class="form-control bg-secondary text-dark"
-                                            id="teacherDateOfBirth" placeholder="name@example.com" />
+                                            name="teacherDateOfBirth" placeholder="name@example.com" />
                                         <label for="" class="ms-3">Date of birth</label>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="form-floating mb-3 col-12 col-md-6">
-                                        <input type="text" class="form-control bg-secondary text-dark" id="teacherNIC"
+                                        <input type="text" class="form-control bg-secondary text-dark" name="teacherNIC"
                                             placeholder="name@example.com" />
                                         <label for=" " class="ms-3">NIC</label>
                                     </div>
+
+                                    <div class="form-floating mb-3 col-md-6 col-12">
+                                        <input type="password" class="form-control bg-secondary text-dark pr-password"
+                                            name="teacherPassword" id="password" placeholder="name@example.com" />
+                                        <label for="" class="ms-3">Password</label>
+                                    </div>
+                                    <div class="form-floating mb-3 col-12 col-md-6">
+                                        <input type="text" class="form-control bg-secondary text-dark" name="appointedSubject"
+                                            placeholder="name@example.com" />
+                                        <label for=" " class="ms-3">Appointed Subject</label>
+                                    </div>
+
                                     <div class="mb-3 col-md-6 col-12">
                                         <div class="form-floating">
-                                            <select class="form-select bg-secondary text-dark" id="teacherGender">
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">Male</option>
-                                                <option value="2">Female</option>
+                                            <select class="form-select bg-secondary text-dark" name="teacherGender">
+                                                <option selected value="0">Open this select menu</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
                                             </select>
                                             <label for="">Gender</label>
                                         </div>
                                     </div>
+
                                 </div>
                                 <div class="row">
                                     <div class="mb-3 col-md-6 col-12">
                                         <div class="form-floating">
-                                            <select class="form-select bg-secondary text-dark" id="teacherNationality">
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">Sinhalese</option>
-                                                <option value="2">Tamil</option>
-                                                <option value="2">Burgher</option>
-                                                <option value="2">Moor</option>
+                                            <select class="form-select bg-secondary text-dark" name="teacherNationality">
+                                                <option selected value="0">Open this select menu</option>
+                                                <option value="Sinhalese">Sinhalese</option>
+                                                <option value="Tamil">Tamil</option>
+                                                <option value="Burgher">Burgher</option>
+                                                <option value="Moor">Moor</option>
                                             </select>
                                             <label for="">Nationality</label>
                                         </div>
                                     </div>
                                     <div class="mb-3 col-md-6 col-12">
                                         <div class="form-floating">
-                                            <select class="form-select bg-secondary text-dark" id="teacherReligion">
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">Buddhist</option>
-                                                <option value="2">Catholic</option>
-                                                <option value="3">Hindu</option>
-                                                <option value="4">Islam</option>
+                                            <select class="form-select bg-secondary text-dark" name="teacherReligion">
+                                                <option selected value="0">Open this select menu</option>
+                                                <option value="Buddhist">Buddhist</option>
+                                                <option value="Catholic">Catholic</option>
+                                                <option value="Hindu">Hindu</option>
+                                                <option value="Islam">Islam</option>
                                             </select>
                                             <label for="">Religion</label>
                                         </div>
@@ -121,7 +129,7 @@
                                     <div class="mb-3 col-12">
                                         <div class="form-group">
                                             <label for="exampleFormControlTextarea1">Qualification</label>
-                                            <textarea class="form-control text-dark bg-secondary" id="qualification"
+                                            <textarea class="form-control text-dark bg-secondary" name="qualification"
                                                 rows="3"></textarea>
                                         </div>
                                     </div>
@@ -149,26 +157,20 @@
                                 <div class="row">
                                     <div class="form-floating mb-3 col-12 col-md-6">
                                         <input type="number" class="form-control bg-secondary text-dark"
-                                            id="teacherContactNumber" placeholder="name@example.com" />
+                                            name="teacherContactNumber" placeholder="name@example.com" />
                                         <label for="" class="ms-3"> Contact Number</label>
                                     </div>
 
                                     <div class="form-floating mb-3 col-12 col-md-6">
                                         <input type="email" class="form-control bg-secondary text-dark"
-                                            id="teacherEmail" placeholder="name@example.com" />
+                                            name="teacherEmail" placeholder="name@example.com" />
                                         <label for=" " class="ms-3"> Email</label>
                                     </div>
                                 </div>
+
                                 <div class="row">
                                     <div class="form-floating mb-3 col-12">
-                                        <input type="password" class="form-control bg-secondary text-dark pr-password"
-                                            id="teacherPassword" placeholder="name@example.com" />
-                                        <label for="" class="ms-3">Password</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-floating mb-3 col-12">
-                                        <input type="text" class="form-control bg-secondary text-dark" id="address"
+                                        <input type="text" class="form-control bg-secondary text-dark" name="address"
                                             placeholder="name@example.com" />
                                         <label for="" class="ms-3">Permenent Address</label>
                                     </div>
@@ -177,6 +179,7 @@
                         </div>
                     </div>
                 </div>
+                </form>
                 <div class="row">
                     <div class="d-grid gap-2 col-6 mx-auto">
                         <button class="btn btn-outline-primary mt-3" data-bs-toggle="modal"
@@ -301,6 +304,9 @@
 
     <!-- JavaScript Libraries -->
     @include('public_components.js')
+
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <!-- Template Javascript -->
 
     <script type="text/javascript">
@@ -332,6 +338,84 @@
                 useSpecial: true,
             });
         });
+
+        function addTeacher() {
+            var spinner = document.getElementById('spinner');
+            spinner.classList.add('show');
+            var inputs = document.querySelectorAll('input');
+            var selects = document.querySelectorAll('select');
+            var details = document.getElementById('teacher-details')
+            var isValid = true;
+
+            inputs.forEach(input => {
+                if(input.value == '') {
+                    input.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            });
+            selects.forEach(select => {
+                if(select.value == '0') {
+                    select.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    select.classList.remove('is-invalid');
+                }
+            });
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,}$/;
+                
+            if(!passwordRegex.test(document.getElementById('password').value)) {
+                document.getElementById('password').classList.add('is-invalid');
+                isValid = false;
+            } else {
+                document.getElementById('password').classList.remove('is-invalid');
+            }
+
+            if(isValid) {
+                var form = new FormData(details);
+                var xhr = new XMLHttpRequest();
+                xhr.open("post", "{{ route('add.teacher') }}");
+                xhr.onreadystatechange = function() {
+                    if(xhr.readyState == 4 && xhr.status == 200) {
+                        var response = xhr.responseText;
+                        if(response == 'success') {
+                            Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'New Teacher Added Successfully',
+                            showConfirmButton: false,
+                            timer: 1500
+                            });
+                            inputs.forEach(input => {
+                                input.value = '';
+                            });
+                        } else if(response == 'error') {
+                            Swal.fire(
+                            'INTERNEL SERVER ERROR',
+                            'Error While Processing Your Request',
+                            'error'
+                            )
+                        } else if(response == "exist") {
+                            Swal.fire(
+                            'WARNING',
+                            'A Teacher Already Exist With Given NIC Number',
+                            'warning'
+                            )
+                        }
+                        spinner.classList.remove('show');
+                    }
+                }
+                xhr.send(form);
+            } else {
+                spinner.classList.remove('show');
+                Swal.fire(
+                    'ERROR',
+                    'Please Double Check All Data That You Given!',
+                    'error'
+                )
+            }
+        }
     </script>
 </body>
 

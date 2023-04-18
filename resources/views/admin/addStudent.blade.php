@@ -506,7 +506,8 @@
 
 
         button.addEventListener("click", function () {
-
+            var spinner = document.getElementById('spinner');
+            spinner.classList.add('show');
             var isValid = true;
 
             const formData = new FormData(form);
@@ -669,6 +670,7 @@
                 xhr.open('POST', '{{ route("add.student") }}');
                 xhr.onload = function () {
                     if (this.status === 200) {
+                        spinner.classList.remove('show');
                         var response = this.responseText;
                         if(response == 'success') {
                             Swal.fire({
@@ -677,7 +679,11 @@
                                 title: 'Student Added Successfully',
                                 showConfirmButton: false,
                                 timer: 1500
-                                })
+                                });
+                            var inputs = document.querySelectorAll('inputs');
+                            inputa.forEach(input => {
+                                input.value = '';
+                            });
                         } else if(response == 'error') {
                             Swal.fire(
                                 'ERROR',
@@ -689,11 +695,18 @@
                                 'WARNING',
                                 'A Student With This Registration Number Already Exist!',
                                 'warning'
-                                )
+                            )
                         }
                     }
                 };
                 xhr.send(formData);
+            } else {
+                spinner.classList.remove('show');
+                Swal.fire(
+                    'Something Went Wrong',
+                    'Please Check This Form Again',
+                    'warning'
+                )
             }
 
         })

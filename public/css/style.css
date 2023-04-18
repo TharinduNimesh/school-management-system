@@ -4,6 +4,7 @@
   --secondary: #ffffff;
   --light: #646464;
   --dark: linear-gradient(to right, rgb(255, 203, 107), rgb(255, 177, 31));
+  /* --dark : linear-gradient(to left, #0072c6, #00bfff); */
 }
 
 .back-to-top {
