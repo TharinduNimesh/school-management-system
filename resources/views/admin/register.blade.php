@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @include('admin.components.head')
 </head>
 
@@ -32,7 +33,7 @@
                                 aria-label="Floating label select example" onchange="searchClass();">
                                 <option selected value="-">Open this select menu</option>
                                 @for ($i=1; $i<14; $i++)
-                                    <option>{{ $i }}</option>
+                                    <option value="{{ $i }}">{{ $i }}</option>
                                 @endfor
                             </select>
                             <label for="floatingSelectGrid">Grade</label>
@@ -237,30 +238,32 @@
                         req.onreadystatechange = function() {
                             if(req.readyState == 4) {
                                 if(req.status == 200) {
-                                    var response = JSON.parse(req.responseText);
-                                    if(response.classStatus == "newClass") {
-                                        tablebody.innerHTML = "";
-                                        searchedGrade.innerHTML = grade.value;
-                                        searchedClass.innerHTML = studentClass.value;
-                                        studentCount.innerHTML = "0";
-                                        teacherName.innerHTML = "none";
-                                        tableRowCount = 0;
-                                    }
-                                    else {
-                                        searchedGrade.innerHTML = grade.value;
-                                        searchedClass.innerHTML = studentClass.value;
-                                        studentCount.innerHTML = response[0].classStudentCount;
-                                        teacherName.innerHTML = response[0].classTeacher;
-                                        tablebody.innerHTML = "";
-                                        for (let i = 0; i < response.length; i++) {
-                                            tablebody.innerHTML += response[i].students;
-                                            tableRowCount = response.length;
-                                        }
-                                    }
+                                    console.log(req.responseText);
+                                //     var response = JSON.parse(req.responseText);
+                                //     if(response.classStatus == "newClass") {
+                                //         tablebody.innerHTML = "";
+                                //         searchedGrade.innerHTML = grade.value;
+                                //         searchedClass.innerHTML = studentClass.value;
+                                //         studentCount.innerHTML = "0";
+                                //         teacherName.innerHTML = "none";
+                                //         tableRowCount = 0;
+                                //     }
+                                //     else {
+                                //         searchedGrade.innerHTML = grade.value;
+                                //         searchedClass.innerHTML = studentClass.value;
+                                //         studentCount.innerHTML = response[0].classStudentCount;
+                                //         teacherName.innerHTML = response[0].classTeacher;
+                                //         tablebody.innerHTML = "";
+                                //         for (let i = 0; i < response.length; i++) {
+                                //             tablebody.innerHTML += response[i].students;
+                                //             tableRowCount = response.length;
+                                //         }
+                                //     }
                                 }
                             }
                         }
-                    req.open("POST", "process/registerSearch.php", true);
+                    req.open("POST", "{{ route('search.register') }}");
+                    req.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
                     req.send(form);
                 }
             }

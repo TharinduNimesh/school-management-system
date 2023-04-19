@@ -1,5 +1,5 @@
 @if (auth()->check())
-    @if (auth()->user()->role == '0')
+    @if (auth()->user()->role == 'student')
         <script>window.location = ("{{ route('student.dashboard') }}")</script>
     @endif
 @endif
@@ -46,7 +46,7 @@
             var form = new FormData();
             form.append('index', index);
             form.append('password', password);
-            form.append('role', '0');
+            form.append('role', 'student');
 
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {

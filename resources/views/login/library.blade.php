@@ -1,5 +1,5 @@
 @if (auth()->check())
-    @if (auth()->user()->role == '3')
+    @if (auth()->user()->role == 'librarian')
         <script>window.location = ("{{ route('library.dashboard') }}")</script>
     @endif
 @endif
@@ -46,7 +46,7 @@
             var form = new FormData();
             form.append('index', index);
             form.append('password', password);
-            form.append('role', '3');
+            form.append('role', 'librarian');
 
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {

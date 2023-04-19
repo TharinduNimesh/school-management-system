@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\ClassController;
 
 /*
 |--------------------------------------------------------------------------
@@ -164,6 +165,9 @@ Route::post('logout', function() {
 
 // admin functions
 Route::prefix('add')->group(function() {
-    Route::post('add/student', [StudentController::class, 'add'])->name('add.student');
-    Route::post('add/teacher', [TeacherController::class, 'add'])->name('add.teacher');
+    Route::post('student', [StudentController::class, 'add'])->name('add.student');
+    Route::post('teacher', [TeacherController::class, 'add'])->name('add.teacher');
+});
+Route::prefix('manage')->group(function() {
+    Route::post('register', [ClassController::class, 'search_register'])->name('search.register');
 });

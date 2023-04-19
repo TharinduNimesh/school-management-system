@@ -42,6 +42,9 @@ class TeacherController extends Controller
             $teacher->email = $request->teacherEmail;
             $teacher->address = $request->address;
 
+            // teacher resignation assign to null
+            $teacher->deleted_at = null;
+
             // save teacher's information
             $teacherAdded = $teacher->save();
 
