@@ -239,73 +239,26 @@
                             if(req.readyState == 4) {
                                 if(req.status == 200) {
                                     console.log(req.responseText);
-                                    var response = JSON.parse(req.responseText);
-                                    if(response.classStatus == "newClass") {
-                                        tablebody.innerHTML = "";
-                                        searchedGrade.innerHTML = grade.value;
-                                        searchedClass.innerHTML = studentClass.value;
-                                        studentCount.innerHTML = "0";
-                                        teacherName.innerHTML = "none";
-                                        tableRowCount = 0;
-                                    }
-                                    else {
-                                        searchedGrade.innerHTML = grade.value;
-                                        searchedClass.innerHTML = studentClass.value;
-                                        studentCount.innerHTML = response.length;
-                                        // teacherName.innerHTML = response[0].classTeacher;
-                                        tablebody.innerHTML = "";
-                                        for (let i = 0; i < response.length; i++) {
-                                            var row = document.createElement("tr");
-                                            var numberCol = document.createElement("td");
-                                            var indexCol = document.createElement("td");
-                                            var nameCol = document.createElement("td");
-                                            var buttonCol = document.createElement("td");
-                                            var button = document.createElement("button");
-
-                                            row.id = 'student' + response[i]._id;
-                                            numberCol.innerHTML = i + 1;
-                                            indexCol.innerHTML = response[i].index_number;
-                                            nameCol.innerHTML = response[i].initial_name;
-
-                                            button.classList = "btn btn-danger";
-                                            button.innerHTML = "remove";
-                                            button.dataset.sid = response[i]._id;
-                                            button.onclick = function(event) {
-                                                var sid = event.target.dataset.sid;
-                                                var removeForm = new FormData();
-                                                removeForm.append("studentId", sid);
-                                                removeForm.append("year", year.value);
-
-                                                var xhr = new XMLHttpRequest();
-                                                xhr.onreadystatechange = function() {
-                                                    if(xhr.readyState == 4 && xhr.status == 200){
-                                                        var res = xhr.responseText;
-                                                        if(res == 'success') {
-                                                            document.getElementById('student' + sid).classList.add('d-none');
-                                                        } else {
-                                                            Swal.fire({
-                                                              icon: 'info',
-                                                              title: 'Oops!',
-                                                              text: 'Something Went Wrong'
-                                                            })
-                                                        }
-                                                    }
-                                                }
-
-                                                xhr.open("post", "{{ route('remove.student.from.register') }}");
-                                                xhr.setRequestHeader('X-CSRF-TOKEN', 
-                                                    document.querySelector('meta[name="csrf-token"]').content);
-                                                xhr.send(removeForm);
-                                            }
-
-                                            buttonCol.appendChild(button);
-                                            row.appendChild(numberCol);
-                                            row.appendChild(indexCol);
-                                            row.appendChild(nameCol);
-                                            row.appendChild(buttonCol);
-                                            tableBody.appendChild(row);
-                                        }
-                                    }
+                                //     var response = JSON.parse(req.responseText);
+                                //     if(response.classStatus == "newClass") {
+                                //         tablebody.innerHTML = "";
+                                //         searchedGrade.innerHTML = grade.value;
+                                //         searchedClass.innerHTML = studentClass.value;
+                                //         studentCount.innerHTML = "0";
+                                //         teacherName.innerHTML = "none";
+                                //         tableRowCount = 0;
+                                //     }
+                                //     else {
+                                //         searchedGrade.innerHTML = grade.value;
+                                //         searchedClass.innerHTML = studentClass.value;
+                                //         studentCount.innerHTML = response[0].classStudentCount;
+                                //         teacherName.innerHTML = response[0].classTeacher;
+                                //         tablebody.innerHTML = "";
+                                //         for (let i = 0; i < response.length; i++) {
+                                //             tablebody.innerHTML += response[i].students;
+                                //             tableRowCount = response.length;
+                                //         }
+                                //     }
                                 }
                             }
                         }
@@ -503,6 +456,38 @@
                     text: 'You Must Search A Student First'
                 })
             }
+        }
+
+        function removeStudent(event) {
+            var removeButton = event.target;
+            var indexNumber =  removeButton.dataset.indexnumber;
+            var year = document.getElementById("year").value;
+
+            var form = new FormData();
+            form.append("index", indexNumber);
+            form.append("year", year);
+
+            var req = new XMLHttpRequest();
+
+            req.onreadystatechange = function() {
+                if(req.readyState == 4) {
+                    if(req.status == 200) {
+                        var tableRow = document.getElementById("row" + indexNumber);
+                        tableRow.remove();
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: "Internel Server Error",
+                            footer: "<a href='http://wa.me/94701189971'>Contact Developers Here</a>"
+                        });
+                    }
+                }
+            }
+
+            req.open("POST", "process/removeStudentFrom.php", true);
+            req.send(form);
         }
 
         function addTeacherToClass() {
