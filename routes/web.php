@@ -27,7 +27,6 @@ Route::get('/', function () {
 });
 
 // Login Routes
-
 Route::get('student/login', function() {
     return view('login.student');
 })->name('student.login');
@@ -171,5 +170,4 @@ Route::prefix('add')->group(function() {
 });
 Route::prefix('manage')->group(function() {
     Route::post('register', [ClassController::class, 'search_register'])->name('search.register');
-    Route::post('register/remove/student', [ClassController::class, 'remove_student'])->name('remove.student.from.register');
 });
