@@ -38,6 +38,7 @@ class StudentController extends Controller
             $student->nationality = $request->nationality;
             $student->religion = $request->religion;
             $student->travel_method = $request->travelMethod;
+            $student->scholarship = $request->scholarship;
 
             // student's mother's details
             $student->mother_name = $request->motherName;
@@ -80,6 +81,20 @@ class StudentController extends Controller
             // A student already exist with given index number
         } else {
             return 'exist';
+        }
+    }
+
+    public function show($id) {
+        // search student by given index number
+        $student = Student::where('index_number', $id)->first();
+
+        // check previous query return a value or not
+        if($student != null){
+            return $student;
+        } 
+        // if query didn't recieve a value output return as invalid
+        else {
+            return 'invalid';
         }
     }
 }

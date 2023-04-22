@@ -172,4 +172,8 @@ Route::prefix('add')->group(function() {
 Route::prefix('manage')->group(function() {
     Route::post('register', [ClassController::class, 'search_register'])->name('search.register');
     Route::post('register/remove/student', [ClassController::class, 'remove_student'])->name('remove.student.from.register');
+    Route::post('register/add/student', [ClassController::class, 'add_student'])->name('add.student.to.register');
+});
+Route::prefix('search')->group(function() {
+    Route::get('student/{id}', [StudentController::class, 'show'])->name('search.student');
 });
