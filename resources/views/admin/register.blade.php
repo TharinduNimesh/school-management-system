@@ -167,8 +167,15 @@
                             id="button-addon2">ADD</button>
                     </div>
                     <div class="row">
-                        <div class="col-12 card-header text-dark d-flex justify-content-start mb-3">
-                            Class Teacher :&nbsp;&nbsp; <span id="teacherName"> None</span>
+                        <div class="col-12 card-header text-dark mb-3">
+                            <div class="row">
+                                <div class="col-8 d-flex justify-content-start align-items-center">
+                                    Class Teacher :&nbsp;&nbsp; <span id="teacherName"> None</span>
+                                </div>
+                                <div class="col-4">
+                                    <button onclick="removeTeacher(this);" class="btn btn-danger d-none" id="removeTeacher">remove</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="alert alert-warning">
@@ -223,6 +230,7 @@
             var studentCount = document.getElementById("studentCount");
             var teacherName = document.getElementById("teacherName");
             var tablebody = document.getElementById('tableBody');
+            const removeTeacher = document.getElementById("removeTeacher");
 
             var yearRegex = /^\d{4}$/;
 
@@ -231,6 +239,7 @@
                 searchedClass.innerHTML = "none";
                 studentCount.innerHTML = "none";
                 teacherName.innerHTML = "none";
+                removeTeacher.classList.add("d-none");
                 let allTRs = document.querySelectorAll("td")
                 allTRs.forEach(el => el.style.display = "none")
             }
@@ -255,15 +264,24 @@
                                     searchedClass.innerHTML = studentClass.value;
                                     studentCount.innerHTML = "0";
                                     teacherName.innerHTML = "none";
+                                    removeTeacher.classList.add("d-none");
                                     tableRowCount = 0;
                                 }
                                 else {
+                                    var students = response.students;
                                     searchedGrade.innerHTML = grade.value;
                                     searchedClass.innerHTML = studentClass.value;
-                                    studentCount.innerHTML = response.length;
-                                    // teacherName.innerHTML = response[0].classTeacher;
+                                    studentCount.innerHTML = students.length;
+                                    try {
+                                        teacherName.innerHTML = response.teacher.full_name;
+                                        removeTeacher.classList.remove("d-none");
+                                        removeTeacher.dataset.teacher = response.teacher._id;
+                                    } catch (error) {
+                                        teacherName.innerHTML = "This Class Doesn't have A Teacher";
+                                    }
+                                    
                                     tablebody.innerHTML = "";
-                                    for (let i = 0; i < response.length; i++) {
+                                    for (let i = 0; i < students.length; i++) {
                                         var row = document.createElement("tr");
                                         var numberCol = document.createElement("td");
                                         var indexCol = document.createElement("td");
@@ -271,14 +289,14 @@
                                         var buttonCol = document.createElement("td");
                                         var button = document.createElement("button");
 
-                                        row.id = 'student' + response[i]._id;
+                                        row.id = 'student' + students[i]._id;
                                         numberCol.innerHTML = i + 1;
-                                        indexCol.innerHTML = response[i].index_number;
-                                        nameCol.innerHTML = response[i].initial_name;
+                                        indexCol.innerHTML = students[i].index_number;
+                                        nameCol.innerHTML = students[i].initial_name;
 
                                         button.classList = "btn btn-danger";
                                         button.innerHTML = "remove";
-                                        button.dataset.sid = response[i]._id;
+                                        button.dataset.sid = students[i]._id;
                                         button.onclick = function (event) {
                                             var sid = event.target.dataset.sid;
                                             var removeForm = new FormData();
@@ -512,31 +530,28 @@
                     if (req.readyState == 4) {
                         if (req.status == 200) {
                             // output handle here
-                            var response = req.responseText;
-                            if (response == "notATeacher") {
+                            var response = JSON.parse(req.responseText);
+                            if(response.status == 'success') {
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'success',
+                                    title: 'Student Added To The Class',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                                document.getElementById("teacherName").innerHTML = response.teacher;
+                            } else if(response.status == 'exist') {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'ERROR',
+                                    text: 'This Teacher Already In A Class: '+ response.class +''
+                                })
+                            } else if(response.status == 'invalid') {
                                 Swal.fire({
                                     icon: 'warning',
                                     title: 'WARNING',
                                     text: 'Invalid Teacher NIC'
                                 })
-                            }
-                            else if (response == "teacherInAOtherClass") {
-                                Swal.fire({
-                                    icon: 'warning',
-                                    title: 'WARNING',
-                                    text: 'This Teacher Have A Class'
-                                })
-                            }
-                            else {
-                                Swal.fire({
-                                    position: 'top-end',
-                                    icon: 'success',
-                                    title: 'Teacher Added Successfully',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                })
-                                document.getElementById("teacherName").innerHTML = response;
-
                             }
                         }
                         else {
@@ -550,7 +565,8 @@
                     }
                 }
 
-                req.open("POST", "process/addTeacherToClass.php", true);
+                req.open("POST", "{{ route('add.teacher.to.class') }}");
+                req.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
                 req.send(form);
             }
             else {
@@ -560,6 +576,43 @@
                     text: 'Select Year, Grade And Class Before Add A Teacher'
                 })
             }
+        }
+
+        function removeTeacher(Button) {
+            var year = document.getElementById("year");
+            var tid = Button.dataset.teacher;
+
+            var form = new FormData();
+            form.append("year", year.value);
+            form.append("teacherId", tid);
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState == 4 && xhr.status == 200) {
+                    var response = xhr.responseText;
+                    if(response == 'success') {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Teacher Removed From The Class',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        document.getElementById("teacherName").innerHTML = "This Class Doesn't Have A Teacher";
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: "Internel Server Error",
+                            footer: "<a href='http://wa.me/94701189971'>Contact Developers Here</a>"
+                        });
+                    }
+                }
+            }
+
+            xhr.open("POST", "{{ route('remove.teacher.from.register') }}");
+            xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
+            xhr.send(form);
         }
     </script>
 </body>

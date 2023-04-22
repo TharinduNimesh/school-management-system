@@ -10,4 +10,6 @@ class Teacher extends Model
     use HasFactory;
     protected $connection = 'mongodb';
     protected $collection = 'teachers';
+
+    protected $fillable = ['classes.$[elem].end_year'];
 }
