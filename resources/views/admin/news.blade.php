@@ -13,17 +13,17 @@
     <div class="content">
         @include('admin.components.navbar')
 
-      <form id="news-form" method="post" action="process-news.php" enctype="multipart/form-data">
+      <form id="news-form" method="post" action="" enctype="multipart/form-data">
         <div class="container-fluid pt-4 px-4">
           <div class="row add-events bg-secondary p-3">
             <h3 class="text-dark">Add News & Upcoming Events</h3>
             <div class="input-group mb-3">
               <span class="input-group-text" style="width: 240px;" id="basic-addon1">Add News/Events Header</span>
-              <input type="text" class="form-control bg-secondary text-dark" placeholder="Add News/Events Header" aria-label="Add News/Events Header" aria-describedby="basic-addon1" name="news-header" id="newsHeader">
+              <input type="text" class="form-control bg-secondary text-dark" placeholder="Add News/Events Header" aria-label="Add News/Events Header" aria-describedby="basic-addon1" name="newsHeader" id="newsHeader">
             </div>
             <div class="input-group mb-3">
               <span class="input-group-text" style="width: 240px;" id="basic-addon1">Add News/Events description</span>
-              <input type="text" class="form-control bg-secondary text-dark" placeholder="Add News/Events description" aria-label="Add News/Events description" aria-describedby="basic-addon1" name="news-description" id="newsDescription">
+              <input type="text" class="form-control bg-secondary text-dark" placeholder="Add News/Events description" aria-label="Add News/Events description" aria-describedby="basic-addon1" name="newsDescription" id="newsDescription">
             </div>
             <div class="input-group mb-3 col-6">
               <label class="input-group-text" style="width: 240px;" for="inputGroupFile01">Add News/Events Image</label>
@@ -43,14 +43,15 @@
             </div>
             <button type="button" class="btn btn-outline-primary mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Add News/Events</button>
           </div>
+        </form>
 
           <div class="row mt-3 bg-secondary p-3 rounded">
             <h3 class="text-dark">Manage News</h3>
             <div class="col-12 col-md-10 offset-md-1">
               <!-- sample news container  start -->
-              <div class="px-3 py-2 rounded row" style="border: 1px solid black;">
+              {{-- <div class="px-3 py-2 rounded row" style="border: 1px solid black;">
                 <div class="col-2" style="border-right: 1px solid black;">
-                  <img src="news/63ba003a2a21d.webp" style="width: 100%;">
+                  <img src="{{ Storage::url('public/news/64450d9c6b45d.png') }}" style="width: 100%;">
                 </div>
                 <div class="col-8" style="max-height: 80px; overflow: hidden;">
                   <h5 class="text-dark">This a Sample news Heading</h5>
@@ -59,9 +60,30 @@
                 <div class="col-2 d-flex justify-content-center align-items-center">
                   <button class="btn btn-danger" type="button"><i class="bi bi-trash mx-1"></i>Remove</button>
                 </div>
-              </div>
+              </div> --}}
               <!-- sample news container  end -->
-
+              <div class="alert alert-warning text-center">
+                <span style="font-weight: bold">Attention :</span> If You add news now. Please Refresh And Try Again To Show It
+              </div>
+              @foreach ($news as $item)
+              <div class="px-3 py-2 rounded row mt-1" style="border: 1px solid black;">
+                <div class="col-2" style="border-right: 1px solid black;">
+                  <img src="{{ Storage::url('public/news/' . $item->image_path) }}" style="width: 100%;">
+                </div>
+                <div class="col-8" style="max-height: 80px; overflow: hidden;">
+                  <h5 class="text-dark">{{ $item->header }}</h5>
+                  <p style="text-align: justify;">{{ $item->description }}</p>
+                </div>
+                <div class="col-2 d-flex justify-content-center align-items-center">
+                  <form action="{{ route('remove.news') }}" method="post">
+                    @csrf
+                    @method("delete")
+                    <input type="hidden" name="id" value="{{ $item->_id }}">
+                    <button type="submit" class="btn btn-danger" type="button"><i class="bi bi-trash mx-1"></i>Remove</button>
+                  </form>
+                </div>
+              </div>
+              @endforeach
             </div>
           </div>
         </div>
@@ -84,7 +106,6 @@
             </div>
           </div>
         </div>
-      </form>
 
           <!-- image modal start  -->
     <div class="modal fade" tabindex="-1" id="imageModal">
@@ -123,18 +144,10 @@
     @include('public_components.js')
   <script>
     hamburger("addNews");
-    function removeNews(Button) {
-      var id = Button.dataset.id;
-      var xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = function() {
-        if(xhr.readyState == 4 && xhr.status == 200) {
-          document.getElementById("myNews" + id).classList.add("d-none");
-        }
-      }
 
-      xhr.open("GET", "process/removeNews.php?id=" + id + "", true);
-      xhr.send();
-    }
+    window.onbeforeunload = function() {
+      windows.location = "{{ route('admin.news') }}";
+    };
 
     var cropperImage = '';
 
@@ -215,16 +228,26 @@
           const formData = new FormData(form);
           formData.append("base64", cropperImage);
           const xhr = new XMLHttpRequest();
-          xhr.open('POST', 'process/saveNews.php', true);
+          xhr.open('POST', '{{ route("add.news") }}');
+          xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
           xhr.onload = function() {
             if (this.status === 200) {
-              if (xhr.responseText == "InvalidSize") {
+              var response = xhr.responseText;
+              if(response == 'notSaveToDatabase') {
                 Swal.fire({
                   icon: 'error',
                   title: 'ERROR',
-                  text: 'Invalid Image Size Please Crop And Try Again',
+                  text: 'Error While Add Details To Database',
+                  footer: "<a href='http://wa.me/94701189971'>Contact Developers Here</a>"
                 });
-              } else {
+              } else if(response == 'imageNotSaved') {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'ERROR',
+                  text: 'Error While Saving Image',
+                  footer: "<a href='http://wa.me/94701189971'>Contact Developers Here</a>"
+                });
+              } else if(response == 'success') {
                 Swal.fire({
                   position: 'top-end',
                   icon: 'success',

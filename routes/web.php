@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -112,9 +113,7 @@ Route::prefix('admin')->middleware(['auth', 'IsAdmin'])->group(function() {
     Route::get('search/teacher', function() {
         return view('admin.searchTeacher');
     })->name('admin.searchTeacher');
-    Route::get('manage/news', function() {
-        return view('admin.news');
-    })->name('admin.news');
+    Route::get('manage/news', [NewsController::class, 'navigateToNews'])->name('admin.news');
     Route::get('manage/nonacademic', function() {
         return view('admin.nonAcademic');
     })->name('admin.nonAcademic');
@@ -170,11 +169,16 @@ Route::prefix('add')->group(function() {
     Route::post('teacher', [TeacherController::class, 'add'])->name('add.teacher');
 });
 Route::prefix('manage')->group(function() {
+    // admin manage register routes
     Route::post('register', [ClassController::class, 'search_register'])->name('search.register');
     Route::post('register/remove/student', [ClassController::class, 'remove_student'])->name('remove.student.from.register');
     Route::post('register/remove/teacher', [ClassController::class, 'remove_teacher'])->name('remove.teacher.from.register');
     Route::post('register/add/student', [ClassController::class, 'add_student'])->name('add.student.to.register');
     Route::post('register/add/teacher', [ClassController::class, 'add_teacher'])->name('add.teacher.to.class');
+
+    // admin manage news routes
+    Route::post('news/add', [NewsController::class, 'add'])->name('add.news');
+    Route::delete('news/delete', [NewsController::class, 'remove'])->name('remove.news');
 });
 Route::prefix('search')->group(function() {
     Route::get('student/{id}', [StudentController::class, 'show'])->name('search.student');

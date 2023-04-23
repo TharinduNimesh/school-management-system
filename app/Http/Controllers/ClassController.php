@@ -130,6 +130,7 @@ class ClassController extends Controller
 
     public function remove_teacher(Request $request) {
 
+        // update searched class teacher end year as current year
         Teacher::where('_id', $request->teacherId)
         ->where('classes.end_year', null)
         ->update([

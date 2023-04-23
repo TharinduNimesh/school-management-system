@@ -17,5 +17,8 @@
         "lodash": "^4.17.19",
         "postcss": "^8.1.14",
         "sass": "^1.56.1"
+    },
+    "dependencies": {
+        "cropperjs": "^1.5.13"
     }
 }

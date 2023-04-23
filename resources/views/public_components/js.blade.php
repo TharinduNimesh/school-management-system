@@ -9,6 +9,7 @@
 <script src="/lib/tempusdominus/js/moment-timezone.min.js"></script>
 <script src="/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 <script src="/js/passwordValidate/js/jquery.passwordRequirements.min.js"></script>
+<script src="/js/cropperjs/dist/cropper.min.js"></script>
 <script src="https://unpkg.com/typed.js@2.0.15/dist/typed.umd.js"></script>
 
 {{-- manual javascript --}}
