@@ -15,7 +15,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // remove teachers leaves that older than 3 years and, add leaves for current year
+        $schedule->command('teacher:leaves')->everyMinute();
     }
 
     /**

@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     @include('admin.components.head')
 </head>
 

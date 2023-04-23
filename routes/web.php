@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LeavesController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\App;
@@ -92,6 +93,7 @@ Route::prefix('teacher')->middleware(['auth', 'IsTeacher'])->group(function() {
     Route::get('search/marks', function() {
         return view('teacher.resultsheet');
     })->name('teacher.resultsheet');
+    Route::get('manage/leaves', [LeavesController::class, 'navigateToTeacherLeaves'])->name('teacher.leaves');
 });
 
 // Admin Routes
@@ -190,3 +192,6 @@ Route::prefix('manage')->group(function() {
 Route::prefix('search')->group(function() {
     Route::get('student/{id}', [StudentController::class, 'show'])->name('search.student');
 });
+
+// Teacher functions
+Route::post("request/leaves", [LeavesController::class, 'request'])->name('request.leaves');
