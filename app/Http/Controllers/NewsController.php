@@ -60,7 +60,7 @@ class NewsController extends Controller
         
         // if no any record for given details, redirect to admin.news view
         if($news == null) {
-            return view('admin.news', ["news" => News::all()]);
+            return redirect()->route('admin.news', [ "news" => News::all()]);
         } else {
             // delete image from files
             Storage::delete("public/news/$news->image_path");

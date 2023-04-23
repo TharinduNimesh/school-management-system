@@ -225,6 +225,7 @@
             text: 'Invalid Image Size Please Crop And Try Again',
           });
         } else {
+          document.getElementById("spinner").classList.add("show");
           const formData = new FormData(form);
           formData.append("base64", cropperImage);
           const xhr = new XMLHttpRequest();
@@ -256,6 +257,7 @@
                   timer: 1500
                 });
               }
+            document.getElementById("spinner").classList.remove("show");
             }
           };
           xhr.send(formData);

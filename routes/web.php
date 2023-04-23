@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -179,6 +180,12 @@ Route::prefix('manage')->group(function() {
     // admin manage news routes
     Route::post('news/add', [NewsController::class, 'add'])->name('add.news');
     Route::delete('news/delete', [NewsController::class, 'remove'])->name('remove.news');
+
+    // admin manage staff routed
+    Route::post('staff/add', [StaffController::class, 'add'])->name("add.staff");
+    Route::post('staff/search', [StaffController::class, 'show'])->name("search.staff");
+    Route::post('staff/search/live', [StaffController::class, 'live'])->name("live.search.staff");
+    Route::post('staff/remove', [StaffController::class, 'remove'])->name('remove.staff');
 });
 Route::prefix('search')->group(function() {
     Route::get('student/{id}', [StudentController::class, 'show'])->name('search.student');
