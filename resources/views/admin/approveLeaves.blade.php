@@ -31,7 +31,7 @@
                     <h6 class="text-dark">Casual Leaves</h6>
                     <div class="col-12">
                         <p class="text-end text-danger">Today Acceped Leave Count
-                            3/5
+                            {{ $todayCasualCount }}/5
                         </p>
                     </div>
                     <div class="input-group mb-3 mt-3 ">
@@ -42,6 +42,11 @@
                     </div>
 
                     <hr>
+                        @if ($error != null)
+                            <div class="alert alert-danger">
+                                {{ $error }}
+                            </div>
+                        @endif
                     <table class="table table-striped table-horver" id="my-table">
                         <thead class="table-dark">
                             <tr>
@@ -54,15 +59,41 @@
                         </thead>
                         <tbody>
                             <!--  -->
-              @for ($i=0; $i<6; $i++)
+              @foreach ($casualLeavesList as $key => $data)
                 <tr>
-                    <th scope="row">{{ $i }}</th>
-                    <td>Mark</td>
-                    <td>12-03-2023</td>
-                    <td>wedding</td>
-                    <td><button type="button" class="btn btn-success">Accept</button><span class="mx-2">OR</span><button type="button" class="btn btn-danger">Reject</button></td>
+                    <th scope="row">{{ $key + 1 }}</th>
+                    <td>{{ $data->name }}</td>
+                    <td>{{ $data->date }}</td>
+                    <td>{{ $data->reason }}</td>
+                    <td>
+                        @if ($data->status == 'pending')
+                            <form method="POST" action="{{ route('admin.accept.leaves', [ 'id' => $data->_id]) }}" style="display: inline-block">
+                                @method("patch")
+                                @csrf
+                                <button type="submit" class="btn btn-success">Accept</button>
+                            </form>
+                            <span class="mx-2">OR</span>
+                            <form method="POST" action="{{ route('admin.reject.leaves', [ 'id' => $data->_id]) }}" style="display: inline-block">
+                                @method("patch")
+                                @csrf
+                                <button type="submit" class="btn btn-danger">Reject</button>
+                            </form>
+                        @elseif ($data->status == "accepted")
+                            <form method="POST" action="{{ route('admin.reject.leaves', [ 'id' => $data->_id]) }}" style="display: inline-block">
+                                @method("patch")
+                                @csrf
+                                <button type="submit" class="btn btn-danger">Reject</button>
+                            </form>
+                        @elseif ($data->status == "rejected")
+                            <form method="POST" action="{{ route('admin.accept.leaves', [ 'id' => $data->_id]) }}" style="display: inline-block">
+                                @method("patch")
+                                @csrf
+                                <button type="submit" class="btn btn-success">Accept</button>
+                            </form>
+                        @endif
+                    </td>
                 </tr>
-              @endfor
+              @endforeach
                         </tbody>
                     </table>
 
@@ -93,9 +124,17 @@
                                 <th scope="col">No</th>
                                 <th scope="col">Teacher Name</th>
                                 <th scope="col">Contact Number</th>
-
                             </tr>
                         </thead>
+                        <tbody>
+                            @foreach ($sickLeavesList as $key => $data)
+                                <tr>
+                                    <th scope="col">{{ $key + 1 }}</th>
+                                    <th scope="col">{{ $data->name }}</th>
+                                    <th scope="col">{{ $data->mobile }}</th>
+                                </tr>
+                            @endforeach
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -117,70 +156,6 @@
 
     <script>
         hamburger("leaves");
-        function acceptLeave(Button) {
-            var lid = Button.dataset.lid;
-            var date = Button.dataset.date;
-            var name = Button.dataset.name;
-            var email = Button.dataset.email;
-            var nic = Button.dataset.nic;
-
-            var form = new FormData();
-            form.append("action", "accept");
-            form.append("id", lid);
-            form.append("date", date);
-            form.append("email", email);
-            form.append("name", name);
-            form.append("nic", nic);
-
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    // handle response
-                    document.getElementById("casual" + lid).classList.add("d-none");
-                }
-            }
-
-            xhr.open("POST", "process/vocationAction.php", true);
-            xhr.send(form);
-        }
-
-        function rejectLeave(Button) {
-            var lid = Button.dataset.lid;
-            var date = Button.dataset.date;
-            var name = Button.dataset.name;
-            var email = Button.dataset.email;
-            var nic = Button.dataset.nic;
-            var cancelled = Button.dataset.cancelled;
-
-            var form = new FormData();
-            form.append("action", "reject");
-            form.append("id", lid);
-            form.append("date", date);
-            form.append("email", email);
-            form.append("name", name);
-            form.append("nic", nic);
-            form.append("cancelled", cancelled);
-
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    // handle response
-                    var response = JSON.parse(xhr.responseText);
-                    if (response.status == 'accepted') {
-                        Swal.fire(
-                            'Oops..',
-                            'Maximum Number Of Leaves Exceeded Today!',
-                            'error'
-                        );
-                    } else {
-                        document.getElementById("casual" + lid).classList.add("d-none");
-                    }
-                }
-            }
-
-            xhr.open("POST", "process/vocationAction.php", true);
-            xhr.send(form);
-        }
 
         const dateFilterInput = document.getElementById("dateFilter");
         const tableRows = document.querySelectorAll('#my-table tbody tr');
@@ -197,7 +172,6 @@
                 }
             }
         });
-
 
         const nameFilterInput = document.getElementById("nameFilter");
         const sickTable = document.querySelectorAll('#sickTable tbody tr');

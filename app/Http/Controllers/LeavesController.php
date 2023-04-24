@@ -77,10 +77,10 @@ class LeavesController extends Controller
                     return 'noLeaves';
                 }
             }
-             // already got a leave today
-             else {
+            // already got a leave today
+            else {
                 return 'already';
-             }
+            }
         }
         // process for casual leaves
         else {
@@ -92,10 +92,10 @@ class LeavesController extends Controller
 
             // check requested teacher has already request earlier in that day
             $check = Leaves::where('nic', $request->nic)
-                            ->where('date', $request->date)->first();
+                ->where('date', $request->date)->first();
 
             // if teacher doen't request leave for that day
-            if($check == null) {
+            if ($check == null) {
                 $year = Date("Y");
                 // get all casual vocation record for requested teacher in this year
                 $getCount = Leaves::where('nic', $request->nic)
@@ -111,13 +111,13 @@ class LeavesController extends Controller
                     $leavesData->reason = $request->reason;
                     $leavesData->status = "pending";
                     $leavesData->save();
-    
+
                     return 'success';
                 } else {
                     return 'noLeaves';
                 }
             }
-                // this wil return if teacher already get a leave that day
+            // this wil return if teacher already get a leave that day
             else {
                 return 'casualAlready';
             }
@@ -140,12 +140,85 @@ class LeavesController extends Controller
             }
         }
 
+        $year = Date("Y");
+        $getCount = Leaves::where('nic', $nic)
+            ->where('reason', '<>', 'Sick')
+            ->where('date', 'like', "$year%")
+            ->where('status', 'accepted')->get();
+
         $remaining_leaves = 0;
         // get remaining sick leaves count
         foreach ($teacher->leaves as $leave) {
             $remaining_leaves += $leave['remaining'];
         }
 
-        return view('teacher.leaves', ["sick_leaves" => $remaining_leaves, "leaves_data" => $leavesArray]);
+        return view('teacher.leaves', [
+            "sick_leaves" => $remaining_leaves,
+            "casual_leaves" => count($getCount),
+            "leaves_data" => $leavesArray
+        ]);
+    }
+
+    public function adminApproveLeaves($error = null)
+    {
+        // get all sick leaves for today
+        $sickLeaves = Leaves::where('reason', 'Sick')
+            ->where('date', Date("Y-m-d"))
+            ->get();
+
+        // get casual Leaves for later today
+        $casualLeaves = Leaves::where('reason', '<>', 'Sick')
+            ->where('date', '>=', Date("Y-m-d"))
+            ->get();
+
+        $todayCasualLeaves = Leaves::where('reason', '<>', 'Sick')
+            ->where('date', Date('Y-m-d'))
+            ->get();
+
+        return view('admin.approveLeaves', [
+            "sickLeavesList" => $sickLeaves,
+            "casualLeavesList" => $casualLeaves,
+            "todayCasualCount" => count($todayCasualLeaves),
+            "error" => $error,
+        ]);
+    }
+
+    public function accept(Request $request)
+    {
+        // search details for given leaves id
+        $details = Leaves::find($request->id);
+
+        // get accepted leaves count for requested day
+        $getCount = Leaves::where('date', $details->date)
+            ->where('status', 'accepted')
+            ->get();
+
+            // check accepted leave count low than 5
+        if (count($getCount) < 5) {
+            // update leave details as accepted
+            Leaves::where('_id', $request->id)
+                ->update([
+                    'status' => 'accepted'
+                ]);
+
+            return redirect()->back();
+        } 
+            // return back with errors
+        else {
+            $error = 'Maximum number of leaves accepted for that day has been reached.';
+            return $this->adminApproveLeaves($error);
+        }
+    }
+
+    public function reject(Request $request)
+    {
+        $details = Leaves::find($request->id);
+        // update leave details as rejected
+        Leaves::where('_id', $request->id)
+            ->update([
+                'status' => 'rejected'
+            ]);
+
+        return redirect()->back();
     }
 }

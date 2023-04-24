@@ -32,7 +32,7 @@
             <p class="text-danger">
               You Have Remaining
               <span id="remainingCasualCount">
-                23
+                {{ 20 - $casual_leaves }}
               </span> Casual
               Leaves
             </p>

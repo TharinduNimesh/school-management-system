@@ -129,9 +129,7 @@ Route::prefix('admin')->middleware(['auth', 'IsAdmin'])->group(function() {
     Route::get('manage/discipline', function() {
         return view('admin.discipline');
     })->name('admin.discipline');
-    Route::get('manage/leaves', function() {
-        return view('admin.approveLeaves');
-    })->name('admin.leaves');
+    Route::get('manage/leaves', [LeavesController::class, 'adminApproveLeaves'])->name('admin.leaves');
     Route::get('manage/sports', function() {
         return view('admin.sport');
     })->name('admin.sports');
@@ -183,11 +181,15 @@ Route::prefix('manage')->group(function() {
     Route::post('news/add', [NewsController::class, 'add'])->name('add.news');
     Route::delete('news/delete', [NewsController::class, 'remove'])->name('remove.news');
 
-    // admin manage staff routed
+    // admin manage staff routes
     Route::post('staff/add', [StaffController::class, 'add'])->name("add.staff");
     Route::post('staff/search', [StaffController::class, 'show'])->name("search.staff");
     Route::post('staff/search/live', [StaffController::class, 'live'])->name("live.search.staff");
     Route::post('staff/remove', [StaffController::class, 'remove'])->name('remove.staff');
+
+    // admin manage leaves routes
+    Route::patch('leaves/accept', [LeavesController::class, 'accept'])->name("admin.accept.leaves");
+    Route::patch('leaves/reject', [LeavesController::class, 'reject'])->name("admin.reject.leaves");
 });
 Route::prefix('search')->group(function() {
     Route::get('student/{id}', [StudentController::class, 'show'])->name('search.student');
