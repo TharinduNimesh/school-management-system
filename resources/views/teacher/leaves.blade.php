@@ -147,12 +147,21 @@
                   </thead>
 
                   <tbody>
-                    <tr>
-                        <td class="text-dark">01</td>
-                        <td class="text-dark">2023-01-02</td>
-                        <td><button class="btn btn-danger">Pending</button></td>
-                    </tr>
-
+                    @foreach ($leaves_data as $key => $data)
+                      <tr>
+                        <td class="text-dark">{{ $key + 1 }}</td>
+                        <td class="text-dark">{{ $data->date }}</td>
+                        <td>
+                          @if ($data->status == 'pending')
+                            <button class="btn btn-danger">Pending</button>
+                          @elseif ($data->status == 'accepted')
+                            <button class="btn btn-danger disabled">Accepted</button>
+                          @elseif ($data->status == 'rejected')
+                            <button class="btn btn-danger disabled">Rejected</button>
+                          @endif
+                        </td>
+                      </tr>
+                    @endforeach
 
                   </tbody>
                 </table>
@@ -232,6 +241,7 @@
     }
 
     function sendRequest() {
+      const spinner = document.getElementById("spinner")
       const type = document.getElementById("vocationType");
       if (type.value == "0") {
         Swal.fire({
@@ -240,6 +250,7 @@
           text: "Please Select A Vocation Category",
         });
       } else {
+        spinner.classList.add("show");
         var form = new FormData();
         if (type.value == "1") {
           const date = document.getElementById("date");
@@ -261,23 +272,43 @@
             var response = xhr.responseText;
             if(response == "error") {
                 Swal.fire({
-                    icon: "warning",
-                    title: "WARNING",
-                    text: "You Have Not Any Sick Leaves Left",
+                    icon: "error",
+                    title: "Oops",
+                    text: "Something Went Wrong",
+                    footer: "<a href='http://wa.me/94701189971'>Contact Developers Here</a>"
                 });
             } else if(response == 'success') {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
-                    title: 'You Got A Leave Today',
+                    title: 'You Requested A Leave',
                     showConfirmButton: false,
                     timer: 1500
                 })
                 setTimeout(() => {
                     location.reload();
                 }, 2);
+            } else if(response == "noLeaves") {
+              Swal.fire({
+                    icon: "warning",
+                    title: "WARNING",
+                    text: "You Haven't Any Leaves Left",
+                });
+            } else if(response == "already") {
+              Swal.fire({
+                    icon: "warning",
+                    title: "WARNING",
+                    text: "You Haven Already Got A Leave Today",
+                });
+            } else if(response == "casualAlready") {
+              Swal.fire({
+                    icon: "warning",
+                    title: "WARNING",
+                    text: "You Haven Already Got A Leave That Day",
+                });
             }
-          }
+            spinner.classList.remove("show");
+          } 
         };
 
         xhr.open("POST", "{{ route('request.leaves') }}");
