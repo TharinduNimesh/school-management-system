@@ -153,7 +153,11 @@
                         <td class="text-dark">{{ $data->date }}</td>
                         <td>
                           @if ($data->status == 'pending')
-                            <button class="btn btn-danger">Pending</button>
+                            <form method="post" action="{{ route('teacher.reject.leaves', [ 'id' => $data->_id ]) }}">
+                              @method("patch")
+                              @csrf
+                              <button class="btn btn-danger">Pending</button>
+                            </form>
                           @elseif ($data->status == 'accepted')
                             <button class="btn btn-danger disabled">Accepted</button>
                           @elseif ($data->status == 'rejected')

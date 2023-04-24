@@ -159,7 +159,7 @@ class LeavesController extends Controller
         ]);
     }
 
-    public function adminApproveLeaves($error = null)
+    public function navigateToadminApproveLeaves($error = null)
     {
         // get all sick leaves for today
         $sickLeaves = Leaves::where('reason', 'Sick')
@@ -206,7 +206,7 @@ class LeavesController extends Controller
             // return back with errors
         else {
             $error = 'Maximum number of leaves accepted for that day has been reached.';
-            return $this->adminApproveLeaves($error);
+            return $this->navigateToadminApproveLeaves($error);
         }
     }
 
@@ -218,6 +218,13 @@ class LeavesController extends Controller
             ->update([
                 'status' => 'rejected'
             ]);
+
+        return redirect()->back();
+    }
+
+    public function self_remove(Request $request) {
+        // delete leave record for given id
+        Leaves::where("_id", $request->id)->delete();
 
         return redirect()->back();
     }

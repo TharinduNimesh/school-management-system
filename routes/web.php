@@ -129,7 +129,7 @@ Route::prefix('admin')->middleware(['auth', 'IsAdmin'])->group(function() {
     Route::get('manage/discipline', function() {
         return view('admin.discipline');
     })->name('admin.discipline');
-    Route::get('manage/leaves', [LeavesController::class, 'adminApproveLeaves'])->name('admin.leaves');
+    Route::get('manage/leaves', [LeavesController::class, 'navigateToadminApproveLeaves'])->name('admin.leaves');
     Route::get('manage/sports', function() {
         return view('admin.sport');
     })->name('admin.sports');
@@ -197,3 +197,4 @@ Route::prefix('search')->group(function() {
 
 // Teacher functions
 Route::post("request/leaves", [LeavesController::class, 'request'])->name('request.leaves');
+Route::patch("self/remove/leaves", [LeavesController::class, 'self_remove'])->name("teacher.reject.leaves");
