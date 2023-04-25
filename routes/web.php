@@ -204,3 +204,12 @@ Route::prefix('search')->group(function() {
 Route::post("request/leaves", [LeavesController::class, 'request'])->name('request.leaves');
 Route::patch("self/remove/leaves", [LeavesController::class, 'self_remove'])->name("teacher.reject.leaves");
 
+// email routes
+Route::get('email/student/welcome', function() {
+    $data = [
+        "student_name" => "Tharindu Nimesh",
+        "login" => "23056",
+        "password" => "123"
+    ];
+    return new WelcomeMail($data);
+});
