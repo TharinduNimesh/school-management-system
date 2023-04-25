@@ -4,7 +4,7 @@ use App\Http\Controllers\LeavesController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\SportController;
 use App\Http\Controllers\StaffController;
-use App\Mail\WelcomeMail;
+use App\Mail\ApproveLeaves;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -207,11 +207,9 @@ Route::post("request/leaves", [LeavesController::class, 'request'])->name('reque
 Route::patch("self/remove/leaves", [LeavesController::class, 'self_remove'])->name("teacher.reject.leaves");
 
 // email routes
-Route::get('email/teacher/welcome', function() {
+Route::get('email/teacher/leaves', function() {
     $data = [
-        "student_name" => "Tharindu Nimesh",
-        "login" => "200515403527",
-        "password" => "123"
+        "teacher_name" => "Tharindu Nimesh"
     ];
-    return new TeacherWelcome($data);
+    return new ApproveLeaves($data);
 });

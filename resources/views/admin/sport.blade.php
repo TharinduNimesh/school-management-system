@@ -100,10 +100,30 @@
                                             exist in the database, it will not be available in the list for selection.
                                         </div>
                                     </div>
-                                    @if (isset($search_errors))
-                                        <div class="aler alert-danger">
-                                            
-                                        </div>
+                                    @if (isset($coach_errors))
+                                        @if ($coach_errors->has('error'))
+                                            <div class="alert alert-danger">
+                                                <ul>
+                                                    @foreach ($coach_errors->all() as $error)
+                                                        <li>{{ $error }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @elseif($coach_errors->has('success'))
+                                            <div class="alert alert-success">
+                                                    @foreach ($coach_errors->all() as $error)
+                                                        {{ $error }}>
+                                                    @endforeach
+                                            </div>
+                                        @else
+                                            <div class="alert alert-danger">
+                                                <ul>
+                                                    @foreach ($coach_errors->all() as $error)
+                                                        <li>{{ $error }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @endif
                                     @endif
 
                                     <div class="mb-3 col-md-6">
@@ -133,7 +153,7 @@
                                     <div class="mb-3 col-12">
                                         <label for="FullName" class="form-label">Select A Sport</label>
                                         <select class="form-select bg-secondary text-dark"
-                                            aria-label="Default select example" id="sportId">
+                                            aria-label="Default select example" name="sport">
                                             <option selected value="0">Open this select menu</option>
                                             @foreach ($sports as $sport)
                                                 <option>{{ $sport->name }}</option>

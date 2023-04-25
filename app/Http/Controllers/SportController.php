@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coach;
 use App\Models\Sport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class SportController extends Controller
@@ -52,15 +54,42 @@ class SportController extends Controller
     public function add_coach(Request $request) {
         $validator = Validator::make($request->all(), [
             'nic' => ['required'],
-            'password' => ['re']
+            'password' => ['required', 'min:8', 'max:20'],
+            'mobile' => ['required', 'max:10', 'min:9'],
         ]);
+
+        if($validator->fails()) {
+            return $this->navigateToAdminSport($validator->errors());
+        } else {
+            $messageBag = $validator->getMessageBag();
+            $coaches = Coach::where('nic', $request->nic)->first();
+            if($coaches == null) {
+                $coach = new Coach();
+                $coach->name = $request->name;
+                $coach->nic = $request->nic;
+                $coach->password = Hash::make($request->password);
+                $coach->mobile = $request->mobile;
+                $sports = [
+                    $request->sport
+                ];
+                $coach->sports = $sports;
+                $coach->save();
+
+                $messageBag->add("success", "Coach Added successfully");
+                return $this->navigateToAdminSport($messageBag);
+            } else {
+                $messageBag->add("error", "A Coach Already Exist With Given NIC");
+                return $this->navigateToAdminSport($messageBag);
+            }
+        }
     }
 
-    public function navigateToAdminSport(Request $request) {
+    public function navigateToAdminSport($errors = null, $success = null) {
         $sports = Sport::all();
 
         return view('admin.sport', [
-            "sports" => $sports
+            "sports" => $sports,
+            "coach_errors" => $errors
         ]);
     }
 }
