@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LeavesController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\SportController;
 use App\Http\Controllers\StaffController;
 use App\Mail\WelcomeMail;
 use Illuminate\Support\Facades\App;
@@ -131,9 +132,7 @@ Route::prefix('admin')->middleware(['auth', 'IsAdmin'])->group(function() {
         return view('admin.discipline');
     })->name('admin.discipline');
     Route::get('manage/leaves', [LeavesController::class, 'navigateToadminApproveLeaves'])->name('admin.leaves');
-    Route::get('manage/sports', function() {
-        return view('admin.sport');
-    })->name('admin.sports');
+    Route::get('manage/sports', [SportController::class, "navigateToAdminSport"])->name('admin.sports');
 });
 
 // Library Routes
@@ -169,6 +168,9 @@ Route::post('logout', function() {
 Route::prefix('add')->group(function() {
     Route::post('student', [StudentController::class, 'add'])->name('add.student');
     Route::post('teacher', [TeacherController::class, 'add'])->name('add.teacher');
+    Route::post('staff', [StaffController::class, 'add'])->name("add.staff");
+    Route::post('sport', [SportController::class, 'add_sport'])->name('add.sport');
+    Route::post('coach', [SportController::class, 'add_coach'])->name('add.coach');
 });
 Route::prefix('manage')->group(function() {
     // admin manage register routes
@@ -183,7 +185,6 @@ Route::prefix('manage')->group(function() {
     Route::delete('news/delete', [NewsController::class, 'remove'])->name('remove.news');
 
     // admin manage staff routes
-    Route::post('staff/add', [StaffController::class, 'add'])->name("add.staff");
     Route::post('staff/search', [StaffController::class, 'show'])->name("search.staff");
     Route::post('staff/search/live', [StaffController::class, 'live'])->name("live.search.staff");
     Route::post('staff/remove', [StaffController::class, 'remove'])->name('remove.staff');
@@ -195,6 +196,7 @@ Route::prefix('manage')->group(function() {
     // short leaves
     Route::post('short/leave/add', [LeavesController::class, 'addShortLeaves'])->name('add.short.leaves');
     Route::get('short/leave/search', [LeavesController::class, 'showShortLeaves'])->name('search.short.leaves');
+
 });
 Route::prefix('search')->group(function() {
     Route::get('student/{id}', [StudentController::class, 'show'])->name('search.student');
@@ -205,11 +207,11 @@ Route::post("request/leaves", [LeavesController::class, 'request'])->name('reque
 Route::patch("self/remove/leaves", [LeavesController::class, 'self_remove'])->name("teacher.reject.leaves");
 
 // email routes
-Route::get('email/student/welcome', function() {
+Route::get('email/teacher/welcome', function() {
     $data = [
         "student_name" => "Tharindu Nimesh",
-        "login" => "23056",
+        "login" => "200515403527",
         "password" => "123"
     ];
-    return new WelcomeMail($data);
+    return new TeacherWelcome($data);
 });
