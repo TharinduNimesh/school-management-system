@@ -681,7 +681,7 @@
                                 timer: 1500
                                 });
                             var inputs = document.querySelectorAll('inputs');
-                            inputa.forEach(input => {
+                            inputs.forEach(input => {
                                 input.value = '';
                             });
                         } else if(response == 'error') {

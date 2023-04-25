@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Leaves;
+use App\Models\ShortLeaves;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 
 class LeavesController extends Controller
 {
@@ -227,5 +229,76 @@ class LeavesController extends Controller
         Leaves::where("_id", $request->id)->delete();
 
         return redirect()->back();
+    }
+
+    public function addShortLeaves(Request $request) {
+        $validator = Validator::make($request->all(), [
+            "nic" => 'required|max:13',
+            "reason" => 'required|min:5|max:200'
+        ]);
+        $messageBag = $validator->getMessageBag();
+    
+        if ($validator->fails()) {
+            return redirect()->route('admin.teacherShortLeaves')->with([
+                "errors" => $validator->errors()
+            ]);
+        } else {
+            $teacher = Teacher::where('nic', $request->nic)->first();
+
+            if($teacher != null) {
+                $month = Date("Y-m");
+                $check = ShortLeaves::where('nic', $request->nic)
+                                    ->where('date', 'like', "$month%")
+                                    ->get();
+
+                if(count($check) < 2) {
+                    $leave = new ShortLeaves();
+                    $leave->nic = $request->nic;
+                    $leave->reason = $request->reason;
+                    $leave->date = Date("Y-m-d");
+                    $leave->time = Date("H:i:s");
+                    $leave->save();
+
+                    return redirect()->route("admin.teacherShortLeaves");
+                } else {
+                    $messageBag->add('error', "This Teacher Has Get Maximum Number Of Short Leaves At This Year");
+                    return redirect()->route('admin.teacherShortLeaves')->with([
+                        "errors" => $messageBag
+                    ]);
+                }
+            } else {
+                $messageBag->add('error', 'Invalid Teacher NIC Number');
+                return redirect()->route('admin.teacherShortLeaves')->with([
+                    "errors" => $messageBag
+                ]);
+            }
+        }
+    }
+
+    public function showShortLeaves(Request $request) {
+        $validator = Validator::make($request->all(), [
+            "nic" => "required"
+        ]);
+
+        if($validator->fails()) {
+            return view('admin.teacherShortLeave')->with([
+                'search_errors' => $validator->errors(),
+            ]);
+        } else {
+            $teacher = Teacher::where('nic', $request->nic)->first();
+            $errorBag = $validator->getMessageBag();
+            if($teacher == null) {
+                $errorBag->add('error', "Invalid Teacher NIC Number");
+                return redirect()->route('admin.teacherShortLeaves')
+                                ->with('search_errors', $errorBag);
+            } else {
+                $leaves = Leaves::where('nic', $request->nic)->get();
+                return redirect()->route('admin.teacherShortLeaves')
+                                ->with([
+                                    'name', $teacher->full_name,
+                                    'list' => $leaves
+                                ]);
+            }
+        }
     }
 }

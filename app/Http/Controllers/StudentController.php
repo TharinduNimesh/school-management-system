@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\WelcomeMail;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class StudentController extends Controller
 {
@@ -74,6 +76,13 @@ class StudentController extends Controller
 
             // check data added for students and users collection
             if($studentAdded && $userAdded) {
+                $data = [
+                    'student_name' => $request->studentInitialName,
+                    'login' => $request->studentIndexNumber,
+                    'password' => $request->studentPassword,
+                ];
+                // $this->sendWelcomeMail($data, $request->emergrencyEmail);
+                Mail::to($request->emergrencyEmail)->send(new WelcomeMail($data));
                 return 'success';
             } else {
                 return 'error';
@@ -97,4 +106,5 @@ class StudentController extends Controller
             return 'invalid';
         }
     }
+
 }

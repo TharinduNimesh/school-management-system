@@ -3,6 +3,7 @@
 use App\Http\Controllers\LeavesController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\StaffController;
+use App\Mail\WelcomeMail;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -190,6 +191,10 @@ Route::prefix('manage')->group(function() {
     // admin manage leaves routes
     Route::patch('leaves/accept', [LeavesController::class, 'accept'])->name("admin.accept.leaves");
     Route::patch('leaves/reject', [LeavesController::class, 'reject'])->name("admin.reject.leaves");
+
+    // short leaves
+    Route::post('short/leave/add', [LeavesController::class, 'addShortLeaves'])->name('add.short.leaves');
+    Route::get('short/leave/search', [LeavesController::class, 'showShortLeaves'])->name('search.short.leaves');
 });
 Route::prefix('search')->group(function() {
     Route::get('student/{id}', [StudentController::class, 'show'])->name('search.student');
@@ -198,3 +203,4 @@ Route::prefix('search')->group(function() {
 // Teacher functions
 Route::post("request/leaves", [LeavesController::class, 'request'])->name('request.leaves');
 Route::patch("self/remove/leaves", [LeavesController::class, 'self_remove'])->name("teacher.reject.leaves");
+

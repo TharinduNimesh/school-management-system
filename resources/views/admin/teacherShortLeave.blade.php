@@ -25,14 +25,14 @@
 
 
             <!-- Short Leaves Start -->
-            <div class="container-fluid pt-4 px-4" style="overflow-x: hidden">
+            <div class="container-fluid pt-4 px-4" style="overflow-x: hidden; min-height: 80vh;">
                 <div class="row bg-secondary p-3">
                     <h3 class="text-dark">Teacher Short Leaves</h3>
                     <hr />
                     <div class="row">
                         <div class="col-md-8 offset-md-2">
-                            <div class="alert" style="background-color: #ffe5e5; color: #b30000">
-                                <span style="font-weight: bold; color: #b30000">ATTENTION :</span>
+                            <div class="alert alert-success">
+                                <span style="font-weight: bold; color: #0b6103">ATTENTION :</span>
                                 Please note that each teacher is entitled to a maximum of 2
                                 short leaves per month. Any additional short leave requests
                                 will need to be approved by the administration. It is
@@ -40,47 +40,71 @@
                                 to ensure that they do not negatively impact classroom
                                 instruction.
                             </div>
+                            <hr>
                         </div>
-                        <div class="col-12">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" style="width: 120px" id="basic-addon1">Teacher NIC</span>
-                                <input type="text" class="form-control text-dark bg-secondary"
-                                    placeholder="Enter Teacher National Identity Card Number" aria-label="Username"
-                                    aria-describedby="basic-addon1" id="teacherNic" />
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
                             </div>
-                        </div>
+                        @endif
 
-                        <div class="col-12">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" style="width: 120px" id="basic-addon1">Reason</span>
-                                <input type="text" class="form-control text-dark bg-secondary"
-                                    placeholder="Enter A Description About Leaving Reason" aria-label="Username"
-                                    aria-describedby="basic-addon1" id="reason" />
+                        <form action="{{ route('add.short.leaves') }}" method="POST">
+                            @csrf
+                            <div class="col-12">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" style="width: 120px" id="basic-addon1">Teacher NIC</span>
+                                    <input type="text" class="form-control text-dark bg-secondary"
+                                        placeholder="Enter Teacher National Identity Card Number" aria-label="Username"
+                                        aria-describedby="basic-addon1" name="nic" />
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="d-grid gap-2 col-6 mx-auto">
-                            <button class="btn btn-primary" type="button" onclick="submit();">
-                                Submit
-                            </button>
-                        </div>
+    
+                            <div class="col-12">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" style="width: 120px" id="basic-addon1">Reason</span>
+                                    <input type="text" class="form-control text-dark bg-secondary"
+                                        placeholder="Enter A Description About Leaving Reason" aria-label="Username"
+                                        aria-describedby="basic-addon1" name="reason" />
+                                </div>
+                            </div>
+    
+                            <div class="d-grid gap-2 col-6 mx-auto">
+                                <button class="btn btn-primary" type="submit" onclick="submit();">
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <div class="row bg-secondary p-3 mt-4">
                     <h4 class="text-dark">Search Teacher Short Leaves</h4>
                     <hr />
-                    <div class="col-12">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control bg-secondary text-dark"
-                                placeholder="Search By Teacher NIC" aria-label="Recipient's username"
-                                aria-describedby="button-addon2" id="searchNic" />
-                            <button class="btn btn-outline-primary" onclick="search();" type="button"
-                                id="button-addon2">
-                                Search
-                            </button>
+                    @if(isset($search_errors))
+                        <div class="alert alert-danger">
+                            @foreach ($search_errors->all() as $error)
+                                {{ $error }}
+                            @endforeach
                         </div>
+                    @endif
+                    <div class="col-12">
+                        <form action="{{ route('search.short.leaves') }}">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control bg-secondary text-dark"
+                                placeholder="Search By Teacher NIC" aria-label="Recipient's username"
+                                aria-describedby="button-addon2" name="nic" />
+                                <button class="btn btn-outline-primary" type="submit"
+                                    id="button-addon2">
+                                    Search
+                                </button>
+                        </div>
+                    </form>
 
-                        <div class="table-responsive d-none" id="shortLeaveContainer">
+                    @if (isset($name))
+                        <div class="table-responsive" id="shortLeaveContainer">
                             <p class="text-dark text-center">
                                 <span style="font-weight: bold" id="teacherNameOnLeaves">Tharindu Nimesh</span>'s Short
                                 Leave Report
@@ -94,15 +118,16 @@
                                 </thead>
 
                                 <tbody id="tableBody">
-                                    <!-- <tr>
-                      <td>01</td>
-                      <td>2023-04-20</td>
-                      <td>10:40</td>
-                      <td>he have an exam </td>
-                    </tr> -->
+                                    <tr>
+                                        <td>01</td>
+                                        <td>2023-04-20</td>
+                                        <td>10:40</td>
+                                        <td>he have an exam </td>
+                                    </tr> 
                                 </tbody>
                             </table>
                         </div>
+                    @endif
                     </div>
                 </div>
             </div>
