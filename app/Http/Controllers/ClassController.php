@@ -21,21 +21,21 @@ class ClassController extends Controller
                             ])
                             ->get();
 
-        // get class teacher details for given grade and class                    
+        // get class teacher details for given grade and class
         $teacher = Teacher::select(["full_name"])->where("classes", "elemMatch", [
                         "grade" => $request->grade,
-                        "class" => $request->class, 
+                        "class" => $request->class,
                         "end_year" => null
                     ])->first();
 
         // create response object
         $response = new \stdClass();
-        
+
         // check query return any values
         if(!$students->isEmpty()) {
             $response->students = $students;
             $response->teacher = $teacher;
-        } 
+        }
             // if no any values for given data this will return
         else {
             $response->classStatus = 'newClass';
@@ -44,7 +44,7 @@ class ClassController extends Controller
     }
 
     public function remove_student(Request $request) {
-        // Removal of year details provided from student enrollment details 
+        // Removal of year details provided from student enrollment details
         $update = Student::where('_id' , $request->studentId)
                         ->pull('enrollments', [
                             'year' => $request->year
@@ -54,7 +54,7 @@ class ClassController extends Controller
     }
 
     public function add_student(Request $request) {
-        // search student have a class in given year 
+        // search student have a class in given year
         $student = Student::where('index_number', $request->indexNumber)
                 ->where('enrollments.year', $request->year)
                 ->first();
@@ -81,17 +81,17 @@ class ClassController extends Controller
             $grade = $enrollment['grade'];
             $class = $enrollment['class'];
 
-            return "$grade-$class"; 
+            return "$grade-$class";
         }
     }
 
     public function add_teacher(Request $request) {
         // get Teacher details for given nic
         $teacher = Teacher::where('nic', $request->nic)->first();
-            
+
         // create object for return response
         $response = new \stdClass();
-    
+
         // check teacher exist or not
         if($teacher != null) {
             $class = collect($teacher->classes)->firstWhere('end_year', null);
@@ -118,7 +118,7 @@ class ClassController extends Controller
                 $grade = $class["grade"];
                 $class = $class["class"];
                 $response->status = 'exist';
-                $response->class = "$grade-$class"; 
+                $response->class = "$grade-$class";
             }
         }
             // if teacher not exist return this
@@ -143,5 +143,36 @@ class ClassController extends Controller
         ]);
 
         return 'success';
+    }
+
+    public function list_students() {
+        $nic = auth()->user()->index;
+        $current_year = Date("Y");
+        $teacher = Teacher::select(['classes'])
+                            ->where("nic", $nic)
+                            ->where("classes", "elemMatch", [
+                                "start_year" => [ '$lte' => $current_year ],
+                                "end_year" => null
+                            ])
+                            ->first();
+        if($teacher != null) {
+            $object = null;
+            foreach ($teacher->classes as $class) {
+                if($class["end_year"] == null) {
+                    $object = $class;
+                }
+            }
+
+            $students = Student::select(["index_number", "initial_name"])
+                                ->where('enrollments', 'elemMatch', [
+                'year' => $current_year,
+                'grade' => $object["grade"],
+                'class' => $object["class"]
+            ])->get();
+
+            return view('teacher.attendance', [
+                "students" => $students
+            ]);
+        }
     }
 }

@@ -3,22 +3,6 @@
 
 <head>
     @include('teacher.components.head')
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
-    <script>
-
-        document.addEventListener("DOMContentLoaded", function () {
-            if (reminder == 0) {
-                Swal.fire(
-                    'WARNING',
-                    'You Have Already Mark Attendance Today. If You Want To Update Them You Can Use Update Section.',
-                    'question'
-                );
-            }
-        });
-
-    </script>
-
     <style>
         .present {
             background-color: #008000;
@@ -53,12 +37,24 @@
                             <div class="col-12">
                                 <input type="date" class="form-control bg-secondary text-dark" id="attendanceDate" />
                             </div>
-
+                            @foreach ($students as $student)
+                                <div class="row mt-4">
+                                    <div class="col-md-8 col-10">
+                                       <p class="px-4">{{ $student->initial_name }}</p>
+                                    </div>
+                                    <div class="col-1 col-md-2">
+                                        <input  class="px-4"
+                                                type="checkbox"
+                                                value="{{ $student->index_number }}">
+                                    </div>
+                                </div>
+                                <hr>
+                            @endforeach
                             <div class="col-12 mt-3">
                                 <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Submit</button>
                             </div>
                         </div>
-                        
+
                         <div class="row mt-5" id="marginTopHider">
                             <h3 class="text-dark">Search/Update Attendance</h3>
                         </div>
@@ -102,9 +98,9 @@
                 </div>
             </div>
 
-            <x-modal message="Are you sure to submit attendance ?" 
-                     id="exampleModal" 
-                     title="warning" 
+            <x-modal message="Are you sure to submit attendance ?"
+                     id="exampleModal"
+                     title="warning"
                      isCentered="true"
                      onConfirm="saveAttendance();"/>
 
@@ -120,6 +116,88 @@
         @include('public_components.js')
     <script>
         hamburger('attendance');
+
+        function gatherAttendanceData() {
+  const spinner = document.getElementById("spinner");
+  spinner.classList.remove("d-none");
+  // Select all of the checkboxes on the page
+  var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+  // Create an array to store the attendance data
+  var attendanceData = [];
+  var absentData = [];
+
+  var allData = {};
+
+  // Loop through all of the checkboxes
+  for (var i = 0; i < checkboxes.length; i++) {
+    // Get the current checkbox and its student ID
+    var checkbox = checkboxes[i];
+    var studentId = checkbox.value;
+
+    // Check if the checkbox is checked
+    if (checkbox.checked) {
+      // If the checkbox is checked, add the student ID to the attendance data array
+      attendanceData.push(studentId);
+    } else {
+      absentData.push(studentId);
+    }
+  }
+
+  var date = document.getElementById("attendanceDate");
+  if (date.value == "") {
+    date.classList.add("is-invalid");
+  } else {
+    date.classList.remove("is-invalid");
+
+    // Return the attendance data array
+    allData.present = attendanceData;
+    allData.absent = absentData;
+    spinner.classList.add("d-none");
+    return allData;
+  }
+
+  return null;
+}
+
+function saveAttendance() {
+  // Get the attendance data
+  var attendanceData = gatherAttendanceData();
+  if (attendanceData != null) {
+    var form = new FormData();
+    form.append("data", JSON.stringify(attendanceData));
+
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        // handle response
+        var response = JSON.parse(xhr.responseText);
+        if (response.status == "already") {
+          Swal.fire(
+            "ERROR",
+            "You have already marked attendance for that day",
+            "error"
+          );
+        } else if (response.status == "sucess") {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Attendance Marked Successfully",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        console.log(response);
+      }
+    };
+
+    xhr.open("POST", "{{ route('mark.attendance') }}", true);
+    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
+    xhr.send(form);
+  } else {
+    Swal.fire("ERROR", "Please Select A Date", "error");
+  }
+}
 
         function searchAttendance() {
             const date = document.getElementById("searchedDate");

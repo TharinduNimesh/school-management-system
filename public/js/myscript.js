@@ -381,13 +381,6 @@ function gatherAttendanceData() {
   } else {
     date.classList.remove("is-invalid");
 
-    var xhr = new XMLHttpRequest();
-    xhr.open(
-      "GET",
-      "process/setAttendanceDate.php?date=" + date.value + "",
-      false
-    );
-    xhr.send();
     // Return the attendance data array
     allData.present = attendanceData;
     allData.absent = absentData;

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\LeavesController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\SportController;
@@ -77,9 +78,7 @@ Route::prefix('teacher')->middleware(['auth', 'IsTeacher'])->group(function() {
     Route::get('dashboard', function() {
         return view('teacher.dashboard');
     })->name('teacher.dashboard');
-    Route::get('attendance', function() {
-        return view('teacher.attendance');
-    })->name('teacher.attendance');
+    Route::get('attendance', [ClassController::class, 'list_students'])->name('teacher.attendance');
     Route::get('marks', function() {
         return view('teacher.marks');
     })->name('teacher.marks');
@@ -205,6 +204,7 @@ Route::prefix('search')->group(function() {
 // Teacher functions
 Route::post("request/leaves", [LeavesController::class, 'request'])->name('request.leaves');
 Route::patch("self/remove/leaves", [LeavesController::class, 'self_remove'])->name("teacher.reject.leaves");
+Route::post("mark/attendance", [AttendanceController::class, 'mark'])->name('mark.attendance');
 
 // email routes
 Route::get('email/teacher/leaves', function() {
