@@ -232,26 +232,37 @@ class LeavesController extends Controller
     }
 
     public function addShortLeaves(Request $request) {
+        // validate nic and reason
         $validator = Validator::make($request->all(), [
             "nic" => 'required|max:13',
             "reason" => 'required|min:5|max:200'
         ]);
+        // create list to store errors
         $messageBag = $validator->getMessageBag();
     
+        // check is validation pass or not
         if ($validator->fails()) {
             return redirect()->route('admin.teacherShortLeaves')->with([
                 "errors" => $validator->errors()
             ]);
-        } else {
+        } 
+            // if validation pass this will run
+        else {
+            // get all details for given teacher
             $teacher = Teacher::where('nic', $request->nic)->first();
 
+            // check teacher exist or not
             if($teacher != null) {
                 $month = Date("Y-m");
+
+                // check teacher got previous short leaves atthis month
                 $check = ShortLeaves::where('nic', $request->nic)
                                     ->where('date', 'like', "$month%")
                                     ->get();
 
+                // check got short leaves exceed maximum leaves or not
                 if(count($check) < 2) {
+                    // store short leave on sgort leaves collection
                     $leave = new ShortLeaves();
                     $leave->nic = $request->nic;
                     $leave->reason = $request->reason;
@@ -260,13 +271,17 @@ class LeavesController extends Controller
                     $leave->save();
 
                     return redirect()->route("admin.teacherShortLeaves");
-                } else {
-                    $messageBag->add('error', "This Teacher Has Get Maximum Number Of Short Leaves At This Year");
+                } 
+                    // teacher already have get maximum number of short leaves this will run
+                else {
+                    $messageBag->add('error', "This Teacher Has Get Maximum Number Of Short Leaves At This Month");
                     return redirect()->route('admin.teacherShortLeaves')->with([
                         "errors" => $messageBag
                     ]);
                 }
-            } else {
+            } 
+                // if teacher doesn't exist with given nic this will run
+            else {
                 $messageBag->add('error', 'Invalid Teacher NIC Number');
                 return redirect()->route('admin.teacherShortLeaves')->with([
                     "errors" => $messageBag
@@ -276,26 +291,35 @@ class LeavesController extends Controller
     }
 
     public function showShortLeaves(Request $request) {
+        // validate nic number
         $validator = Validator::make($request->all(), [
             "nic" => "required"
         ]);
 
+        // check validation pass or not
         if($validator->fails()) {
             return view('admin.teacherShortLeave')->with([
                 'search_errors' => $validator->errors(),
             ]);
-        } else {
+        } 
+            // if validation pass this will run
+        else {
+            // get details for given teacher
             $teacher = Teacher::where('nic', $request->nic)->first();
             $errorBag = $validator->getMessageBag();
+
+            // check teacher exist or not
             if($teacher == null) {
+                // error will return if teacher doesn't exist
                 $errorBag->add('error', "Invalid Teacher NIC Number");
-                return redirect()->route('admin.teacherShortLeaves')
+                return view('admin.teacherShortLeave')
                                 ->with('search_errors', $errorBag);
             } else {
-                $leaves = Leaves::where('nic', $request->nic)->get();
-                return redirect()->route('admin.teacherShortLeaves')
+                // return short leaves list and name for given teacher
+                $leaves = ShortLeaves::where('nic', $request->nic)->get();
+                return view('admin.teacherShortLeave')
                                 ->with([
-                                    'name', $teacher->full_name,
+                                    'name' => $teacher->full_name,
                                     'list' => $leaves
                                 ]);
             }

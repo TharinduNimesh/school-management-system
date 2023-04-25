@@ -106,7 +106,7 @@
                     @if (isset($name))
                         <div class="table-responsive" id="shortLeaveContainer">
                             <p class="text-dark text-center">
-                                <span style="font-weight: bold" id="teacherNameOnLeaves">Tharindu Nimesh</span>'s Short
+                                <span style="font-weight: bold" id="teacherNameOnLeaves">{{ $name }}</span>'s Short
                                 Leave Report
                             </p>
                             <table class="table table-bordered table-hover">
@@ -118,12 +118,14 @@
                                 </thead>
 
                                 <tbody id="tableBody">
-                                    <tr>
-                                        <td>01</td>
-                                        <td>2023-04-20</td>
-                                        <td>10:40</td>
-                                        <td>he have an exam </td>
-                                    </tr> 
+                                    @foreach ($list as $key => $item)
+                                        <tr>
+                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ $item->date }}</td>
+                                            <td>{{ $item->time }}</td>
+                                            <td>{{ $item->reason }}</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
