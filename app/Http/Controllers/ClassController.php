@@ -163,11 +163,14 @@ class ClassController extends Controller
                 }
             }
 
+            $teacher_grade = session()->put('grade', $object["grade"]);
+            $teacher_class = session()->put('class', $object["class"]);
+
             $students = Student::select(["index_number", "initial_name"])
                                 ->where('enrollments', 'elemMatch', [
                 'year' => $current_year,
-                'grade' => $object["grade"],
-                'class' => $object["class"]
+                'grade' => $teacher_grade,
+                'class' => $teacher_class
             ])->get();
 
             return view('teacher.attendance', [
