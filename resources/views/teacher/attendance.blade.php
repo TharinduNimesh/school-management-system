@@ -203,84 +203,80 @@
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         // handle response
                         var response = JSON.parse(xhr.responseText);
-                        if (response.status == 'permission') {
-                            Swal.fire(
-                                'ERROR',
-                                'You Do Not Have Permissions To Access This Data',
-                                'error'
-                            );
-                            const defaultRow = document.getElementById("tableDefault");
-                            defaultRow.innerHTML = 'You Do Not Have Permission To Access This Data';
+                        console.log(response);
+                        if (response.length == 0) {
+                            document.getElementById("tableDefault").innerHTML = 'No Data Exist On The Database';
                         } else {
-                            if (response.details.length == 0) {
-                                document.getElementById("tableDefault").innerHTML = 'No Data Exist On The Database';
-                            } else {
-                                document.getElementById("tableBody").innerHTML = '';
-                                for (let i = 0; i < response.details.length; i++) {
-                                    var row = document.createElement("tr");
-                                    for (let a = 0; a < 3; a++) {
-                                        const col = document.createElement("td");
-                                        if (a == 0) {
-                                            col.innerHTML = i + 1;
-                                        } else if (a == 1) {
-                                            col.innerHTML = response.details[i]['initial_name'];
+                            document.getElementById("tableBody").innerHTML = '';
+                            for (let i = 0; i < response.length; i++) {
+                                var row = document.createElement("tr");
+                                for (let a = 0; a < 3; a++) {
+                                    const col = document.createElement("td");
+                                    if (a == 0) {
+                                        col.innerHTML = i + 1;
+                                    } else if (a == 1) {
+                                        col.innerHTML = response[i]['name'];
+                                    } else {
+                                        var span = document.createElement("span");
+                                        if (response[i]['status'] == 'absent') {
+                                            span.innerHTML = "Absent";
+                                            span.classList.add("absent");
                                         } else {
-                                            var span = document.createElement("span");
-                                            if (response.details[i]['status'] == 'false') {
-                                                span.innerHTML = "Absent";
-                                                span.classList.add("absent");
-                                            } else {
-                                                span.innerHTML = "Present";
-                                                span.classList.add("present");
-                                            }
-                                            span.classList.add("px-4");
-                                            span.classList.add("py-1");
-                                            span.classList.add("rounded");
-                                            span.dataset.id = response.details[i]['id'];
-                                            span.dataset.status = response.details[i]["status"];
-                                            span.onclick = (event) => {
-                                                var id = event.target.dataset.id;
-                                                var status = event.target.dataset.status;
+                                            span.innerHTML = "Present";
+                                            span.classList.add("present");
+                                        }
+                                        span.classList.add("px-4");
+                                        span.classList.add("py-1");
+                                        span.classList.add("rounded");
+                                        span.dataset.id = response[i]['index'];
+                                        span.dataset.date = response[i]['date'];
+                                        span.dataset.status = response[i]["status"];
+                                        span.onclick = (event) => {
+                                            var id = event.target.dataset.id;
+                                            var status = event.target.dataset.status;
 
-                                                var newForm = new FormData();
-                                                newForm.append("id", id);
-                                                newForm.append("status", status);
+                                            var newForm = new FormData();
+                                            newForm.append("index", id);
+                                            newForm.append("status", status);
+                                            newForm.append("date", event.target.dataset.date);
 
-                                                var req = new XMLHttpRequest();
-                                                req.onreadystatechange = function() {
-                                                    if (req.readyState == 4 && req.status == 200) {
-                                                        // handle response
-                                                        var res = req.responseText;
-                                                        if (res == 'true') {
-                                                            event.target.classList.remove("absent");
-                                                            event.target.classList.add("present");
-                                                            event.target.dataset.status = 'true';
-                                                            event.target.innerHTML = "Present";
-                                                        } else {
-                                                            event.target.classList.add("absent");
-                                                            event.target.dataset.status = 'false';
-                                                            event.target.innerHTML = "Absent";
-                                                            event.target.classList.remove("present");
-                                                        }
+                                            var req = new XMLHttpRequest();
+                                            req.onreadystatechange = function() {
+                                                if (req.readyState == 4 && req.status == 200) {
+                                                    // handle response
+                                                    var res = req.responseText;
+                                                    if (res == 'true') {
+                                                        event.target.classList.remove("absent");
+                                                        event.target.classList.add("present");
+                                                        event.target.dataset.status = 'true';
+                                                        event.target.innerHTML = "Present";
+                                                    } else {
+                                                        event.target.classList.add("absent");
+                                                        event.target.dataset.status = 'false';
+                                                        event.target.innerHTML = "Absent";
+                                                        event.target.classList.remove("present");
                                                     }
                                                 }
-
-                                                req.open("POST", "process/updateAttendance.php", true);
-                                                req.send(newForm);
                                             }
-                                            col.appendChild(span);
+
+                                            req.open("POST", "{{ route('update.attendance') }}", true);
+                                            req.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
+                                            req.send(newForm);
                                         }
-                                        row.appendChild(col);
+                                        col.appendChild(span);
                                     }
-                                    document.getElementById("tableBody").appendChild(row);
+                                    row.appendChild(col);
                                 }
+                                document.getElementById("tableBody").appendChild(row);
                             }
                         }
                     }
                 }
-
-                xhr.open("GET", "process/searchAttendance.php?date=" + date.value + "", true);
-                xhr.send();
+                var searchForm = new FormData();
+                searchForm.append('date', date.value);
+                xhr.open("post", "{{ route('search.attendance') }}");
+                xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
+                xhr.send(searchForm);
             }
 
         }

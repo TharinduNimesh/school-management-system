@@ -169,8 +169,8 @@ class ClassController extends Controller
             $students = Student::select(["index_number", "initial_name"])
                                 ->where('enrollments', 'elemMatch', [
                 'year' => $current_year,
-                'grade' => $teacher_grade,
-                'class' => $teacher_class
+                'grade' => session()->get('grade'),
+                'class' => session()->get('class')
             ])->get();
 
             return view('teacher.attendance', [

@@ -205,6 +205,8 @@ Route::prefix('search')->group(function() {
 Route::post("request/leaves", [LeavesController::class, 'request'])->name('request.leaves');
 Route::patch("self/remove/leaves", [LeavesController::class, 'self_remove'])->name("teacher.reject.leaves");
 Route::post("mark/attendance", [AttendanceController::class, 'mark'])->name('mark.attendance');
+Route::post("search/attendance", [AttendanceController::class, 'search'])->name('search.attendance');
+Route::post("update/attendance", [AttendanceController::class, 'update'])->name('update.attendance');
 
 // email routes
 Route::get('email/teacher/leaves', function() {
