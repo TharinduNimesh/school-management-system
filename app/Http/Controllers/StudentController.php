@@ -22,7 +22,7 @@ class StudentController extends Controller
             $user->email = $request->emergrencyEmail;
             $user->password = Hash::make($request->studentPassword);
             $user->role = "student";
-            
+
             // this return true if user added
             $userAdded = $user->save();
 
@@ -101,7 +101,7 @@ class StudentController extends Controller
         // check previous query return a value or not
         if($student != null){
             return $student;
-        } 
+        }
         // if query didn't recieve a value output return as invalid
         else {
             return 'invalid';
@@ -120,15 +120,4 @@ class StudentController extends Controller
         return round(($present_count / $dateCount) * 100, 3);
     }
 
-    public static function hasPaidFee($index, $year) {
-        $student = Student::where('index_number', $index)->where('enrollments.year', $year)->first();
-
-        if($student != null) {
-            foreach ($student->enrollments as $item) {
-                if($item["year"] == $year) {
-                    return $item["isPayment"];
-                }
-            }
-        }
-    }
 }

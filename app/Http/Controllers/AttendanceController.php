@@ -38,7 +38,7 @@ class AttendanceController extends Controller
                         ]
                     ];
                     $attendance_data->save();
-    
+
                     $attendance = $attendance_data;
                 } else {
                     $attendance_data = $attendance->attendance;
@@ -67,7 +67,7 @@ class AttendanceController extends Controller
                         ]
                     ];
                     $attendance_data->save();
-    
+
                     $attendance = $attendance_data;
                 } else {
                     $attendance_data = $attendance->attendance;
@@ -140,5 +140,23 @@ class AttendanceController extends Controller
     public static function getSchoolHoldDateCount($year) {
         $dates = StudentAttendance::where('year', $year)->distinct('attendance.date')->get();
         return count($dates);
+    }
+
+    public function navigateToStudentAttendance($year = null) {
+        $index = auth()->user()->index;
+        if($year == null) {
+            $year = Date("Y");
+        }
+        $attendance = self::gatherStudentAttendance($index, $year);
+
+        return view('student.attendance', [
+            "attendance" => $attendance
+        ]);
+    }
+
+    public static function gatherStudentAttendance($index, $year) {
+        $attendance = StudentAttendance::select('attendance')->where("index_number", $index)->where("year", $year)->first();
+
+        return $attendance->attendance;
     }
 }

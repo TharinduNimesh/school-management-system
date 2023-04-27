@@ -25,18 +25,24 @@
                                     <th scope="col">No</th>
                                     <th scope="col">Year</th>
                                     <th scope="col">Class</th>
-                                    <th scope="col">Teacher</th>
                                     <th scope="col">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                   <td>1</td>
-                                    <td>2022</td>
-                                    <td>3-F</td>
-                                    <td>Tharindu</td>
-                                    <td style="background: red;"></td>
-                                </tr>  
+                                @foreach ($payments as $key => $item)
+                                    <tr>
+                                        <td>{{ $key + 1 }}</td>
+                                        <td>{{ $item["year"] }}</td>
+                                        <td>{{ $item["grade"] . "-" . $item["class"] }}</td>
+                                        <td>
+                                            @if ($item["isPayment"] == "yes")
+                                                <span class="px-5 py-1 rounded bg-success" style="color: white;">Yes</span>
+                                            @else
+                                                <span class="px-5 py-1 rounded bg-danger" style="color: white;">No</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
 
                             </tbody>
                         </table>

@@ -92,7 +92,7 @@ class TeacherController extends Controller
             $obj->name = $student["initial_name"];
             $obj->index = $student["index_number"];
             $obj->attendance = StudentController::getAttendancePrecentage($student["index_number"], Date("Y"));
-            $obj->payment = StudentController::hasPaidFee($student["index_number"], Date("Y"));
+            $obj->payment = PaymentController::hasPaidFee($student["index_number"], Date("Y"));
             array_push($array, $obj);
         }
 

@@ -48,12 +48,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                   <td>1</td>
-                                    <td>2022-01-01</td>
-                                    <td><p class="aStatus a">Present</p></td>
-                                </tr>  
-
+                                @if ($attendance != null)
+                                    @foreach ($attendance as $roll => $item)
+                                        <tr>
+                                            <td>{{ $roll + 1 }}</td>
+                                            <td>{{ $item["date"] }}</td>
+                                            <td>
+                                                @if($item["status"] == 'present')
+                                                    <span class="px-5 py-1 rounded bg-success" style="color: white;">
+                                                        Present
+                                                    </span>
+                                                @else
+                                                    <span class="px-5 py-1 rounded bg-danger" style="color: white;">
+                                                        Absent
+                                                    </span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -76,7 +89,7 @@
     //     items.forEach(item => {
     //         item.classList.remove('active');
     //     });
-        
+
     //     document.getElementById('attendance').classList.add('active');
     // }
 

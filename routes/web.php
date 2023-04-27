@@ -3,6 +3,7 @@
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\LeavesController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SportController;
 use App\Http\Controllers\StaffController;
 use App\Mail\ApproveLeaves;
@@ -56,9 +57,7 @@ Route::prefix('student')->middleware(['auth', 'IsStudent'])->group(function () {
     Route::get('dashboard', function() {
         return view('student.dashboard');
     })->name('student.dashboard');
-    Route::get('attendance', function() {
-        return view('student.attendance');
-    })->name('student.attendance');
+    Route::get('attendance', [AttendanceController::class, "navigateToStudentAttendance"])->name('student.attendance');
     Route::get('marks', function() {
         return view('student.marks');
     })->name('student.marks');
@@ -68,9 +67,7 @@ Route::prefix('student')->middleware(['auth', 'IsStudent'])->group(function () {
     Route::get('assignments', function() {
         return view('student.assignment');
     })->name('student.assignments');
-    Route::get('payment', function() {
-        return view('student.payment');
-    })->name('student.payment');
+    Route::get('payment', [PaymentController::class, 'navigateToStudentPayment'])->name('student.payment');
 });
 
 // Teahcer Routes
@@ -215,4 +212,9 @@ Route::get('email/teacher/leaves', function() {
         "teacher_name" => "Tharindu Nimesh"
     ];
     return new ApproveLeaves($data);
+});
+
+
+Route::fallback(function() {
+    return view("404");
 });

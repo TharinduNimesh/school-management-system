@@ -174,4 +174,14 @@ class ClassController extends Controller
 
         return $students;
     }
+
+    public static function getCurrentTeacher($grade, $class) {
+        $teacher = Teacher::where("classes", "elemMatch", [
+            "start_year" => null,
+            "grade" => $grade,
+            "class" => $class
+        ])->first();
+
+        return $teacher;
+    }
 }
