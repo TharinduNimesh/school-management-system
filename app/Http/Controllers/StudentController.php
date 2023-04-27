@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\WelcomeMail;
 use App\Models\Student;
+use App\Models\StudentAttendance;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -107,4 +108,27 @@ class StudentController extends Controller
         }
     }
 
+    public static function getAttendancePrecentage($index, $year) {
+        $attendace_data = StudentAttendance::select('attendance')->where('index_number', $index)->where('year', $year)->first();
+        $dateCount = AttendanceController::getSchoolHoldDateCount(Date("Y"));
+        $present_count = 0;
+        foreach ($attendace_data->attendance as $item) {
+            if($item["status"] == "present") {
+                $present_count++;
+            }
+        }
+        return round(($present_count / $dateCount) * 100, 3);
+    }
+
+    public static function hasPaidFee($index, $year) {
+        $student = Student::where('index_number', $index)->where('enrollments.year', $year)->first();
+
+        if($student != null) {
+            foreach ($student->enrollments as $item) {
+                if($item["year"] == $year) {
+                    return $item["isPayment"];
+                }
+            }
+        }
+    }
 }

@@ -136,4 +136,9 @@ class AttendanceController extends Controller
 
         return $response;
     }
+
+    public static function getSchoolHoldDateCount($year) {
+        $dates = StudentAttendance::where('year', $year)->distinct('attendance.date')->get();
+        return count($dates);
+    }
 }

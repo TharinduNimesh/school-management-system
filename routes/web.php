@@ -95,6 +95,7 @@ Route::prefix('teacher')->middleware(['auth', 'IsTeacher'])->group(function() {
         return view('teacher.resultsheet');
     })->name('teacher.resultsheet');
     Route::get('manage/leaves', [LeavesController::class, 'navigateToTeacherLeaves'])->name('teacher.leaves');
+    Route::get('summary', [TeacherController::class, 'navigateToSummary'])->name('teacher.summary');
 });
 
 // Admin Routes

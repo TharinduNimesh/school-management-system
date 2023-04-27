@@ -59,4 +59,43 @@ class TeacherController extends Controller
             return 'exist';
         }
     }
+
+    public static function getClass($nic) {
+        $response = null;
+        $current_year = Date("Y");
+        $teacher = Teacher::select(['classes'])
+                            ->where("nic", $nic)
+                            ->where("classes", "elemMatch", [
+                                "start_year" => [ '$lte' => $current_year ],
+                                "end_year" => null
+                            ])
+                            ->first();
+        if($teacher != null) {
+            foreach ($teacher->classes as $class) {
+                if($class['end_year'] == null) {
+                    $response = new \stdClass();
+                    $response->grade = $class["grade"];
+                    $response->class = $class["class"];
+                }
+            }
+        }
+        return $response;
+    }
+
+    public function navigateToSummary() {
+        $teacherDetails = self::getClass(auth()->user()->index);
+        $students = ClassController::getStudentList($teacherDetails->grade, $teacherDetails->class, Date("Y"));
+
+        $array = [];
+        foreach ($students as $student) {
+            $obj = new \stdClass();
+            $obj->name = $student["initial_name"];
+            $obj->index = $student["index_number"];
+            $obj->attendance = StudentController::getAttendancePrecentage($student["index_number"], Date("Y"));
+            $obj->payment = StudentController::hasPaidFee($student["index_number"], Date("Y"));
+            array_push($array, $obj);
+        }
+
+        return view('teacher.summary', ['data' => $array]);
+    }
 }
