@@ -22,7 +22,7 @@
                     <a name="ham-item" id="timetable" href="{{ route('teacher.timetable') }}" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Time
                         Table</a>
                     <a name="ham-item" id="assignments" href="{{ route('teacher.assignments') }}" class="nav-item nav-link"><i
-                            class="bi bi-journal-bookmark-fill me-2"></i>Assingments</a>
+                            class="bi bi-journal-bookmark-fill me-2"></i>Assignments</a>
                     <a name="ham-item" id="search" href="{{ route('teacher.search') }}" class="nav-item nav-link"><i class="bi bi-search me-2"></i>Search
                         Student</a>
                     <a name="ham-item" id="result" href="{{ route('teacher.resultsheet') }}" class="nav-item nav-link"><i

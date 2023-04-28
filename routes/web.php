@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\LeavesController;
 use App\Http\Controllers\NewsController;
@@ -205,6 +206,7 @@ Route::patch("self/remove/leaves", [LeavesController::class, 'self_remove'])->na
 Route::post("mark/attendance", [AttendanceController::class, 'mark'])->name('mark.attendance');
 Route::post("search/attendance", [AttendanceController::class, 'search'])->name('search.attendance');
 Route::post("update/attendance", [AttendanceController::class, 'update'])->name('update.attendance');
+Route::post('add/assignment', [AssignmentController::class, "add"])->name('add.assignment');
 
 // email routes
 Route::get('email/teacher/leaves', function() {

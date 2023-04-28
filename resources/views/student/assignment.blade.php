@@ -19,7 +19,7 @@
             <div class="container-fluid pt-4 px-4" style="min-height: 80vh;">
                 <div class="row g-4 bg-secondary p-3 mt-3">
                     <div class="col-12 ">
-                        <h3 class="font-weight-bold text-dark">Submit Assingments</h3>
+                        <h3 class="font-weight-bold text-dark">Submit Assignments</h3>
                         <div class="col-12 table-responsive">
                             <table class="table table-striped table-bordered">
                                 <thead>
@@ -27,9 +27,9 @@
                                         <th scope="col">No</th>
                                         <th scope="col">Subject_Name</th>
                                         <th scope="col">Duration</th>
-                                        <th scope="col">Assingment_code</th>
-                                        <th scope="col">Assingment_Document</th>
-                                        <th scope="col">Assingment_Submit</th>
+                                        <th scope="col">Assignment_code</th>
+                                        <th scope="col">Assignment_Document</th>
+                                        <th scope="col">Assignment_Submit</th>
                                         <th scope="col">Marks</th>
                                     </tr>
                                 </thead>
