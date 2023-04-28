@@ -364,7 +364,7 @@
                                     // add debugging part here
                                     if (req.readyState == 4) {
                                         if (req.status == 200) {
-                                            var repsonse = req.responseText;
+                                            var response = req.responseText;
                                             if(response == 'fileNotSaved') {
                                                 Swal.fire({
                                                     icon: "error",

@@ -19,7 +19,7 @@ class AssignmentController extends Controller
         $file_name = uniqid() . '.' . $ext;
 
         // save file on /storage/app/assignments directory
-        $path = $file->storeAs('assignments', $file_name);
+        $path = $file->storeAs('public/assignments', $file_name);
 
         // check file saved or not
         if(Storage::exists($path)) {
@@ -50,5 +50,16 @@ class AssignmentController extends Controller
         else {
             return 'fileNotSaved';
         }
+    }
+
+    public function navigateToStudentAssignments() {
+        $index = auth()->user()->index;
+        $year = Date("Y");
+        $student = StudentController::getClass($index, $year);
+        $assignments = Assignment::where('grade', $student["grade"])->where('class', $student["class"])->get();
+
+        return view('student.assignment', [
+            "assignments" => $assignments
+        ]);
     }
 }

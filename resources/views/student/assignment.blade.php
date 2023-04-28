@@ -3,6 +3,12 @@
 
 <head>
     @include('student.components.head')
+
+    <style>
+        .space {
+            white-space:nowrap;
+        }
+    </style>
 </head>
 
 <body>
@@ -21,28 +27,41 @@
                     <div class="col-12 ">
                         <h3 class="font-weight-bold text-dark">Submit Assignments</h3>
                         <div class="col-12 table-responsive">
-                            <table class="table table-striped table-bordered">
+                            <table class="table table-hover table-bordered">
                                 <thead>
                                     <tr>
                                         <th scope="col">No</th>
-                                        <th scope="col">Subject_Name</th>
+                                        <th scope="col" class="space">Subject Name</th>
                                         <th scope="col">Duration</th>
-                                        <th scope="col">Assignment_code</th>
-                                        <th scope="col">Assignment_Document</th>
-                                        <th scope="col">Assignment_Submit</th>
-                                        <th scope="col">Marks</th>
+                                        <th scope="col" class="space">Assignment Document</th>
+                                        <th scope="col" class="space">Assignment Submit</th>
+                                        <th scope="col" class="space">Marks</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Tharindu</td>
-                                        <td>12/31 11.59</td>
-                                        <td>@12345</td>
-                                        <td><button type="button" class="btn btn-primary">Download</button></td>
-                                        <td><input class="form-control text-dark" type="file" id="formFile"></td>
-                                        <td>10</td>
-                                    </tr>
+                                    @foreach($assignments as $key => $assignment)
+                                        <tr>
+                                            <th scope="row">{{ $key + 1 }}</th>
+                                            <td>{{ $assignment->subject }}</td>
+                                            <td class="space">{{ $assignment->start_date }} - {{ $assignment->end_date }}</td>
+                                            <td>
+                                                @php
+                                                    $file = "assignments/" . $assignment->file;
+                                                    $url = Storage::url($file);
+                                                @endphp
+                                                <a class="btn btn-success" href="{{ asset($url) }}">Download</a>
+                                            </td>
+                                            <td>
+                                                <form>
+                                                    <div class="input-group">
+                                                        <input type="file" class="form-control bg-secondary text-dark" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                                                        <button class="btn btn-warning" type="button" accept=".pdf,.doc,.docx" id="inputGroupFileAddon04">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </td>
+                                            <td>10</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

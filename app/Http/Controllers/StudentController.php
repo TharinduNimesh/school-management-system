@@ -120,4 +120,15 @@ class StudentController extends Controller
         return round(($present_count / $dateCount) * 100, 3);
     }
 
+    public static function getClass($index, $year) {
+        $student = Student::where('index_number', $index)->where('enrollments.year', $year)->first();
+        if($student != null) {
+            foreach ($student->enrollments as $class) {
+                if($class["year"] == $year) {
+                    return $class;
+                }
+            }
+        }
+    }
+
 }

@@ -65,9 +65,7 @@ Route::prefix('student')->middleware(['auth', 'IsStudent'])->group(function () {
     Route::get('timetable', function() {
         return view('student.timetable');
     })->name('student.timetable');
-    Route::get('assignments', function() {
-        return view('student.assignment');
-    })->name('student.assignments');
+    Route::get('assignments', [AssignmentController::class, 'navigateToStudentAssignments'])->name('student.assignments');
     Route::get('payment', [PaymentController::class, 'navigateToStudentPayment'])->name('student.payment');
 });
 
