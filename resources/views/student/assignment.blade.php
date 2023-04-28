@@ -52,14 +52,20 @@
                                                 <a class="btn btn-success" href="{{ asset($url) }}">Download</a>
                                             </td>
                                             <td>
-                                                <form>
-                                                    <div class="input-group">
-                                                        <input type="file" class="form-control bg-secondary text-dark" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
-                                                        <button class="btn btn-warning" type="button" accept=".pdf,.doc,.docx" id="inputGroupFileAddon04">Submit</button>
-                                                    </div>
+                                                <form action="{{ route('submit.assignment') }}" method="post" enctype="multipart/form-data">
+                                                    @if($assignment->marks == "Not Submited")
+                                                        <div class="input-group">
+                                                            @csrf
+                                                            <input type="hidden" name="id" value="{{ $assignment['_id'] }}"/>
+                                                            <input required type="file" name="file" accept=".pdf,.doc,.docx" class="form-control bg-secondary text-dark" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                                                            <button class="btn btn-warning" type="submit" id="inputGroupFileAddon04">Submit</button>
+                                                        </div>
+                                                    @else 
+                                                        Submitted
+                                                    @endif
                                                 </form>
                                             </td>
-                                            <td>10</td>
+                                            <td class="space">{{ $assignment->marks }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

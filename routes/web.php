@@ -205,6 +205,11 @@ Route::post("mark/attendance", [AttendanceController::class, 'mark'])->name('mar
 Route::post("search/attendance", [AttendanceController::class, 'search'])->name('search.attendance');
 Route::post("update/attendance", [AttendanceController::class, 'update'])->name('update.attendance');
 Route::post('add/assignment', [AssignmentController::class, "add"])->name('add.assignment');
+Route::post('search/assignment', [AssignmentController::class, "search"])->name('search.assignment');
+Route::post('add/marks/assignment', [AssignmentController::class, "add_marks"])->name('add.marks.assignment');
+
+// Student Function Routes
+Route::post('submit/assignment', [AssignmentController::class, 'submit'])->name('submit.assignment');
 
 // email routes
 Route::get('email/teacher/leaves', function() {
