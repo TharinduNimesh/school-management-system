@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\ClassController;
+use App\Mail\StudentAssignment;
 
 /*
 |--------------------------------------------------------------------------
@@ -229,11 +230,14 @@ Route::post('add/marks/assignment', [AssignmentController::class, "add_marks"])-
 Route::post('submit/assignment', [AssignmentController::class, 'submit'])->name('submit.assignment');
 
 // email routes
-Route::get('email/teacher/leaves', function() {
+Route::get('email/assignment', function() {
     $data = [
-        "teacher_name" => "Tharindu Nimesh"
+        "student_name" => "Tharindu Nimesh",
+        'start_date' => "2023-12-02",
+        "end_date" => "2023-12-07",
+        "url" => "https://google.com"
     ];
-    return new ApproveLeaves($data);
+    return new StudentAssignment($data);
 });
 
 
