@@ -148,6 +148,19 @@ Route::prefix('library')->middleware(['auth', 'IsLibrarian'])->group(function() 
     })->name('library.lateList');
 });
 
+// Sport Routes
+Route::prefix('sport')->group(function() {
+    Route::get('add/student', function() {
+        return view('sport.addStudent');
+    })->name('sport.add.student');
+    Route::get('add/timetable', function() {
+        return view('sport.timetable');
+    })->name('sport.add.timetable');
+    Route::get('add/awards', function() {
+        return view('sport.awards');
+    })->name('sport.add.awards');
+});
+
 // login functions
 Route::post('login', [LoginController::class, 'login'])->name('login');
 Auth::routes();
