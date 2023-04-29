@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\TeacherWelcome;
 use App\Models\SectionHead;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class TeacherController extends Controller
 {
@@ -51,6 +53,12 @@ class TeacherController extends Controller
 
             // check is teacher added successfully for both collections
             if($teacherAdded && $userAdded) {
+                $data = [
+                    'teacher_name' => $request->teacherFullName,
+                    'login' => $request->teacherNIC,
+                    'password' => $request->teacherPassword
+                ];
+                Mail::to($request->teacherEmail)->send(new TeacherWelcome($data));
                 return 'success';
             } else {
                 return 'error';

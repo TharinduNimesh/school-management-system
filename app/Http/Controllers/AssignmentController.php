@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\StudentAssignment;
 use App\Models\Assignment;
+use App\Models\Student;
 use App\Models\Submission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class AssignmentController extends Controller
@@ -42,6 +45,23 @@ class AssignmentController extends Controller
 
             // check data saved successfully in database
             if($assignmentAdded) {
+                $students = Student::where('enrollments', 'elemMatch', [
+                    "grade" => $request->grade,
+                    "class" => $request->clss,
+                    "year" => Date("Y")
+                ])->get();
+
+                $url = Storage::url($path);
+
+                foreach ($students as $student) {
+                    $data = [
+                        "student_name" => $student["full_name"],
+                        "start_date" => $request->startDate,
+                        "end_date" => $request->endDate,
+                        "url" => $url
+                    ];
+                    Mail::to($student->emergency_email)->send(new StudentAssignment($data));
+                }
                 return 'success';
             } else {
                 return 'dbError';

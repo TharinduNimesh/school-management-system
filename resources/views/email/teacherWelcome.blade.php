@@ -1,7 +1,7 @@
 <x-mail::message>
 # Introduction
 
-Dear {{ $data["Teacher_Name"] }},
+Dear {{ $data["teacher_name"] }},
 
 I am writing to provide you with the login details for your account on {{ env('SCHOOL_NAME') }}. You can use these details to access your account and begin using the platform or system.
 

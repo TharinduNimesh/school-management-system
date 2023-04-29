@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AbsentStudent;
+use App\Mail\PresentStudent;
 use App\Models\Student;
 use App\Models\StudentAttendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Mail;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -48,6 +51,14 @@ class AttendanceController extends Controller
                     ];
                     $attendance->save();
                 }
+
+                $data = [
+                    "guardian_name" => $student->mother_name,
+                    "date" => $date,
+                    "student_name" => $student->full_name
+                ];
+
+                Mail::to($student->emergency_email)->send(new PresentStudent($data));
             }
 
             foreach($data->absent as $item) {
@@ -77,6 +88,14 @@ class AttendanceController extends Controller
                     ];
                     $attendance->save();
                 }
+
+                $data = [
+                    "guardian_name" => $student->mother_name,
+                    "date" => $date,
+                    "student_name" => $student->full_name
+                ];
+
+                Mail::to($student->emergency_email)->send(new AbsentStudent($data));
             }
 
             return 'success';

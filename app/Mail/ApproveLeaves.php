@@ -18,9 +18,9 @@ class ApproveLeaves extends Mailable
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct($dat)
     {
-        $this->data = $data;
+        $this->data = $dat;
     }
 
     /**

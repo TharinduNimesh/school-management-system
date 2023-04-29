@@ -1,5 +1,5 @@
 <x-mail::message>
-    Dear {{ $data["guardian_Name"] }},
+    Dear {{ $data["guardian_name"] }},
 
     I am writing to inform you about your child's attendance for today, {{ $data["date"] }}. As you may know, our school uses a management system that allows us to keep track of attendance records for each student.
     

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ApproveLeaves;
+use App\Mail\RejectLeaves;
 use App\Models\Leaves;
 use App\Models\ShortLeaves;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class LeavesController extends Controller
@@ -202,6 +205,15 @@ class LeavesController extends Controller
                 ->update([
                     'status' => 'accepted'
                 ]);
+            
+            $details = Leaves::find($request->id);
+            $teacher = Teacher::where('nic', $details->nic)->first();
+
+            $data = [
+                "teacher_name" => $teacher->full_name,
+                "date" => $details->date
+            ];
+            Mail::to($teacher->email)->send(new ApproveLeaves($data));
 
             return redirect()->back();
         } 
@@ -220,6 +232,15 @@ class LeavesController extends Controller
             ->update([
                 'status' => 'rejected'
             ]);
+
+        $details = Leaves::find($request->id);
+        $teacher = Teacher::where('nic', $details->nic)->first();
+
+        $data = [
+            "teacher_name" => $teacher->full_name,
+            "date" => $details->date,
+        ];
+        Mail::to($teacher->email)->send(new RejectLeaves($data));
 
         return redirect()->back();
     }
