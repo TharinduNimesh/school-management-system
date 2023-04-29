@@ -127,7 +127,13 @@
     <!-- JavaScript Libraries -->
     @include('public_components.js')
     <!-- Template Javascript -->
-
+    
+    <script>
+            $('#calender').datetimepicker({
+        inline: true,
+        format: 'L'
+    });
+    </script>
 </body>
 
 </html>
