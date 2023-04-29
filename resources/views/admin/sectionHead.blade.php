@@ -33,20 +33,24 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @for ($i=1; $i<=13; $i++)
+                                    @foreach ($sectionHeads as $sectionHead)
                                     <tr>
-                                        <th scope="row">{{ $i }}</th>
-                                        <td>Tharindu</td>
-                                        <td>070 xxx xxxx</td>
-                                        <td>2023.05.22</td>
+                                        <td>{{ $sectionHead["section"] }}</td>
+                                        <td>{{ $sectionHead["name"] }}</td>
+                                        <td>{{ $sectionHead["mobile"] }}</td>
+                                        <td>{{ $sectionHead["appointed_date"] }}</td>
                                         <td class="text-center">
-                                        <button type="button" class="btn btn-primary btn-sm">
-                                            Remove
-                                        </button>
+                                            <form action="{{ route('remove.section.head') }}" method="post">
+                                                @csrf
+                                                @method("DELETE")
+                                                <input type="hidden" name="id" value="{{ $sectionHead['_id'] }}"/>
+                                                <button type="submit" class="btn btn-primary btn-sm">
+                                                    Remove
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
-                                    @endfor
-                                        <!--  -->
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -175,18 +179,19 @@ Ex: Bsc Hons In Software Enginnering</textarea>
                         } else {
                             var response = JSON.parse(response);
                             document.getElementById("teacherName").value =
-                                response.teacher.full_name;
+                                response.full_name;
                             document.getElementById("contactNumber").value =
-                                response.teacher.contact_number;
+                                response.mobile;
                             document.getElementById("qualification").value =
-                                response.teacher.qualification;
+                                response.qualifications;
                             document.getElementById("addButton").dataset.nic =
                                 nic.value.trim();
                         }
                     }
                 };
 
-                xhr.open("POST", "process/searchTeacher.php", true);
+                xhr.open("POST", "{{ route('search.teacher') }}");
+                xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
                 xhr.send(form);
             }
         }
@@ -222,25 +227,36 @@ Ex: Bsc Hons In Software Enginnering</textarea>
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState == 4 && xhr.status) {
                         // handle response
-                        var response = JSON.parse(xhr.responseText);
-                        if (response.status == 'error') {
+                        var response = xhr.responseText;
+                        if (response == 'sectionHasAHead') {
                             Swal.fire({
                                 icon: "warning",
                                 title: "WARNING",
-                                text: "This Teacher Already A Section Head In Grade " + response.section + "",
+                                text: "Selected Section Already Have A Head. Remove Him And Try Again",
                             });
                         }
-                        else {
+                        else if(response == "alreadyASectionHead") {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "WARNING",
+                                text: "This Teacher Is Already A Section Head",
+                            });
+                        }
+                        else if(response == "success"){
                             Swal.fire(
                                 'Good job!',
-                                'Section Head Added Successfully. ReFresh To View On Table!',
+                                'Section Head Added Successfully.',
                                 'success'
                             )
+                            setTimeout(() => {
+                                location.reload();
+                            }, 2);
                         }
                     }
                 }
 
-                xhr.open("POST", "process/addSectionHead.php", true);
+                xhr.open("POST", "{{ route('add.section.head') }}");
+                xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
                 xhr.send(form);
             }
         }

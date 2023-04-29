@@ -121,9 +121,7 @@ Route::prefix('admin')->middleware(['auth', 'IsAdmin'])->group(function() {
     Route::get('teacher/shortLeaves', function() {
         return view('admin.teacherShortLeave');
     })->name('admin.teacherShortLeaves');
-    Route::get('manage/sections', function() {
-        return view('admin.sectionHead');
-    })->name('admin.section');
+    Route::get('manage/sections', [TeacherController::class, 'navigateToSectionHead'])->name('admin.section');
     Route::get('manage/discipline', function() {
         return view('admin.discipline');
     })->name('admin.discipline');
@@ -167,6 +165,7 @@ Route::prefix('add')->group(function() {
     Route::post('staff', [StaffController::class, 'add'])->name("add.staff");
     Route::post('sport', [SportController::class, 'add_sport'])->name('add.sport');
     Route::post('coach', [SportController::class, 'add_coach'])->name('add.coach');
+    Route::post('section-head', [TeacherController::class, 'makeAsSectionHead'])->name('add.section.head');
 });
 Route::prefix('manage')->group(function() {
     // admin manage register routes
@@ -196,7 +195,9 @@ Route::prefix('manage')->group(function() {
 });
 Route::prefix('search')->group(function() {
     Route::get('student/{id}', [StudentController::class, 'show'])->name('search.student');
+    Route::post("teacher", [TeacherController::class, 'show'])->name('search.teacher');
 });
+Route::delete('remove/section/head', [TeacherController::class, 'removeSectionHead'])->name("remove.section.head");
 
 // Teacher functions
 Route::post("request/leaves", [LeavesController::class, 'request'])->name('request.leaves');

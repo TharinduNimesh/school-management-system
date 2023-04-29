@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SectionHead;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -60,6 +61,54 @@ class TeacherController extends Controller
         }
     }
 
+    public function show(Request $request) {
+        $teacher = Teacher::where('nic', $request->nic)->first();
+        if($teacher == null) {
+            return "Invalid";
+        } else {
+            return $teacher;
+        }
+    }
+
+    public function makeAsSectionHead(Request $request) {
+        $section = SectionHead::where('section', $request->section)->whereNull('end_date')->first();
+        $head = SectionHead::where('nic', $request->nic)->whereNull('end_date')->first();
+        if($section != null) {
+            if($section->end_date == null) {
+                return 'sectionHasAHead';
+            }
+        } else if($head != null){
+            return 'alreadyASectionHead';
+        } else {
+            $sectionHead = SectionHead::where('section', $request->grade)->first();
+            if($sectionHead == null) {
+                $newSectionHead = new SectionHead();
+                $newSectionHead->section = $request->section;
+                $newSectionHead->save();
+
+                $sectionHead = $newSectionHead;
+            }
+            $teacher = Teacher::where('nic', $request->nic)->first();
+            $sectionHead->name = $teacher->full_name;
+            $sectionHead->nic = $teacher->nic;
+            $sectionHead->mobile = $teacher->mobile;
+            $sectionHead->appointed_date = Date("Y-m-d");
+            $sectionHead->end_date = null;
+
+            $sectionHead->save();
+
+            return 'success';
+        }
+    }
+
+    public function removeSectionHead(Request $request) {
+        $section = SectionHead::find($request->id);
+        $section->end_date = Date("Y-m-d");
+        $section->save();
+
+        return redirect()->back();
+    }
+
     public static function getClass($nic) {
         $response = null;
         $current_year = Date("Y");
@@ -97,5 +146,13 @@ class TeacherController extends Controller
         }
 
         return view('teacher.summary', ['data' => $array]);
+    }
+
+    public function navigateToSectionHead() {
+        $sectionHeads = SectionHead::whereNull('end_date')->get();
+
+        return view('admin.sectionHead', [
+            "sectionHeads" => $sectionHeads
+        ]);
     }
 }
