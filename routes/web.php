@@ -150,6 +150,9 @@ Route::prefix('library')->middleware(['auth', 'IsLibrarian'])->group(function() 
 
 // Sport Routes
 Route::prefix('sport')->group(function() {
+    Route::get('dashboard', function() {
+        return view('sport.dashboard');
+    })->name('sport.dashboard');
     Route::get('add/student', function() {
         return view('sport.addStudent');
     })->name('sport.add.student');
