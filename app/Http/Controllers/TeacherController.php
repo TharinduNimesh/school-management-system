@@ -117,30 +117,23 @@ class TeacherController extends Controller
         return redirect()->back();
     }
 
-    public static function getClass($nic) {
-        $response = null;
-        $current_year = Date("Y");
-        $teacher = Teacher::select(['classes'])
-                            ->where("nic", $nic)
-                            ->where("classes", "elemMatch", [
-                                "start_year" => [ '$lte' => $current_year ],
-                                "end_year" => null
-                            ])
-                            ->first();
+    public static function getClass($nic, $year) {
+        $teacher = Teacher::where('nic', $nic)->first();
         if($teacher != null) {
             foreach ($teacher->classes as $class) {
-                if($class['end_year'] == null) {
+                if(intval($class["start_year"]) <= intval($year) && intval($class["end_year"] > intval($year)) || 
+                intval($class["start_year"]) <= intval($year) && $class["end_year"] == null) {
                     $response = new \stdClass();
                     $response->grade = $class["grade"];
                     $response->class = $class["class"];
+                    return $response;
                 }
             }
         }
-        return $response;
     }
 
     public function navigateToSummary() {
-        $teacherDetails = self::getClass(auth()->user()->index);
+        $teacherDetails = self::getClass(auth()->user()->index, Date("Y"));
         $students = ClassController::getStudentList($teacherDetails->grade, $teacherDetails->class, Date("Y"));
 
         $array = [];
@@ -161,6 +154,16 @@ class TeacherController extends Controller
 
         return view('admin.sectionHead', [
             "sectionHeads" => $sectionHeads
+        ]);
+    }
+
+    public function navigateToMarks() {
+        $teacher = self::getClass(auth()->user()->index, Date("Y"));
+        $students = ClassController::getStudentList($teacher->grade, $teacher->class, Date("Y"));
+        $subjects = ClassController::getSubjects($teacher->grade);
+        return view('teacher.marks', [
+            "subjects" => $subjects,
+            "students" => $students
         ]);
     }
 }

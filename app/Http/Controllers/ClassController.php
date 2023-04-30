@@ -155,7 +155,7 @@ class ClassController extends Controller
     public function list_students()
     {
         $current_year = Date("Y");
-        $details = TeacherController::getClass(auth()->user()->index);
+        $details = TeacherController::getClass(auth()->user()->index, $current_year);
 
         $students = self::getStudentList($details->grade, $details->class, $current_year);
 
@@ -183,5 +183,55 @@ class ClassController extends Controller
         ])->first();
 
         return $teacher;
+    }
+
+    public static function getSubjects($grade) {
+        $subjects = [];
+        if($grade < 6) {
+            $subjects = [
+                "Buddhism",
+                "Sinhala", 
+                "Tamil", 
+                "English",
+                "Mathematics",
+                "Environment"
+            ];
+        } else if($grade < 10) {
+            $subjects = [
+                "Buddhism",
+                "Sinhala", 
+                "Tamil", 
+                "English",
+                "Mathematics",
+                "Science",
+                "History",
+                "Geography",
+                "Civics",
+                "Health",
+                "PTS",
+                "Aesthetics"
+            ];
+        } else if($grade < 12) {
+            $subjects = [
+                "Buddhism",
+                "Sinhala", 
+                "English",
+                "Mathematics",
+                "Science",
+                "History",
+                "Bucket_1",
+                "Bucket_2",
+                "Bucket_3"
+            ];
+        } else if ($grade < 14) {
+            $subjects = [
+                "Bucket_1",
+                "Bucket_2",
+                "Bucket_3",
+                "General_English"
+            ];
+        }
+
+        return $subjects;
     }
 }

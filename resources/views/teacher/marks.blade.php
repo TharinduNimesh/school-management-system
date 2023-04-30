@@ -20,7 +20,7 @@
 
 </head>
 
-<body onload="loadSubjects(); listSubject();" style="background:#f2f2f2;">
+<body style="background:#f2f2f2;">
     <div class="container-fluid position-relative d-flex p-0">
         @include('public_components.spinner')
 
@@ -40,12 +40,8 @@
                                 <div class="col-12 col-md-6 mt-1 mb-3">
                                     <div class="input-group">
                                         <label class="input-group-text" for="inputGroupSelect01">Select a Year</label>
-                                        <select class="form-select bg-secondary text-dark" id="marksYear"
-                                            onchange="getStudents();">
+                                        <select class="form-select bg-secondary text-dark" onchange="getStudents();" id="marksYear">
                                             <option selected value="0">Choose a Year...</option>
-                                            <option value="2023">2023</option>
-                                            <option value="2024">2024</option>
-                                            <option value="2025">2025</option>
                                         </select>
                                     </div>
                                 </div>
@@ -53,8 +49,7 @@
                                 <div class="col-12 col-md-6 mt-1 mb-3">
                                     <div class="input-group">
                                         <label class="input-group-text" for="inputGroupSelect01">Select a Term</label>
-                                        <select class="form-select bg-secondary text-dark" id="marksTerm"
-                                            onchange="getStudents();">
+                                        <select class="form-select bg-secondary text-dark" onchange="getStudents();" id="marksTerm">
                                             <option selected value="0">Choose a Term...</option>
                                             <option value="1">First Term</option>
                                             <option value="2">Second Term</option>
@@ -75,13 +70,27 @@
                                         <tr>
                                             <th scope="col">No</th>
                                             <th scope="col">Name</th>
-                                            <th scope="col">Sinhala</th>
-                                            <th scope="col">English</th>
+                                            @foreach ($subjects as $subject)
+                                                <th scope="col">{{ $subject }}</th>                                            
+                                            @endforeach
                                             <th scope="col">Submit</th>
                                         </tr>
                                     </thead>
                                     <tbody id="tBody">
-
+                                        @foreach ($students as $key => $student)
+                                            <tr id="row{{ $student['_id'] }}">
+                                                <th>{{ $key + 1 }}</th>
+                                                <td>{{ $student["initial_name"] }}</td>
+                                                @foreach ($subjects as $subject)
+                                                    <td>
+                                                        <input type="number" id="{{ $student['_id'] . $subject }}"/>
+                                                    </td>
+                                                @endforeach
+                                                <td>
+                                                    <button class="btn btn-success" data-id="{{ $student['_id'] }}" onclick="addMarks(this);">Add</button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -186,6 +195,21 @@
     @include('public_components.js')
     <script>
         hamburger('marks');
+        var subjects = @json($subjects);
+
+        var currentDate = new Date();
+        var currentYear = currentDate.getFullYear();
+
+        var pastYearoption = document.createElement('option');
+        pastYearoption.innerHTML = currentYear - 1
+
+        var currentYearOption = document.createElement('option');
+        currentYearOption.innerHTML = currentYear;
+
+        var selecter = document.getElementById("marksYear");
+        selecter.appendChild(pastYearoption);
+        selecter.appendChild(currentYearOption);
+
         function updateMarks() {
             const button = document.getElementById("updateButton");
             const newMarks = document.getElementById("newMarks");
@@ -228,105 +252,91 @@
 
         }
 
-        var lengthForTable;
-        var subjects;
-        function loadSubjects() {
-            let kids = ["No", "Name", "Sinhala", "Maths", "English", "Tamil", "Buddhism", "Environment", "Submit"];
-            let middle = ["No", "Name", "Sinhala", "Maths", "English", "Science", "Tamil", "Buddhism", "History", "Geography", "Esthetics", "Civics", "Health", "PTS", "Submit"];
-            let ol = ["No", "Name", "Sinhala", "Maths", "English", "Science", "Buddhism", "History", "Bucket1", "Bucket2", "Bucket3", "Submit"];
-            let al = ["No", "Name", "Bucket1", "Bucket2", "Bucket3", "English", "GIT", "Submit"];
-
-            let tHead = document.getElementById("tHead");
-            tHead.innerHTML = '';
-            let row = document.createElement("tr");
-            var myRow;
-            if (grade <= 5) {
-                myRow = kids;
-            }
-            else if (grade <= 9) {
-                myRow = middle;
-            }
-            else if (grade <= 11) {
-                myRow = ol;
-            }
-            else if (grade <= 13) {
-                myRow = al;
-            }
-            lengthForTable = myRow.length;
-            subjects = myRow;
-            for (let i = 0; i < myRow.length; i++) {
-                let col = document.createElement("th");
-                col.innerHTML = myRow[i];
-                row.appendChild(col);
-            }
-            tHead.appendChild(row);
-            let SelectATermRow = document.createElement("tr");
-            let SelectTermCol = document.createElement("th");
-            SelectTermCol.innerHTML = "Please Select A Year And Term";
-            SelectTermCol.style.color = "red";
-            SelectTermCol.colSpan = myRow.length;
-            SelectATermRow.style.backgroundColor = "orange";
-            SelectATermRow.appendChild(SelectTermCol);
-            document.getElementById("tBody").appendChild(SelectATermRow);
-        }
-
         function getStudents() {
             let term = document.getElementById("marksTerm").value;
             let year = document.getElementById("marksYear").value;
+            const spinner = document.getElementById("spinner");
+
             if (term != 0 && year != 0) {
+                var form = new FormData();
+                form.append("year", year);
+                form.append("term", term);
+                spinner.classList.add("show");
+
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState == 4) {
                         if (xhr.status == 200) {
                             // handle output
-                            let response = JSON.parse(xhr.responseText);
-                            if (response[0].status == 'success') {
-                                document.getElementById("tBody").innerHTML = '';
-                                for (let i = 0; i < response.length; i++) {
-                                    let row = document.createElement("tr");
-                                    row.id = 'row' + response[i].data.id;
-                                    for (let a = 0; a < lengthForTable; a++) {
-                                        var col = document.createElement("td");
-                                        col.classList.add("text-dark");
-                                        if (a == 0) {
-                                            col.innerHTML = i + 1;
-                                        }
-                                        else if (a == 1) {
-                                            col.style.whiteSpace = "nowrap";
-                                            col.innerHTML = response[i].data.full_name;
-                                        }
-                                        else if (a == lengthForTable - 1) {
-                                            var btn = document.createElement("button");
-                                            btn.classList.add("btn");
-                                            btn.classList.add("btn-primary");
-                                            btn.innerHTML = "Add";
-                                            btn.dataset.did = response[i].data.id;
-                                            btn.onclick = function () {
-                                                addMarks(this);
-                                            };
-                                            col.appendChild(btn);
-                                        }
-                                        else {
-                                            var input = document.createElement("input");
-                                            input.type = "number";
-                                            input.id = subjects[a] + response[i].data.id;
-                                            col.appendChild(input);
-                                        }
-                                        row.appendChild(col);
-                                    }
-                                    document.getElementById("tBody").appendChild(row);
-                                }
-                            }
-                            else {
+                            var response = JSON.parse(xhr.responseText);
+                            if(response.students.length <= 0) {
                                 document.getElementById("tBody").innerHTML = '';
                                 let SelectATermRow = document.createElement("tr");
                                 let SelectTermCol = document.createElement("th");
-                                SelectTermCol.innerHTML = "You Cannot Add Marks For Selected Year And Term";
+                                SelectTermCol.innerHTML = "There's No UnMarked Students To Add Marks";
                                 SelectTermCol.style.color = "red";
-                                SelectTermCol.colSpan = lengthForTable;
+                                SelectTermCol.colSpan = subjects.length + 3;
                                 SelectATermRow.style.backgroundColor = "orange";
                                 SelectATermRow.appendChild(SelectTermCol);
                                 document.getElementById("tBody").appendChild(SelectATermRow);
+                            }
+                            else {
+                                document.getElementById('tBody').innerHTML = '';
+                                let num = 1;
+                                response.students.forEach(student => {
+                                    document.getElementById("tHead").innerHTML = '';
+
+                                    const newRow = document.createElement("tr");
+                                    newRow.id = 'row' + student["_id"];
+
+                                    const headRow = document.createElement("tr");
+
+                                    const NoCol = document.createElement("th");
+                                    const NoHead = document.createElement("th");
+                                    NoHead.innerHTML = "No";
+                                    NoCol.innerHTML = num;
+                                    newRow.appendChild(NoCol);
+                                    headRow.appendChild(NoHead);
+
+                                    const nameCol = document.createElement("td");
+                                    const nameHead = document.createElement("th");
+                                    nameCol.innerHTML = student.initial_name;
+                                    nameHead.innerHTML = "Name";
+                                    newRow.appendChild(nameCol);
+                                    headRow.appendChild(nameHead);
+                                    
+                                    response.subjects.forEach(subject => {
+                                        var subjectCol = document.createElement("td");
+                                        var subjectHead = document.createElement("th");
+                                        subjectHead.innerHTML = subject;
+
+                                        var subjectInput = document.createElement("input");
+                                        subjectInput.id = student._id + subject;
+                                        subjectCol.appendChild(subjectInput);
+                                        headRow.appendChild(subjectHead);
+                                        newRow.appendChild(subjectCol);
+                                    });
+
+                                    const buttonCol = document.createElement("td");
+                                    const buttonHead = document.createElement("th");
+                                    buttonHead.innerHTML = "Submit";
+                                    const button = document.createElement("button")
+                                    button.classList.add("btn", "btn-success");
+                                    button.innerHTML = 'add';
+                                    button.dataset.id = student["_id"];
+                                    button.onclick = function() {
+                                        addMarks(this);
+                                    }
+
+                                    buttonCol.appendChild(button);
+                                    newRow.appendChild(buttonCol);
+                                    headRow.appendChild(buttonHead);
+
+                                    document.getElementById('tBody').appendChild(newRow);
+                                    document.getElementById("tHead").appendChild(headRow);
+                                    subjects = response.subjects;
+                                    num = num + 1;
+                            });
                             }
                         }
                         else {
@@ -337,11 +347,13 @@
                                 footer: "<a href='http://wa.me/94701189971'>Contact Developers Here</a>"
                             });
                         }
+                        spinner.classList.remove("show");
                     }
                 };
 
-                xhr.open("GET", "process/searchByTerm.php?term=" + term + "&year=" + year + "", true);
-                xhr.send();
+                xhr.open("POST", "{{ route('filter.student.for.marks') }}");
+                xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
+                xhr.send(form);
             }
             else {
                 document.getElementById("tBody").innerHTML = '';
@@ -349,7 +361,7 @@
                 let SelectTermCol = document.createElement("th");
                 SelectTermCol.innerHTML = "Please Select A Year And Term";
                 SelectTermCol.style.color = "red";
-                SelectTermCol.colSpan = lengthForTable;
+                SelectTermCol.colSpan = subjects.length + 3;
                 SelectATermRow.style.backgroundColor = "orange";
                 SelectATermRow.appendChild(SelectTermCol);
                 document.getElementById("tBody").appendChild(SelectATermRow);
@@ -381,70 +393,56 @@
         }
 
         function addMarks(Button) {
-            var did = Button.dataset.did;
+            var id = Button.dataset.id;
+            var year = document.getElementById("marksYear").value;
             var term = document.getElementById("marksTerm").value;
 
-            var kidsSubjects = ["Sinhala", "Maths", "English", "Tamil", "Buddhism", "Environment"];
-            var middleSubjects = ["Sinhala", "Maths", "English", "Science", "Tamil", "Buddhism", "History", "Geography", "Esthetics", "Civics", "Health", "PTS"];
-            var olSubjects = ["Sinhala", "Maths", "English", "Science", "Buddhism", "History", "Bucket1", "Bucket2", "Bucket3"];
-            var alSubjects = ["Bucket1", "Bucket2", "Bucket3", "English", "GIT", "General_knowledge"];
-
-            var SubjectRow;
-            if (grade <= 5) {
-                SubjectRow = kidsSubjects;
-            }
-            else if (grade <= 9) {
-                SubjectRow = middleSubjects;
-            }
-            else if (grade <= 11) {
-                SubjectRow = olSubjects;
-            }
-            else if (grade <= 13) {
-                SubjectRow = alSubjects;
-            }
-
-            var requestOBJ = {
-                "detailsId": did,
-                "term": term,
-            };
-            var filled = true;
-            try {
-                for (var i = 0; i < SubjectRow.length; i++) {
-                    var subject = document.getElementById(SubjectRow[i] + did);
-                    var regex = /^(100|\d?\d(\.\d+)?)$/;
-                    if (subject.value == '' || subject.value < 0 || !regex.test(subject.value)) {
-                        filled = false;
-                    }
-                    else {
-                        requestOBJ[SubjectRow[i].toLowerCase()] = subject.value;
-                    }
-                }
-            }
-            catch {
-                alert("Error");
-            }
-
-            if (filled) {
-                var json = JSON.stringify(requestOBJ);
-                var xhr = new XMLHttpRequest();
-                var form = new FormData();
-                form.append("json", json);
-
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        document.getElementById("row" + did).classList.add("d-none");
-                    }
-                }
-
-                xhr.open("POST", "process/saveMarks.php", true);
-                xhr.send(form);
-            }
-            else {
+            if(year == '0' || term == '0') {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: "Please Double Check Marks again",
+                    text: "Please Select Year And Term",
                 });
+            } else {
+                isFilled = true;
+                var marksRegex = /^(?:100(?:\.0{1,2})?|\d{1,2}(?:\.\d{1,2})?)$/;
+                const marksObject = {
+                    "id": id,
+                    "subjects": subjects,
+                    "year": year,
+                    "term": term,
+                };
+                subjects.forEach(subject => {
+                    var marks = document.getElementById(id + subject).value;
+                    if(!marksRegex.test(marks)) {
+                        isFilled = false;
+                    } else {
+                        marksObject[subject] = marks
+                    }
+                });
+
+                if (isFilled) {
+                    var xhr = new XMLHttpRequest();
+                    var form = new FormData();
+                    form.append("data", JSON.stringify(marksObject));
+
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState == 4 && xhr.status == 200) {
+                            document.getElementById("row" + id).classList.add("d-none");
+                        }
+                    }
+
+                    xhr.open("POST", "{{ route('add.marks') }}");
+                    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
+                    xhr.send(form);
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: "Please Double Check Marks again",
+                    });
+                }
             }
         }
 

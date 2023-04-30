@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\MarksController;
 use App\Mail\StudentAssignment;
 
 /*
@@ -76,9 +77,7 @@ Route::prefix('teacher')->middleware(['auth', 'IsTeacher'])->group(function() {
         return view('teacher.dashboard');
     })->name('teacher.dashboard');
     Route::get('attendance', [ClassController::class, 'list_students'])->name('teacher.attendance');
-    Route::get('marks', function() {
-        return view('teacher.marks');
-    })->name('teacher.marks');
+    Route::get('marks', [TeacherController::class, 'navigateToMarks'])->name('teacher.marks');
     Route::get('timetable', function() {
         return view('teacher.timetable');
     })->name('teacher.timetable');
@@ -225,6 +224,8 @@ Route::post("update/attendance", [AttendanceController::class, 'update'])->name(
 Route::post('add/assignment', [AssignmentController::class, "add"])->name('add.assignment');
 Route::post('search/assignment', [AssignmentController::class, "search"])->name('search.assignment');
 Route::post('add/marks/assignment', [AssignmentController::class, "add_marks"])->name('add.marks.assignment');
+Route::post('add/marks', [MarksController::class, 'add'])->name('add.marks');
+Route::post('filter/marks', [MarksController::class, 'getUnmarkedStudents'])->name('filter.student.for.marks');
 
 // Student Function Routes
 Route::post('submit/assignment', [AssignmentController::class, 'submit'])->name('submit.assignment');
