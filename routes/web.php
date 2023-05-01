@@ -162,6 +162,9 @@ Route::prefix('sport')->group(function() {
     Route::get('add/awards', function() {
         return view('sport.awards');
     })->name('sport.add.awards');
+    Route::get('list/student', function() {
+        return view('sport.studentList');
+    })->name('sport.student.list');
 });
 
 // login functions
@@ -226,6 +229,7 @@ Route::post('search/assignment', [AssignmentController::class, "search"])->name(
 Route::post('add/marks/assignment', [AssignmentController::class, "add_marks"])->name('add.marks.assignment');
 Route::post('add/marks', [MarksController::class, 'add'])->name('add.marks');
 Route::post('filter/marks', [MarksController::class, 'getUnmarkedStudents'])->name('filter.student.for.marks');
+Route::post('get/subjects', [MarksController::class, 'getSubjectsList'])->name('get.subjects');
 
 // Student Function Routes
 Route::post('submit/assignment', [AssignmentController::class, 'submit'])->name('submit.assignment');

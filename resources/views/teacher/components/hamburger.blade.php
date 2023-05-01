@@ -17,7 +17,7 @@
                             class="badge bg-danger ms-3">
                            0
                         </span> </a>
-                    <a name="ham-item" id="marks" href="{{ route('teacher.marks') }}" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Manage Marks</a>
+                    <a name="ham-item" id="marks" href="{{ route('teacher.marks') }}" class="nav-item nav-link"><i class="fa-solid fa-square-poll-vertical me-2"></i>Manage Marks</a>
                     <a name="ham-item" id="leaves" href="{{ route('teacher.leaves') }}" class="nav-item nav-link"><i class="bi bi-bag-check-fill me-2"></i>Manage Leaves</a>
                     <a name="ham-item" id="timetable" href="{{ route('teacher.timetable') }}" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Time
                         Table</a>

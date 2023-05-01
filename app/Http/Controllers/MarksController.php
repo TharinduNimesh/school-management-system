@@ -63,4 +63,11 @@ class MarksController extends Controller
         $obj->subjects = $subjects;
         return json_encode($obj);
     }
+
+    public function getSubjectsList(Request $request) {
+        $teacher = TeacherController::getClass(auth()->user()->index, $request->year);
+        $subjects = ClassController::getSubjects($teacher->grade);
+
+        return $teacher->grade;
+    }
 }

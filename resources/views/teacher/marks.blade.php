@@ -33,7 +33,7 @@
             <div class="container-fluid pt-4 px-4">
                 <div class="row">
                     <div class="col-12">
-                        <div class="bg-secondary rounded h-100 p-4">
+                        <div class="bg-secondary rounded p-4">
                             <h3 class="mb-4 text-dark">ADD MARKS</h3>
 
                             <div class="row">
@@ -60,8 +60,7 @@
                             </div>
 
                             <div class="form-floating mb-3 mt-3">
-                                <input type="text" class="form-control bg-secondary text-dark" id="searching"
-                                    onkeyup="filterStudents();" placeholder="name@example.com">
+                                <input type="text" class="form-control bg-secondary text-dark" id="searching" onkeyup="filterStudents();" placeholder="name@example.com">
                                 <label for="floatingInput">Search by student Name</label>
                             </div>
                             <div class="table-responsive">
@@ -71,58 +70,55 @@
                                             <th scope="col">No</th>
                                             <th scope="col">Name</th>
                                             @foreach ($subjects as $subject)
-                                                <th scope="col">{{ $subject }}</th>                                            
+                                            <th scope="col">{{ $subject }}</th>
                                             @endforeach
                                             <th scope="col">Submit</th>
                                         </tr>
                                     </thead>
                                     <tbody id="tBody">
                                         @foreach ($students as $key => $student)
-                                            <tr id="row{{ $student['_id'] }}">
-                                                <th>{{ $key + 1 }}</th>
-                                                <td>{{ $student["initial_name"] }}</td>
-                                                @foreach ($subjects as $subject)
-                                                    <td>
-                                                        <input type="number" id="{{ $student['_id'] . $subject }}"/>
-                                                    </td>
-                                                @endforeach
-                                                <td>
-                                                    <button class="btn btn-success" data-id="{{ $student['_id'] }}" onclick="addMarks(this);">Add</button>
-                                                </td>
-                                            </tr>
+                                        <tr id="row{{ $student['_id'] }}">
+                                            <th>{{ $key + 1 }}</th>
+                                            <td>{{ $student["initial_name"] }}</td>
+                                            @foreach ($subjects as $subject)
+                                            <td>
+                                                <input type="number" id="{{ $student['_id'] . $subject }}" />
+                                            </td>
+                                            @endforeach
+                                            <td>
+                                                <button class="btn btn-success" data-id="{{ $student['_id'] }}" onclick="addMarks(this);">Add</button>
+                                            </td>
+                                        </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
 
-                            <div class="col-12 mt-5">
+                        <div class="bg-secondary rounded p-4 mt-3">
+                            <div class="col-12">
                                 <div class="row">
                                     <h3 class="text-dark">Modify Marks</h3>
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-md-6 mt-md-0 col-12">
                                         <div class="form-floating mb-3">
-                                            <input type="text" class="form-control bg-secondary text-dark" id="index"
-                                                placeholder="name@example.com">
+                                            <input type="text" class="form-control bg-secondary text-dark" id="index" placeholder="name@example.com">
                                             <label for="floatingInput">Student Registration Number</label>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 mt-md-0 mt-3">
                                         <div class="form-floating">
-                                            <select class="form-select bg-secondary text-dark" id="year"
-                                                aria-label="Floating label select example">
+                                            <select class="form-select bg-secondary text-dark" onchange="getSubjects();" id="year" aria-label="Floating label select example">
                                                 <option selected value="0">Open this select menu</option>
-                                                <option value="2023">2023</option>
-                                                <option value="2024">2024</option>
-                                                <option value="2025">2025</option>
+
                                             </select>
                                             <label for="floatingSelect">Select A Year</label>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 mt-md-0 mt-3">
                                         <div class="form-floating">
-                                            <select class="form-select bg-secondary text-dark" id="term"
-                                                aria-label="Floating label select example">
+                                            <select class="form-select bg-secondary text-dark" id="term" aria-label="Floating label select example">
                                                 <option selected value="0">Open this select menu</option>
                                                 <option value="1">First Term</option>
                                                 <option value="2">Second Term</option>
@@ -133,8 +129,7 @@
                                     </div>
                                     <div class="col-12 col-md-6 mt-md-0 mt-3">
                                         <div class="form-floating">
-                                            <select class="form-select bg-secondary text-dark" id="subjectList"
-                                                aria-label="Floating label select example">
+                                            <select class="form-select bg-secondary text-dark" id="subjectList" aria-label="Floating label select example">
                                                 <option selected value="0">Open this select menu</option>
 
                                             </select>
@@ -143,8 +138,7 @@
                                     </div>
 
                                     <div class="d-grid gap-2 col-6 mx-auto mt-3">
-                                        <button class="btn btn-primary" type="button"
-                                            onclick="searchMarks();">Search</button>
+                                        <button class="btn btn-primary" type="button" onclick="searchMarks();">Search</button>
                                     </div>
 
                                     <div class="row mt-3 d-none" id="resultContainer">
@@ -152,25 +146,18 @@
                                         <div class="col-12 col-md-6 mb-3 mb-md-0">
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text">Current Marks</span>
-                                                <input type="text" id="currentMarks"
-                                                    class="form-control bg-secondary text-dark" placeholder="Username"
-                                                    aria-label="Username" aria-describedby="addon-wrapping"
-                                                    value="Ex: 65" disabled>
+                                                <input type="text" id="currentMarks" class="form-control bg-secondary text-dark" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping" value="Ex: 65" disabled>
                                             </div>
                                         </div>
 
                                         <div class="col-12 col-md-6">
                                             <div class="input-group flex-nowrap">
                                                 <span class="input-group-text">Enter New Marks</span>
-                                                <input type="text"  id="newMarks" class="form-control bg-secondary text-dark"
-                                                    aria-label="Username" aria-describedby="addon-wrapping"
-                                                    placeholder="Ex: 80">
+                                                <input type="text" id="newMarks" class="form-control bg-secondary text-dark" aria-label="Username" aria-describedby="addon-wrapping" placeholder="Ex: 80">
                                             </div>
                                         </div>
                                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
-                                            <button class="btn btn-outline-danger me-md-2" type="button" data-id="0"
-                                                id="updateButton" data-subject='0'
-                                                onclick="updateMarks();">Update</button>
+                                            <button class="btn btn-outline-danger me-md-2" type="button" data-id="0" id="updateButton" data-subject='0' onclick="updateMarks();">Update</button>
                                         </div>
                                     </div>
                                 </div>
@@ -210,10 +197,36 @@
         selecter.appendChild(pastYearoption);
         selecter.appendChild(currentYearOption);
 
+        const yearList = document.getElementById("year");
+        yearList.appendChild(pastYearoption);
+        yearList.appendChild(currentYearOption);
+
+        const subjectList = document.getElementById("subjectList");
+        subjects.forEach(subject => {
+            var item = document.createElement("option");
+            item.innerHTML = subject;
+            subjectList.appendChild(item);
+        });
+
+        function getSubjects() {
+            const year = document.getElementById("year");
+            if(year.value != "0") {
+                var form = new FormData();
+                form.append("year", year.value);
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+
+                }
+
+                xhr.open("POST", "{{ route('get.subjects') }}");
+                xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
+                xhr.send(form);
+            }
+        }
         function updateMarks() {
             const button = document.getElementById("updateButton");
             const newMarks = document.getElementById("newMarks");
-            
+
             if (newMarks.value < 0 || newMarks.value > 100) {
                 Swal.fire(
                     'WARNING',
@@ -221,8 +234,7 @@
                     'warning'
                 );
                 newMarks.classList.add('is-invalid');
-            }
-            else {
+            } else {
                 newMarks.classList.remove('is-invalid');
                 var form = new FormData();
                 form.append("id", button.dataset.id);
@@ -232,7 +244,7 @@
                 form.append("total", button.dataset.total);
 
                 var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function () {
+                xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         // handle response
                         document.getElementById("resultContainer").classList.add("d-none");
@@ -264,12 +276,12 @@
                 spinner.classList.add("show");
 
                 var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function () {
+                xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4) {
                         if (xhr.status == 200) {
                             // handle output
                             var response = JSON.parse(xhr.responseText);
-                            if(response.students.length <= 0) {
+                            if (response.students.length <= 0) {
                                 document.getElementById("tBody").innerHTML = '';
                                 let SelectATermRow = document.createElement("tr");
                                 let SelectTermCol = document.createElement("th");
@@ -279,8 +291,7 @@
                                 SelectATermRow.style.backgroundColor = "orange";
                                 SelectATermRow.appendChild(SelectTermCol);
                                 document.getElementById("tBody").appendChild(SelectATermRow);
-                            }
-                            else {
+                            } else {
                                 document.getElementById('tBody').innerHTML = '';
                                 let num = 1;
                                 response.students.forEach(student => {
@@ -304,7 +315,7 @@
                                     nameHead.innerHTML = "Name";
                                     newRow.appendChild(nameCol);
                                     headRow.appendChild(nameHead);
-                                    
+
                                     response.subjects.forEach(subject => {
                                         var subjectCol = document.createElement("td");
                                         var subjectHead = document.createElement("th");
@@ -336,10 +347,9 @@
                                     document.getElementById("tHead").appendChild(headRow);
                                     subjects = response.subjects;
                                     num = num + 1;
-                            });
+                                });
                             }
-                        }
-                        else {
+                        } else {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error',
@@ -354,8 +364,7 @@
                 xhr.open("POST", "{{ route('filter.student.for.marks') }}");
                 xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
                 xhr.send(form);
-            }
-            else {
+            } else {
                 document.getElementById("tBody").innerHTML = '';
                 let SelectATermRow = document.createElement("tr");
                 let SelectTermCol = document.createElement("th");
@@ -384,8 +393,7 @@
                     txtValue = td.textContent || td.innerText;
                     if (txtValue.toUpperCase().indexOf(filter) > -1) {
                         tr[i].style.display = "";
-                    }
-                    else {
+                    } else {
                         tr[i].style.display = "none";
                     }
                 }
@@ -397,7 +405,7 @@
             var year = document.getElementById("marksYear").value;
             var term = document.getElementById("marksTerm").value;
 
-            if(year == '0' || term == '0') {
+            if (year == '0' || term == '0') {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -414,7 +422,7 @@
                 };
                 subjects.forEach(subject => {
                     var marks = document.getElementById(id + subject).value;
-                    if(!marksRegex.test(marks)) {
+                    if (!marksRegex.test(marks)) {
                         isFilled = false;
                     } else {
                         marksObject[subject] = marks
@@ -426,7 +434,7 @@
                     var form = new FormData();
                     form.append("data", JSON.stringify(marksObject));
 
-                    xhr.onreadystatechange = function () {
+                    xhr.onreadystatechange = function() {
                         if (xhr.readyState == 4 && xhr.status == 200) {
                             document.getElementById("row" + id).classList.add("d-none");
                         }
@@ -435,8 +443,7 @@
                     xhr.open("POST", "{{ route('add.marks') }}");
                     xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
                     xhr.send(form);
-                }
-                else {
+                } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
@@ -455,14 +462,11 @@
             var SubjectRow;
             if (grade <= 5) {
                 SubjectRow = kidsSubjects;
-            }
-            else if (grade <= 9) {
+            } else if (grade <= 9) {
                 SubjectRow = middleSubjects;
-            }
-            else if (grade <= 11) {
+            } else if (grade <= 11) {
                 SubjectRow = olSubjects;
-            }
-            else if (grade <= 13) {
+            } else if (grade <= 13) {
                 SubjectRow = alSubjects;
             }
 
@@ -486,8 +490,7 @@
                     'Please fill all text field before searching',
                     'warning'
                 )
-            }
-            else {
+            } else {
                 var form = new FormData();
                 form.append('index', index.value);
                 form.append('year', year.value);
@@ -497,7 +500,7 @@
                 const container = document.getElementById("resultContainer");
 
                 var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function () {
+                xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         var response = JSON.parse(xhr.responseText);
                         if (response.status == "noData") {
@@ -507,8 +510,7 @@
                                 'error'
                             )
                             container.classList.add("d-none");
-                        }
-                        else {
+                        } else {
                             container.classList.remove('d-none');
                             document.getElementById("currentMarks").value = response.marks;
                             document.getElementById("updateButton").dataset.id = response.id;
