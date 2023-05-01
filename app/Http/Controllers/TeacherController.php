@@ -132,6 +132,24 @@ class TeacherController extends Controller
         }
     }
 
+    public function getStudentMarksToUpdate(Request $request) {
+        $marks = MarksController::show($request->index, $request->year, $request->term);
+
+        $response = new \stdClass();
+        if($marks != null) {
+            foreach ($marks->details as $item) {
+                if($item["subject"] == $request->subject) {
+                    $response->id = $marks->_id;
+                    $response->marks = $item["marks"];
+                    return $response;
+                }
+            }
+        } else {
+            $response->status = 'noData';
+            return $response;
+        }
+    }
+
     public function navigateToSummary() {
         $teacherDetails = self::getClass(auth()->user()->index, Date("Y"));
         $students = ClassController::getStudentList($teacherDetails->grade, $teacherDetails->class, Date("Y"));

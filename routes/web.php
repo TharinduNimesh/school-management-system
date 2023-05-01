@@ -125,6 +125,9 @@ Route::prefix('admin')->middleware(['auth', 'IsAdmin'])->group(function() {
     Route::get('manage/discipline', function() {
         return view('admin.discipline');
     })->name('admin.discipline');
+    Route::get('add/teacher/subject', function() {
+        return view('admin.teacherSubject');
+    })->name('admin.teacher.subject');
     Route::get('manage/leaves', [LeavesController::class, 'navigateToadminApproveLeaves'])->name('admin.leaves');
     Route::get('manage/sports', [SportController::class, "navigateToAdminSport"])->name('admin.sports');
 });
@@ -230,6 +233,8 @@ Route::post('add/marks/assignment', [AssignmentController::class, "add_marks"])-
 Route::post('add/marks', [MarksController::class, 'add'])->name('add.marks');
 Route::post('filter/marks', [MarksController::class, 'getUnmarkedStudents'])->name('filter.student.for.marks');
 Route::post('get/subjects', [MarksController::class, 'getSubjectsList'])->name('get.subjects');
+Route::post('get/subject/marks', [TeacherController::class, 'getStudentMarksToUpdate'])->name('get.marks.for.update');
+Route::post('update/marks', [MarksController::class, 'update'])->name('update.marks');
 
 // Student Function Routes
 Route::post('submit/assignment', [AssignmentController::class, 'submit'])->name('submit.assignment');

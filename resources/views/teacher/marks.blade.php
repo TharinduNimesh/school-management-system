@@ -16,6 +16,10 @@
         table input {
             width: 80px;
         }
+
+        .space {
+            white-space: nowrap;
+        }
     </style>
 
 </head>
@@ -79,7 +83,7 @@
                                         @foreach ($students as $key => $student)
                                         <tr id="row{{ $student['_id'] }}">
                                             <th>{{ $key + 1 }}</th>
-                                            <td>{{ $student["initial_name"] }}</td>
+                                            <td class="space">{{ $student["initial_name"] }}</td>
                                             @foreach ($subjects as $subject)
                                             <td>
                                                 <input type="number" id="{{ $student['_id'] . $subject }}" />
@@ -188,14 +192,18 @@
         var currentYear = currentDate.getFullYear();
 
         var pastYearoption = document.createElement('option');
-        pastYearoption.innerHTML = currentYear - 1
+        pastYearoption.innerHTML = currentYear - 1;
+        const extraPastYear = document.createElement('option');
+        extraPastYear.innerHTML = currentYear - 1;
 
         var currentYearOption = document.createElement('option');
         currentYearOption.innerHTML = currentYear;
+        const extraCurrentYear = document.createElement("option");
+        extraCurrentYear.innerHTML = currentYear;
 
         var selecter = document.getElementById("marksYear");
-        selecter.appendChild(pastYearoption);
-        selecter.appendChild(currentYearOption);
+        selecter.appendChild(extraPastYear);
+        selecter.appendChild(extraCurrentYear);
 
         const yearList = document.getElementById("year");
         yearList.appendChild(pastYearoption);
@@ -215,7 +223,18 @@
                 form.append("year", year.value);
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function() {
-
+                    if(xhr.readyState == 4 && xhr.status == 200) {
+                        var subjects = JSON.parse(xhr.responseText);
+                        subjectList.innerHTML = '';
+                        const row = document.createElement("option");
+                        row.innerHTML = "Open this select menu";
+                        subjectList.appendChild(row);
+                        subjects.forEach(subject => {
+                            var item = document.createElement("option");
+                            item.innerHTML = subject;
+                            subjectList.appendChild(item);
+                        });
+                    }
                 }
 
                 xhr.open("POST", "{{ route('get.subjects') }}");
@@ -227,7 +246,7 @@
             const button = document.getElementById("updateButton");
             const newMarks = document.getElementById("newMarks");
 
-            if (newMarks.value < 0 || newMarks.value > 100) {
+            if (newMarks.value < 0 || newMarks.value > 100 || newMarks.value.trim() == '') {
                 Swal.fire(
                     'WARNING',
                     'Please Enter Correct Marks',
@@ -241,7 +260,6 @@
                 form.append("subject", button.dataset.subject);
                 form.append("marks", newMarks.value);
                 form.append("currentMarks", document.getElementById("currentMarks").value);
-                form.append("total", button.dataset.total);
 
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function() {
@@ -258,7 +276,8 @@
                     }
                 }
 
-                xhr.open("POST", "process/updateMarks.php", true);
+                xhr.open("POST", "{{ route('update.marks') }}");
+                xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
                 xhr.send(form);
             }
 
@@ -312,6 +331,7 @@
                                     const nameCol = document.createElement("td");
                                     const nameHead = document.createElement("th");
                                     nameCol.innerHTML = student.initial_name;
+                                    nameCol.classList.add('space');
                                     nameHead.innerHTML = "Name";
                                     newRow.appendChild(nameCol);
                                     headRow.appendChild(nameHead);
@@ -453,31 +473,6 @@
             }
         }
 
-        function listSubject() {
-            var kidsSubjects = ["Sinhala", "Maths", "English", "Tamil", "Buddhism", "Environment"];
-            var middleSubjects = ["Sinhala", "Maths", "English", "Science", "Tamil", "Buddhism", "History", "Geography", "Esthetics", "Civics", "Health", "PTS"];
-            var olSubjects = ["Sinhala", "Maths", "English", "Science", "Buddhism", "History", "Bucket1", "Bucket2", "Bucket3"];
-            var alSubjects = ["Bucket1", "Bucket2", "Bucket3", "English", "GIT", "General_knowledge"];
-
-            var SubjectRow;
-            if (grade <= 5) {
-                SubjectRow = kidsSubjects;
-            } else if (grade <= 9) {
-                SubjectRow = middleSubjects;
-            } else if (grade <= 11) {
-                SubjectRow = olSubjects;
-            } else if (grade <= 13) {
-                SubjectRow = alSubjects;
-            }
-
-            for (let i = 0; i < SubjectRow.length; i++) {
-                var option = document.createElement("option");
-                option.value = SubjectRow[i];
-                option.innerHTML = SubjectRow[i];
-                document.getElementById("subjectList").appendChild(option)
-            }
-        }
-
         function searchMarks() {
             const index = document.getElementById("index");
             const year = document.getElementById("year");
@@ -495,7 +490,7 @@
                 form.append('index', index.value);
                 form.append('year', year.value);
                 form.append('term', term.value);
-                form.append('subject', subject.value.toLowerCase());
+                form.append('subject', subject.value);
 
                 const container = document.getElementById("resultContainer");
 
@@ -514,13 +509,13 @@
                             container.classList.remove('d-none');
                             document.getElementById("currentMarks").value = response.marks;
                             document.getElementById("updateButton").dataset.id = response.id;
-                            document.getElementById("updateButton").dataset.subject = subject.value.toLowerCase();
-                            document.getElementById("updateButton").dataset.total = response.total;
+                            document.getElementById("updateButton").dataset.subject = subject.value;
                         }
                     }
                 }
 
-                xhr.open("POST", "process/searchMarksToUpdate.php", true);
+                xhr.open("POST", "{{ route('get.marks.for.update') }}");
+                xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
                 xhr.send(form);
             }
         }

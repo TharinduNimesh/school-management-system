@@ -64,10 +64,35 @@ class MarksController extends Controller
         return json_encode($obj);
     }
 
+    public function update(Request $request) {
+        $record = Marks::find($request->id);
+        $total = $record->total - $request->currentMarks + $request->marks;
+        $details = $record->details;
+        foreach ($details as &$marks) {
+            if($marks["subject"] == $request->subject) {
+                $marks["marks"] = $request->marks;
+            }
+        }
+        $record->makeHidden('details'); // temporarily hide the "details" attribute
+        $record->total = $total;
+        $record->details = $details; // update the "details" attribute with the new array
+        $record->makeVisible('details'); // make the "details" attribute visible again
+        $record->save();
+    }
+
     public function getSubjectsList(Request $request) {
         $teacher = TeacherController::getClass(auth()->user()->index, $request->year);
         $subjects = ClassController::getSubjects($teacher->grade);
 
-        return $teacher->grade;
+        return $subjects;
+    }
+
+    public static function show($index, $year, $term) {
+        $marks = Marks::where('index_number', $index)
+        ->where('year', $year)
+        ->where('term', $term)
+        ->first();
+
+        return $marks;
     }
 }
