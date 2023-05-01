@@ -87,9 +87,7 @@ Route::prefix('teacher')->middleware(['auth', 'IsTeacher'])->group(function() {
     Route::get('search/student', function() {
         return view('teacher.search');
     })->name('teacher.search');
-    Route::get('search/marks', function() {
-        return view('teacher.resultsheet');
-    })->name('teacher.resultsheet');
+    Route::get('search/marks', [TeacherController::class, 'navigateToResultSheet'])->name('teacher.resultsheet');
     Route::get('manage/leaves', [LeavesController::class, 'navigateToTeacherLeaves'])->name('teacher.leaves');
     Route::get('summary', [TeacherController::class, 'navigateToSummary'])->name('teacher.summary');
 });
@@ -235,6 +233,7 @@ Route::post('filter/marks', [MarksController::class, 'getUnmarkedStudents'])->na
 Route::post('get/subjects', [MarksController::class, 'getSubjectsList'])->name('get.subjects');
 Route::post('get/subject/marks', [TeacherController::class, 'getStudentMarksToUpdate'])->name('get.marks.for.update');
 Route::post('update/marks', [MarksController::class, 'update'])->name('update.marks');
+Route::post('teacher/search/marks', [TeacherController::class, 'teacherSearchMarks'])->name('teacher.search.marks');
 
 // Student Function Routes
 Route::post('submit/assignment', [AssignmentController::class, 'submit'])->name('submit.assignment');

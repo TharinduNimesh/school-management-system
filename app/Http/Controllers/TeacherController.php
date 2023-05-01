@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\TeacherWelcome;
+use App\Models\Marks;
 use App\Models\SectionHead;
 use App\Models\Teacher;
 use App\Models\User;
@@ -150,10 +151,47 @@ class TeacherController extends Controller
         }
     }
 
+    public function teacherSearchMarks(Request $request) {
+        $students = ClassController::getStudentList($request->grade, $request->class, $request->year);
+        $marks = [];
+        $subjects = ClassController::getSubjects($request->grade);
+        
+        foreach ($students as $student) {
+            $getMarks = MarksController::show($student["index_number"], $request->year, $request->term);
+            $object = new \stdClass();
+            $object->index = $student["index_number"];
+            $object->name = $student["initial_name"];
+            if($getMarks != null) {
+                $object->marks = $getMarks->details;
+                $object->total = $getMarks->total;
+                array_push($marks, $object);
+            } else {
+                $absentMarks = [];
+                foreach ($subjects as $subject) {
+                    $absentObj = new \stdClass();
+                    $absentObj->subject = $subject;
+                    $absentObj->marks = "ab";
+                    array_push($absentMarks, $absentObj);
+                }
+                $object->marks = $absentMarks;
+                $object->total = 0;
+                array_push($marks, $object);
+            }
+        }
+
+        usort($marks, function($a, $b) {
+            return $b->total - $a->total;
+        });
+
+        $response = new \stdClass();
+        $response->marks = $marks;
+        $response->subjects = $subjects;
+        return $response;
+    }
+
     public function navigateToSummary() {
         $teacherDetails = self::getClass(auth()->user()->index, Date("Y"));
         $students = ClassController::getStudentList($teacherDetails->grade, $teacherDetails->class, Date("Y"));
-
         $array = [];
         foreach ($students as $student) {
             $obj = new \stdClass();
@@ -182,6 +220,20 @@ class TeacherController extends Controller
         return view('teacher.marks', [
             "subjects" => $subjects,
             "students" => $students
+        ]);
+    }
+
+    public function navigateToResultSheet() {
+        $all = Marks::all();
+        $years = [];
+        foreach ($all as $item) {
+            if(!in_array($item["year"], $years)) {
+                array_push($years, $item["year"]);
+            }
+        }
+        sort($years);
+        return view('teacher.resultsheet', [
+            'years' => $years
         ]);
     }
 }

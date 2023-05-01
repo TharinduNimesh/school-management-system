@@ -3,6 +3,11 @@
 
 <head>
     @include('teacher.components.head')
+    <style>
+        .space {
+            white-space: nowrap;
+        }
+    </style>
 </head>
 
 <body>
@@ -27,9 +32,9 @@
                                 <select class="form-select bg-secondary text-dark" id="year"
                                     aria-label="Floating label select example">
                                     <option selected value="0">Select a Year</option>
-                                    <option>2022</option>
-                                    <option>2023</option>
-                                    <option>2024</option>
+                                    @foreach ($years as $year)
+                                        <option>{{ $year }}</option>
+                                    @endforeach
                                 </select>
                                 <label for="floatingSelect">Year List</label>
                             </div>
@@ -89,7 +94,7 @@
                     <div class="table-responsive">
                         <table class="table text-start align-middle table-bordered table-hover mb-0" id="studentTable">
                             <thead id="tableHead">
-                                <tr class="text-dark">
+                                <tr class="text-dark" id="headRow">
                                     <th scope="col">Index No</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Sinhala</th>
@@ -129,6 +134,11 @@
             var term = document.getElementById("term");
             var grade = document.getElementById("grade");
             var Myclass = document.getElementById("class");
+            const headerRow = document.getElementById('headRow');
+            const tableBody = document.getElementById("tableBody");
+            const spinner = document.getElementById("spinner");
+            tableBody.innerHTML = '';
+            headerRow.innerHTML = '';
 
             if (year.value == 0 || year.value == 0 || grade.value == 0 || Myclass.value == 0) {
                 Swal.fire({
@@ -138,93 +148,98 @@
                 });
             }
             else {
+                spinner.classList.add("show");
                 var form = new FormData();
                 form.append("year", year.value);
                 form.append("term", term.value);
                 form.append("class", Myclass.value);
                 form.append("grade", grade.value);
 
-                var kidTable = ["index_number", "name", "Buddhism", "Sinhala", "Maths", "English", "Environment", "Tamil", "Total", "Place"];
-                var middleTable = ["index_number", "name", "Buddhism", "Sinhala", "Maths", "English", "Science", "Tamil", "History", "Geography", "Health", "Civics", "ART", "PTS", "Total", "Place"];
-                var olTable = ["index_number", "name", "Sinhala", "Maths", "English", "Science", "Buddhism", "History", "Bucket_1", "Bucket_2", "Bucket_3", "Total", "Place"];
-                var alTable = ["index_number", "name", "Bucket 1", "Bucket 2", "Bucket 3", "English", "GIT", "Total", "Place"];
-
-                var selected = 0;
-                if (grade.value <= 5) {
-                    selected = kidTable;
-                }
-                else if (grade.value <= 9) {
-                    selected = middleTable;
-                }
-                else if (grade.value <= 11) {
-                    selected = olTable;
-                }
-                else if (grade.value <= 13) {
-                    selected = alTable;
-                }
-                else {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'ERROR',
-                        text: "Refresh And Try Again",
-                    });
-                }
                 var req = new XMLHttpRequest();
                 var tbody = document.getElementById("tableBody");
                 req.onreadystatechange = function () {
                     if (req.readyState == 4 && req.status == 200) {
                         var response = JSON.parse(req.responseText);
-                        if (response.status == 'error') {
-                            tbody.innerHTML = '';
+
+                        const Indexcol = document.createElement("th");
+                        Indexcol.innerHTML = "Index Number";
+                        Indexcol.classList.add("space");
+                        headerRow.appendChild(Indexcol);
+
+                        const NameCol = document.createElement("th");
+                        NameCol.innerHTML = "Name";
+                        headerRow.appendChild(NameCol);
+
+                        response.subjects.forEach(subject => {
+                            var subCol = document.createElement("th");
+                            subCol.innerHTML = subject;
+                            headerRow.appendChild(subCol);
+                        });
+
+                        const TotalCol = document.createElement("th");
+                        TotalCol.innerHTML = "Total";
+                        headerRow.appendChild(TotalCol);
+
+                        const placeCol = document.createElement("th");
+                        placeCol.innerHTML = "Place"
+                        headerRow.appendChild(placeCol);
+
+                        if(response.marks.length == 0) {
+                            const columnCount = headerRow.cells.length;
                             var row = document.createElement("tr");
-                            var col = document.createElement("td");
-                            row.style.background = "orange";
-                            row.style.textAlign = "center";
-                            col.colSpan = selected.length;
-                            col.innerHTML = "Data Not Exists";
+                            var col = document.createElement("th");
+                            col.innerHTML = "No Mark To Show";
+                            col.colSpan = columnCount;
+                            col.style.color = "red";
+                            col.style.backgroundColor = "orange"
                             row.appendChild(col);
-                            tbody.appendChild(row);
-                        }
-                        else if (response.status == 'success') {
-                            tbody.innerHTML = '';
+                            tableBody.appendChild(row);
+                        } else {
+                            // console.log(response.marks);
+                            for (let i = 0; i < Object.keys(response.marks).length; i++) {
+                                const newRow = document.createElement('tr');
 
-                            var thead = document.getElementById("tableHead");
-                            var headingRow = document.createElement("tr");
-                            for (let a = 0; a < selected.length; a++) {
-                                let headingColumn = document.createElement("th");
-                                headingColumn.innerHTML = selected[a];
-                                headingRow.appendChild(headingColumn);
-                            }
-                            thead.innerHTML = '';
-                            thead.appendChild(headingRow);
+                                const index = document.createElement('td');
+                                index.innerHTML = response.marks[i].index;
+                                newRow.appendChild(index);
 
-                            for (let i = 0; i < response.data.length; i++) {
-                                var row = document.createElement("tr");
-                                for (let c = 0; c < selected.length; c++) {
-                                    var cols = document.createElement("td");
-                                    if (c == selected.length - 1) {
-                                        cols.innerHTML = i + 1;
+                                const name = document.createElement("td");
+                                name.innerHTML = response.marks[i].name;
+                                name.classList.add('space');
+                                newRow.appendChild(name);
+
+                                response.marks[i].marks.forEach(points => {
+                                    var marks = document.createElement("td");
+                                    marks.innerHTML = points.marks;
+                                    if(points.marks < 40) {
+                                        marks.style.color = "red";
+                                    } else if(points.marks == 'ab'){
+                                        marks.style.backgroundColor = "red";
+                                        marks.style.color = "white";
+                                        marks.style.fontWeight = "bold";
                                     }
-                                    else {
-                                        let subject = selected[c].toLowerCase();
-                                        cols.innerHTML = response.data[i][subject];
-                                        if(response.data[i][subject] < 40) {
-                                            cols.style.color = 'red';
-                                        }
-                                        if (subject == "name") { 
-                                            cols.style.whiteSpace = "nowrap";
-                                        }
-                                    }
-                                    row.appendChild(cols);
-                                }
-                                tbody.appendChild(row);
-                            }
 
+                                    newRow.appendChild(marks);
+                                });
+
+                                const total = document.createElement("td");
+                                total.innerHTML = response.marks[i].total;
+                                newRow.appendChild(total);
+
+                                const place = document.createElement("td");
+                                place.innerHTML = i + 1;
+                                newRow.appendChild(place);
+
+                                tableBody.appendChild(newRow);
+                            }
                         }
+
+                        spinner.classList.remove("show");
                     }
                 };
 
-                req.open("POST", "process/resultSearch.php", true);
+                req.open("POST", "{{ route('teacher.search.marks') }}");
+                req.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
                 req.send(form);
             }
         }
