@@ -24,31 +24,22 @@
             <!-- Navbar End -->
 
 
-            <!-- Sale & Revenue Start -->
+            <!-- Filter start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                    <div class="col-sm-6 col-xl-6">
-                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-line fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">Student</p>
-                                <h6 class="mb-0 text-wite">20</h6>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6 col-xl-6">
-                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-area fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">Total wins</p>
-                                <h6 class="mb-0 text-wite">0</h6>
+                    <div class="col-sm-12 col-xl-12">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h3 class="text-dark">Search Student</h3>
+                            <div class="input-group mb-3">
+                              <input type="text" class="form-control bg-secondary text-dark" placeholder="Search By Name"
+                                aria-label="Recipient's username" aria-describedby="button-addon2" id="bookId">
+                              <button class="btn btn-primary" type="button" id="button-addon2" onclick="searchById();">Search</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Sale & Revenue End -->
+            <!-- Filter end -->
 
 
             <!-- Table Start -->
@@ -56,34 +47,38 @@
                 <div class="row g-4">
                     <div class="col-sm-12 col-xl-12">
                         <div class="bg-secondary rounded h-100 p-4">
-                            <h3 class="text-dark mb-4">Upcoming gaming events</h3>
+                            <h3 class="text-dark mb-4">Student List</h3>
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Date</th>
-                                            <th scope="col">Place</th>
+                                            <th scope="col">Index No</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Age group</th>
                                             <th scope="col">Description</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <th scope="row">Kamal</th>
-                                            <td>200505904455</td>
+                                            <th scope="row">146861</th>
+                                            <td>john doe</td>
+                                            <td>under 13</td>
                                             <td>Discover 15 Sport Dashboard designs on Dribbble. Your resource to
                                                 discover and connect with designers worldwide.
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">Kamal</th>
-                                            <td>200505904455</td>
+                                            <th scope="row">146861</th>
+                                            <td>john doe</td>
+                                            <td>under 13</td>
                                             <td>Discover 15 Sport Dashboard designs on Dribbble. Your resource to
                                                 discover and connect with designers worldwide.
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">Kamal</th>
-                                            <td>200505904455</td>
+                                            <th scope="row">146861</th>
+                                            <td>john doe</td>
+                                            <td>under 13</td>
                                             <td>Discover 15 Sport Dashboard designs on Dribbble. Your resource to
                                                 discover and connect with designers worldwide.
                                             </td>
@@ -96,21 +91,6 @@
                 </div>
             </div>
             <!-- Table End -->
-
-
-            <!--calender starrt-->
-            <div class="container-fluid pt-4 px-4">
-                <div class="col-sm-12 col-md-12">
-                    <div class="h-100 bg-secondary rounded p-4">
-                        <div class="d-flex align-items-center justify-content-between mb-4">
-                            <h6 class="text-dark mb-0">Calender</h6>
-                            <a href="">Today</a>
-                        </div>
-                        <div id="calender"></div>
-                    </div>
-                </div>
-            </div>
-            <!--calender end-->
 
 
             <!-- Footer Start -->
@@ -128,12 +108,6 @@
     @include('public_components.js')
     <!-- Template Javascript -->
     
-    <script>
-            $('#calender').datetimepicker({
-        inline: true,
-        format: 'L'
-    });
-    </script>
 </body>
 
 </html>
