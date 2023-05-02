@@ -95,4 +95,25 @@ class MarksController extends Controller
 
         return $marks;
     }
+
+    public static function getPlace($grade, $class, $year, $term, $index) {
+        $all = Marks::where('year', $year)
+        ->where('term', $term)
+        ->where('grade', $grade)
+        ->where('class', $class)
+        ->get()
+        ->toArray();
+
+        if($all != null) {
+            $collection = collect($all);
+            $sortedCollection = $collection->sortByDesc('total');
+            $place = 1;
+            foreach($sortedCollection as $key => $item) {
+                if($item["index_number"] == $index) {
+                    return $place;
+                }
+                $place ++;
+            }
+        }
+    }
 }

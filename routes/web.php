@@ -61,9 +61,7 @@ Route::prefix('student')->middleware(['auth', 'IsStudent'])->group(function () {
         return view('student.dashboard');
     })->name('student.dashboard');
     Route::get('attendance', [AttendanceController::class, "navigateToStudentAttendance"])->name('student.attendance');
-    Route::get('marks', function() {
-        return view('student.marks');
-    })->name('student.marks');
+    Route::get('marks', [StudentController::class, 'navigateToMarks'])->name('student.marks');
     Route::get('timetable', function() {
         return view('student.timetable');
     })->name('student.timetable');
@@ -237,6 +235,7 @@ Route::post('teacher/search/marks', [TeacherController::class, 'teacherSearchMar
 
 // Student Function Routes
 Route::post('submit/assignment', [AssignmentController::class, 'submit'])->name('submit.assignment');
+Route::post('student/search/marks', [StudentController::class, 'searchMarks'])->name('student.search.marks');
 
 // email routes
 Route::get('email/assignment', function() {

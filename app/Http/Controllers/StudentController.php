@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\WelcomeMail;
+use App\Models\Marks;
 use App\Models\Student;
 use App\Models\StudentAttendance;
 use App\Models\User;
@@ -108,6 +109,22 @@ class StudentController extends Controller
         }
     }
 
+    public function searchMarks(Request $request) {
+        $marks = MarksController::show(auth()->user()->index, $request->year, $request->term);
+        if($marks == null) {
+            return 'noData';
+        } else {
+            $average = $marks->total / count($marks->details);
+            $student = StudentController::getClass(auth()->user()->index, $request->year);
+            $response = new \stdClass();
+            $response->marks = $marks->details;
+            $response->total = $marks->total;
+            $response->place = MarksController::getPlace($student["grade"], $student["class"], $request->year, $request->term, auth()->user()->index);
+            $response->average = $average;
+            return $response;
+        }
+    }
+
     public static function getAttendancePrecentage($index, $year) {
         $attendace_data = StudentAttendance::select('attendance')->where('index_number', $index)->where('year', $year)->first();
         $dateCount = AttendanceController::getSchoolHoldDateCount(Date("Y"));
@@ -129,6 +146,23 @@ class StudentController extends Controller
                 }
             }
         }
+    }
+
+    public function navigateToMarks() {
+        $all = Marks::where('index_number', auth()->user()->index)->get();
+        $years = [];
+
+        if($all != null) {
+            foreach ($all as $item) {
+                if(!in_array($item["year"], $years)) {
+                    array_push($years, $item["year"]);
+                }
+            }
+        }
+        sort($years);
+        return view('student.marks', [
+            'years' => $years
+        ]);
     }
 
 }
