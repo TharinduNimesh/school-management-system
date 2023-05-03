@@ -260,33 +260,6 @@ Ex: Bsc Hons In Software Enginnering</textarea>
                 xhr.send(form);
             }
         }
-
-        function removeHead(Button) {
-            Swal.fire({
-                title: 'Do you want to save the changes?',
-                showDenyButton: true,
-                showCancelButton: true,
-                confirmButtonText: 'Save',
-                denyButtonText: `Don't save`,
-            }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-                    var xhr = new XMLHttpRequest();
-                    xhr.onreadystatechange = function() {
-                        if(xhr.readyState == 4 && xhr.status == 200) {
-                            document.getElementById("row" + Button.dataset.headid).classList.add("d-none");
-                            Swal.fire('Saved!', '', 'success');
-                        }
-                    }
-
-                    xhr.open("GET", "process/removeSectionHead.php?hid=" + Button.dataset.headid + "", true);
-                    xhr.send();
-                    // Swal.fire('Saved!', '', 'success')
-                } else if (result.isDenied) {
-                    Swal.fire('Changes are not saved', '', 'info')
-                }
-            })
-        }
     </script>
 </body>
 

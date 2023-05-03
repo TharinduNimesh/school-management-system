@@ -33,9 +33,9 @@
                 Manage Sports</a>
             <a name="ham-item" id="manageRegister" href="{{ route('admin.register') }}" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Manage
                 Register</a>
-            <a name="ham-item" id="teacherSubject" href="adminTeacherSubject.php" class="nav-item nav-link"><i class="bi bi-journal-code me-2"></i>Teacher
+            <a name="ham-item" id="teacherSubject" href="{{ route('admin.teacher.subject') }}" class="nav-item nav-link"><i class="bi bi-journal-code me-2"></i>Teacher
                 Subject</a>
-            <a name="ham-item" id="studentSubject" href="adminSubject.php" class="nav-item nav-link"><i class="bi bi-journal-plus me-2"></i>Student
+            <a name="ham-item" id="studentSubject" href="{{ route('admin.student.subject') }}" class="nav-item nav-link"><i class="bi bi-journal-plus me-2"></i>Student
                 Subjects</a>
             <a name="ham-item" id="discipline" href="{{ route('admin.discipline') }}" class="nav-item nav-link"><i class="bi bi-speedometer me-2"></i>
                 Discipline</a>

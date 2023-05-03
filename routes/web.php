@@ -15,6 +15,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\MarksController;
+use App\Http\Controllers\SubjectController;
 use App\Mail\StudentAssignment;
 
 /*
@@ -60,11 +61,17 @@ Route::prefix('student')->middleware(['auth', 'IsStudent'])->group(function () {
     Route::get('dashboard', function() {
         return view('student.dashboard');
     })->name('student.dashboard');
+    Route::get('profile', function() {
+        return view('student.profile');
+    })->name('student.profile');
     Route::get('attendance', [AttendanceController::class, "navigateToStudentAttendance"])->name('student.attendance');
     Route::get('marks', [StudentController::class, 'navigateToMarks'])->name('student.marks');
     Route::get('timetable', function() {
         return view('student.timetable');
     })->name('student.timetable');
+    Route::get('request/subject', function() {
+        return view('student.subject');
+    })->name('student.subject');
     Route::get('assignments', [AssignmentController::class, 'navigateToStudentAssignments'])->name('student.assignments');
     Route::get('payment', [PaymentController::class, 'navigateToStudentPayment'])->name('student.payment');
 });
@@ -124,6 +131,7 @@ Route::prefix('admin')->middleware(['auth', 'IsAdmin'])->group(function() {
     Route::get('add/teacher/subject', function() {
         return view('admin.teacherSubject');
     })->name('admin.teacher.subject');
+    Route::get('add/student/subject', [SubjectController::class, 'navigateToStudentSubject'])->name('admin.student.subject');
     Route::get('manage/leaves', [LeavesController::class, 'navigateToadminApproveLeaves'])->name('admin.leaves');
     Route::get('manage/sports', [SportController::class, "navigateToAdminSport"])->name('admin.sports');
 });
@@ -216,6 +224,9 @@ Route::prefix('search')->group(function() {
     Route::post("teacher", [TeacherController::class, 'show'])->name('search.teacher');
 });
 Route::delete('remove/section/head', [TeacherController::class, 'removeSectionHead'])->name("remove.section.head");
+
+// admin manage student subject routes
+Route::post('activate/request', [SubjectController::class, 'activate'])->name('request.activate');
 
 // Teacher functions
 Route::post("request/leaves", [LeavesController::class, 'request'])->name('request.leaves');

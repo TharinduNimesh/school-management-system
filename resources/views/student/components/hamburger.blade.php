@@ -22,6 +22,9 @@
             <a name="ham-item" id="timeTable" href="{{ route('student.timetable') }}" class="nav-item nav-link">
                 <i class="fa fa-table me-2"></i>Time Table
             </a>
+            <a name="ham-item" id="subject" href="{{ route('student.subject') }}" class="nav-item nav-link">
+                <i class="bi bi-book-half me-2"></i>Request Subject
+            </a>
             <a name="ham-item" id="assignments" href="{{ route('student.assignments') }}" class="nav-item nav-link">
                 <i class="bi bi-journal-bookmark-fill me-2"></i>Assignments
             </a>
