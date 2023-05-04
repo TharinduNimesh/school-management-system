@@ -176,11 +176,10 @@ class AssignmentController extends Controller
                     $assignment->marks = $details->marks;
                 }
             }
+
+            return view('student.assignment', [
+                "assignments" => $assignments
+            ]);
         }
-
-
-        return view('student.assignment', [
-            "assignments" => $assignments
-        ]);
     }
 }
