@@ -63,7 +63,7 @@
                             <i class="bi bi-cash fa-2x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">Facility charges</p>
-                                <h6 class="mb-0 text-dark"> 3260 </h6>
+                                <h6 class="mb-0 text-dark"> {{ env("SCHOOL_FEE") }} </h6>
                             </div>
                         </div>
                     </div>
@@ -182,88 +182,88 @@
                                             <div class="mb-3 col-md-6">
                                                 <label for="FullName" class="form-label">Full Name</label>
                                                 <input class="form-control bg-secondary text-dark" type="text"
-                                                    id="fullName" name="fullName" value="Ex: Sahan Perera" autofocus
+                                                    id="fullName" name="fullName" value="{{ $student->full_name }}" autofocus
                                                     disabled />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="Namewithinitials" class="form-label">Name with
                                                     initials</label>
                                                 <input class="form-control bg-secondary text-dark" type="text"
-                                                    name="initialName" id="initialName" value="Ex: A.B.C. Perera"
+                                                    name="initialName" id="initialName" value="{{ $student->initial_name }}"
                                                     disabled />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="Dateofbirth" class="form-label">Date of birth</label>
                                                 <input class="form-control bg-secondary text-dark" type="text" id="dob"
-                                                    name="Dateofbirth" value="Ex: 2000/01/01" disabled />
+                                                    name="Dateofbirth" value="{{ $student->date_of_birth }}" disabled />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="Gender" class="form-label">Gender</label>
                                                 <input type="text" class="form-control bg-secondary text-dark"
-                                                    id="Gender" name="Gender" value="Ex: Male" disabled />
+                                                    id="Gender" name="Gender" value="{{ $student->gender }}" disabled />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="address" class="form-label">Address</label>
                                                 <input type="text" class="form-control bg-secondary text-dark"
-                                                    id="address" name="address" value="Ex: 432/1 A, Waragoda, Kelaniya"
+                                                    id="address" name="address" value="{{ $student->address }}"
                                                     disabled />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="Indexnumber" class="form-label">Index number</label>
                                                 <input class="text-dark form-control bg-secondary" disabled type="text"
-                                                    id="studentIndexNumber" name="Indexnumber" value="Ex: 12345"
+                                                    id="studentIndexNumber" name="Indexnumber" value="{{ $student->index_number }}"
                                                     maxlength="6" />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="Scholarship" class="form-label">Scholarship</label>
                                                 <input type="text" class="text-dark form-control bg-secondary"
-                                                    id="scholarship" name="Scholarship" value="Ex: Yes" disabled />
+                                                    id="scholarship" name="Scholarship" value="{{ $student->scholarship }}" disabled />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="Nerollyear" class="form-label">Enroll year</label>
                                                 <input id="startYear" class="text-dark bg-secondary form-control"
-                                                    disabled name="enrollyear" value="Ex: 2005" />
+                                                    disabled name="enrollyear" value="{{ $student->enroll_year }}" />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="Encrollclass" class="form-label">Enroll class</label>
                                                 <input id="startClass" class="text-dark bg-secondary form-control"
-                                                    disabled name="enrollclass" value="Ex: 01" />
+                                                    disabled name="enrollclass" value="{{ $student->enroll_class }}" />
 
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="address" class="form-label">Previous School</label>
                                                 <input disabled type="text" class="form-control bg-secondary text-dark"
-                                                    id="pSchool" name="pSchool" value="Ex: none" />
+                                                    id="pSchool" name="pSchool" value="{{ $student->previous_school }}" />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="Nationality" class="form-label">Nationality</label>
                                                 <input disabled id="nationality"
                                                     class="text-dark bg-secondary form-control" name="nationality"
-                                                    value="Ex: Sinhalese" />
+                                                    value="{{ $student->nationality }}" />
 
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="Religion" class="form-label">Religion</label>
                                                 <input disabled id="religion"
                                                     class="text-dark bg-secondary form-control" name="religion"
-                                                    value="Ex: Buddhism" />
+                                                    value="{{ $student->religion }}" />
                                             </div>
 
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label" for="phoneNumber">House</label>
                                                 <div class="input-group input-group-merge">
                                                     <span class="input-group-text" id="houseColor"
-                                                        style="background: green"></span>
+                                                        style="background: {{ $house->color }};"></span>
                                                     <input type="text" id="houseName" disabled name="phoneNumber"
                                                         class="form-control text-dark bg-secondary"
-                                                        value="Ex: Welusumana" />
+                                                        value="{{ $house->name }}" />
                                                 </div>
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label" for="distance">Distance to School</label>
                                                 <div class="input-group input-group-merge">
                                                     <input type="text" id="disToSchool" name="disToSchool"
-                                                        class="form-control text-dark bg-secondary" value="Ex: 10"
+                                                        class="form-control text-dark bg-secondary" value="{{ $student->distance }}"
                                                         disabled />
                                                     <span class="input-group-text">KM</span>
                                                 </div>
@@ -292,30 +292,30 @@
                                             <div class="mb-3 col-md-6">
                                                 <label for="MotherName" class="form-label">Mother Name</label>
                                                 <input disabled class="form-control bg-secondary text-dark" type="text"
-                                                    id="MotherName" name="MotherName" value="Ex: Diane White"
+                                                    id="MotherName" name="MotherName" value="{{ $student->mother_name }}"
                                                     autofocus />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="MotherNIC" class="form-label">Mother NIC</label>
                                                 <input disabled class="form-control bg-secondary text-dark" type="text"
-                                                    name="MotherNIC" id="MotherNIC" value="Ex: 78123456v" />
+                                                    name="MotherNIC" id="MotherNIC" value="{{ $student->mother_nic }}" />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="Mother Email" class="form-label">Mother Email</label>
                                                 <input disabled class="form-control bg-secondary text-dark" type="text"
-                                                    id="MotherEmail" name="Mother Email" value="Ex: abc@gmail.com" />
+                                                    id="MotherEmail" name="Mother Email" value="{{ $student->mother_email }}" />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="MotherJob" class="form-label">Mother Job</label>
                                                 <input disabled type="text" class="form-control bg-secondary text-dark"
-                                                    id="MotherJob" name="MotherJob" value="Ex: Nursing" />
+                                                    id="MotherJob" name="MotherJob" value="{{ $student->mother_job }}" />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="MotherJobaddress" class="form-label">Mother Job
                                                     Address</label>
                                                 <input disabled type="text" class="form-control bg-secondary text-dark"
                                                     id="MotherJobAddress" name="MotherJobaddress"
-                                                    value="Ex: Nawaloka Hospital Colombo" />
+                                                    value="{{ $student->mother_job_address }}" />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label" for="MotherNumber">Mother Phone
@@ -324,80 +324,80 @@
                                                     <span class="input-group-text">LK (+94)</span>
                                                     <input disabled type="text" id="MotherNumber" name="MotherNumber"
                                                         class="form-control bg-secondary text-dark"
-                                                        value="Ex: 70 123 4567" />
+                                                        value="{{ $student->mother_mobile }}" />
                                                 </div>
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="FatherName" class="form-label">Father Name</label>
                                                 <input disabled class="form-control bg-secondary text-dark" type="text"
-                                                    id="FatherName" name="FatherName" value="Ex: John Doe" />
+                                                    id="FatherName" name="FatherName" value="{{ $student->father_name }}" />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="FatherNIC" class="form-label">Father NIC</label>
                                                 <input disabled type="text" class="form-control bg-secondary text-dark"
-                                                    id="FatherNIC" name="FatherNIC" value="Ex: 703123234v" />
+                                                    id="FatherNIC" name="FatherNIC" value="{{ $student->father_nic }}" />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="FatherNumber" class="form-label">Father Number</label>
                                                 <input type="text" class="form-control bg-secondary text-dark" disabled
-                                                    value="Ex: 701113332" id="FatherNumber" />
+                                                    value="{{ $student->father_mobile }}" id="FatherNumber" />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="FatherJob" class="form-label">Father Job</label>
                                                 <input disabled id="FatherJob"
                                                     class="form-control bg-secondary text-dark" name="FatherJob"
-                                                    value="Ex: Software Engineer" />
+                                                    value="{{ $student->father_job }}" />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="FatherJobAddress" class="form-label">Father Job
                                                     Address</label>
                                                 <input disabled id="FatherJobAddress"
                                                     class="form-control bg-secondary text-dark" name="FatherJobAddress"
-                                                    value="Ex: ABC Company Nugegoda" />
+                                                    value="{{ $student->father_job_address }}" />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="GuardianName" class="form-label">Father Email</label>
                                                 <input disabled id="FatherEmail"
                                                     class="form-control bg-secondary text-dark" name="GuardianName"
-                                                    value="Ex: abc@outlook.com" />
+                                                    value="{{ $student->father_email }}" />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="GuardianName" class="form-label">Guardian Name</label>
                                                 <input disabled id="GuardianName"
                                                     class="form-control bg-secondary text-dark" name="GuardianName"
-                                                    value="" />
+                                                    value="{{ $student->guardian_name }}" />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="GuardianNIC" class="form-label">Guardian NIC</label>
                                                 <input disabled id="GuardianNIC"
                                                     class="form-control bg-secondary text-dark" name="GuardianNIC"
-                                                    value="" />
+                                                    value="{{ $student->guardian_nic }}" />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="GuardianNumber" class="form-label">Guardian
                                                     Number</label>
                                                 <input disabled id="GuardianNumber"
                                                     class="form-control bg-secondary text-dark" name="GuardianNumber"
-                                                    value="" />
+                                                    value="{{ $student->guardian_mobile }}" />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="GuardianJob" class="form-label">Guardian Job</label>
                                                 <input disabled id="GuardianJob"
                                                     class="form-control bg-secondary text-dark" name="GuardianJob"
-                                                    value="" />
+                                                    value="{{ $student->guardian_job }}" />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="GuardianJobAddress" class="form-label">Guardian Job
                                                     Address</label>
                                                 <input disabled id="GuardianJobAddress"
                                                     class="form-control bg-secondary text-dark"
-                                                    name="GuardianJobAddress" value="" />
+                                                    name="GuardianJobAddress" value="{{ $student->guardian_job_address }}" />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="GuardianEmail" class="form-label">Guardian Email</label>
                                                 <input disabled id="GuardianEmail"
                                                     class="form-control bg-secondary text-dark" name="GuardianEmail"
-                                                    value="" />
+                                                    value="{{ $student->guardian_email }}" />
                                             </div>
                                         </div>
                                     </div>
@@ -418,7 +418,7 @@
                                             <div class="mb-3 col-md-6">
                                                 <label for="MotherEmail" class="form-label">Mother Email</label>
                                                 <input class="form-control  bg-secondary text-dark" type="text"
-                                                    id="motherEmail" name="motherEmail" value="Ex: abc@gmail.com"
+                                                    id="motherEmail" name="motherEmail" value="{{ $student->mother_email }}"
                                                     autofocus disabled />
                                             </div>
                                             <div class="mb-3 col-md-6">
@@ -427,13 +427,13 @@
                                                     <span class="input-group-text">LK (+94)</span>
                                                     <input type="text" id="motherNumber" name="phoneNumber"
                                                         class="form-control bg-secondary text-dark"
-                                                        value="Ex: 701112223" disabled />
+                                                        value="{{ $student->mother_mobile }}" disabled />
                                                 </div>
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="FatherEmail" class="form-label">Father Email</label>
                                                 <input class="form-control bg-secondary text-dark" type="text"
-                                                    id="fatherEmail" name="fatherEmail" value="Ex: abc@outlook.com"
+                                                    id="fatherEmail" name="fatherEmail" value="{{ $student->father_email }}"
                                                     disabled />
                                             </div>
                                             <div class="mb-3 col-md-6">
@@ -442,14 +442,14 @@
                                                     <span class="input-group-text">LK (+94)</span>
                                                     <input type="text" id="fatherNumber" name="phoneNumber"
                                                         class="form-control bg-secondary text-dark"
-                                                        value="Ex: 701212123" disabled />
+                                                        value="{{ $student->father_mobile }}" disabled />
                                                 </div>
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="address" class="form-label">Home Address</label>
                                                 <input type="text" class="form-control bg-secondary text-dark"
                                                     id="studentAddress" name="address"
-                                                    value="Ex: 432/1 B, Ganemulla, Kadawatha." disabled />
+                                                    value="{{ $student->address }}" disabled />
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label" for="phoneNumber">Emergency Number</label>
@@ -457,14 +457,14 @@
                                                     <span class="input-group-text">LK (+94)</span>
                                                     <input type="text" id="emNumber" name="emNumber"
                                                         class="form-control  bg-secondary text-dark"
-                                                        value="Ex: 701231234" disabled />
+                                                        value="{{ $student->emergency_number }}" disabled />
                                                 </div>
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label" for="phoneNumber">Emergency Email</label>
                                                 <input type="text" id="emEmail" name="emEmail"
                                                     class="form-control  bg-secondary text-dark"
-                                                    value="Ex: abc@yahoo.com" disabled />
+                                                    value="{{ $student->emergency_email }}" disabled />
                                             </div>
                                         </div>
                                     </div>
@@ -481,16 +481,39 @@
             <div class="container-fluid pt-4 px-4">
                 <div class="row">
                     <div class="col-12 mt-md-0 mt-3 col-md-6">
-                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                        <div class="bg-secondary rounded  p-4">
                             <div>
                                 <div>
                                     <h6 class="text-dark">Basket subjects</h6>
                                 </div>
-                                <div class="ms-3">
-                                    <p class="mb-0 text-dark" id="attendance"> art </p>
-                                    <p class="mb-0 text-dark" id="attendance"> IT </p>
-                                    <p class="mb-0 text-dark" id="attendance"> Commerce </p>
+                                <div class="row">
+                                    <div class="col-4" style="border-right: #000 1px solid;">
+                                        <div>
+                                            @if(isset($student->subjects["aesthetics_subject"]))
+                                            <p class="text-dark"> {{ $student->subjects["aesthetics_subject"] }} </p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-4" style="border-right: #000 1px solid;">
+                                        <div>
+                                            @if(isset($student->subjects["ol_bucket_1"]))
+                                            @for($i=1;$i<=3;$i++)
+                                            <p class="mb-0 text-dark"> {{ $student->subjects["ol_bucket_$i"] }} </p>
+                                            @endfor
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-4" style="border-right: #000 1px solid;">
+                                        <div>
+                                            @if(isset($student->subjects["al_bucket_1"]))
+                                            @for($i=1;$i<=3;$i++)
+                                            <p class="mb-0 text-dark"> {{ $student->subjects["al_bucket_$i"] }} </p>
+                                            @endfor
+                                            @endif
+                                        </div>
+                                    </div>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>

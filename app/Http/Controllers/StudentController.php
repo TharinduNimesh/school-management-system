@@ -166,6 +166,31 @@ class StudentController extends Controller
         ]);
     }
 
+    public function navigateToProfile() {
+        $index = auth()->user()->index;
+        $student = $this->show($index);
+        
+        $house = new \stdClass();
+        if($index % 4 == 0) {
+            $house->name = env("HOUSE_01_NAME");
+            $house->color = env("HOUSE_01_COLOR");
+        } else if($index % 4 == 1) {
+            $house->name = env("HOUSE_02_NAME");
+            $house->color = env("HOUSE_02_COLOR");
+        } else if($index % 4 == 2) {
+            $house->name = env("HOUSE_03_NAME");
+            $house->color = env("HOUSE_03_COLOR");
+        } else if($index % 4 == 3) {
+            $house->name = env("HOUSE_04_NAME");
+            $house->color = env("HOUSE_04_COLOR");
+        }
+
+        return view('student.profile', [
+            "student" => $student,
+            "house" => $house
+        ]);
+    }
+
     public function navigateToSubject() {
         $student = self::getClass(auth()->user()->index, Date("Y"));
         $aesthetic = null;

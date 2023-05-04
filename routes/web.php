@@ -61,9 +61,7 @@ Route::prefix('student')->middleware(['auth', 'IsStudent'])->group(function () {
     Route::get('dashboard', function() {
         return view('student.dashboard');
     })->name('student.dashboard');
-    Route::get('profile', function() {
-        return view('student.profile');
-    })->name('student.profile');
+    Route::get('profile', [StudentController::class, 'navigateToProfile'])->name('student.profile');
     Route::get('attendance', [AttendanceController::class, "navigateToStudentAttendance"])->name('student.attendance');
     Route::get('marks', [StudentController::class, 'navigateToMarks'])->name('student.marks');
     Route::get('timetable', function() {

@@ -191,7 +191,7 @@
                         </div>
                         @endif
 
-                        @if($al != null)
+                        @if($al == null)
                         <div class="card mb-4" id="alContainer">
                             <h5 class="card-header text-dark">Grade 12 Selection of stream Subjects</h5>
                             <!-- search result start-->
