@@ -171,28 +171,31 @@ class StudentController extends Controller
         $aesthetic = null;
         $ol = null;
         $al = null;
-        if($student["grade"] == 5) {
-            $subject = StudentsSubject::where('category', 'aesthetic')
-            ->where('deadline', '>=', Date("Y-m-d"))
-            ->first();
-            if($subject != null) {
-                $aesthetic = "active";
-            }
-        } else if($student["grade"] == 9) {
-            $subject = StudentsSubject::where('category', 'ol')
-            ->where('deadline', '>=', Date("Y-m-d"))
-            ->first();
-            if($subject != null) {
-                $ol = "active";
-            }
-        } else {
-            $student = self::getClass(auth()->user()->index, Date("Y", strtotime('-1 year')));
-            if($student["grade"] == 11) {
-                $subject = StudentsSubject::where('category', 'al')
+
+        if($student != null) {
+            if($student["grade"] == 5) {
+                $subject = StudentsSubject::where('category', 'aesthetic')
                 ->where('deadline', '>=', Date("Y-m-d"))
                 ->first();
                 if($subject != null) {
-                    $al = "active";
+                    $aesthetic = "active";
+                }
+            } else if($student["grade"] == 9) {
+                $subject = StudentsSubject::where('category', 'ol')
+                ->where('deadline', '>=', Date("Y-m-d"))
+                ->first();
+                if($subject != null) {
+                    $ol = "active";
+                }
+            } else {
+                $student = self::getClass(auth()->user()->index, Date("Y", strtotime('-1 year')));
+                if($student["grade"] == 11) {
+                    $subject = StudentsSubject::where('category', 'al')
+                    ->where('deadline', '>=', Date("Y-m-d"))
+                    ->first();
+                    if($subject != null) {
+                        $al = "active";
+                    }
                 }
             }
         }
