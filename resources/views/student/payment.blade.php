@@ -29,6 +29,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @if ($payments != null)
                                 @foreach ($payments as $key => $item)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
@@ -43,7 +44,7 @@
                                         </td>
                                     </tr>
                                 @endforeach
-
+                                @endif
                             </tbody>
                         </table>
                     </div>
