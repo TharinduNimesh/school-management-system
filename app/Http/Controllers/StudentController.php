@@ -6,6 +6,7 @@ use App\Mail\WelcomeMail;
 use App\Models\Marks;
 use App\Models\Student;
 use App\Models\StudentAttendance;
+use App\Models\StudentsSubject;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -165,4 +166,40 @@ class StudentController extends Controller
         ]);
     }
 
+    public function navigateToSubject() {
+        $student = self::getClass(auth()->user()->index, Date("Y"));
+        $aesthetic = null;
+        $ol = null;
+        $al = null;
+        if($student["grade"] == 5) {
+            $subject = StudentsSubject::where('category', 'aesthetic')
+            ->where('deadline', '>=', Date("Y-m-d"))
+            ->first();
+            if($subject != null) {
+                $aesthetic = "active";
+            }
+        } else if($student["grade"] == 9) {
+            $subject = StudentsSubject::where('category', 'ol')
+            ->where('deadline', '>=', Date("Y-m-d"))
+            ->first();
+            if($subject != null) {
+                $ol = "active";
+            }
+        } else {
+            $student = self::getClass(auth()->user()->index, Date("Y", strtotime('-1 year')));
+            if($student["grade"] == 11) {
+                $subject = StudentsSubject::where('category', 'al')
+                ->where('deadline', '>=', Date("Y-m-d"))
+                ->first();
+                if($subject != null) {
+                    $al = "active";
+                }
+            }
+        }
+        return view('student.subject', [
+            'aesthetic' => $aesthetic,
+            'ol' => $ol,
+            'al' => $al
+        ]);
+    }
 }

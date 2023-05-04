@@ -176,6 +176,8 @@ class AttendanceController extends Controller
     public static function gatherStudentAttendance($index, $year) {
         $attendance = StudentAttendance::select('attendance')->where("index_number", $index)->where("year", $year)->first();
 
-        return $attendance->attendance;
+        if($attendance != null) {
+            return $attendance->attendance;
+        }
     }
 }
