@@ -156,24 +156,28 @@ class AssignmentController extends Controller
         $year = Date("Y");
         // get student current grade and class
         $student = StudentController::getClass($index, $year);
-        // get all assignment for student class and year
-        $assignments = Assignment::where('grade', $student["grade"])
-        ->where('class', $student["class"])
-        ->where('start_date', 'like', "$year%")
-        ->orderBy('start_date', 'desc')
-        ->get();
 
-        foreach($assignments as $assignment) {
-            // check assignment status (submited or not)
-            $details = Submission::where('assignment_id', $assignment->_id)->first();
-            if($details == null) {
-                $assignment->marks = "Not Submited";
-            } else if($details->marks == "pending"){
-                $assignment->marks = "Pending";
-            } else {
-                $assignment->marks = $details->marks;
+        if($student != null) {
+            // get all assignment for student class and year
+            $assignments = Assignment::where('grade', $student["grade"])
+            ->where('class', $student["class"])
+            ->where('start_date', 'like', "$year%")
+            ->orderBy('start_date', 'desc')
+            ->get();
+
+            foreach($assignments as $assignment) {
+                // check assignment status (submited or not)
+                $details = Submission::where('assignment_id', $assignment->_id)->first();
+                if($details == null) {
+                    $assignment->marks = "Not Submited";
+                } else if($details->marks == "pending"){
+                    $assignment->marks = "Pending";
+                } else {
+                    $assignment->marks = $details->marks;
+                }
             }
         }
+
 
         return view('student.assignment', [
             "assignments" => $assignments
