@@ -157,6 +157,7 @@ class AssignmentController extends Controller
         // get student current grade and class
         $student = StudentController::getClass($index, $year);
 
+        $assignments = null;
         if($student != null) {
             // get all assignment for student class and year
             $assignments = Assignment::where('grade', $student["grade"])
@@ -177,9 +178,9 @@ class AssignmentController extends Controller
                 }
             }
 
-            return view('student.assignment', [
-                "assignments" => $assignments
-            ]);
         }
+        return view('student.assignment', [
+            "assignments" => $assignments
+        ]);
     }
 }

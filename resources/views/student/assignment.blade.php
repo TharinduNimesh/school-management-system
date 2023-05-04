@@ -39,6 +39,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @if($assignments != null)
                                     @foreach($assignments as $key => $assignment)
                                         <tr>
                                             <th scope="row">{{ $key + 1 }}</th>
@@ -68,6 +69,7 @@
                                             <td class="space">{{ $assignment->marks }}</td>
                                         </tr>
                                     @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
