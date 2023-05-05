@@ -27,7 +27,7 @@
       <!-- Warning Start -->
       <div class="container-fluid pt-4 px-4">
         <h4 class="fw-bold pb-3"><span class="text-dark fw-light">Request For The Bucket Subjects</span></h4>
-        <div class="alert alert-warning rounded p-4 ">
+        <div class="alert alert-warning rounded p-4">
         @if($aesthetic == null && $ol == null && $al == null)
           <h5 class="alert-heading">Subject Request Feature Not Active</h5>
           The subject request feature is not available for your grade level. Please contact the school administration
