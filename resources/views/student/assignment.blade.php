@@ -90,66 +90,6 @@
     @include('public_components.js')
     <script>
         hamburger('assignments')
-        function submitAssignment(event) {
-            const button = event.target;
-            var id = button.getAttribute("data-assignmentid");
-            var code = button.getAttribute("data-code");
-
-            var file = document.getElementById("file" + id);
-
-            if (file.value == '') {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'WARNING',
-                    text: "You Must Select A File First"
-                })
-            }
-            else {
-                var assignment = file.files[0];
-
-                var form = new FormData();
-
-                form.append("file", assignment);
-                form.append("code", code);
-
-                var req = new XMLHttpRequest();
-                req.onreadystatechange = function () {
-                    if (req.readyState == 4) {
-                        if (req.status == 200) {
-                            r = req.responseText;
-                            if (r == 'error') {
-                                Swal.fire({
-                                    icon: 'warning',
-                                    title: 'WARNING',
-                                    text: "You can only submit PDF files"
-                                })
-                            }
-                            else {
-                                Swal.fire({
-                                    position: 'top-end',
-                                    icon: 'success',
-                                    title: 'Assignment Submitted Successfully',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                })
-                            }
-                        }
-                        else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'ERROR',
-                                text: "Internel Server Error",
-                                footer: "<a href='http://wa.me/94701189971'>Contact Developers Here</a>"
-                            })
-                        }
-                    }
-                }
-
-                req.open("POST", "process/submitAssignment.php", true);
-                req.send(form);
-            }
-
-        }
     </script>
 </body>
 

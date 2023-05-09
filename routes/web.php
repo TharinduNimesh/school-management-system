@@ -88,6 +88,9 @@ Route::prefix('teacher')->middleware(['auth', 'IsTeacher'])->group(function() {
     Route::get('search/student', function() {
         return view('teacher.search');
     })->name('teacher.search');
+    Route::get('manage/item', function() {
+        return view("teacher.classItems");
+    })->name('teacher.manage.item');
     Route::get('search/marks', [TeacherController::class, 'navigateToResultSheet'])->name('teacher.resultsheet');
     Route::get('manage/leaves', [LeavesController::class, 'navigateToTeacherLeaves'])->name('teacher.leaves');
     Route::get('summary', [TeacherController::class, 'navigateToSummary'])->name('teacher.summary');
@@ -214,6 +217,8 @@ Route::prefix('manage')->group(function() {
     Route::post('short/leave/add', [LeavesController::class, 'addShortLeaves'])->name('add.short.leaves');
     Route::get('short/leave/search', [LeavesController::class, 'showShortLeaves'])->name('search.short.leaves');
 
+    // student subject
+    Route::post('subject/student/action', [SubjectController::class, 'studentAction'])->name('student.subject.action');
 });
 Route::prefix('search')->group(function() {
     Route::get('student/{id}', [StudentController::class, 'show'])->name('search.student');
@@ -243,6 +248,7 @@ Route::post('teacher/search/marks', [TeacherController::class, 'teacherSearchMar
 // Student Function Routes
 Route::post('submit/assignment', [AssignmentController::class, 'submit'])->name('submit.assignment');
 Route::post('student/search/marks', [StudentController::class, 'searchMarks'])->name('student.search.marks');
+Route::post('request/subject/aesthetic', [SubjectController::class, 'requestAestheticSubject'])->name('request.aesthetic.subject');
 
 // email routes
 Route::get('email/assignment', function() {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\WelcomeMail;
 use App\Models\Marks;
+use App\Models\RequestedSubject;
 use App\Models\Student;
 use App\Models\StudentAttendance;
 use App\Models\StudentsSubject;
@@ -193,39 +194,44 @@ class StudentController extends Controller
 
     public function navigateToSubject() {
         $student = self::getClass(auth()->user()->index, Date("Y"));
-        $aesthetic = null;
+        $aesthetics = null;
         $ol = null;
         $al = null;
 
         if($student != null) {
+            $category = null;
+            $sampleSubject = null;
             if($student["grade"] == 5) {
-                $subject = StudentsSubject::where('category', 'aesthetic')
-                ->where('deadline', '>=', Date("Y-m-d"))
-                ->first();
-                if($subject != null) {
-                    $aesthetic = "active";
-                }
-            } else if($student["grade"] == 9) {
-                $subject = StudentsSubject::where('category', 'ol')
-                ->where('deadline', '>=', Date("Y-m-d"))
-                ->first();
-                if($subject != null) {
-                    $ol = "active";
-                }
+                $category = "aesthetics";
+                $sampleSubject = "aesthetics_subject";
+            } else if($student["grade"] == 10) {
+                $category = "ol";
+                $sampleSubject = "ol_bucket_1";
             } else {
                 $student = self::getClass(auth()->user()->index, Date("Y", strtotime('-1 year')));
                 if($student["grade"] == 11) {
-                    $subject = StudentsSubject::where('category', 'al')
-                    ->where('deadline', '>=', Date("Y-m-d"))
-                    ->first();
-                    if($subject != null) {
-                        $al = "active";
+                    $category = "al";
+                    $sampleSubject = "al_bucket_1";
+                }
+            }
+
+            if($sampleSubject != null && $category != null) {
+                $validateIsRequest = RequestedSubject::where("index_number", auth()->user()->index)
+                ->where("category", $category)->first();
+                $isActivate = StudentsSubject::where('category', $category)
+                ->where('deadline', '>=', Date("Y-m-d"))
+                ->first();
+                if($validateIsRequest == null && $isActivate != null) {
+                    $subjects = Student::where("index_number", auth()->user()->index)
+                    ->first();;
+                    if(!isset($subjects->subjects[$sampleSubject])) {
+                        $$category = "active";
                     }
                 }
             }
         }
         return view('student.subject', [
-            'aesthetic' => $aesthetic,
+            'aesthetic' => $aesthetics,
             'ol' => $ol,
             'al' => $al
         ]);
