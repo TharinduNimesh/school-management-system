@@ -252,6 +252,7 @@ Route::post('teacher/search/marks', [TeacherController::class, 'teacherSearchMar
 Route::post('submit/assignment', [AssignmentController::class, 'submit'])->name('submit.assignment');
 Route::post('student/search/marks', [StudentController::class, 'searchMarks'])->name('student.search.marks');
 Route::post('request/subject/aesthetic', [SubjectController::class, 'requestAestheticSubject'])->name('request.aesthetic.subject');
+Route::post("request/subject/ol", [SubjectController::class, 'requestOlSubject'])->name('request.ol.subject');
 
 // email routes
 Route::get('email/assignment', function() {

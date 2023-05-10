@@ -66,6 +66,37 @@ class SubjectController extends Controller
         }
     }
 
+    public function requestOlSubject(Request $request) {
+        $request = json_decode($request->data);
+        $index = auth()->user()->index ;
+        $validate = RequestedSubject::where("index_number", $index)
+        ->where("category", "ol")
+        ->first();
+        if($validate == null) {
+            if($request->type == "one") {
+                self::addOlSubjectRequestRecord($index ,$request->subjects);
+            } else if($request->type == "two") {
+                self::addOlSubjectRequestRecord($index, $request->first);
+                self::addOlSubjectRequestRecord($index, $request->second);
+            }
+
+            return "success";
+        } else {
+            return "already";
+        }
+    }
+
+    public static function addOlSubjectRequestRecord($index, $subjects) {
+        $student = Student::where("index_number", $index)->first();
+        $request = new RequestedSubject();
+        $request->index_number = $index;
+        $request->name = $student->initial_name;
+        $request->category = 'ol';
+        $request->subjects = $subjects;
+
+        $request->save();
+    }
+
     public function navigateToStudentSubject() {
         $aesthetic = StudentsSubject::where('category', 'aesthetics')->where('deadline', '>=', Date("Y-m-d"))->first();
         $ol = StudentsSubject::where('category', 'ol')->where('deadline', '>=', Date("Y-m-d"))->first();
@@ -74,10 +105,7 @@ class SubjectController extends Controller
         $aestheticRequests = RequestedSubject::where("category", "aesthetics")->get();
 
         if($aesthetic != null) {
-            $subject = RequestedSubject::where("index_number", auth()->user()->index)->where('category', 'aesthetics')->first();
-            if($subject == null) {
-                $aesthetic = "active";
-            }
+            $aesthetic = "active";
         } 
 
         if($ol != null) {
@@ -94,5 +122,62 @@ class SubjectController extends Controller
             "al" => $al,
             "aestheticRequests" => $aestheticRequests
         ]);
+    }
+
+    public static function getBucketSubjects($category) {
+        $response = new stdClass();
+        if($category == "ol") {
+            $bucket_1 = [
+                "Business & Accounting Studies",
+                "Geography",
+                "Civic Education",
+                "Entrepreneurship Studies",
+                "Second Language (Sinhala)",
+                "Second Language (Tamil)",
+                "Pali",
+                "Sanskrit",
+                "French",
+                "German",
+                "Hindi",
+                "Japanese",
+                "Arabic",
+                "Korean",
+                "Chinese",
+                "Russian"
+            ];
+
+            $bucket_2 = [
+                "Oriental Music",
+                "Western Music",
+                "Carnatic Music",
+                "Oriental Dancing",
+                "Bharatha Dancing",
+                "Art",
+                "Appreciation of English Literary Texts",
+                "Appreciation of Sinhala Literary Texts",
+                "Appreciation of Tamil Literary Texts",
+                "Appreciation of Arabic Literary Texts",
+                "Drama and Theatre"
+            ];
+
+            $bucket_3 = [
+                "Information & Communication Technology",
+                "Agriculture & Food Technology",
+                "Aquatic Bio-resources Technology",
+                "Arts & Crafts",
+                "Home Economics",
+                "Health & Physical Education",
+                "Communication & Media Studies",
+                "Design & Construction Technology",
+                "Design & Mechanical Technology",
+                "Design, Electrical & Electronic Technology",
+                "Electronic Writing & Shorthand"
+            ];
+            $response->bucket_1 = $bucket_1;
+            $response->bucket_2 = $bucket_2;
+            $response->bucket_3 = $bucket_3;
+        }
+
+        return $response;
     }
 }

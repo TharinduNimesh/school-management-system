@@ -197,6 +197,9 @@ class StudentController extends Controller
         $aesthetics = null;
         $ol = null;
         $al = null;
+        $bucket_1 = null;
+        $bucket_2 = null;
+        $bucket_3 = null;
 
         if($student != null) {
             $category = null;
@@ -204,9 +207,13 @@ class StudentController extends Controller
             if($student["grade"] == 5) {
                 $category = "aesthetics";
                 $sampleSubject = "aesthetics_subject";
-            } else if($student["grade"] == 10) {
+            } else if($student["grade"] == 9) {
                 $category = "ol";
                 $sampleSubject = "ol_bucket_1";
+                $subjectList = SubjectController::getBucketSubjects($category);
+                $bucket_1 = $subjectList->bucket_1;
+                $bucket_2 = $subjectList->bucket_2;
+                $bucket_3 = $subjectList->bucket_3;
             } else {
                 $student = self::getClass(auth()->user()->index, Date("Y", strtotime('-1 year')));
                 if($student["grade"] == 11) {
@@ -233,7 +240,10 @@ class StudentController extends Controller
         return view('student.subject', [
             'aesthetic' => $aesthetics,
             'ol' => $ol,
-            'al' => $al
+            'al' => $al,
+            "bucket_1" => $bucket_1,
+            "bucket_2" => $bucket_2,
+            "bucket_3" => $bucket_3
         ]);
     }
 }

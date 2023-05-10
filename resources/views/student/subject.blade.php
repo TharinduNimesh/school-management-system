@@ -27,7 +27,7 @@
         <!-- Warning Start -->
         <div class="container-fluid pt-4 px-4">
           <h4 class="fw-bold pb-3"><span class="text-dark fw-light">Request For The Bucket Subjects</span></h4>
-          @if($aesthetic != null && $ol != null && $al != null)
+          @if($aesthetic == null && $ol == null && $al == null)
           <div class="alert alert-warning rounded p-4">
             <h5 class="alert-heading">Subject Request Feature Not Active</h5>
             The subject request feature is not available for your grade level. Please contact the school administration
@@ -97,76 +97,72 @@
             <h3 class="card-header mb-4 text-dark">Grade 10 Selection of Bucket Subjects</h3>
             <div class="row g-4">
 
-              <div class="col-sm-6 col-xl-6">
-                <h5 class="mb-4 text-dark">Basket subjects select 01</h5>
+              <div class="col-sm-6 col-xl-6" id="firstChoice">
+                <h5 class="mb-4 text-dark text-center">Your First Choice</h5>
+                <hr/>
                 <div class="form-floating">
                   <select class="mt-3 form-select bg-secondary text-dark" id="floatingSelect" aria-label="Floating label select example">
                     <option selected value="0">Choose...</option>
-                    <option value="1">Art</option>
-                    <option value="2">Dance</option>
-                    <option value="3">Music</option>
-                    <option value="3">drama</option>
+                    @foreach ($bucket_1 as $subject)
+                      <option>{{ $subject }}</option>
+                    @endforeach
                   </select>
                   <label for="floatingSelect">First subject</label>
                 </div>
                 <div class="form-floating">
                   <select class="mt-3 form-select bg-secondary text-dark" id="floatingSelect" aria-label="Floating label select example">
                     <option selected value="0">Choose...</option>
-                    <option value="1">Art</option>
-                    <option value="2">Dance</option>
-                    <option value="3">Music</option>
-                    <option value="3">drama</option>
+                    @foreach ($bucket_2 as $subject)
+                      <option>{{ $subject }}</option>
+                    @endforeach
                   </select>
                   <label for="floatingSelect">Second subject</label>
                 </div>
                 <div class="form-floating">
                   <select class="mt-3 form-select bg-secondary text-dark" id="floatingSelect" aria-label="Floating label select example">
                     <option selected value="0">Choose...</option>
-                    <option value="1">Art</option>
-                    <option value="2">Dance</option>
-                    <option value="3">Music</option>
-                    <option value="3">drama</option>
+                    @foreach ($bucket_3 as $subject)
+                      <option>{{ $subject }}</option>
+                    @endforeach
                   </select>
                   <label for="floatingSelect">Third subject</label>
                 </div>
               </div>
 
 
-              <div class="col-sm-6 col-xl-6">
-                <h5 class="mb-4 text-dark">Basket subjects select 02</h5>
+              <div class="col-sm-6 col-xl-6" id="secondChoice">
+                <h5 class="mb-4 text-dark text-center">Your Second Choice</h5>
+                <hr/>
                 <div class="form-floating">
-                  <select class="mt-3 form-select bg-secondary text-dark" id="floatingSelect" aria-label="Floating label select example">
+                  <select class="mt-3 form-select bg-secondary text-dark" id="secondChoiceFirstSubject" aria-label="Floating label select example">
                     <option selected value="0">Choose...</option>
-                    <option value="1">Art</option>
-                    <option value="2">Dance</option>
-                    <option value="3">Music</option>
-                    <option value="3">drama</option>
+                    <@foreach ($bucket_1 as $subject)
+                      <option>{{ $subject }}</option>
+                    @endforeach
                   </select>
                   <label for="floatingSelect">First subject</label>
                 </div>
                 <div class="form-floating">
                   <select class="mt-3 form-select bg-secondary text-dark" id="floatingSelect" aria-label="Floating label select example">
                     <option selected value="0">Choose...</option>
-                    <option value="1">Art</option>
-                    <option value="2">Dance</option>
-                    <option value="3">Music</option>
-                    <option value="3">drama</option>
+                    @foreach ($bucket_2 as $subject)
+                      <option>{{ $subject }}</option>
+                    @endforeach
                   </select>
                   <label for="floatingSelect">Second subject</label>
                 </div>
                 <div class="form-floating">
                   <select class="mt-3 form-select bg-secondary text-dark" id="floatingSelect" aria-label="Floating label select example">
                     <option selected value="0">Choose...</option>
-                    <option value="1">Art</option>
-                    <option value="2">Dance</option>
-                    <option value="3">Music</option>
-                    <option value="3">drama</option>
+                    @foreach ($bucket_3 as $subject)
+                      <option>{{ $subject }}</option>
+                    @endforeach
                   </select>
                   <label for="floatingSelect">Third subject</label>
                 </div>
               </div>
             </div>
-            <button type="button" class="btn btn-primary mt-3" id="searchBtn" onclick="grade12Request();">
+            <button type="button" class="btn btn-primary mt-3" id="searchBtn" onclick="requestOlSubjects();">
               Request
             </button>
           </div>
@@ -284,7 +280,6 @@
         <!-- Grade 12 End -->
       </div>
 
-
       <!-- Footer Start -->
       @include('public_components.footer')
       <!-- Footer End -->
@@ -361,6 +356,107 @@
         xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
         xhr.send(form);
       }
+    }
+
+    function requestOlSubjects() {
+      const firstChoice = document.getElementById("firstChoice");
+      const secondChoice = document.getElementById("secondChoice");
+      var isValid = true;
+
+      var firstSubjects = firstChoice.querySelectorAll("select");
+      firstSubjects.forEach(subject => {
+        if(subject.value == "0") {
+          subject.classList.add("is-invalid");
+          isValid = false;
+        } else {
+          subject.classList.remove("is-invalid");
+        }
+      });
+      if($("#secondChoiceFirstSubject").val() != "0") {
+        var secondSubjects = secondChoice.querySelectorAll("select");
+        secondSubjects.forEach(subject => {
+          if(subject.value == "0") {
+            subject.classList.add("is-invalid");
+            isValid = false;
+          } else {
+            subject.classList.remove("is-invalid");
+          }
+        })
+      } else if($("#secondChoiceFirstSubject").val() == "0" && isValid){
+        isValid = false;
+        Swal.fire({
+          title: 'Do you want to select only one choice and move on?',
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: 'Save',
+          denyButtonText: `Don't save`,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const request = {
+              "type": "one",
+              "subjects" : {
+                "subject_1": firstSubjects[0].value,
+                "subject_2": firstSubjects[1].value,
+                "subject_3": firstSubjects[2].value,
+              }
+            };
+            sendOlRequest(JSON.stringify(request));
+          } 
+        })
+      }
+      if(isValid) {
+        const request = {
+          "type": "two",
+          "first": {
+            "subject_1": firstSubjects[0].value,
+            "subject_2": firstSubjects[1].value,
+            "subject_3": firstSubjects[2].value,
+          },
+          "second": {
+            "subject_1": secondSubjects[0].value,
+            "subject_2": secondSubjects[1].value,
+            "subject_3": secondSubjects[2].value,
+          }
+        };
+        sendOlRequest(JSON.stringify(request));
+      }
+    }
+
+    function sendOlRequest(json) {
+      var form = new FormData();
+      const spinner = document.getElementById("spinner");
+      spinner.classList.add("show");
+      form.append("data", json);
+
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if(xhr.readyState == 4 && xhr.status == 200) {
+          var response = xhr.responseText;
+          if(response == "success") {
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Subjects Requested Successfull',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            setTimeout(() => {
+              location.reload();
+            }, 2);
+          } else if(response == "already"){
+            Swal.fire(
+              'Already Exists',
+              'You Have Already Send An Request Previously',
+              'warning'
+            )
+          }
+          spinner.classList.remove("show");
+        }
+      }
+
+      xhr.open("POST", "{{ route('request.ol.subject') }}");
+      xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
+      xhr.send(form);
     }
   </script>
 
