@@ -103,6 +103,8 @@ class SubjectController extends Controller
         $al = StudentsSubject::where('category', 'al')->where('deadline', '>=', Date("Y-m-d"))->first();
 
         $aestheticRequests = RequestedSubject::where("category", "aesthetics")->get();
+        $olRequests = RequestedSubject::where("category", "ol")->get();
+        $olSubjects = self::getBucketSubjects("ol");
 
         if($aesthetic != null) {
             $aesthetic = "active";
@@ -120,7 +122,11 @@ class SubjectController extends Controller
             "aesthetic" => $aesthetic,
             "ol" => $ol,
             "al" => $al,
-            "aestheticRequests" => $aestheticRequests
+            "aestheticRequests" => $aestheticRequests,
+            "olRequests" => $olRequests,
+            "ol_bucket_1" => $olSubjects->bucket_1,
+            "ol_bucket_2" => $olSubjects->bucket_2,
+            "ol_bucket_3" => $olSubjects->bucket_3
         ]);
     }
 
