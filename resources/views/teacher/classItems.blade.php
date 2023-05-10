@@ -69,7 +69,7 @@
                                 <label for="floatingInput">Add Total Chairs</label>
                             </div>
                         
-                            <button type="button" class="btn btn-primary btn-lg " id="updateBtn">Update</button>
+                            <button type="button" class="btn btn-primary btn-lg" id="updateBtn">Update</button>
 
                             
                             

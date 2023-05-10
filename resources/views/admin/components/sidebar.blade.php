@@ -42,6 +42,8 @@
             <a name="ham-item" id="timetable" href="adminTimeTable.php" class="nav-item nav-link"><i class="bi bi-table me-2"></i>Time
                 Table</a>
             <a name="ham-item" id="addNews" href="{{ route('admin.news') }}" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Add News</a>
+            <a name="ham-item" id="apparatus" href="{{ route('admin.apparatus') }}" class="nav-item nav-link"><i class="bi bi-easel-fill"></i>Manage 
+                Apparatus</a>
         </div>
     </nav>
 </div>
