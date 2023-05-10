@@ -29,7 +29,7 @@
                 <i class="bi bi-journal-bookmark-fill me-2"></i>Assignments
             </a>
             <a name="ham-item" id="payment" href="{{ route('student.payment') }}" class="nav-item nav-link">
-                <i class="fa fa-chart-bar me-2"></i>Payment
+                <i class="fas fa-money-check-alt me-2"></i>Payment
             </a>
         </div>
     </nav>

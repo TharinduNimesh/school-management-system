@@ -208,12 +208,21 @@
       </div>
 
       <!-- Sales Chart Start -->
-      <div class="container-fluid pt-4 px-4">
+      <div class="container-fluid pt-4 px-4" id="subjectGraph">
         <div class="row g-2">
           <div class="col-md-12 col-12 text-center">
             <div class="bg-secondary rounded h-100 p-4">
               <div id="NewchartContainer" style="height: 300px; width: 100%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <div class="container-fluid pt-4 px-4 d-none" id="mediumContainer">
+        <div class="row g-2">
+          <div class="col-md-12 col-12 text-center">
+            <div class="bg-secondary rounded h-100 p-4">
+              <div id="chartContainer" style="height: 300px; width: 100%;"></div>
             </div>
           </div>
         </div>
@@ -264,6 +273,10 @@
                         $eastenMusic = array();
                         $dancing = array();
                         $drama = array();
+
+                        $sinhala = array();
+                        $english = array();
+                        $tamil = array();
                         @endphp
 
                         @foreach ($aestheticRequests as $key => $request)
@@ -302,6 +315,20 @@
                         @endphp
                         @endif
 
+                        @if ($request["medium"] == "Sinhala") 
+                        @php
+                          array_push($sinhala, $key);
+                        @endphp
+                        @elseif ($request["medium"] == "English")
+                        @php
+                          array_push($english, $key);
+                        @endphp
+                        @elseif ($request["medium"] == "Tamil")
+                        @php
+                          array_push($tamil, $key);
+                        @endphp
+                        @endif
+
                         @endforeach
 
                         @php
@@ -310,6 +337,10 @@
                         $eastenMusicCount = count($eastenMusic);
                         $dramaCount = count($drama);
                         $dancingCount = count($dancing);
+
+                        $sinhalaCount = count($sinhala);
+                        $englishCount = count($english);
+                        $tamilCount = count($tamil);
                         @endphp
                       </tbody>
                     </table>
@@ -496,8 +527,38 @@
       };
       $("#NewchartContainer").CanvasJSChart(options);
 
-      let creditElement = document.querySelector('.canvasjs-chart-credit');
-      creditElement.remove();
+      var options = {
+        title: {
+          text: "Medium Summary"
+        },
+        data: [{
+          type: "pie",
+          startAngle: 45,
+          showInLegend: "true",
+          legendText: "{label}",
+          indexLabel: "{label} ({y})",
+          yValueFormatString: "#,##0.#" % "",
+          dataPoints: [{
+            label: "Sinhala",
+            y: 1
+          },
+          {
+            label: "English",
+            y: 2
+          },
+          {
+            label: "Tamil",
+              y: 3
+          }
+        ]
+        }]
+      };
+      $("#chartContainer").CanvasJSChart(options);
+
+      let creditElements = document.querySelectorAll('.canvasjs-chart-credit');
+      creditElements.forEach(element => {
+        element.remove();        
+      });
     }
 
     function changeStatus(Button) {
@@ -539,6 +600,10 @@
       const ten = document.getElementById("gradeTenContainer");
       const twelve = document.getElementById("gradeTwelveContainer");
       const subjectList = document.getElementById("filteredSubjectList");
+      const mediumContainer = document.getElementById("mediumContainer");
+      const subjectGraph = document.getElementById("subjectGraph");
+      subjectGraph.classList.remove("d-none");
+      mediumContainer.classList.add("d-none");
       subjectList.innerHTML = "";
 
       var options = {};
@@ -585,7 +650,11 @@
         });
         subjectList.dataset.target = "aestheticsTable";
         six.classList.remove("d-none");
-        options = {
+        if("{{ $artCount }}" == 0 && "{{ $westernMusicCount }}" == 0 && "{{ $eastenMusicCount }}" == 0 && "{{ $dancingCount }}" == 0 && "{{ $dramaCount }}" == 0) {
+          mediumContainer.classList.add("d-none");
+          subjectGraph.classList.add("d-none");
+        } else {
+          options = {
           title: {
             text: "Summary Of Grade 6 Student Aesthetics Subject Request"
           },
@@ -619,11 +688,46 @@
             ]
           }]
         };
+
+        var options = {
+        title: {
+          text: "Medium Summary"
+        },
+        data: [{
+          type: "pie",
+          startAngle: 45,
+          showInLegend: "true",
+          legendText: "{label}",
+          indexLabel: "{label} ({y})",
+          yValueFormatString: "#,##0.#" % "",
+          dataPoints: [{
+            label: "Sinhala",
+            y: "{{ $sinhalaCount }}",
+          },
+          {
+            label: "English",
+            y: "{{ $englishCount }}"
+          },
+          {
+            label: "Tamil",
+              y: "{{ $tamilCount }}"
+          }
+        ]
+        }]
+      };
+      $("#chartContainer").CanvasJSChart(options);
+      
+        mediumContainer.classList.remove("d-none");
+        }
       }
 
-      $("#NewchartContainer").CanvasJSChart(options);
-      let creditElement = document.querySelector('.canvasjs-chart-credit');
-      creditElement.remove();
+      try {
+        $("#NewchartContainer").CanvasJSChart(options);
+        let creditElement = document.querySelector('.canvasjs-chart-credit');
+        creditElement.remove();
+      } catch {
+        return 0;
+      }
     }
 
     function filterBySubject() {

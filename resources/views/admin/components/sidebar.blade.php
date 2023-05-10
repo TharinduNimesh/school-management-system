@@ -31,6 +31,8 @@
                 Manage Section</a>
             <a name="ham-item" id="sports" href="{{ route('admin.sports') }}" class="nav-item nav-link"><i class="fas fa-skiing me-2"></i>
                 Manage Sports</a>
+            <a name="ham-item" id="accessories" href="{{ route('admin.accessories') }}" class="nav-item nav-link"><i class="fa fa-cubes me-2"></i>
+                Accessories</a>
             <a name="ham-item" id="manageRegister" href="{{ route('admin.register') }}" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Manage
                 Register</a>
             <a name="ham-item" id="teacherSubject" href="{{ route('admin.teacher.subject') }}" class="nav-item nav-link"><i class="bi bi-journal-code me-2"></i>Teacher

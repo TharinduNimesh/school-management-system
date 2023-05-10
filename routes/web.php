@@ -88,9 +88,9 @@ Route::prefix('teacher')->middleware(['auth', 'IsTeacher'])->group(function() {
     Route::get('search/student', function() {
         return view('teacher.search');
     })->name('teacher.search');
-    Route::get('manage/item', function() {
-        return view("teacher.classItems");
-    })->name('teacher.manage.item');
+    Route::get('manage/accessories', function() {
+        return view("teacher.accessories");
+    })->name('teacher.accessories');
     Route::get('search/marks', [TeacherController::class, 'navigateToResultSheet'])->name('teacher.resultsheet');
     Route::get('manage/leaves', [LeavesController::class, 'navigateToTeacherLeaves'])->name('teacher.leaves');
     Route::get('summary', [TeacherController::class, 'navigateToSummary'])->name('teacher.summary');
@@ -130,6 +130,9 @@ Route::prefix('admin')->middleware(['auth', 'IsAdmin'])->group(function() {
     Route::get('add/teacher/subject', function() {
         return view('admin.teacherSubject');
     })->name('admin.teacher.subject');
+    Route::get('manage/accessories', function() {
+        return view('admin.accessories');
+    })->name('admin.accessories');
     Route::get('add/student/subject', [SubjectController::class, 'navigateToStudentSubject'])->name('admin.student.subject');
     Route::get('manage/leaves', [LeavesController::class, 'navigateToadminApproveLeaves'])->name('admin.leaves');
     Route::get('manage/sports', [SportController::class, "navigateToAdminSport"])->name('admin.sports');

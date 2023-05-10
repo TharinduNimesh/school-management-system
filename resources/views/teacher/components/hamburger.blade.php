@@ -27,7 +27,7 @@
                         Student</a>
                     <a name="ham-item" id="result" href="{{ route('teacher.resultsheet') }}" class="nav-item nav-link"><i
                             class="bi bi-file-earmark-spreadsheet-fill me-2"></i>Result Sheet</a>
-                    <a name="ham-item" id="summary" href="{{ route('teacher.manage.item') }}" class="nav-item nav-link"><i class="bi bi-file-bar-graph-fill me-2"></i>Class Items</a>
+                    <a name="ham-item" id="summary" href="{{ route('teacher.accessories') }}" class="nav-item nav-link"><i class="fa fa-cubes me-2"></i>Class Items</a>
                     <a name="ham-item" id="summary" href="{{ route('teacher.summary') }}" class="nav-item nav-link"><i class="bi bi-file-bar-graph-fill me-2"></i>Summary</a>
                 </div>
             </nav>

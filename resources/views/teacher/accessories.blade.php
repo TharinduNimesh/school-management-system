@@ -15,11 +15,11 @@
         <div class="content">
             @include('teacher.components.navbar')
 
-            <!-- apparatus Start -->
+            <!-- Accessories Start -->
 
-            <!--apparatus details-->
+            <!--Accessories details-->
 
-            <h3 class="text-dark mt-4 ms-4">Apparatus Details</h3>
+            <h3 class="text-dark mt-4 ms-4">Accessories Details</h3>
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
                     <div class="col-sm-6 col-xl-6">
@@ -39,7 +39,7 @@
                         <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
                         <i class="bi bi-inboxes-fill text-dark fa-3x"></i>
                             <div class="ms-3">
-                                <p class="mb-2"> Number of Desks</p>
+                                <p class="mb-2">Number of Desks</p>
                                 <h6 class="mb-0 text-dark">
                                     40
                                 </h6>
@@ -49,14 +49,14 @@
                     
                 </div>
             </div>
-            <!--apparatus details-->
+            <!--Accessories details-->
 
-            <!--add apparatus details-->
+            <!--add Accessories details-->
             <div class="container-fluid pt-4 px-4">
                 <div class="row">
                     <div class="col-12">
                         <div class="bg-secondary rounded h-100 p-4">
-                            <h3 class="mb-4 text-dark">Add Apparatus Details</h3>
+                            <h3 class="mb-4 text-dark">Add Accessories Details</h3>
 
                             <div class="form-floating mb-3 mt-3 col-md-12 ">
                                 <input type="text" class="form-control bg-secondary text-dark" id="addDesk"
@@ -78,13 +78,13 @@
                 </div>
             </div>
 
-            <!--add apparatus details end-->
-            <!--Request apparatus-->
+            <!--add Accessories details end-->
+            <!--Request Accessories-->
             <div class="container-fluid pt-4 px-4">
                 <div class="row">
                     <div class="col-12">
                         <div class="bg-secondary rounded h-100 p-4">
-                            <h3 class="mb-4 text-dark">Request Apparatus</h3>
+                            <h3 class="mb-4 text-dark">Request Accessories</h3>
 
                             <div class="form-floating mb-3 mt-3">
                                 <input type="text" class="form-control bg-secondary text-dark" id="subject"
@@ -104,9 +104,9 @@
                 </div>
             </div>
 
-            <!--Request apparatus end-->
+            <!--Request Accessories end-->
             
-            <!-- apparatus End -->
+            <!-- Accessories End -->
 
 
             @include('public_components.footer')
