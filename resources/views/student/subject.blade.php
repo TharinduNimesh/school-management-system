@@ -127,6 +127,15 @@
                   </select>
                   <label for="floatingSelect">Third subject</label>
                 </div>
+                <div class="form-floating">
+                  <select class="mt-3 form-select bg-secondary text-dark" id="floatingSelect" aria-label="Floating label select example">
+                    <option selected value="0">Choose...</option>
+                    <option>Sinhala</option>
+                    <option>English</option>
+                    <option>Tamil</option>
+                  </select>
+                  <label for="floatingSelect">Select A Medium</label>
+                </div>
               </div>
 
 
@@ -159,6 +168,15 @@
                     @endforeach
                   </select>
                   <label for="floatingSelect">Third subject</label>
+                </div>
+                <div class="form-floating">
+                  <select class="mt-3 form-select bg-secondary text-dark" id="floatingSelect" aria-label="Floating label select example">
+                    <option selected value="0">Choose...</option>
+                    <option>Sinhala</option>
+                    <option>English</option>
+                    <option>Tamil</option>
+                  </select>
+                  <label for="floatingSelect">Select A Medium</label>
                 </div>
               </div>
             </div>
@@ -398,7 +416,8 @@
                 "subject_1": firstSubjects[0].value,
                 "subject_2": firstSubjects[1].value,
                 "subject_3": firstSubjects[2].value,
-              }
+              },
+              "medium": firstSubjects[3].value
             };
             sendOlRequest(JSON.stringify(request));
           } 
@@ -412,11 +431,13 @@
             "subject_2": firstSubjects[1].value,
             "subject_3": firstSubjects[2].value,
           },
+          "first_medium": firstSubjects[3].value,
           "second": {
             "subject_1": secondSubjects[0].value,
             "subject_2": secondSubjects[1].value,
             "subject_3": secondSubjects[2].value,
-          }
+          },
+          "second_medium": secondSubjects[3].value,
         };
         sendOlRequest(JSON.stringify(request));
       }

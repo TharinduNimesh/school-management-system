@@ -67,6 +67,9 @@ Route::prefix('student')->middleware(['auth', 'IsStudent'])->group(function () {
     Route::get('timetable', function() {
         return view('student.timetable');
     })->name('student.timetable');
+    Route::get('feedback', function() {
+        return view("student.feedback");
+    })->name("student.feedback");
     Route::get('request/subject', [StudentController::class, 'navigateToSubject'])->name('student.subject');
     Route::get('assignments', [AssignmentController::class, 'navigateToStudentAssignments'])->name('student.assignments');
     Route::get('payment', [PaymentController::class, 'navigateToStudentPayment'])->name('student.payment');
@@ -91,6 +94,9 @@ Route::prefix('teacher')->middleware(['auth', 'IsTeacher'])->group(function() {
     Route::get('manage/accessories', function() {
         return view("teacher.accessories");
     })->name('teacher.accessories');
+    Route::get('send/message', function() {
+        return view("teacher.message");
+    })->name('teacher.message');
     Route::get('search/marks', [TeacherController::class, 'navigateToResultSheet'])->name('teacher.resultsheet');
     Route::get('manage/leaves', [LeavesController::class, 'navigateToTeacherLeaves'])->name('teacher.leaves');
     Route::get('summary', [TeacherController::class, 'navigateToSummary'])->name('teacher.summary');
@@ -231,6 +237,7 @@ Route::delete('remove/section/head', [TeacherController::class, 'removeSectionHe
 
 // admin manage student subject routes
 Route::post('activate/request', [SubjectController::class, 'activate'])->name('request.activate');
+Route::post("get/subjects/marks", [MarksController::class, 'getMarksForSubject'])->name('get.marks.for.subject');
 
 // Teacher functions
 Route::post("request/leaves", [LeavesController::class, 'request'])->name('request.leaves');

@@ -74,10 +74,10 @@ class SubjectController extends Controller
         ->first();
         if($validate == null) {
             if($request->type == "one") {
-                self::addOlSubjectRequestRecord($index ,$request->subjects);
+                self::addOlSubjectRequestRecord($index ,$request->subjects, $request->medium);
             } else if($request->type == "two") {
-                self::addOlSubjectRequestRecord($index, $request->first);
-                self::addOlSubjectRequestRecord($index, $request->second);
+                self::addOlSubjectRequestRecord($index, $request->first, $request->first_medium);
+                self::addOlSubjectRequestRecord($index, $request->second, $request->second_medium);
             }
 
             return "success";
@@ -86,13 +86,14 @@ class SubjectController extends Controller
         }
     }
 
-    public static function addOlSubjectRequestRecord($index, $subjects) {
+    public static function addOlSubjectRequestRecord($index, $subjects, $medium) {
         $student = Student::where("index_number", $index)->first();
         $request = new RequestedSubject();
         $request->index_number = $index;
         $request->name = $student->initial_name;
         $request->category = 'ol';
         $request->subjects = $subjects;
+        $request->medium = $medium;
 
         $request->save();
     }
@@ -103,6 +104,8 @@ class SubjectController extends Controller
         $al = StudentsSubject::where('category', 'al')->where('deadline', '>=', Date("Y-m-d"))->first();
 
         $aestheticRequests = RequestedSubject::where("category", "aesthetics")->get();
+        $olRequests = RequestedSubject::where("category", "ol")->get();
+        $olSubjects = self::getBucketSubjects("ol");
 
         if($aesthetic != null) {
             $aesthetic = "active";
@@ -120,7 +123,11 @@ class SubjectController extends Controller
             "aesthetic" => $aesthetic,
             "ol" => $ol,
             "al" => $al,
-            "aestheticRequests" => $aestheticRequests
+            "aestheticRequests" => $aestheticRequests,
+            "olRequests" => $olRequests,
+            "ol_bucket_1" => $olSubjects->bucket_1,
+            "ol_bucket_2" => $olSubjects->bucket_2,
+            "ol_bucket_3" => $olSubjects->bucket_3
         ]);
     }
 
@@ -161,7 +168,8 @@ class SubjectController extends Controller
             ];
 
             $bucket_3 = [
-                "Information & Communication Technology",
+                "Information & Communication Technology Sinhala",
+                "Information & Communication Technology English",
                 "Agriculture & Food Technology",
                 "Aquatic Bio-resources Technology",
                 "Arts & Crafts",
