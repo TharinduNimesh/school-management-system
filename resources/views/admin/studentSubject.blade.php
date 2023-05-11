@@ -29,11 +29,11 @@
     <div class="content">
       @include('admin.components.navbar')
 
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fade" id="marksModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">Student's Tearm test Mark</h1>
+              <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">Term test Mark</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -47,7 +47,7 @@
                     <th scope="col">Third Tearm</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="marksBody">
                   <tr>
                     <th scope="row">1</th>
                     <td>Sinhala</td>
@@ -402,7 +402,7 @@
                   </div>
                 </div>
 
-                <div class="d-none" id="gradeTenContainer">
+                <div class="" id="gradeTenContainer">  <!-- need to add d-none again  -->
                   <h4 class="text-dark">Here your result(Grade 10)</h4>
                   <div class="table-responsive">
                     <table class="table table-bordered">
@@ -440,7 +440,7 @@
                             $subjects[$subject] ++;
                           @endphp
                           @endforeach
-                          <td><button class="btn btn-primary" data-index="{{ $request['index_number'] }}">View</button></td>
+                          <td><button onclick="getMarks(this);" class="btn btn-primary" data-index="{{ $request['index_number'] }}">View</button></td>
                           <td>
                             <button class="btn btn-success">Accept</button>
                           </td>
@@ -938,6 +938,66 @@
       }
 
       xhr.open("POST", "{{ route('student.subject.action') }}");
+      xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
+      xhr.send(form);
+    }
+
+    function getMarks(Button) {
+      var form = new FormData();
+      form.append("index", Button.dataset.index);
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if(xhr.readyState == 4 && xhr.status == 200) {
+          var response = JSON.parse(xhr.responseText);
+          const body = document.getElementById("marksBody");
+          body.innerHTML = "";
+          const terms = [0, 1, 2];  // 0 = first term, 1 = 2nd term, 2 = last term
+          var number = 1;
+          response.subjects.forEach(subject => {
+            const newRow = document.createElement("tr");
+
+            const numCol = document.createElement("th");
+            numCol.innerHTML = number;
+            newRow.appendChild(numCol);
+
+            const subjectRow = document.createElement("td");
+            subjectRow.innerHTML = subject;
+            newRow.appendChild(subjectRow);
+
+            terms.forEach(term => {
+              var isAdded = false;
+              response.marks[term].forEach(details => {
+                if(details.subject == subject) {
+                  const newCell = document.createElement("td");
+                  newCell.innerHTML = details.marks;
+                  if(details.marks < 40) {
+                    newCell.style.color = "red";
+                    newCell.style.fontWeight = "bold";
+                    newCell.style.backgroundColor = "#f7992d";
+                  }
+                  newRow.appendChild(newCell);
+                  isAdded = true;
+                }
+              });
+              if(!isAdded) {
+                const newCell = document.createElement("td");
+                newCell.innerHTML = "ab";
+                newCell.style.color = "red";
+                newCell.style.fontWeight = "bold";
+                newCell.style.backgroundColor = "#f7992d";
+                newRow.appendChild(newCell);
+              }
+            });
+
+            body.appendChild(newRow);
+            number ++;
+          });
+
+          $("#marksModal").modal("show");
+        }
+      }
+
+      xhr.open("POST", "{{ route('get.marks.for.subject') }}");
       xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
       xhr.send(form);
     }

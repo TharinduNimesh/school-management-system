@@ -167,7 +167,8 @@ class SubjectController extends Controller
             ];
 
             $bucket_3 = [
-                "Information & Communication Technology",
+                "Information & Communication Technology Sinhala",
+                "Information & Communication Technology English",
                 "Agriculture & Food Technology",
                 "Aquatic Bio-resources Technology",
                 "Arts & Crafts",

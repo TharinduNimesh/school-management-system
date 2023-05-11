@@ -87,6 +87,27 @@ class MarksController extends Controller
         return $subjects;
     }
 
+    public function getMarksForSubject(Request $request) {
+        $terms = ["1", "2", "3"];
+        $marks = [];
+
+        foreach ($terms as $term) {
+            $item = Marks::where("index_number", $request->index)
+            ->where("grade", "9")
+            ->where("term", $term)
+            ->first();
+            if($item == null) {
+                $item = new \stdClass();
+                $item->details = [];
+            }
+            array_push($marks, $item->details); 
+        }
+        $response = new \stdClass();
+        $response->marks = $marks;
+        $response->subjects = ClassController::getSubjects(9);
+        return $response;
+    }
+
     public static function show($index, $year, $term) {
         $marks = Marks::where('index_number', $index)
         ->where('year', $year)
