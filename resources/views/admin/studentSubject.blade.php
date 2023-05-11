@@ -402,10 +402,10 @@
                   </div>
                 </div>
 
-                <div class="" id="gradeTenContainer">  <!-- need to add d-none again  -->
+                <div class="d-none" id="gradeTenContainer"> 
                   <h4 class="text-dark">Here your result(Grade 10)</h4>
                   <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="olTable">
                       <thead class="table-dark">
                         <tr>
                           <th scope="col">No</th>
@@ -413,6 +413,7 @@
                           <th scope="col">Bucket 1</th>
                           <th scope="col">Bucket 2</th>
                           <th scope="col">Bucket 3</th>
+                          <th scope="col">Medium</th>
                           <th scope="col">Marks</th>
                           <th colspan="2">Action</th>
                         </tr>
@@ -429,6 +430,10 @@
                           foreach($ol_bucket_3 as $subject) {
                             $subjects[$subject] = 0;
                           }
+
+                          $OLSinhala = 0;
+                          $OLEnglish = 0;
+                          $OLTamil = 0;
                         @endphp
                         @foreach ($olRequests as $key => $request)
                         <tr>
@@ -440,6 +445,11 @@
                             $subjects[$subject] ++;
                           @endphp
                           @endforeach
+                          <td>{{ $request["medium"] }}</td>
+                          @php
+                            $medium = $request["medium"];
+                            ${'OL' . $medium} ++;
+                          @endphp
                           <td><button onclick="getMarks(this);" class="btn btn-primary" data-index="{{ $request['index_number'] }}">View</button></td>
                           <td>
                             <button class="btn btn-success">Accept</button>
@@ -772,12 +782,19 @@
         ten.classList.remove("d-none");
         olList.classList.remove("d-none");
         bucketChartContainer.classList.remove("d-none");
+        mediumContainer.classList.remove("d-none");
+        subjectList.dataset.target = "olTable";
 
         const subjects = @json($subjects);
         
         const bucket_1 = @json($ol_bucket_1);
         const bucket_2 = @json($ol_bucket_2);
         const bucket_3 = @json($ol_bucket_3);
+
+        var bucketOneCanBeDisplay = false;
+        var bucketTwoCanBeDisplay = false;
+        var bucketThreeCanBeDisplay = false;
+        var mediumCanBeDisplay = false;
         
         const bucket_1_array = [];
         bucket_1.forEach(subject => {
@@ -786,7 +803,42 @@
             "y": subjects[subject]
           };
           bucket_1_array.push(obj);
+          if(subjects[subject] != 0) {
+            bucketOneCanBeDisplay = true;
+          }
         });
+
+        var options = {
+        title: {
+          text: "Medium Summary"
+        },
+        data: [{
+          type: "pie",
+          startAngle: 45,
+          showInLegend: "true",
+          legendText: "{label}",
+          indexLabel: "{label} ({y})",
+          yValueFormatString: "#,##0.#" % "",
+          dataPoints: [{
+              label: "Sinhala",
+              y: "{{ $OLSinhala }}"
+            },
+            {
+              label: "English",
+              y: "{{ $OLTamil }}"
+            },
+            {
+              label: "Tamil",
+              y: "{{ $OLTamil }}"
+            }
+          ]
+        }]
+      };
+      $("#chartContainer").CanvasJSChart(options);
+
+      if("{{ $OLSinhala }}" != 0 || "{{ $OLEnglish }}" != 0 || "{{ $OLTamil }}" != 0) {
+        mediumCanBeDisplay = true;
+      }
 
         var bucket_1_options = {
             title: {
@@ -811,6 +863,9 @@
             "y": subjects[subject]
           };
           bucket_2_array.push(obj);
+          if(subjects[subject] != 0) {
+            bucketTwoCanBeDisplay = true;
+          }
         });
 
         var bucket_2_options = {
@@ -836,6 +891,9 @@
             "y": subjects[subject]
           };
           bucket_3_array.push(obj);
+          if(subjects[subject] != 0) {
+            bucketThreeCanBeDisplay = true;
+          }
         });
 
         var bucket_3_options = {
@@ -853,7 +911,12 @@
             }]
           };
           $("#bucket_3_chart").CanvasJSChart(bucket_3_options);
-        
+          if(!bucketOneCanBeDisplay && !bucketTwoCanBeDisplay && !bucketThreeCanBeDisplay) {
+            bucketChartContainer.classList.add("d-none");
+          }
+          if(!mediumCanBeDisplay) {
+            mediumContainer.classList.add("d-none");
+          }
       }
 
       try {

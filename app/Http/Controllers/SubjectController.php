@@ -74,10 +74,10 @@ class SubjectController extends Controller
         ->first();
         if($validate == null) {
             if($request->type == "one") {
-                self::addOlSubjectRequestRecord($index ,$request->subjects);
+                self::addOlSubjectRequestRecord($index ,$request->subjects, $request->medium);
             } else if($request->type == "two") {
-                self::addOlSubjectRequestRecord($index, $request->first);
-                self::addOlSubjectRequestRecord($index, $request->second);
+                self::addOlSubjectRequestRecord($index, $request->first, $request->first_medium);
+                self::addOlSubjectRequestRecord($index, $request->second, $request->second_medium);
             }
 
             return "success";
@@ -86,13 +86,14 @@ class SubjectController extends Controller
         }
     }
 
-    public static function addOlSubjectRequestRecord($index, $subjects) {
+    public static function addOlSubjectRequestRecord($index, $subjects, $medium) {
         $student = Student::where("index_number", $index)->first();
         $request = new RequestedSubject();
         $request->index_number = $index;
         $request->name = $student->initial_name;
         $request->category = 'ol';
         $request->subjects = $subjects;
+        $request->medium = $medium;
 
         $request->save();
     }
