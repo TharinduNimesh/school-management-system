@@ -108,10 +108,15 @@
                         <h5 class="card-header text-dark">Student Details</h5>
                         <hr>
                         <div class="row">
-                            <div class="mb-3">
+                            <div class="mb-3 col-md-6" id="infoContainer">
                                 <label for="Name" id="studentName" class="form-label">Student Name</label>
                                 <input class="form-control bg-secondary text-dark" type="text" id="Name" name="Name"
                                     value="ex: Tharindu Nimesh" autofocus disabled />
+                            </div>
+                            <div class="mb-3 col-md-6" id="mediumContainer">
+                                <label for="Name" class="form-label">Medium</label>
+                                <input class="form-control bg-secondary text-dark" type="text" id="medium" name="Name"
+                                    value="ex: Sinhala" autofocus disabled />
                             </div>
                             <div class="col-12" id="subjectContainer">
                                 <div class="row">
@@ -121,12 +126,12 @@
                                         <input class="form-control bg-secondary text-dark" type="text" id="busketsubject1"
                                             name="basket subject" value="ex: Commerce" autofocus disabled />
                                     </div>
-                                    <div class="mb-3 col-md-6">
+                                    <div class="mb-3 col-md-6" id="subject2Container">
                                         <label for="Class" id="subject2Header" class="form-label">Busket Subject II</label>
                                         <input class="form-control bg-secondary text-dark" type="text" id="busketsubject2"
                                             name="Class" value="ex: Art" autofocus disabled />
                                     </div>
-                                    <div class="mb-3 col-md-6">
+                                    <div class="mb-3 col-md-6" id="subject3Container">
                                         <label for="basket subject" id="subject3Header" class="form-label">Busket Subject
                                             III</label>
                                         <input class="form-control bg-secondary text-dark" type="text" id="busketsubject3"
@@ -150,8 +155,6 @@
                     </div>
                 </div>
             </div>
-
-
 
             <!-- Recent Sales Start -->
             <div class="container-fluid pt-4 px-4">
@@ -344,9 +347,11 @@
         }
 
         function searchStudentForRegister() {
+            const spinner = document.getElementById("spinner");
+            spinner.classList.add("show");
+
             var indexNumber = document.getElementById("RegistrationNo");
             var addButton = document.getElementById("addButton");
-            const spinner = document.getElementById("spinner")
 
             const name = document.getElementById("Name");
             const bucket1 = document.getElementById("busketsubject1");
@@ -358,9 +363,24 @@
             const subjectContainer = document.getElementById("subjectContainer");
             const alScheme = document.getElementById("alScheme");
             const warning = document.getElementById("warning");
+            const subject2Container = document.getElementById("subject2Container");
+            const subject3Container = document.getElementById("subject3Container");
+            const medium = document.getElementById("medium");
+            const mediumContainer = document.getElementById("mediumContainer");
+            const infoContainer = document.getElementById("infoContainer");
+
+            // hide everything
+            subjectContainer.classList.add("d-none");
+            subject2Container.classList.add("d-none");
+            subject3Container.classList.add("d-none");
+            alScheme.classList.add("d-none");
+            warning.classList.add("d-none");
+            mediumContainer.classList.add("d-none");
+
+            // resize info container
+            infoContainer.classList.add("col-md-6");
 
             if (!indexNumber.value.trim() == '') {
-                spinner.classList.add("show");
                 var req = new XMLHttpRequest();
                 req.onreadystatechange = function () {
                     if (req.readyState == 4) {
@@ -373,7 +393,7 @@
                                     title: 'WARNING',
                                     text: "Invalid Registration Number"
                                 });
-
+                                name.value = "Ex: Tharindu Nimesh";
                                 if (addButton.hasAttribute("data-index")) {
                                     addButton.removeAttribute("data-index");
                                 }
@@ -381,35 +401,39 @@
                                 response = JSON.parse(response);
                                 if(response.subjects != null) {
                                     subjectContainer.classList.remove("d-none");
-                                    warning.classList.add("d-none");
-                                    scheme.classList.remove("d-none");
+                                    mediumContainer.classList.remove("d-none");
                                     bucket2.classList.remove("d-none");
                                     bucket3.classList.remove("d-none");
                                     label.innerHTML = "Busket Subject I";
+                                    name.value = response.initial_name;
 
                                     var subjects = response.subjects;
                                     if (subjects.al_scheme != null) {
-                                        name.value = response.initial_name;
-                                        bucket1.value = subjects.al_bucket_1;
-                                        bucket2.value = subjects.al_bucket_2;
-                                        bucket3.value = subjects.al_bucket_3;
+                                        alScheme.classList.remove("d-none");
+                                        subject2Container.classList.remove("d-none");
+                                        subject3Container.classList.remove("d-none");
+                                        bucket1.value = subjects.al_subject_1;
+                                        bucket2.value = subjects.al_subject_2;
+                                        bucket3.value = subjects.al_subject_3;
                                         scheme.value = subjects.al_scheme;
-                                    } else if(subjects.ol_bucket_1 != null) {
-                                        scheme.classList.add("d-none");
-                                        bucket1.value = subjects.ol_bucket_1;
-                                        bucket2.value = subjects.ol_bucket_2;
-                                        bucket3.value = subjects.ol_bucket_3;
-                                    } else if(subjects.aesthatics != null) {
-                                        scheme.classList.add("d-none");
-                                        bucket2.classList.add("d-none");
-                                        bucket3.classList.add("d-none");
+                                        medium.value = subjects.al_medium;
+                                    } else if(subjects.ol_subject_1 != null) {
+                                        subject2Container.classList.remove("d-none");
+                                        subject3Container.classList.remove("d-none");
+                                        bucket1.value = subjects.ol_subject_1;
+                                        bucket2.value = subjects.ol_subject_2;
+                                        bucket3.value = subjects.ol_subject_3;
+                                        medium.value = subjects.ol_medium;
+                                    } else if(subjects.aesthetics_subject != null) {
                                         label.innerHTML = "Aesthetics Subject";
-                                        bucket.value = subjects.aesthatics_subject;
+                                        bucket1.value = subjects.aesthetics_subject;
+                                        medium.value = subjects.medium;
                                     }
                                 } else {
                                     name.value = response.initial_name;
-                                    subjectContainer.classList.add("d-none");
                                     warning.classList.remove("d-none");
+                                    mediumContainer.classList.add("d-none");
+                                    infoContainer.classList.remove("col-md-6");
                                 }
                                 addButton.dataset.index = response.index_number;
                             }
@@ -423,6 +447,7 @@
                                 footer: "<a href='http://wa.me/94701189971'>Contact Developers Here</a>"
                             });
                         }
+                        spinner.classList.remove("show");
                     }
                 }
 
@@ -435,6 +460,7 @@
                     title: 'WARNING',
                     text: 'You Must Enter Registration Number'
                 })
+                spinner.classList.remove("show");
 
                 if (addButton.hasAttribute("data-index")) {
                     addButton.removeAttribute("data-index");
