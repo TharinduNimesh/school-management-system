@@ -275,7 +275,7 @@
                   <div id="olSubjectList" class="row d-none">
                     <div class="mb-3 col-md-4">
                       <sapn for="Namewithinitials" class="form-label text-dark">Filter In Subject</sapn>
-                      <select onchange="filterBySubject();" class="form-select form-select-lg text-dark bg-secondary mb-3" id="bucket_1">
+                      <select name="bucketSubjectLists" onchange="filterByMultiSubject(this);" data-cell="2" class="form-select form-select-lg text-dark bg-secondary mb-3" id="bucket_1">
                         <option selected>Open this select menu</option>
                         @foreach ($ol_bucket_1 as $subject)
                           <option>{{ $subject }}</option>
@@ -284,7 +284,7 @@
                     </div>
                     <div class="mb-3 col-md-4">
                       <sapn for="Namewithinitials" class="form-label text-dark">Filter In Subject</sapn>
-                      <select onchange="filterBySubject();" class="form-select form-select-lg text-dark bg-secondary mb-3" id="bucket_2">
+                      <select name="bucketSubjectLists" onchange="filterByMultiSubject(this);" data-cell="3" class="form-select form-select-lg text-dark bg-secondary mb-3" id="bucket_2">
                         <option selected>Open this select menu</option>
                         @foreach ($ol_bucket_2 as $subject)
                           <option>{{ $subject }}</option>
@@ -293,7 +293,7 @@
                     </div>
                     <div class="mb-3 col-md-4">
                       <sapn for="Namewithinitials" class="form-label text-dark">Filter In Subject</sapn>
-                      <select onchange="filterBySubject();" class="form-select form-select-lg text-dark bg-secondary mb-3" id="bucket_3">
+                      <select name="bucketSubjectLists" onchange="filterByMultiSubject(this);" data-cell="4" class="form-select form-select-lg text-dark bg-secondary mb-3" id="bucket_3">
                         <option selected>Open this select menu</option>
                         @foreach ($ol_bucket_3 as $subject)
                           <option>{{ $subject }}</option>
@@ -436,7 +436,7 @@
                           $OLTamil = 0;
                         @endphp
                         @foreach ($olRequests as $key => $request)
-                        <tr>
+                        <tr id="olRow{{ $request['_id'] }}">
                           <td>{{ $key + 1 }}</td>
                           <td class="space">{{ $request["name"] }}</td>
                           @foreach($request["subjects"] as $subject)
@@ -452,10 +452,26 @@
                           @endphp
                           <td><button onclick="getMarks(this);" class="btn btn-primary" data-index="{{ $request['index_number'] }}">View</button></td>
                           <td>
-                            <button class="btn btn-success">Accept</button>
+                            <button data-subject_1="{{ $request['subjects']['subject_1'] }}"
+                                    data-subject_2="{{ $request['subjects']['subject_2'] }}"
+                                    data-subject_3="{{ $request['subjects']['subject_3'] }}"
+                                    data-medium="{{ $request['medium'] }}"
+                                    data-index="{{ $request['index_number'] }}"
+                                    data-id="{{ $request['_id'] }}"
+                                    data-type="accept"
+                                    onclick="actionOlSubject(this);"
+                                    class="btn btn-success">Accept</button>
                           </td>
                           <td>
-                            <button class="btn btn-danger">Reject</button>
+                            <button   data-subject_1="{{ $request['subjects']['subject_1'] }}"
+                                      data-subject_2="{{ $request['subjects']['subject_2'] }}"
+                                      data-subject_3="{{ $request['subjects']['subject_3'] }}"
+                                      data-medium="{{ $request['medium'] }}"
+                                      data-index="{{ $request['index_number'] }}"
+                                      data-id="{{ $request['_id'] }}"
+                                      data-type="reject"
+                                      onclick="actionOlSubject(this);"
+                                      class="btn btn-danger">Reject</button>
                           </td>
                         </tr>
                         @endforeach
@@ -706,7 +722,7 @@
 
           subjectList.appendChild(option);
         });
-        subjectList.dataset.target = "aestheticsTable";
+        subjectList.dataset.table = "aestheticsTable";
         aestheticsList.classList.remove("d-none");
         six.classList.remove("d-none");
         if ("{{ $artCount }}" == 0 && "{{ $westernMusicCount }}" == 0 && "{{ $eastenMusicCount }}" == 0 && "{{ $dancingCount }}" == 0 && "{{ $dramaCount }}" == 0) {
@@ -783,8 +799,12 @@
         olList.classList.remove("d-none");
         bucketChartContainer.classList.remove("d-none");
         mediumContainer.classList.remove("d-none");
-        subjectList.dataset.target = "olTable";
 
+        const subjectLists = document.getElementsByName("bucketSubjectLists");
+        subjectLists.forEach(list => {
+          list.dataset.table = "olTable";
+        });
+        
         const subjects = @json($subjects);
         
         const bucket_1 = @json($ol_bucket_1);
@@ -933,7 +953,7 @@
       var input = document.getElementById("filteredSubjectList");
 
       // Get the table element by its ID
-      var table = document.getElementById(input.dataset.target);
+      var table = document.getElementById(input.dataset.table);
 
       // Loop over each row in the table
       for (var i = 1; i < table.rows.length; i++) {
@@ -941,6 +961,29 @@
 
         // Get the name from the first cell of the row
         var name = row.cells[2].innerText;
+
+        // Check if the name matches the filter string
+        if (name.toLowerCase().indexOf(input.value.toLowerCase()) > -1) {
+          // If the name matches, show the row
+          row.style.display = "";
+        } else {
+          // If the name doesn't match, hide the row
+          row.style.display = "none";
+        }
+      }
+    }
+
+    function filterByMultiSubject(input) {
+
+      // Get the table element by its ID
+      var table = document.getElementById(input.dataset.table);
+
+      // Loop over each row in the table
+      for (var i = 1; i < table.rows.length; i++) {
+        var row = table.rows[i];
+
+        // Get the name from the first cell of the row
+        var name = row.cells[input.dataset.cell].innerText;
 
         // Check if the name matches the filter string
         if (name.toLowerCase().indexOf(input.value.toLowerCase()) > -1) {
@@ -1000,7 +1043,7 @@
         }
       }
 
-      xhr.open("POST", "{{ route('student.subject.action') }}");
+      xhr.open("POST", "{{ route('student.subject.action.aesthetics') }}");
       xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
       xhr.send(form);
     }
@@ -1061,6 +1104,41 @@
       }
 
       xhr.open("POST", "{{ route('get.marks.for.subject') }}");
+      xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
+      xhr.send(form);
+    }
+
+    function actionOlSubject(Button) {
+      const data = Button.dataset;
+
+      var form = new FormData();
+      form.append("index", data.index);
+      form.append("id", data.id);
+      form.append("type", data.type);
+      form.append("subject_1", data.subject_1);
+      form.append("subject_2", data.subject_2);
+      form.append("subject_3", data.subject_3);
+      form.append("medium", data.medium);
+
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if(xhr.readyState == 4 && xhr.status == 200) {
+          var response = JSON.parse(xhr.responseText);
+          if(response.status == "Success") {
+            response.ids.forEach(id => {
+              document.getElementById("olRow" + id).remove();
+            });
+          } else if(response.status == "Failed") {
+            Swal.fire(
+              'Something Went Wrong!',
+              'Contact Developers To Fix This',
+              'warning'
+            )
+          }
+        }
+      }
+
+      xhr.open("POST", "{{ route('student.subject.action.ol') }}");
       xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
       xhr.send(form);
     }

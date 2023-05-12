@@ -26,7 +26,7 @@ class SubjectController extends Controller
         $permission->save();
     }
 
-    public function studentAction(Request $request) {
+    public function studentActionAesthetics(Request $request) {
         if($request->status == "accept") {
             $student = Student::where("index_number", $request->index)->first();
             if($student != null) {
@@ -49,6 +49,49 @@ class SubjectController extends Controller
         $studentRequest->delete();
 
         return "Success";
+    }
+
+    public function studentActionOL(Request $request) {
+        $response = new \stdClass();
+        if($request->type == "accept") {
+            $student = Student::where("index_number", $request->index)->first();
+            $subjects = $student->subjects;
+            if($subjects == null) {
+                $object = new \stdClass();
+                $subjects = $object;
+            }
+            $subjects["ol_subject_1"] = $request->subject_1;
+            $subjects["ol_subject_2"] = $request->subject_2;
+            $subjects["ol_subject_3"] = $request->subject_3;
+            $subjects["ol_medium"] = $request->medium;
+            $student->subjects = $subjects;
+
+            $isUpdated = $student->save();
+            if($isUpdated) {
+                $requests = RequestedSubject::where("index_number", $request->index)
+                ->where("category", "ol")
+                ->get();
+
+                $IDs = [];
+                foreach ($requests as $request) {
+                    array_push($IDs, $request["_id"]);
+                    $request->delete();
+                }
+                $response->status = "Success";
+                $response->ids = $IDs;
+                return $response;
+            } else {
+                return $response->status = "Failed"; 
+            }
+        } else if($request->type == "reject") {
+            $IDs = ["$request->id"];
+            $request = RequestedSubject::find($request->id);
+            $request->delete();
+
+            $response->status = "Success";
+            $response->ids = $IDs;
+            return $response;
+        }
     }
 
     public function requestAestheticSubject(Request $request) {

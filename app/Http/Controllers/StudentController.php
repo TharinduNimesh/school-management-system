@@ -209,7 +209,7 @@ class StudentController extends Controller
                 $sampleSubject = "aesthetics_subject";
             } else if($student["grade"] == 9) {
                 $category = "ol";
-                $sampleSubject = "ol_bucket_1";
+                $sampleSubject = "ol_subject_1";
                 $subjectList = SubjectController::getBucketSubjects($category);
                 $bucket_1 = $subjectList->bucket_1;
                 $bucket_2 = $subjectList->bucket_2;
@@ -218,7 +218,7 @@ class StudentController extends Controller
                 $student = self::getClass(auth()->user()->index, Date("Y", strtotime('-1 year')));
                 if($student["grade"] == 11) {
                     $category = "al";
-                    $sampleSubject = "al_bucket_1";
+                    $sampleSubject = "al_subject_1";
                 }
             }
 

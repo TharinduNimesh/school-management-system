@@ -139,6 +139,9 @@ Route::prefix('admin')->middleware(['auth', 'IsAdmin'])->group(function() {
     Route::get('manage/accessories', function() {
         return view('admin.accessories');
     })->name('admin.accessories');
+    Route::get("manage/class/record", function() {
+        return view("admin.subject");
+    })->name('admin.class.report');
     Route::get('add/student/subject', [SubjectController::class, 'navigateToStudentSubject'])->name('admin.student.subject');
     Route::get('manage/leaves', [LeavesController::class, 'navigateToadminApproveLeaves'])->name('admin.leaves');
     Route::get('manage/sports', [SportController::class, "navigateToAdminSport"])->name('admin.sports');
@@ -227,7 +230,10 @@ Route::prefix('manage')->group(function() {
     Route::get('short/leave/search', [LeavesController::class, 'showShortLeaves'])->name('search.short.leaves');
 
     // student subject
-    Route::post('subject/student/action', [SubjectController::class, 'studentAction'])->name('student.subject.action');
+    Route::prefix('subject/student/action/')->group(function() {
+        Route::post('aesthetics', [SubjectController::class, 'studentActionAesthetics'])->name('student.subject.action.aesthetics');
+        Route::post('ol', [SubjectController::class,'studentActionOL'])->name('student.subject.action.ol');
+    });
 });
 Route::prefix('search')->group(function() {
     Route::get('student/{id}', [StudentController::class, 'show'])->name('search.student');
