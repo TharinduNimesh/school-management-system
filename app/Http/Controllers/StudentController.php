@@ -8,8 +8,10 @@ use App\Models\RequestedSubject;
 use App\Models\Student;
 use App\Models\StudentAttendance;
 use App\Models\StudentsSubject;
+use App\Models\LearningRecord;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -244,6 +246,35 @@ class StudentController extends Controller
             "bucket_1" => $bucket_1,
             "bucket_2" => $bucket_2,
             "bucket_3" => $bucket_3
+        ]);
+    }
+
+    public function navigateToFeedback() {
+        $student = StudentController::getClass(auth()->user()->index, Date("Y"));
+        
+        $learningRecords = LearningRecord::where('class', $student["class"])
+        ->where('grade', $student["grade"])
+        ->where('date', Date("Y-m-d"))
+        ->get();
+
+        $response = [];
+
+        foreach ($learningRecords as $record) {
+            $isValid = true;
+            if($record->feedback != null) {
+                foreach ($record->feedback as $feedback) {
+                    if($feedback["index_number"] == auth()->user()->index) {
+                        $isValid = false;
+                    }
+                }
+            }
+            if($isValid) {
+                array_push($response, $record);
+            }
+        }
+
+        return view('student.feedback', [
+            'records' => $response
         ]);
     }
 }

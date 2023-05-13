@@ -144,11 +144,9 @@
         @include('public_components.spinner')
         <!-- Spinner End -->
 
-
         <!-- Sidebar Start -->
         @include('student.components.hamburger')
         <!-- Sidebar End -->
-
 
         <!-- Content Start -->
         <div class="content">
@@ -156,60 +154,48 @@
             @include('student.components.navbar')
             <!-- Navbar End -->
 
-
             <!-- Rating Start -->
             <div class="container-fluid pt-4 px-4">
-                <div class="bg-secondary rounded p-4">
+                <div class="bg-secondary rounded p-4" style="min-height: 80vh;">
                     <h3 class="mb-4 text-dark">Rate for today subjects</h3>
                     <div class="row">
-                        <h5 class="text-dark">English</h5>
+                        @foreach ($records as $record)
+                        <h5 class="text-dark">{{ $record["subject"] }}</h5>
                         <div class="rating" data-vote="0">
-                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sint laborum, aut eligendi
-                                consequuntur veniam minus cupiditate, laudantium facere explicabo atque molestiae! Enim,
-                                quasi! Excepturi beatae placeat, perferendis dolore quibusdam quod.</p>
+                            <p>{{ $record['description'] }}</p>
                             <div class="star hidden">
                                 <span class="full" data-value="0"></span>
                                 <span class="half" data-value="0"></span>
                             </div>
 
                             <div class="star">
-
                                 <span class="full" data-value="1"></span>
                                 <span class="half" data-value="0.5"></span>
                                 <span class="selected"></span>
-
                             </div>
 
                             <div class="star">
-
                                 <span class="full" data-value="2"></span>
                                 <span class="half" data-value="1.5"></span>
                                 <span class="selected"></span>
-
                             </div>
 
                             <div class="star">
-
                                 <span class="full" data-value="3"></span>
                                 <span class="half" data-value="2.5"></span>
                                 <span class="selected"></span>
-
                             </div>
 
                             <div class="star">
-
                                 <span class="full" data-value="4"></span>
                                 <span class="half" data-value="3.5"></span>
                                 <span class="selected"></span>
-
                             </div>
 
                             <div class="star">
-
                                 <span class="full" data-value="5"></span>
                                 <span class="half" data-value="4.5"></span>
                                 <span class="selected"></span>
-
                             </div>
 
                             <div class="score">
@@ -218,160 +204,26 @@
                                 <span class="total">5</span>
                             </div>
                             <div class="form-floating mt-3">
-                                <textarea class="form-control bg-secondary text-dark" placeholder="Feedback"
-                                    id="floatingTextarea2" style="height: 100px"></textarea>
+                                <textarea class="form-control bg-secondary text-dark" placeholder="Feedback" id="floatingTextarea2" style="height: 100px"></textarea>
                                 <label for="floatingTextarea2">Feedback</label>
                             </div>
                             <div class="d-grid gap-2 col-6 mx-auto">
-                                <button type="button" class="btn btn-primary mt-3">Submit</button>
+                                <button onclick="addFeedback();" type="button" data-id="{{ $record['_id'] }}" data-teacher="{{ $record['nic'] }}" class="btn btn-primary mt-3">Submit</button>
                             </div>
                         </div>
 
                         <hr class="mt-4">
-
-                        <h5 class="text-dark">Sinhala</h5>
-                        <div class="rating" data-vote="0">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita eum error ut itaque ex
-                                architecto beatae rem possimus consectetur? Cum obcaecati veniam reprehenderit
-                                dignissimos ipsam exercitationem fuga impedit suscipit? Ducimus.</p>
-                            <div class="star hidden">
-                                <span class="full" data-value="0"></span>
-                                <span class="half" data-value="0"></span>
-                            </div>
-
-                            <div class="star">
-
-                                <span class="full" data-value="1"></span>
-                                <span class="half" data-value="0.5"></span>
-                                <span class="selected"></span>
-
-                            </div>
-
-                            <div class="star">
-
-                                <span class="full" data-value="2"></span>
-                                <span class="half" data-value="1.5"></span>
-                                <span class="selected"></span>
-
-                            </div>
-
-                            <div class="star">
-
-                                <span class="full" data-value="3"></span>
-                                <span class="half" data-value="2.5"></span>
-                                <span class="selected"></span>
-
-                            </div>
-
-                            <div class="star">
-
-                                <span class="full" data-value="4"></span>
-                                <span class="half" data-value="3.5"></span>
-                                <span class="selected"></span>
-
-                            </div>
-
-                            <div class="star">
-
-                                <span class="full" data-value="5"></span>
-                                <span class="half" data-value="4.5"></span>
-                                <span class="selected"></span>
-
-                            </div>
-
-                            <div class="score">
-                                <span class="score-rating js-score">0</span>
-                                <span>/</span>
-                                <span class="total">5</span>
-                            </div>
-                            <div class="form-floating mt-3">
-                                <textarea class="form-control bg-secondary text-dark" placeholder="Feedback"
-                                    id="floatingTextarea2" style="height: 100px"></textarea>
-                                <label for="floatingTextarea2">Feedback</label>
-                            </div>
-                            <div class="d-grid gap-2 col-6 mx-auto">
-                                <button type="button" class="btn btn-primary mt-3">Submit</button>
-                            </div>
-                        </div>
-
-                        <hr class="mt-4">
-
-                        <h5 class="text-dark">Maths</h5>
-                        <div class="rating" data-vote="0">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, explicabo magni sunt at
-                                nobis quaerat accusantium laborum voluptatibus maxime esse nihil optio facilis dolore
-                                dolor necessitatibus! Aut, iste odio! Exercitationem.</p>
-                            <div class="star hidden">
-                                <span class="full" data-value="0"></span>
-                                <span class="half" data-value="0"></span>
-                            </div>
-
-                            <div class="star">
-
-                                <span class="full" data-value="1"></span>
-                                <span class="half" data-value="0.5"></span>
-                                <span class="selected"></span>
-
-                            </div>
-
-                            <div class="star">
-
-                                <span class="full" data-value="2"></span>
-                                <span class="half" data-value="1.5"></span>
-                                <span class="selected"></span>
-
-                            </div>
-
-                            <div class="star">
-
-                                <span class="full" data-value="3"></span>
-                                <span class="half" data-value="2.5"></span>
-                                <span class="selected"></span>
-
-                            </div>
-
-                            <div class="star">
-
-                                <span class="full" data-value="4"></span>
-                                <span class="half" data-value="3.5"></span>
-                                <span class="selected"></span>
-
-                            </div>
-
-                            <div class="star">
-
-                                <span class="full" data-value="5"></span>
-                                <span class="half" data-value="4.5"></span>
-                                <span class="selected"></span>
-
-                            </div>
-
-                            <div class="score">
-                                <span class="score-rating js-score">0</span>
-                                <span>/</span>
-                                <span class="total">5</span>
-                            </div>
-                            <div class="form-floating mt-3">
-                                <textarea class="form-control bg-secondary text-dark" placeholder="Feedback"
-                                    id="floatingTextarea2" style="height: 100px"></textarea>
-                                <label for="floatingTextarea2">Feedback</label>
-                            </div>
-                            <div class="d-grid gap-2 col-6 mx-auto">
-                                <button type="button" class="btn btn-primary mt-3">Submit</button>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
             <!-- Rating End -->
-
 
             <!-- Footer Start -->
             @include('public_components.footer')
             <!-- Footer End -->
         </div>
         <!-- Content End -->
-
 
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
@@ -383,17 +235,18 @@
 
     <script>
         var starClicked = false;
+        var selected = 0;
 
-        $(function () {
+        $(function() {
 
-            $('.star').click(function () {
+            $('.star').click(function() {
 
                 $(this).children('.selected').addClass('is-animated');
                 $(this).children('.selected').addClass('pulse');
 
                 var target = this;
 
-                setTimeout(function () {
+                setTimeout(function() {
                     $(target).children('.selected').removeClass('is-animated');
                     $(target).children('.selected').removeClass('pulse');
                 }, 1000);
@@ -401,7 +254,7 @@
                 starClicked = true;
             })
 
-            $('.half').click(function () {
+            $('.half').click(function() {
                 if (starClicked == true) {
                     setHalfStarState(this)
                 }
@@ -409,11 +262,12 @@
 
                 $(this).closest('.rating').data('vote', $(this).data('value'));
                 calculateAverage()
-                console.log(parseInt($(this).data('value')));
+                selected = parseFloat($(this).data('value'));
+                console.log(selected);
 
             })
 
-            $('.full').click(function () {
+            $('.full').click(function() {
                 if (starClicked == true) {
                     setFullStarState(this)
                 }
@@ -424,17 +278,18 @@
                 $(this).closest('.rating').data('vote', $(this).data('value'));
                 calculateAverage()
 
-                console.log(parseInt($(this).data('value')));
+                selected = parseFloat($(this).data('value'));
+                console.log(selected);
             })
 
-            $('.half').hover(function () {
+            $('.half').hover(function() {
                 if (starClicked == false) {
                     setHalfStarState(this)
                 }
 
             })
 
-            $('.full').hover(function () {
+            $('.full').hover(function() {
                 if (starClicked == false) {
                     setFullStarState(this)
                 }
@@ -464,8 +319,60 @@
             updateStarState(target)
         }
 
-    </script>
+        function calculateAverage() {
+            var average = 0
 
+            $('.rating').each(function() {
+                average += $(this).data('vote')
+            })
+
+            $('.js-average').text((average / $('.rating').length).toFixed(1))
+        }
+
+        function addFeedback() {
+            var feedback = $("#floatingTextarea2").val();
+            var id = $(event.target).data("id");
+            var rating = selected;
+
+            if (feedback != "") {
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "{{ route('send.feedback') }}");
+                xhr.setRequestHeader('X-CSRF-Token', '{{ csrf_token() }}');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.send(JSON.stringify({
+                    "id": id,
+                    "feedback": feedback,
+                    "rating": rating
+                }));
+
+                xhr.onload = function() {
+                    if (xhr.status == 200) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Feedback Submitted!',
+                            text: 'Thank you for your feedback!',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // location.reload();
+                            }
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                        })
+                    }
+                };
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Feedback cannot be empty!',
+                })
+            }
+        }
+    </script>
 </body>
 
 </html>

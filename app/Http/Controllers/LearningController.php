@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\LearningRecord;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Date;
 
 class LearningController extends Controller
 {
@@ -21,6 +20,8 @@ class LearningController extends Controller
             $record->nic = auth()->user()->index;
             $record->name = auth()->user()->name;
             $record->date = Date("Y-m-d");
+            $record->grade = $request->grade;
+            $record->class = $request->class;
             $record->period_no = $request->periodNo;
             $record->subject = $request->subject;
             $record->description = $request->description;
@@ -33,4 +34,20 @@ class LearningController extends Controller
         }
     }
 
+    public function sendFeedback(Request $request)
+    {
+        $record = LearningRecord::find($request->id);
+        $feedback = $record->feedback;
+        if($feedback == null){
+            $feedback = [];
+        }
+        
+        $comment = new \stdClass();
+        $comment->index_number = auth()->user()->index;
+        $comment->rating = $request->rating;
+        $comment->comment = $request->feedback;
+        array_push($feedback, $comment);
+        $record->feedback = $feedback;
+        $record->save();
+    }
 }

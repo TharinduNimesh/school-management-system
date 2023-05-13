@@ -67,9 +67,7 @@ Route::prefix('student')->middleware(['auth', 'IsStudent'])->group(function () {
     Route::get('timetable', function() {
         return view('student.timetable');
     })->name('student.timetable');
-    Route::get('feedback', function() {
-        return view("student.feedback");
-    })->name("student.feedback");
+    Route::get('feedback', [StudentController::class, 'navigateToFeedback'])->name("student.feedback");
     Route::get('request/subject', [StudentController::class, 'navigateToSubject'])->name('student.subject');
     Route::get('assignments', [AssignmentController::class, 'navigateToStudentAssignments'])->name('student.assignments');
     Route::get('payment', [PaymentController::class, 'navigateToStudentPayment'])->name('student.payment');
@@ -270,6 +268,7 @@ Route::post('submit/assignment', [AssignmentController::class, 'submit'])->name(
 Route::post('student/search/marks', [StudentController::class, 'searchMarks'])->name('student.search.marks');
 Route::post('request/subject/aesthetic', [SubjectController::class, 'requestAestheticSubject'])->name('request.aesthetic.subject');
 Route::post("request/subject/ol", [SubjectController::class, 'requestOlSubject'])->name('request.ol.subject');
+Route::post("send/feedback", [LearningController::class, 'sendFeedback'])->name('send.feedback');
 
 // email routes
 Route::get('email/assignment', function() {
