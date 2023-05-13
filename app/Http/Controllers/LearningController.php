@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\LearningRecord;
+use App\Models\ReportFeedback;
+use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 
 class LearningController extends Controller
 {
@@ -51,5 +54,33 @@ class LearningController extends Controller
         array_push($feedback, $comment);
         $record->feedback = $feedback;
         $record->save();
+    }
+
+    // create function reportFeedback and get pharameters as request
+    public function reportFeedback(Request $request)
+    {
+        $validate = ReportFeedback::where("record_id", $request->id)
+        ->where("index_number", $request->index)
+        ->first();
+
+        if($validate == null) {
+            $student = Student::where("index_number", $request->index)->first();
+            $class = StudentController::getClass($student->index_number, Date("Y"));
+            $report = new ReportFeedback();
+            $report->record_id = $request->id;
+            $report->index_number = $request->index;
+            $report->name = $student->initial_name;
+            $report->grade = $class["grade"];
+            $report->class = $class["class"];
+            $report->message = $request->message;
+            $report->reason = $request->reasonForReport;
+
+            $reportAdded = $report->save();
+            if($reportAdded){
+                return 'success';
+            }
+        } else {
+            return 'already';
+        }
     }
 }

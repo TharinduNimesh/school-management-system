@@ -3,12 +3,17 @@
 
 <head>
     @include('teacher.components.head')
+    <style>
+        .space {
+            white-space: nowrap;
+        }
+    </style>
 </head>
 
 <body>
     <div class="container-fluid position-relative d-flex p-0">
         <!-- Spinner Start -->
-        {{-- @include('public_components.spinner') --}}
+        @include('public_components.spinner')
         <!-- Spinner End -->
 
 
@@ -30,7 +35,8 @@
                     <h3 class="text-dark">Add period summary</h3>
                     <div class="row g-2">
                         <div class="form-floating mb-3 col-md-6">
-                            <select class="form-select bg-secondary text-dark" id="grade" name="grade" aria-label="Floating label select example">
+                            <select class="form-select bg-secondary text-dark" id="grade" name="grade"
+                                aria-label="Floating label select example">
                                 <option value="0" selected>
                                     Open this select menu
                                 </option>
@@ -41,7 +47,8 @@
                         </div>
 
                         <div class="form-floating mb-3 col-md-6">
-                            <select class="form-select bg-secondary text-dark" id="class" name="class" aria-label="Floating label select example">
+                            <select class="form-select bg-secondary text-dark" id="class" name="class"
+                                aria-label="Floating label select example">
                                 <option value="0" selected>
                                     Open this select menu
                                 </option>
@@ -54,7 +61,8 @@
                             <label for="floatingSelect">Select A Class</label>
                         </div>
                         <div class="form-floating mb-3 col-md-6">
-                            <select class="form-select bg-secondary text-dark" id="PeriodNo" name="grade" aria-label="Floating label select example">
+                            <select class="form-select bg-secondary text-dark" id="PeriodNo" name="grade"
+                                aria-label="Floating label select example">
                                 <option value="0" selected>
                                     Open this select menu
                                 </option>
@@ -64,7 +72,8 @@
                             <label for="floatingSelect">Select A Period</label>
                         </div>
                         <div class="form-floating mb-3 col-md-6">
-                            <select class="form-select bg-secondary text-dark" id="Subject" name="grade" aria-label="Floating label select example">
+                            <select class="form-select bg-secondary text-dark" id="Subject" name="grade"
+                                aria-label="Floating label select example">
                                 <option value="0" selected>
                                     Open this select menu
                                 </option>
@@ -90,63 +99,98 @@
             </div>
             <!-- Rating End -->
 
+            <div class="modal fade" tabindex="-1" id="reportModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-dark">Report</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                @php( $violence = ["Inappropriate language", "Harassment or bullying", "Threats or violence",
+                                "Disrespectful behavior", "Off-topic or irrelevant comments", "Spam or advertising",
+                                "Inappropriate content"] )
+                                @foreach($violence as $key => $v)
+                                <div class="input-group mb-3 col-6">
+                                    <div class="input-group-text">
+                                        <input class="form-check-input mt-0" type="radio" value="{{ $v }}"
+                                            aria-label="Checkbox for following text input" data-key="{{ $key }}"
+                                            name="violence" required>
+                                    </div>
+                                    <input type="text" class="form-control text-dark bg-secondary" id="reason{{ $key }}"
+                                        disabled aria-label="Text input with checkbox" value="{{ $v }}"
+                                        name="reasonForReportText">
+                                </div>
+                                @endforeach
+                                <div class="input-group mb-3 col-6">
+                                    <div class="input-group-text">
+                                        <input class="form-check-input mt-0" type="radio" value=""
+                                            aria-label="Checkbox for following text input" name="violence"
+                                            id="otherButton" required>
+                                    </div>
+                                    <input type="text" class="form-control text-dark bg-secondary"
+                                        aria-label="Text input with checkbox" value=""
+                                        placeholder="Enter a other reason" id="other" name="reasonForReportText">
+                                </div>
+                            </div>
+                        </div>
 
-            <!-- Button Start -->
-            <div class="container-fluid pt-4 px-4">
-                <div class="bg-secondary rounded p-4">
-                    <div class="row g-2">
-                        <h3 class="text-dark">Search Review</h3>
-                        <div class="form-floating mb-3 col-md-6">
-                            <input type="text" class="form-control bg-secondary text-dark" id="Grade" placeholder="Grade">
-                            <label for="Grade">Grade</label>
-                        </div>
-                        <div class="form-floating mb-3 col-md-6">
-                            <input type="text" class="form-control bg-secondary text-dark" id="Class" placeholder="Class">
-                            <label for="Class">Class</label>
-                        </div>
-                        <div class="d-grid gap-2 col-6 mx-auto">
-                            <button class="btn btn-primary" type="button">Search</button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger" onclick="sendReport();"
+                                id="reportBtn">Report</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Button End -->
-
 
             <!-- Review Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-secondary rounded p-4">
                     <div class="row g-2">
                         <h3 class="text-dark">Review</h3>
+                        <div class="form-floating mb-3 col-md-6">
+                            <input onkeyup="filterTable();" type="text" class="form-control bg-secondary text-dark" id="Grade"
+                                placeholder="Grade">
+                            <label for="Grade">Grade</label>
+                        </div>
+                        <div class="form-floating mb-3 col-md-6">
+                            <input onkeyup="filterTable();" type="text" class="form-control bg-secondary text-dark" id="Class"
+                                placeholder="Class">
+                            <label for="Class">Class</label>
+                        </div>
+                        <hr />
+
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
+                                        <th scope="col">No</th>
+                                        <th scope="col">Class</th>
                                         <th scope="col">Subject</th>
-                                        <th style="width: 14%" scope="col">Star Rate</th>
+                                        <th scope="col" class="space">Star Rate</th>
                                         <th scope="col">Description</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @if ($records != null)
+                                    @foreach ($records as $key => $record)
                                     <tr>
-                                        <th scope="row">Maths</th>
-                                        <th scope="row">5</th>
-                                        <th scope="row">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                            Deleniti, maiores nostrum! Nisi delectus dolorem dicta distinctio, incidunt
-                                            nulla quae tempore iure ullam! Laudantium, nesciunt est maxime dolores minus
-                                            repudiandae repellat.</th>
-                                        <th scope="row"><button type="button" class="btn btn-primary btn-sm">Report</button></th>
+                                        <th scope="row">{{ $key + 1 }}</th>
+                                        <th scope="row" data-grade="{{ $record->grade }}" data-class="{{ $record->class }}">{{ $record->grade }}-{{ $record->class }}</th>
+                                        <th scope="row">{{ $record->subject }}</th>
+                                        <th scope="row">{{ $record->rating }}</th>
+                                        <th scope="row" class="space">{{ $record->comment }}</th>
+                                        <th scope="row">
+                                            <button onclick="reportModal();" data-id="{{ $record->id }}"
+                                                data-index="{{ $record->student }}" data-message="{{ $record->comment }}" type="button"
+                                                class="btn btn-danger btn-sm">Report</button>
+                                        </th>
                                     </tr>
-                                    <tr>
-                                        <th scope="row">Maths</th>
-                                        <th scope="row">5</th>
-                                        <th scope="row">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                            Deleniti, maiores nostrum! Nisi delectus dolorem dicta distinctio, incidunt
-                                            nulla quae tempore iure ullam! Laudantium, nesciunt est maxime dolores minus
-                                            repudiandae repellat.</th>
-                                        <th scope="row"><button type="button" class="btn btn-primary btn-sm">Report</button></th>
-                                    </tr>
+                                    @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -171,6 +215,126 @@
     @include('public_components.js')
     <!-- Template Javascript -->
     <script>
+        // create function to show report modal
+        function reportModal() {
+            // pass values to the dataset of the onclick button to modal button
+            let id = event.target.dataset.id;
+            let index = event.target.dataset.index;
+            let message = event.target.dataset.message;
+            document.getElementById('reportBtn').dataset.message = message;
+            document.getElementById('reportBtn').dataset.id = id;
+            document.getElementById('reportBtn').dataset.index = index;
+            $('#reportModal').modal('show');
+        }
+
+        // create function to send report
+        function sendReport() {
+            document.getElementById('spinner').classList.add('show');
+            $('#reportModal').modal('hide');
+            let id = document.getElementById('reportBtn').dataset.id;
+            let index = document.getElementById('reportBtn').dataset.index;
+            let message = document.getElementById('reportBtn').dataset.message;
+            let reasonForReport = document.querySelector('input[name="violence"]:checked');
+            // check reportForReport is null
+            if (reasonForReport == null) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops...',
+                    text: 'Please select a reason!',
+                })
+                return;
+            } else {
+                // get the value of the other text field
+                reasonForReport = reasonForReport.value;
+            }
+
+            // check otherButton id is checked
+            if (document.getElementById('otherButton').checked) {
+                // get the value of the other text field
+                reasonForReport = document.getElementById('other').value;
+            }
+
+            // validate all the fields
+            if (reasonForReport == '') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops...',
+                    text: 'Please add a reason!',
+                })
+            // remove show to spinner
+            document.getElementById('spinner').classList.remove('show');
+            } else {
+                // send data to the server
+                $.ajax({
+                    url: "{{ route('report.feedback') }}",
+                    type: "POST",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "id": id,
+                        "index": index,
+                        "reasonForReport": reasonForReport,
+                        "message": message
+                    },
+                    success: function (response) {
+                        // handle two response success and already
+                        if (response == 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Reported successfully!',
+                            })
+                        } else if (response == 'already') {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Oops...',
+                                text: 'You have already reported this feedback!',
+                            })
+                        }
+                        document.getElementById('spinner').classList.remove('show');
+                    },
+                    error: function (response) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                        })
+                        document.getElementById('spinner').classList.remove('show');
+                    }
+                });
+            }
+        }
+
+        // create a function to filter table with grade and class, grade and class given in dataset, if grade and class is null then show all
+        function filterTable() {
+            // get the value of the grade and class
+            let grade = document.getElementById('Grade').value;
+            let classs = document.getElementById('Class').value;
+            // get all the rows
+            let rows = document.querySelectorAll('tbody tr');
+
+            // check grade and class is null
+            if (grade == '' && classs == '') {
+                // show all the rows
+                rows.forEach(row => {
+                    row.classList.remove('d-none');
+                });
+            } else {
+                // hide all the rows
+                rows.forEach(row => {
+                    row.classList.add('d-none');
+                });
+
+                // show the rows with the given grade and class
+                rows.forEach(row => {
+                    // show if row when grade and class is equal to dataset value
+                    classs = classs.toUpperCase();
+                    if (row.children[1].dataset.grade == grade && row.children[1].dataset.class.toUpperCase() == classs.toUpperCase()) {
+                        row.classList.remove('d-none');
+                    }
+                });
+            }
+        }
+
         // create a function to send data to the server
         function sendData() {
             // get the data from the form
@@ -214,7 +378,7 @@
                     xhr.open('POST', "{{ route('add.learning.task') }}");
                     xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
                     xhr.setRequestHeader('Content-Type', 'application/json');
-                    xhr.onreadystatechange = function() {
+                    xhr.onreadystatechange = function () {
                         if (xhr.readyState == 4 && xhr.status == 200) {
                             if (xhr.responseText == 'success') {
                                 Swal.fire({

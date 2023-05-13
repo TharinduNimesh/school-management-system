@@ -95,9 +95,7 @@ Route::prefix('teacher')->middleware(['auth', 'IsTeacher'])->group(function() {
     Route::get('send/message', function() {
         return view("teacher.message");
     })->name('teacher.message');
-    Route::get('class/records', function() {
-        return view("teacher.feedback");
-    })->name('teacher.feedback');
+    Route::get('class/records', [TeacherController::class, 'navigateToFeedback'])->name('teacher.feedback');
     Route::get('search/marks', [TeacherController::class, 'navigateToResultSheet'])->name('teacher.resultsheet');
     Route::get('manage/leaves', [LeavesController::class, 'navigateToTeacherLeaves'])->name('teacher.leaves');
     Route::get('summary', [TeacherController::class, 'navigateToSummary'])->name('teacher.summary');
@@ -262,6 +260,7 @@ Route::post('get/subject/marks', [TeacherController::class, 'getStudentMarksToUp
 Route::post('update/marks', [MarksController::class, 'update'])->name('update.marks');
 Route::post('teacher/search/marks', [TeacherController::class, 'teacherSearchMarks'])->name('teacher.search.marks');
 Route::post('add/learning/task', [LearningController::class, 'addTask'])->name('add.learning.task');
+Route::post('report/feedback', [LearningController::class, 'reportFeedback'])->name('report.feedback');
 
 // Student Function Routes
 Route::post('submit/assignment', [AssignmentController::class, 'submit'])->name('submit.assignment');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\TeacherWelcome;
+use App\Models\LearningRecord;
 use App\Models\Marks;
 use App\Models\SectionHead;
 use App\Models\Teacher;
@@ -235,5 +236,37 @@ class TeacherController extends Controller
         return view('teacher.resultsheet', [
             'years' => $years
         ]);
+    }
+
+    public function navigateToFeedback() {
+        $year = date("Y");
+        $records = LearningRecord::where("nic", auth()->user()->index)
+        ->where("date", "like", "$year%")
+        ->orderBy("date", "desc")
+        ->get();
+
+        $response = [];
+
+        foreach ($records as $record) {
+            if($record["feedback"] != null) {
+                foreach ($record["feedback"] as $feedback) {
+                    $obj = new \stdClass();
+                    $obj->id = $record["_id"];
+                    $obj->student = $feedback["index_number"];
+                    $obj->grade = $record["grade"];
+                    $obj->class = $record["class"];
+                    $obj->subject = $record["subject"];
+                    $obj->comment = $feedback["comment"];
+                    $obj->date = $record["date"];
+                    $obj->rating = $feedback["rating"];
+                    array_push($response, $obj);
+                }
+            }
+        }
+
+        return view('teacher.feedback', [
+            "records" => $response
+        ]);
+
     }
 }
