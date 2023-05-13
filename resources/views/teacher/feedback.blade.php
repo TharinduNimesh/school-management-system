@@ -30,19 +30,20 @@
                     <h3 class="text-dark">Add period summary</h3>
                     <div class="row g-2">
                         <div class="form-floating mb-3 col-md-6">
-                            <select class="form-select bg-secondary text-dark" id="assignmentGrade" name="grade"
+                            <select class="form-select bg-secondary text-dark" id="grade" name="grade"
                                 aria-label="Floating label select example">
                                 <option value="0" selected>
                                     Open this select menu
                                 </option>
-                                @for($i=1; $i <= 13; $i++) <option>{{ $i }}</option>
-                                    @endfor
+                                @for($i=1; $i <= 13; $i++) 
+                                <option>{{ $i }}</option>
+                                @endfor
                             </select>
                             <label for="floatingSelect">Select A Grade</label>
                         </div>
 
                         <div class="form-floating mb-3 col-md-6">
-                            <select class="form-select bg-secondary text-dark" id="assignmentClass" name="class"
+                            <select class="form-select bg-secondary text-dark" id="class" name="class"
                                 aria-label="Floating label select example">
                                 <option value="0" selected>
                                     Open this select menu
@@ -55,19 +56,40 @@
                             </select>
                             <label for="floatingSelect">Select A Class</label>
                         </div>
-                        <div class="mb-3 col-md-6">
-                            <label for="PeriodNo" class="form-label">Period No</label>
-                            <input class="text-dark form-control bg-secondary" type="number" id="PeriodNo"
-                                name="PeriodNo" placeholder="Enter Period No" />
+                        <div class="form-floating mb-3 col-md-6">
+                            <select class="form-select bg-secondary text-dark" id="PeriodNo" name="grade"
+                                aria-label="Floating label select example">
+                                <option value="0" selected>
+                                    Open this select menu
+                                </option>
+                                @for($i=1; $i <= 8; $i++) 
+                                <option>{{ $i }}</option>
+                                @endfor
+                            </select>
+                            <label for="floatingSelect">Select A Period</label>
                         </div>
-                        <div class="mb-3 col-md-6">
-                            <label for="Subject" class="form-label">Subject</label>
-                            <input type="text" class="text-dark form-control bg-secondary" id="Subject" name="Subject"
-                                placeholder="Enter Subject" />
+                        <div class="form-floating mb-3 col-md-6">
+                            <select class="form-select bg-secondary text-dark" id="Subject" name="grade"
+                                aria-label="Floating label select example">
+                                <option value="0" selected>
+                                    Open this select menu
+                                </option>
+                                <!-- create option list with common sample subjects -->
+                                @php( $subjects = ["Maths", "Science", "English", "History", "Geography"])
+
+                                @foreach($subjects as $subject) 
+                                <option>{{ $subject }}</option>
+                                @endforeach
+                            </select>
+                            <label for="floatingSelect">Select A Subject</label>
                         </div>
                         <div class="mb-3 col-md-12">
                             <label for="description" class="form-label">Description</label>
                             <textarea class="form-control bg-secondary text-dark" id="description" rows="3"></textarea>
+                        </div>
+
+                        <div class="d-grid gap-2 col-6 mx-auto" onclick="sendData();">
+                            <button class="btn btn-primary" type="button">Add Record</button>
                         </div>
                     </div>
                 </div>
@@ -156,7 +178,65 @@
     <!-- JavaScript Libraries -->
     @include('public_components.js')
     <!-- Template Javascript -->
+    <script>
+        // create a function to send data to the server
+        function sendData() {
+            // get the data from the form
+            let grade = document.getElementById('grade').value;
+            let classs = document.getElementById('class').value;
+            let periodNo = document.getElementById('PeriodNo').value;
+            let subject = document.getElementById('Subject').value;
+            let description = document.getElementById('description').value;
 
+            if (isNaN(periodNo) || periodNo > 8) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops...',
+                    text: 'Please enter a valid period number!',
+                })
+            } else {
+            // validate all the fields
+            if (grade == '0' || classs == '0' || periodNo == '0' || subject == '0' || description == '') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops...',
+                    text: 'Please fill all the fields!',
+                })
+            } else {
+                // create an object to store the data
+                let data = {
+                    grade: grade,
+                    class: classs,
+                    periodNo: periodNo,
+                    subject: subject,
+                    description: description
+                }
+
+                // create an object to store the request headers
+                let requestHeaders = {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json'
+                }
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', "{{ route('add.learning.task') }}");
+                xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Learning Task Added Successfully!',
+                        })
+                    }
+                }
+
+                xhr.send(JSON.stringify(data));
+            }
+            } 
+        }
+    </script>
 </body>
 
 </html>

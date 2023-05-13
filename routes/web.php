@@ -7,13 +7,13 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SportController;
 use App\Http\Controllers\StaffController;
-use App\Mail\ApproveLeaves;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\LearningController;
 use App\Http\Controllers\MarksController;
 use App\Http\Controllers\SubjectController;
 use App\Mail\StudentAssignment;
@@ -97,6 +97,9 @@ Route::prefix('teacher')->middleware(['auth', 'IsTeacher'])->group(function() {
     Route::get('send/message', function() {
         return view("teacher.message");
     })->name('teacher.message');
+    Route::get('class/records', function() {
+        return view("teacher.feedback");
+    })->name('teacher.feedback');
     Route::get('search/marks', [TeacherController::class, 'navigateToResultSheet'])->name('teacher.resultsheet');
     Route::get('manage/leaves', [LeavesController::class, 'navigateToTeacherLeaves'])->name('teacher.leaves');
     Route::get('summary', [TeacherController::class, 'navigateToSummary'])->name('teacher.summary');
@@ -260,6 +263,7 @@ Route::post('get/subjects', [MarksController::class, 'getSubjectsList'])->name('
 Route::post('get/subject/marks', [TeacherController::class, 'getStudentMarksToUpdate'])->name('get.marks.for.update');
 Route::post('update/marks', [MarksController::class, 'update'])->name('update.marks');
 Route::post('teacher/search/marks', [TeacherController::class, 'teacherSearchMarks'])->name('teacher.search.marks');
+Route::post('add/learning/task', [LearningController::class, 'addTask'])->name('add.learning.task');
 
 // Student Function Routes
 Route::post('submit/assignment', [AssignmentController::class, 'submit'])->name('submit.assignment');
