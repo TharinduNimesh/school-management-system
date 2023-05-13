@@ -237,8 +237,11 @@ Route::prefix('manage')->group(function() {
 Route::prefix('search')->group(function() {
     Route::get('student/{id}', [StudentController::class, 'show'])->name('search.student');
     Route::post("teacher", [TeacherController::class, 'show'])->name('search.teacher');
+    Route::post('class/record', [LearningController::class, 'showRecord'])->name('search.class.record');
 });
 Route::delete('remove/section/head', [TeacherController::class, 'removeSectionHead'])->name("remove.section.head");
+// admin route for get feedbacks
+Route::post('feedbacks', [LearningController::class, 'getFeedbacks'])->name('get.feedbacks');
 
 // admin manage student subject routes
 Route::post('activate/request', [SubjectController::class, 'activate'])->name('request.activate');

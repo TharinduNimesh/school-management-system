@@ -30,19 +30,18 @@
                     <div class="row g-2">
                         <div class="col-md">
                             <div class="form-floating">
-                                <input class="form-control bg-secondary text-dark" id="floatingSelectGrid" type="text" placeholder="Grade">
+                                <input class="form-control bg-secondary text-dark" id="grade" type="text" placeholder="Grade">
                                 <label for="floatingSelectGrid">Grade</label>
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="form-floating">
-                                <input class="form-control bg-secondary text-dark" id="floatingSelectGrid" type="text" placeholder="Class">
+                                <input class="form-control bg-secondary text-dark" id="class" type="text" placeholder="Class">
                                 <label for="floatingSelectGrid">Class</label>
                             </div>
                         </div>
                         <div>
-                            <button type="submit" class="btn btn-primary col-12">Search<i
-                                    class="bi bi-search ms-2"></i></button>
+                            <button type="button" onclick="searchRecord();" class="btn btn-primary col-12">Search<i class="bi bi-search ms-2"></i></button>
                         </div>
                     </div>
                 </div>
@@ -50,32 +49,22 @@
             <!-- Search End -->
 
 
+
             <!-- Summery Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-secondary rounded p-4">
                     <div class="row g-2">
                         <h3 class="text-dark">Summary</h3>
-                        <div class="table-responsive">
+                        <div class="table-responsive" id="summaryTable">
                             <table class="table table-bordered">
-                                <thead>
+                                <thead class="table-dark">
                                     <tr>
                                         <th scope="col">Subject</th>
                                         <th scope="col">Period</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="col">Maths</th>
-                                        <th scope="col">08</th>
-                                    </tr>
-                                    <tr>
-                                        <th scope="col">Sinhala</th>
-                                        <th scope="col">05</th>
-                                    </tr>
-                                    <tr>
-                                        <th scope="col">History</th>
-                                        <th scope="col">08</th>
-                                    </tr>
+                                <tbody id="summaryBody">
+
                                 </tbody>
                             </table>
                         </div>
@@ -84,7 +73,6 @@
             </div>
             <!-- Summery End -->
 
-
             <!-- Table Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-secondary rounded p-4">
@@ -92,61 +80,17 @@
                         <h3 class="text-dark">Weekly report</h3>
                         <div class="table-responsive">
                             <table class="table table-bordered">
-                                <thead>
+                                <thead class="table-dark">
                                     <tr>
-                                        <th colspan="5" class="text-center">Monday</th>
+                                        <th scope="col">Period</th>
+                                        <th scope="col">Subject</th>
+                                        <th scope="col">Teacher</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Feedbacks</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="col">Period</th>
-                                        <th scope="col">Subject</th>
-                                        <th scope="col">Teacher</th>
-                                        <th scope="col">Description</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Test</th>
-                                        <th scope="row">Test</th>
-                                        <th scope="row">Test</th>
-                                        <th scope="row">Test</th>
-                                        <th scope="row"><button type="button"
-                                                class="btn btn-primary btn-sm">Reviews</button></th>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Test</th>
-                                        <th scope="row">Test</th>
-                                        <th scope="row">Test</th>
-                                        <th scope="row">Test</th>
-                                        <th scope="row"><button type="button"
-                                                class="btn btn-primary btn-sm">Reviews</button></th>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="5" class="text-center">Monday</th>
-                                    </tr>
-                                    <tr>
-                                        <th scope="col">Period</th>
-                                        <th scope="col">Subject</th>
-                                        <th scope="col">Teacher</th>
-                                        <th scope="col">Description</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Test</th>
-                                        <th scope="row">Test</th>
-                                        <th scope="row">Test</th>
-                                        <th scope="row">Test</th>
-                                        <th scope="row"><button type="button"
-                                                class="btn btn-primary btn-sm">Reviews</button></th>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Test</th>
-                                        <th scope="row">Test</th>
-                                        <th scope="row">Test</th>
-                                        <th scope="row">Test</th>
-                                        <th scope="row"><button type="button"
-                                                class="btn btn-primary btn-sm">Reviews</button></th>
-                                    </tr>
+                                <tbody id="reportBody">
+
                                 </tbody>
                             </table>
                         </div>
@@ -167,67 +111,164 @@
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
 
+    <div class="modal fade" tabindex="-1" id="feedbackModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark">Feedback</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                    <table class="table table-hover table-bordered">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Rating</th>
+                                <th scope="col">Comment</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+
+                        </tbody>
+                   </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- JavaScript Libraries -->
     @include('public_components.js')
     <!-- Template Javascript -->
 
     <script>
-        function searchStudent() {
-            const index = document.getElementById("searchByName");
-            const name = document.getElementById("searchByIndex");
+        function searchRecord() {
+            document.getElementById("spinner").classList.add("show"); 
+            var grade = document.getElementById("grade").value;
+            var classs = document.getElementById("class").value;
+            var gradeRegex = /^[0-9]{1,2}$/;
+            var classRegex = /^[A-Ha-h]{1}$/;
+            document.getElementById("summaryBody").innerHTML = "";
+            document.getElementById("reportBody").innerHTML = "";
 
-            if (index.value.trim() == '' && name.value.trim() == '' || index.value.trim() != '' && name.value.trim() != '') {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'WARNING',
-                    text: 'You must fill in one text field at a time'
+            if (gradeRegex.test(grade) && classRegex.test(classs)) {
+                $.ajax({
+                    url: "{{ route('search.class.record') }}",
+                    type: "POST",
+                    data: {
+                        grade: grade,
+                        class: classs,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                        var subjects = Object.keys(response.count);
+                        subjects.forEach(subject => {
+                            var row = document.createElement("tr");
+                            var subjectName = document.createElement("th");
+                            subjectName.setAttribute("scope", "row");
+                            subjectName.innerHTML = subject;
+                            row.appendChild(subjectName);
+                            var period = document.createElement("th");
+                            period.setAttribute("scope", "row");
+                            period.innerHTML = response.count[subject];
+                            row.appendChild(period);
+                            document.getElementById("summaryBody").appendChild(row);
+                        });
+
+                        var index = 0;
+                        days.forEach(date => {
+                            // create table body of report table
+                            var row = document.createElement("tr");
+                            var day = document.createElement("th");
+                            row.classList.add("text-center", "bg-info", "text-dark");
+                            day.setAttribute("colspan", "5");
+                            day.setAttribute("class", "text-center");
+                            day.innerHTML = date;
+                            row.appendChild(day);
+                            document.getElementById("reportBody").appendChild(row);
+                            // create body of report table
+
+                            response.records[index].forEach(record => {
+                                var row = document.createElement("tr");
+                                row.colSpan = 5;
+                                var period = document.createElement("th");
+                                period.setAttribute("scope", "row");
+                                period.innerHTML = record.period_no;
+                                row.appendChild(period);
+                                var subject = document.createElement("th");
+                                subject.setAttribute("scope", "row");
+                                subject.innerHTML = record.subject;
+                                row.appendChild(subject);
+                                var teacher = document.createElement("th");
+                                teacher.setAttribute("scope", "row");
+                                teacher.innerHTML = record.name;
+                                row.appendChild(teacher);
+                                var description = document.createElement("th");
+                                description.setAttribute("scope", "row");
+                                description.innerHTML = record.description;
+                                row.appendChild(description);
+                                var feedback = document.createElement("th");
+                                feedback.setAttribute("scope", "row");
+                                var button = document.createElement("button");
+                                button.setAttribute("type", "button");
+                                button.setAttribute("class", "btn btn-success btn-sm");
+                                button.dataset.id = record._id;
+                                button.innerHTML = "view";
+                                button.onclick = function() {
+                                    $.ajax({
+                                        url: "{{ route('get.feedbacks') }}",
+                                        type: "POST",
+                                        data: {
+                                            id: record._id,
+                                            _token: '{{ csrf_token() }}'
+                                        },
+                                        success: function(response) {
+                                            // create row
+                                            document.getElementById("feedbackModal").querySelector("tbody").innerHTML = "";
+                                            response.forEach((feedback, index) => {
+                                                var row = document.createElement("tr");
+                                                var no = document.createElement("th");
+                                                no.setAttribute("scope", "row");
+                                                no.innerHTML = index + 1;
+                                                row.appendChild(no);
+                                                var rating = document.createElement("th");
+                                                rating.setAttribute("scope", "row");
+                                                rating.innerHTML = feedback.rating;
+                                                row.appendChild(rating);
+                                                var comment = document.createElement("th");
+                                                comment.setAttribute("scope", "row");
+                                                comment.innerHTML = feedback.comment;
+                                                row.appendChild(comment);
+                                                document.getElementById("feedbackModal").querySelector("tbody").appendChild(row);
+                                            });
+                                            $("#feedbackModal").modal("show");
+                                        },
+                                    });
+                                }
+                                feedback.appendChild(button);
+                                row.appendChild(feedback);
+                                document.getElementById("reportBody").appendChild(row);
+                            });
+                            index++;
+                        });
+                        document.getElementById("spinner").classList.remove("show"); 
+                    },
                 });
             } else {
-                var studentIndex;
-                if (name.value.trim() != "") {
-                    studentIndex = name.dataset.index;
-                } else {
-                    studentIndex = index.value;
-                }
-
-                var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        var response = JSON.parse(xhr.responseText);
-                        if (response.status == "error") {
-                            Swal.fire({
-                                icon: 'warning',
-                                title: 'WARNING',
-                                text: 'Invalid Index Number'
-                            });
-                        } else if (response.status == "permission") {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'ERROR',
-                                text: 'Permission Denied'
-                            });
-                        } else {
-                            document.getElementById("NameResult").value = response.student["initial_name"];
-                            document.getElementById("classGradeResult").value = response.student["current_grade" + "-" + "current_class"];
-
-                        }
-                    }
-                }
-
-                xhr.open("GET", "process/searchStudent.php?index=" + studentIndex + "", true);
-                xhr.send();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter valid grade and class!',
+                })
+            document.getElementById("spinner").classList.remove("show"); 
             }
         }
-
-        function addAward() {
-            const awardName = document.getElementById("awardName");
-            const awardYear = document.getElementById("awardYear");
-            const WinningPlace = document.getElementById("WinningPlace");
-            const discription = document.getElementById("discription");
-        }
     </script>
-
-
 </body>
 
 </html>
