@@ -155,8 +155,8 @@
             <!-- Navbar End -->
 
             <!-- Rating Start -->
-            <div class="container-fluid pt-4 px-4">
-                <div class="bg-secondary rounded p-4" style="min-height: 80vh;">
+            <div class="container-fluid pt-4 px-4" style="min-height: 80vh;">
+                <div class="bg-secondary rounded p-4">
                     <h3 class="mb-4 text-dark">Rate for today subjects</h3>
                     <div class="row">
                         @foreach ($records as $record)
@@ -351,11 +351,8 @@
                             icon: 'success',
                             title: 'Feedback Submitted!',
                             text: 'Thank you for your feedback!',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                // location.reload();
-                            }
                         })
+                        location.reload();
                     } else {
                         Swal.fire({
                             icon: 'error',

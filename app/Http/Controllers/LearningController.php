@@ -31,6 +31,8 @@ class LearningController extends Controller
             if($recordAdded){
                 return 'success';
             }
+        } else {
+            return 'exist';
         }
     }
 

@@ -30,21 +30,18 @@
                     <h3 class="text-dark">Add period summary</h3>
                     <div class="row g-2">
                         <div class="form-floating mb-3 col-md-6">
-                            <select class="form-select bg-secondary text-dark" id="grade" name="grade"
-                                aria-label="Floating label select example">
+                            <select class="form-select bg-secondary text-dark" id="grade" name="grade" aria-label="Floating label select example">
                                 <option value="0" selected>
                                     Open this select menu
                                 </option>
-                                @for($i=1; $i <= 13; $i++) 
-                                <option>{{ $i }}</option>
-                                @endfor
+                                @for($i=1; $i <= 13; $i++) <option>{{ $i }}</option>
+                                    @endfor
                             </select>
                             <label for="floatingSelect">Select A Grade</label>
                         </div>
 
                         <div class="form-floating mb-3 col-md-6">
-                            <select class="form-select bg-secondary text-dark" id="class" name="class"
-                                aria-label="Floating label select example">
+                            <select class="form-select bg-secondary text-dark" id="class" name="class" aria-label="Floating label select example">
                                 <option value="0" selected>
                                     Open this select menu
                                 </option>
@@ -57,27 +54,24 @@
                             <label for="floatingSelect">Select A Class</label>
                         </div>
                         <div class="form-floating mb-3 col-md-6">
-                            <select class="form-select bg-secondary text-dark" id="PeriodNo" name="grade"
-                                aria-label="Floating label select example">
+                            <select class="form-select bg-secondary text-dark" id="PeriodNo" name="grade" aria-label="Floating label select example">
                                 <option value="0" selected>
                                     Open this select menu
                                 </option>
-                                @for($i=1; $i <= 8; $i++) 
-                                <option>{{ $i }}</option>
-                                @endfor
+                                @for($i=1; $i <= 8; $i++) <option>{{ $i }}</option>
+                                    @endfor
                             </select>
                             <label for="floatingSelect">Select A Period</label>
                         </div>
                         <div class="form-floating mb-3 col-md-6">
-                            <select class="form-select bg-secondary text-dark" id="Subject" name="grade"
-                                aria-label="Floating label select example">
+                            <select class="form-select bg-secondary text-dark" id="Subject" name="grade" aria-label="Floating label select example">
                                 <option value="0" selected>
                                     Open this select menu
                                 </option>
                                 <!-- create option list with common sample subjects -->
                                 @php( $subjects = ["Maths", "Science", "English", "History", "Geography"])
 
-                                @foreach($subjects as $subject) 
+                                @foreach($subjects as $subject)
                                 <option>{{ $subject }}</option>
                                 @endforeach
                             </select>
@@ -142,8 +136,7 @@
                                             Deleniti, maiores nostrum! Nisi delectus dolorem dicta distinctio, incidunt
                                             nulla quae tempore iure ullam! Laudantium, nesciunt est maxime dolores minus
                                             repudiandae repellat.</th>
-                                        <th scope="row"><button type="button"
-                                                class="btn btn-primary btn-sm">Report</button></th>
+                                        <th scope="row"><button type="button" class="btn btn-primary btn-sm">Report</button></th>
                                     </tr>
                                     <tr>
                                         <th scope="row">Maths</th>
@@ -152,8 +145,7 @@
                                             Deleniti, maiores nostrum! Nisi delectus dolorem dicta distinctio, incidunt
                                             nulla quae tempore iure ullam! Laudantium, nesciunt est maxime dolores minus
                                             repudiandae repellat.</th>
-                                        <th scope="row"><button type="button"
-                                                class="btn btn-primary btn-sm">Report</button></th>
+                                        <th scope="row"><button type="button" class="btn btn-primary btn-sm">Report</button></th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -195,46 +187,60 @@
                     text: 'Please enter a valid period number!',
                 })
             } else {
-            // validate all the fields
-            if (grade == '0' || classs == '0' || periodNo == '0' || subject == '0' || description == '') {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Oops...',
-                    text: 'Please fill all the fields!',
-                })
-            } else {
-                // create an object to store the data
-                let data = {
-                    grade: grade,
-                    class: classs,
-                    periodNo: periodNo,
-                    subject: subject,
-                    description: description
-                }
-
-                // create an object to store the request headers
-                let requestHeaders = {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json'
-                }
-
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', "{{ route('add.learning.task') }}");
-                xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: 'Learning Task Added Successfully!',
-                        })
+                // validate all the fields
+                if (grade == '0' || classs == '0' || periodNo == '0' || subject == '0' || description == '') {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Oops...',
+                        text: 'Please fill all the fields!',
+                    })
+                } else {
+                    // create an object to store the data
+                    let data = {
+                        grade: grade,
+                        class: classs,
+                        periodNo: periodNo,
+                        subject: subject,
+                        description: description
                     }
-                }
 
-                xhr.send(JSON.stringify(data));
+                    // create an object to store the request headers
+                    let requestHeaders = {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json'
+                    }
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', "{{ route('add.learning.task') }}");
+                    xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState == 4 && xhr.status == 200) {
+                            if (xhr.responseText == 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: 'Learning Task Added Successfully!',
+                                })
+                            } else if (xhr.responseText == 'exist') {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Oops...',
+                                    text: 'Learning Task Already Exist!',
+                                })
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Something went wrong!',
+                                    text: 'Please contact developers',
+                                })
+                            }
+                        }
+                    }
+
+                    xhr.send(JSON.stringify(data));
+                }
             }
-            } 
         }
     </script>
 </body>
