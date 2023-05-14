@@ -190,6 +190,39 @@ class TeacherController extends Controller
         return $response;
     }
 
+    public function addSubject(Request $request) {
+        $teacher = Teacher::where('nic', $request->nic)->first();
+        $subjects = $teacher->subjects;
+        if($subjects == null) {
+            $subjects = [];
+        }
+        foreach($request->grades as $grade) {
+            $isValid = true;
+            if(count($subjects) != 0) {
+                foreach ($subjects as $subject) {
+                    if($subject["subject"] == $request->subject && $subject["grade"] == $grade) {
+                        $isValid = false;
+                    }
+                }
+            }
+
+            if($isValid) {
+                $subject = new \stdClass();
+                $subject->subject = $request->subject;
+                $subject->grade = $grade;
+
+                array_push($subjects, $subject);
+            }
+        }
+        $teacher->subjects = $subjects;
+        $update = $teacher->save();
+        if($update) {
+            return 'success';
+        } else {
+            return 'error';
+        }
+    }
+
     public function navigateToSummary() {
         $teacherDetails = self::getClass(auth()->user()->index, Date("Y"));
         $students = ClassController::getStudentList($teacherDetails->grade, $teacherDetails->class, Date("Y"));
@@ -263,10 +296,9 @@ class TeacherController extends Controller
                 }
             }
         }
-
+        
         return view('teacher.feedback', [
             "records" => $response
         ]);
-
     }
 }

@@ -132,9 +132,7 @@ Route::prefix('admin')->middleware(['auth', 'IsAdmin'])->group(function() {
     Route::get('manage/discipline', function() {
         return view('admin.discipline');
     })->name('admin.discipline');
-    Route::get('add/teacher/subject', function() {
-        return view('admin.teacherSubject');
-    })->name('admin.teacher.subject');
+    Route::get('add/teacher/subject', [SubjectController::class, 'navigateToTeacherSubject'])->name('admin.teacher.subject');
     Route::get('manage/accessories', function() {
         return view('admin.accessories');
     })->name('admin.accessories');
@@ -202,6 +200,7 @@ Route::prefix('add')->group(function() {
     Route::post('sport', [SportController::class, 'add_sport'])->name('add.sport');
     Route::post('coach', [SportController::class, 'add_coach'])->name('add.coach');
     Route::post('section-head', [TeacherController::class, 'makeAsSectionHead'])->name('add.section.head');
+    Route::post('teacher/subject', [TeacherController::class, 'addSubject'])->name('add.subject.to.teacher');
 });
 Route::prefix('manage')->group(function() {
     // admin manage register routes

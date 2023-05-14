@@ -174,6 +174,12 @@ class SubjectController extends Controller
         ]);
     }
 
+    public function navigateToTeacherSubject() {
+        return view('admin.teacherSubject', [
+            "subjects" => self::getAllSubjects()
+        ]);
+    }
+
     public static function getBucketSubjects($category) {
         $response = new stdClass();
         if($category == "ol") {
@@ -230,5 +236,64 @@ class SubjectController extends Controller
         }
 
         return $response;
+    }
+
+    public static function getAllSubjects() {
+        $subjects = [
+            "Sinhala",
+            "Tamil",
+            "English",
+            "Mathematics",
+            "Science",
+            "History",
+            "Geography",
+            "Civic Education",
+            "Buddhism",
+            "Hinduism",
+            "Islam",
+            "Catholicism",
+            "Christianity",
+            "Business & Accounting Studies",
+            "Economics",
+            "Political Science",
+            "Communication & Media Studies",
+            "Information & Communication Technology Sinhala",
+            "Information & Communication Technology English",
+            "Agriculture & Food Technology",
+            "Aquatic Bio-resources Technology",
+            "Arts & Crafts",
+            "Home Economics",
+            "Health & Physical Education",
+            "Communication & Media Studies",
+            "Design & Construction Technology",
+            "Design & Mechanical Technology",
+            "Design, Electrical & Electronic Technology",
+            "Electronic Writing & Shorthand",
+            "Oriental Music",
+            "Western Music",
+            "Carnatic Music",
+            "Oriental Dancing",
+            "Bharatha Dancing",
+            "Art",
+            "Appreciation of English Literary Texts",
+            "Appreciation of Sinhala Literary Texts",
+            "Appreciation of Tamil Literary Texts",
+            "Appreciation of Arabic Literary Texts",
+            "Drama and Theatre",
+            "Pali",
+            "Sanskrit",
+            "French",
+            "German",
+            "Hindi",
+            "Japanese",
+            "Arabic",
+            "Korean",
+            "Chinese",
+            "Russian",
+            "Entrepreneurship Studies",
+            "Environmental Studies"
+        ];
+
+        return $subjects;
     }
 }
