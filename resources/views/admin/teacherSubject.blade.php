@@ -73,12 +73,45 @@
                         </div>
                         <div class="mb-3 col-12">
                             <label for="basket subject" class="form-label">Qualification</label>
-                            <textarea class="form-control bg-secondary text-dark" placeholder="Ex: BSc in Computer Science" id="teacherQualification" rows="1" disabled></textarea>
+                            <textarea class="form-control bg-secondary text-dark" placeholder="Ex: BSc in Computer Science"
+                                id="teacherQualification" rows="1" disabled></textarea>
                         </div>
                     </div>
                 </div>
             </div>
             <!--Teacher Details end-->
+
+            <div class="modal fade" tabindex="-1" id="gradeModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-dark">Grades Of <span id="clickedSubject"></span></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-hover table-bordered">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th scope="col">Grade</th>
+                                        <th scope="col">Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="gradeBody">
+
+                                </tbody>
+                            </table>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button class="btn btn-danger me-md-2" id="removeAllButton" onclick="removeAll();" type="button">Remove All</button>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
 
             <!-- Table start -->
@@ -89,21 +122,15 @@
                     </div>
                     <div class="table-responsive">
                         <table class="table text-start align-middle table-bordered table-hover mb-0">
-                            <thead>
+                            <thead class="table-dark">
                                 <tr>
                                     <th scope="col">No</th>
                                     <th scope="col">Subject</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="col">01</th>
-                                    <th scope="col">science</th>
-                                    <th scope="col"><button type="button"
-                                            class="btn btn-success btn-sm">More</button>
-                                    </th>
-                                </tr>
+                            <tbody id="subjectBody">
+                                
                             </tbody>
                         </table>
                     </div>
@@ -134,15 +161,17 @@
                                 @for ($i = 1; $i <= 13; $i++)
                                     <tr>
                                         <th scope="col">Grade {{ $i }}</th>
-                                        <th scope="col"><input name="grade[]" value="{{ $i }}" class="form-check-input" style="width: 20px; height: 20px;" type="checkbox"
-                                                id="flexSwitchCheckDefault">
+                                        <th scope="col"><input name="grade[]" value="{{ $i }}"
+                                                class="form-check-input" style="width: 20px; height: 20px;"
+                                                type="checkbox" id="flexSwitchCheckDefault">
                                         </th>
                                     </tr>
                                 @endfor
                             </tbody>
                         </table>
                     </div>
-                    <button type="button" data-nic="" id="attachSubmitButton" class="btn btn-primary mt-4 col-12" onclick="attachSubjects();">Submit</button>
+                    <button type="button" data-nic="" id="attachSubmitButton"
+                        class="btn btn-primary mt-4 col-12" onclick="attachSubjects();">Submit</button>
                 </div>
             </div>
             <!-- Add subject end -->
@@ -250,6 +279,7 @@
             var teacherQualification = document.getElementById("teacherQualification");
             var teacherAppointedSubject = document.getElementById("teacherAppointedSubject");
             document.getElementById("attachSubmitButton").dataset.nic = "";
+            document.getElementById("subjectBody").innerHTML = "";
 
             if (teacherId == "") {
                 Swal.fire({
@@ -278,7 +308,6 @@
                 url: "{{ route('search.teacher') }}",
                 data: teacherData,
                 success: function(response) {
-                    console.log(response);
                     if (response != "Invalid") {
                         teacherName.value = response.full_name;
                         teacherEmail.value = response.email;
@@ -286,7 +315,82 @@
                         teacherAppointedSubject.value = response.appointed_subject;
                         teacherQualification.value = response.qualifications;
                         document.getElementById("attachSubmitButton").dataset.nic = teacherId;
-                    } else if (response == "Invalid") {
+                        var subjects = [];
+                        if(!response.subjects) {
+                            response.subjects = [];
+                        }
+                        response.subjects.forEach((subject, index) => {
+                            if(!subjects.includes(subject.subject)){
+                                // create a new row element
+                                var newRow = document.createElement("tr");
+                                newRow.id =  "subject" + subject.subject;
+                                // create a new cell element
+                                var no = document.createElement("td");
+                                no.innerHTML = index + 1;
+                                var subjectName = document.createElement("td");
+                                subjectName.innerHTML = subject.subject;
+                                var action = document.createElement("td");
+                                var button = document.createElement("button");
+                                button.classList.add("btn", "btn-success", "btn-sm");
+                                button.innerHTML = "More Info";
+                                button.dataset.subject = subject.subject;
+                                button.dataset.nic = teacherId;
+                                button.onclick = () => {
+                                    var teacherNic = event.target.dataset.nic;
+                                    var clickedSubject = event.target.dataset.subject;
+                                    document.getElementById("gradeBody").innerHTML = "";
+                                    var data = {
+                                        "nic": teacherNic,
+                                        "subject": clickedSubject
+                                    };
+                                    document.getElementById("spinner").classList.add("show");
+                                    $.ajax({
+                                        headers: {
+                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                        },
+                                        type: "POST",
+                                        url: "{{ route('show.grade.for.subject') }}",
+                                        data: data,
+                                        success: function(response) {
+                                            document.getElementById("clickedSubject").innerHTML = clickedSubject;
+                                            document.getElementById("removeAllButton").dataset.subject = clickedSubject;
+                                            document.getElementById("removeAllButton").dataset.nic = teacherNic;
+                                            response.subjects.forEach(data => {
+                                                var newRow = document.createElement("tr");
+                                                newRow.id = clickedSubject + data.grade;
+                                                var grade = document.createElement("td");
+                                                grade.innerHTML = "Grade" + data.grade;
+                                                var action = document.createElement("td");
+                                                var button = document.createElement("button");
+                                                button.classList.add("btn", "btn-danger", "btn-sm");
+                                                button.innerHTML = "Remove";
+                                                button.dataset.subject = data.subject;
+                                                button.dataset.nic = teacherNic;
+                                                button.dataset.grade = data.grade;
+                                                button.onclick = function() {
+                                                    removeFromGrade();
+                                                }
+                                                action.appendChild(button);
+                                                newRow.appendChild(grade);
+                                                newRow.appendChild(action);
+                                                document.getElementById("gradeBody").appendChild(newRow);
+                                            });
+
+                                            document.getElementById("spinner").classList.remove("show");
+                                            $("#gradeModal").modal("show");
+                                        },
+                                    });
+                                }
+                                action.appendChild(button);
+                                newRow.appendChild(no);
+                                newRow.appendChild(subjectName);
+                                newRow.appendChild(action);
+                                document.getElementById("subjectBody").appendChild(newRow);      
+                                subjects.push(subject.subject);                          
+                            }
+
+                        });
+                    } else {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
@@ -298,6 +402,69 @@
                         teacherAppointedSubject.value = "Ex: Maths";
                         teacherQualification.value = "Ex: BSc in Computer Science";
                     }
+                    document.getElementById("spinner").classList.remove("show");
+                }
+            });
+        }
+
+        function removeFromGrade() {
+            var teacherNic = event.target.dataset.nic;
+            var clickedSubject = event.target.dataset.subject;
+            var grade = event.target.dataset.grade;
+            var data = {
+                "nic": teacherNic,
+                "subject": clickedSubject,
+                "grade": grade
+            };
+            document.getElementById("spinner").classList.add("show");
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: "{{ route('remove.grade.from.teacher') }}",
+                data: data,
+                success: function(response) {
+                    document.getElementById(clickedSubject + grade).remove();
+                    document.getElementById("spinner").classList.remove("show");
+                },
+                failure: function(response) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
+                    document.getElementById("spinner").classList.remove("show");
+                }
+            });
+        }
+
+        function removeAll() {
+            var teacherNic = event.target.dataset.nic;
+            var clickedSubject = event.target.dataset.subject;
+            var data = {
+                "nic": teacherNic,
+                "subject": clickedSubject
+            };
+            document.getElementById("spinner").classList.add("show");
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: "{{ route('remove.all.grade.from.teacher') }}",
+                data: data,
+                success: function(response) {
+                    document.getElementById("subject" + clickedSubject).remove();
+                    document.getElementById("gradeBody").innerHTML = "";
+                    document.getElementById("spinner").classList.remove("show");
+                },
+                failure: function(response) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
                     document.getElementById("spinner").classList.remove("show");
                 }
             });

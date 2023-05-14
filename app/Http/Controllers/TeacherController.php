@@ -194,16 +194,21 @@ class TeacherController extends Controller
         $teacher = Teacher::where('nic', $request->nic)->first();
         $subjects = $teacher->subjects;
         if($subjects == null) {
-            $subjects = [];
+            $subjects = array();
         }
         foreach($request->grades as $grade) {
             $isValid = true;
-            if(count($subjects) != 0) {
-                foreach ($subjects as $subject) {
-                    if($subject["subject"] == $request->subject && $subject["grade"] == $grade) {
-                        $isValid = false;
+            if(!empty($subjects)) {
+                try {
+                    foreach ($subjects as $subject) {
+                        if($subject["subject"] == $request->subject && $subject["grade"] == $grade) {
+                            $isValid = false;
+                        }
                     }
+                } catch (\Throwable $th) {
+                    // subjects are empty
                 }
+                
             }
 
             if($isValid) {
@@ -221,6 +226,44 @@ class TeacherController extends Controller
         } else {
             return 'error';
         }
+    }
+
+    public function showSubjectGrade(Request $request) {
+        $subjects = Teacher::select('subjects')
+        ->where('nic', $request->nic)
+        ->first();
+
+        return $subjects;
+    }
+
+    public function removeSubjectFromGrade(Request $request) {
+        self::removeSubject($request->nic, $request->subject, $request->grade);
+
+        return "success";
+    }
+
+    public function removeSubjectFromAll(Request $request) {
+        $teacher = Teacher::where('nic', $request->nic)->first();
+        foreach ($teacher->subjects as $subject) {
+            if($subject["subject"] == $request->subject) {
+                self::removeSubject($request->nic, $request->subject, $subject["grade"]);
+            }
+        }
+
+        return 'success';
+    }
+
+    public static function removeSubject($nic, $subject, $grade) {
+        $teacher = Teacher::where('nic', $nic)->first();
+        $subjects = $teacher->subjects;
+        $newSubjects = [];
+        foreach ($subjects as $item) {
+            if($item["subject"] != $subject || $item["grade"] != $grade) {
+                array_push($newSubjects, $item);
+            }
+        }
+        $teacher->subjects = $newSubjects;
+        $teacher->save();
     }
 
     public function navigateToSummary() {

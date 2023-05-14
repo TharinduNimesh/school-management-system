@@ -239,6 +239,10 @@ Route::prefix('search')->group(function() {
     Route::post('class/record', [LearningController::class, 'showRecord'])->name('search.class.record');
 });
 Route::delete('remove/section/head', [TeacherController::class, 'removeSectionHead'])->name("remove.section.head");
+Route::post('remove/teacher/subject/grade', [TeacherController::class, 'removeSubjectFromGrade'])->name('remove.grade.from.teacher');
+Route::post('remove/teacher/subject/all', [TeacherController::class, 'removeSubjectFromAll'])->name('remove.all.grade.from.teacher');
+Route::post('show/grade/teacher/subject', [TeacherController::class, 'showSubjectGrade'])->name('show.grade.for.subject');
+
 // admin route for get feedbacks
 Route::post('feedbacks', [LearningController::class, 'getFeedbacks'])->name('get.feedbacks');
 
