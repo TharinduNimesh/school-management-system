@@ -33,9 +33,9 @@
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control bg-secondary text-dark"
                                     placeholder="Search By NIC" aria-label="Recipient's username"
-                                    aria-describedby="button-addon2" id="bookId">
+                                    aria-describedby="button-addon2" id="teacherId">
                                 <button class="btn btn-primary" type="button" id="button-addon2"
-                                    onclick="searchById();">Search</button>
+                                    onclick="searchTeacher();">Search</button>
                             </div>
                         </div>
                     </div>
@@ -53,28 +53,27 @@
                         <hr>
                         <div class="mb-3 col-md-6">
                             <label for="Name" class="form-label">Name</label>
-                            <input class="form-control bg-secondary text-dark" type="text" id="name" name="Name"
-                                value="" autofocus disabled />
+                            <input class="form-control bg-secondary text-dark" type="text" id="teacherName"
+                                name="Name" value="" autofocus disabled />
                         </div>
                         <div class="mb-3 col-md-6">
                             <label for="Grade" class="form-label">Contact No</label>
-                            <input class="form-control bg-secondary text-dark" type="text" id="mobile" name="Grade"
-                                value="" autofocus disabled />
+                            <input class="form-control bg-secondary text-dark" type="text" id="teacherContactNo"
+                                name="Grade" value="" autofocus disabled />
                         </div>
                         <div class="mb-3 col-md-6">
                             <label for="basketsubject" class="form-label">Appointed Subject</label>
-                            <input class="form-control bg-secondary text-dark" type="text" id="nic" name="basketsubject"
-                                value="" autofocus disabled />
+                            <input class="form-control bg-secondary text-dark" type="text"
+                                id="teacherAppointedSubject" name="basketsubject" value="" autofocus disabled />
                         </div>
                         <div class="mb-3 col-md-6">
                             <label for="basket subject" class="form-label">Email</label>
-                            <input class="form-control bg-secondary text-dark" type="text" id="email"
+                            <input class="form-control bg-secondary text-dark" type="text" id="teacherEmail"
                                 name="basket subject" value="" autofocus disabled />
                         </div>
                         <div class="mb-3 col-12">
                             <label for="basket subject" class="form-label">Qualification</label>
-                            <textarea class="form-control bg-secondary text-dark" id="exampleFormControlTextarea1"
-                                rows="1" disabled></textarea>
+                            <textarea class="form-control bg-secondary text-dark" id="teacherQualification" rows="1" disabled></textarea>
                         </div>
                     </div>
                 </div>
@@ -101,7 +100,8 @@
                                 <tr>
                                     <th scope="col">01</th>
                                     <th scope="col">science</th>
-                                    <th scope="col"><button type="button" class="btn btn-primary btn-sm">Remove</button>
+                                    <th scope="col"><button type="button"
+                                            class="btn btn-primary btn-sm">Remove</button>
                                     </th>
                                 </tr>
                             </tbody>
@@ -133,67 +133,80 @@
                             <tbody>
                                 <tr>
                                     <th scope="col">Grade 01</th>
-                                    <th scope="col"><input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                    <th scope="col"><input class="form-check-input" type="checkbox"
+                                            id="flexSwitchCheckDefault">
                                     </th>
                                 </tr>
                                 <tr>
                                     <th scope="col">Grade 02</th>
-                                    <th scope="col"><input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                    <th scope="col"><input class="form-check-input" type="checkbox"
+                                            id="flexSwitchCheckDefault">
                                     </th>
                                 </tr>
                                 <tr>
                                     <th scope="col">Grade 03</th>
-                                    <th scope="col"><input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                    <th scope="col"><input class="form-check-input" type="checkbox"
+                                            id="flexSwitchCheckDefault">
                                     </th>
                                 </tr>
                                 <tr>
                                     <th scope="col">Grade 04</th>
-                                    <th scope="col"><input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                    <th scope="col"><input class="form-check-input" type="checkbox"
+                                            id="flexSwitchCheckDefault">
                                     </th>
                                 </tr>
                                 <tr>
                                     <th scope="col">Grade 05</th>
-                                    <th scope="col"><input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                    <th scope="col"><input class="form-check-input" type="checkbox"
+                                            id="flexSwitchCheckDefault">
                                     </th>
                                 </tr>
                                 <tr>
                                     <th scope="col">Grade 06</th>
-                                    <th scope="col"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <th scope="col"><input class="form-check-input" type="checkbox"
+                                            value="" id="flexCheckDefault">
                                     </th>
                                 </tr>
                                 <tr>
                                     <th scope="col">Grade 07</th>
-                                    <th scope="col"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <th scope="col"><input class="form-check-input" type="checkbox"
+                                            value="" id="flexCheckDefault">
                                     </th>
                                 </tr>
                                 <tr>
                                     <th scope="col">Grade 08</th>
-                                    <th scope="col"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <th scope="col"><input class="form-check-input" type="checkbox"
+                                            value="" id="flexCheckDefault">
                                     </th>
                                 </tr>
                                 <tr>
                                     <th scope="col">Grade 09</th>
-                                    <th scope="col"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <th scope="col"><input class="form-check-input" type="checkbox"
+                                            value="" id="flexCheckDefault">
                                     </th>
                                 </tr>
                                 <tr>
                                     <th scope="col">Grade 10</th>
-                                    <th scope="col"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <th scope="col"><input class="form-check-input" type="checkbox"
+                                            value="" id="flexCheckDefault">
                                     </th>
                                 </tr>
                                 <tr>
                                     <th scope="col">Grade 11</th>
-                                    <th scope="col"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <th scope="col"><input class="form-check-input" type="checkbox"
+                                            value="" id="flexCheckDefault">
                                     </th>
                                 </tr>
                                 <tr>
                                     <th scope="col">Grade 12</th>
-                                    <th scope="col"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <th scope="col"><input class="form-check-input" type="checkbox"
+                                            value="" id="flexCheckDefault">
                                     </th>
                                 </tr>
                                 <tr>
                                     <th scope="col">Grade 13</th>
-                                    <th scope="col"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <th scope="col"><input class="form-check-input" type="checkbox"
+                                            value="" id="flexCheckDefault">
                                     </th>
                                 </tr>
                             </tbody>
@@ -220,111 +233,67 @@
     <!-- Template Javascript -->
 
     <script>
+        hamburger("teacherSubject");
+        // function searchTeacher to send data to controller
         function searchTeacher() {
-            var nic = document.getElementById('teacherNIC');
+            document.getElementById("spinner").classList.add("show");
+            var teacherId = document.getElementById("teacherId").value;
+            var teacherName = document.getElementById("teacherName");
+            var teacherEmail = document.getElementById("teacherEmail");
+            var teacherContact = document.getElementById("teacherContactNo");
+            var teacherQualification = document.getElementById("teacherQualification");
+            var teacherAppointedSubject = document.getElementById("teacherAppointedSubject");
 
-            if (nic.value.trim() == '') {
+            // check teacher id is empty or not
+            if (teacherId == "") {
                 Swal.fire({
-                    icon: 'warning',
-                    title: 'WARNING',
-                    text: 'Please Fill The NIC Number'
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter Teacher NIC!',
                 })
-                document.getElementById('name').value = "";
-                document.getElementById('nic').value = "";
-                document.getElementById('mobile').value = "";
-                document.getElementById('email').value = "";
+                teacherName.value = "Ex: John Doe";
+                teacherEmail.value = "Ex: abc@gmail.com";
+                teacherContact.value = "Ex: 0771234567";
+                teacherAppointedSubject.value = "Ex: Maths";
+                teacherQualification.value = "Ex: BSc in Computer Science";
+                document.getElementById("spinner").classList.remove("show");
+                return;
             }
-            else {
-                var form = new FormData();
-                form.append("nic", nic.value);
 
-                var req = new XMLHttpRequest();
+            var teacherData = {
+                nic: teacherId
+            };
 
-                req.onreadystatechange = function () {
-                    if (req.readyState == 4) {
-                        if (req.status == 200) {
-                            var response = req.responseText;
-                            if (response == "Invalid") {
-                                Swal.fire({
-                                    icon: 'warning',
-                                    title: 'WARNING',
-                                    text: 'Invalid NIC Number'
-                                })
-                                document.getElementById('name').value = "";
-                                document.getElementById('nic').value = "";
-                                document.getElementById('mobile').value = "";
-                                document.getElementById('email').value = "";
-                            }
-                            else {
-                                response = JSON.parse(response);
-                                document.getElementById('name').value = response.teacher.full_name;
-                                document.getElementById('nic').value = response.teacher.nic;
-                                document.getElementById('mobile').value = "0" + response.teacher.contact_number;
-                                document.getElementById('email').value = response.teacher.email;
-                                document.getElementById("subjectList").value = response.subject;
-                            }
-                        }
-                        else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: "Internel Server Error",
-                                footer: "<a href='http://wa.me/94701189971'>Contact Developers Here</a>"
-                            });
-                            document.getElementById('name').value = "";
-                            document.getElementById('nic').value = "";
-                            document.getElementById('mobile').value = "";
-                            document.getElementById('email').value = "";
-                        }
-                    }
-                }
-
-                req.open("POST", "process/searchTeacher.php", true);
-                req.send(form);
-            }
-        }
-
-
-        function saveSubject() {
-            var nic = document.getElementById('teacherNIC');
-
-            if (nic.value.trim() == '') {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'WARNING',
-                    text: 'Please Fill The NIC Number'
-                })
-            }
-            else {
-                var nic = nic.value;
-                var selectedSubjects = [];
-                var checkboxes = document.getElementsByName("subjects[]");
-                for (var i = 0; i < checkboxes.length; i++) {
-                    if (checkboxes[i].checked) {
-                        selectedSubjects.push(checkboxes[i].value);
-                    }
-                }
-
-                var form = new FormData();
-                form.append("nic", nic);
-                form.append("selectedSubjects", JSON.stringify(selectedSubjects));
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        console.log(this.responseText);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: "{{ route('search.teacher') }}",
+                data: teacherData,
+                success: function(response) {
+                    console.log(response);
+                    if (response != "Invalid") {
+                        teacherName.value = response.full_name;
+                        teacherEmail.value = response.email;
+                        teacherContact.value = response.mobile;
+                        teacherAppointedSubject.value = response.appointed_subject;
+                        teacherQualification.value = response.qualifications;
+                    } else if (response == "Invalid") {
                         Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: 'Subjects Added Successfully',
-                            showConfirmButton: false,
-                            timer: 1500
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Invalid Teacher NIC!',
                         })
+                        teacherName.value = "Ex: John Doe";
+                        teacherEmail.value = "Ex: abc@gmail.com";
+                        teacherContact.value = "Ex: 0771234567";
+                        teacherAppointedSubject.value = "Ex: Maths";
+                        teacherQualification.value = "Ex: BSc in Computer Science";
                     }
-                };
-                xhttp.open("POST", "process/saveSubject.php", true);
-                xhttp.send(form);
-
-            }
+                }
+                document.getElementById("spinner").classList.remove("show");
+            });
         }
     </script>
 </body>
