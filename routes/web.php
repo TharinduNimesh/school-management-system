@@ -235,9 +235,15 @@ Route::prefix('manage')->group(function() {
 });
 Route::prefix('search')->group(function() {
     Route::get('student/{id}', [StudentController::class, 'show'])->name('search.student');
+    Route::post('student/live', [StudentController::class, 'live'])->name('live.search.student');
+    Route::post('student/discipline', [StudentController::class, 'searchStudentForDiscipline'])->name('search.student.discipline');
     Route::post("teacher", [TeacherController::class, 'show'])->name('search.teacher');
     Route::post('class/record', [LearningController::class, 'showRecord'])->name('search.class.record');
 });
+
+// admin update discipline
+Route::post('update/discipline', [StudentController::class, 'updateDiscipline'])->name('update.discipline');
+
 Route::delete('remove/section/head', [TeacherController::class, 'removeSectionHead'])->name("remove.section.head");
 Route::post('remove/teacher/subject/grade', [TeacherController::class, 'removeSubjectFromGrade'])->name('remove.grade.from.teacher');
 Route::post('remove/teacher/subject/all', [TeacherController::class, 'removeSubjectFromAll'])->name('remove.all.grade.from.teacher');

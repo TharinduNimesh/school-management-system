@@ -55,7 +55,8 @@
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-12 d-flex align-items-center">
-                                    <div class="d-flex justify-content-center align-items-center" style="
+                                    <div class="d-flex justify-content-center align-items-center"
+                                        style="
                         background: black;
                         border-radius: 50%;
                         width: 120px;
@@ -86,6 +87,7 @@
                                 </div>
                             </div>
                             <div class="row mt-3">
+                                <h3 class="text-dark mt-2">Add New Undiscipline Record</h3>
                                 <div class="col-md-6 col-12">
                                     <div class="form-floating">
                                         <select class="form-select text-dark bg-secondary" id="mistake"
@@ -94,8 +96,8 @@
                                                 Open this select menu
                                             </option>
                                             <option value="1">Method 01 ( -1 )</option>
-                                            <option value="2">Method 02 ( -3 )</option>
-                                            <option value="3">Method 03 ( -5 )</option>
+                                            <option value="3">Method 02 ( -3 )</option>
+                                            <option value="5">Method 03 ( -5 )</option>
                                             <option value="4">Custom ( -custom )</option>
                                         </select>
                                         <label for="floatingSelect">Works with selects</label>
@@ -103,15 +105,16 @@
                                 </div>
                                 <div class="col-md-6 col-12 d-none mt-3 mt-md-0" id="custom">
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control bg-secondary
-                      text-dark" id="customValue" placeholder="name@example.com">
+                                        <input type="text"
+                                            class="form-control bg-secondary
+                      text-dark"
+                                            id="customValue" placeholder="name@example.com">
                                         <label for="floatingInput">Custom Value</label>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 mt-3 mt-md-0" id="descriptionBox">
                                     <div class="form-floating">
-                                        <textarea class="form-control text-dark bg-secondary"
-                                            placeholder="Leave a comment here" id="description"></textarea>
+                                        <textarea class="form-control text-dark bg-secondary" placeholder="Leave a comment here" id="description"></textarea>
                                         <label for="floatingTextarea">Description</label>
                                     </div>
                                 </div>
@@ -131,8 +134,14 @@
                     <div class="row mt-5">
                         <hr />
                         <h3 class="text-dark">Guidance</h3>
+                        <div class="row mt-3">
+                            <div class="alert alert-danger">
+                                <span class="mx-2">&#9888;</span> when you adding a new undiscipine activity, please make sure to include punishment in the description.
+                            </div>
+                        </div>
                         <div class="col-12 d-flex mt-3 align-items-center flex-column">
-                            <div class="d-flex" style="
+                            <div class="d-flex"
+                                style="
                     width: 70%;
                     height: 40px;
                     background-image: linear-gradient(
@@ -166,7 +175,8 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12 col-md-6 p-3" style="
+                        <div class="col-12 col-md-6 p-3"
+                            style="
                   border-color: black;
                   border-style: solid;
                   border-width: 2px;
@@ -184,7 +194,8 @@
                             </ul>
                         </div>
 
-                        <div class="col-12 col-md-6 p-3" style="
+                        <div class="col-12 col-md-6 p-3"
+                            style="
                   border-color: black;
                   border-style: solid;
                   border-width: 2px;
@@ -203,7 +214,8 @@
                             </ul>
                         </div>
 
-                        <div class="col-12 col-md-6 p-3" style="
+                        <div class="col-12 col-md-6 p-3"
+                            style="
                   border-color: black;
                   border-style: solid;
                   border-width: 2px;
@@ -222,7 +234,8 @@
                             </ul>
                         </div>
 
-                        <div class="col-12 col-md-6 p-3" style="
+                        <div class="col-12 col-md-6 p-3"
+                            style="
                   border-color: black;
                   border-style: solid;
                   border-width: 2px;
@@ -264,9 +277,9 @@
     <!-- Template Javascript -->
 
     <script>
-
         hamburger("discipline");
         var studentDetailsNumber = 0;
+        var score = -1;
 
         function studentLiveSearch() {
             document.getElementById("item-container").style.display = "";
@@ -275,27 +288,27 @@
             if (name.trim() == "") {
                 document.getElementById("item-container").innerHTML = "";
             } else {
+                var form = new FormData();
+                form.append("name", name);
                 var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function () {
+                xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         // handle response
                         document.getElementById("item-container").innerHTML = "";
                         var response = JSON.parse(xhr.responseText);
-                        for (let i = 0; i < response.length; i++) {
+                        response.forEach(student => {
                             var item = document.createElement("button");
                             item.innerHTML =
-                                response[i].student["name"] +
+                                student["name"] +
                                 " - " +
-                                response[i].student["index_number"] +
-                                " - " +
-                                response[i].student["grade"] +
+                                student["index"] +
                                 "-" +
-                                response[i].student["class"];
+                                student["class"];
                             item.classList.add("list-group-item");
                             item.classList.add("list-group-item-action");
                             item.classList.add("text-dark");
-                            item.dataset.index = response[i].student["index_number"];
-                            item.onclick = function () {
+                            item.dataset.index = student["index"];
+                            item.onclick = function() {
                                 document.getElementById("typing").value = this.innerHTML;
                                 document.getElementById("typing").dataset.index =
                                     this.dataset.index;
@@ -303,45 +316,50 @@
                                     "none";
                             };
                             document.getElementById("item-container").appendChild(item);
-                        }
+                        });
                     }
                 };
 
-                xhr.open("GET", "process/liveSearch.php?name=" + name + "", true);
-                xhr.send();
+                xhr.open("POST", "{{ route('live.search.student') }}");
+                xhr.setRequestHeader("X-CSRF-TOKEN", document.querySelector('meta[name="csrf-token"]').content);
+                xhr.send(form);
             }
         }
 
         function searchStudent() {
+            const spinner = document.getElementById("spinner");
             const index = document.getElementById("index");
             const name = document.getElementById("typing");
-
+            studentDetailsNumber = 0;
+            score = -1;
             if (
                 (index.value.trim() == "" && name.value.trim() == "") ||
                 (index.value.trim() != "" && name.value.trim() != "")
             ) {
                 Swal.fire("WARNING", "You Must Fill In One Text Field At A Time", "warning");
-                studentDetailsNumber = 0;
             } else {
                 var indexNumber = index.value;
                 if (name.value.trim() != "") {
                     indexNumber = name.dataset.index;
                 }
+                spinner.classList.add("show");
+                var form = new FormData();
+                form.append("index", indexNumber);
                 var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function () {
+                xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4 && xhr.status == 200) {
-                        var response = JSON.parse(xhr.responseText);
-                        if (response.status == "error") {
+                        var response = xhr.responseText;
+                        if (response == "invalid") {
                             Swal.fire("WARNING", "Invalid Index Number", "warning");
                             document.getElementById("searchIndex").dataset.id = "0";
-                            studentDetailsNumber = 0;
                         } else {
-                            var score = response.student["score"];
+                            response = JSON.parse(response);
+                            score = response["marks"];
                             var scoreBox = document.getElementById("scoreBox");
                             document.getElementById("studentName").innerHTML =
-                                response.student["initial_name"];
+                                response["name"];
                             document.getElementById("studentClass").innerHTML =
-                                response.student["grade"] + "-" + response.student["class"];
+                                response["class"];
                             document.getElementById("score").innerHTML = score + "%";
                             if (score >= 80) {
                                 scoreBox.style.backgroundColor = "#00FF00";
@@ -353,22 +371,23 @@
                                 scoreBox.style.backgroundColor = "#FF0000";
                             }
                             document.getElementById("pic").src =
-                                "profileImg/" + response.student["path"];
+                                "profileImg/" + response["path"];
                             document.getElementById("searchIndex").innerHTML =
-                                response.student["index_number"];
+                                response["index"];
                             document.getElementById("searchIndex").dataset.id =
-                                response.student["index_number"];
-                            studentDetailsNumber = response.student['details_id'];
+                                response["index"];
+                            studentDetailsNumber = response['index'];
                         }
+                        spinner.classList.remove("show");
                     }
                 };
 
                 xhr.open(
-                    "GET",
-                    "process/searchStudent.php?index=" + indexNumber + "",
-                    true
+                    "POST",
+                    "{{ route('search.student.discipline') }}"
                 );
-                xhr.send();
+                xhr.setRequestHeader("X-CSRF-TOKEN", document.querySelector('meta[name="csrf-token"]').content);
+                xhr.send(form);
             }
         }
 
@@ -387,6 +406,7 @@
         }
 
         function submit() {
+            const spinner = document.getElementById("spinner");
             const index = document.getElementById("searchIndex");
             const mistake = document.getElementById("mistake");
             const description = document.getElementById("description");
@@ -397,48 +417,62 @@
             } else {
                 if (mistake.value == 0) {
                     Swal.fire("WARNING", "Please Select A Mistake First", "warning");
-                }
-                else if (description.value.trim() == '') {
+                } else if (description.value.trim() == '') {
                     Swal.fire("WARNING", "Please Add A Description About Mistake", "warning");
-                }
-                else {
+                } else {
                     var form = new FormData();
-                    form.append("level", mistake.value);
+                    var marks = mistake.value;
+                    form.append("marks", mistake.value);
                     form.append("index", index.dataset.id);
                     form.append("details_id", studentDetailsNumber);
                     form.append("description", description.value);
-                    form.append("me", "myNIC");
-                    form.append("role", "1");
+                    form.append("teacher_id", "{{ auth()->user()->id }}");
+                    form.append("role", "{{ auth()->user()->role }}");
+                    form.append("name", "{{ auth()->user()->name }}");
                     if (mistake.value == 4) {
-                        form.append("custom", customValue.value);
+                        if(customValue.value.trim() == ''){
+                            Swal.fire("WARNING", "Please Add A Custom Value", "warning");
+                            return;
+                        }
+                        form.append("marks", customValue.value);
+                        marks = customValue.value;
                     }
-
+                    if(score - marks < 0){
+                        Swal.fire("WARNING", "Marks Cannot Be Less Than Zero", "warning");
+                        return;
+                    }
+                    score = score - marks;
+                    spinner.classList.add("show");
                     var xhr = new XMLHttpRequest();
-                    xhr.onreadystatechange = function () {
+                    xhr.onreadystatechange = function() {
                         if (xhr.readyState == 4 && xhr.status == 200) {
                             // handle response
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'success',
-                                title: 'Discipline Marks Updated',
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
-                            var score = xhr.responseText
-                            document.getElementById("score").innerHTML = score + "%";
-                            if (score >= 80) {
-                                scoreBox.style.backgroundColor = "#00FF00";
-                            } else if (score >= 60) {
-                                scoreBox.style.backgroundColor = "#FFFF00";
-                            } else if (score >= 40) {
-                                scoreBox.style.backgroundColor = "#FFA500";
-                            } else {
-                                scoreBox.style.backgroundColor = "#FF0000";
+                            var response = xhr.responseText;
+                            if(response == "success") {
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'success',
+                                    title: 'Discipline Marks Updated',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                                document.getElementById("score").innerHTML = score + "%";
+                                if (score >= 80) {
+                                    scoreBox.style.backgroundColor = "#00FF00";
+                                } else if (score >= 60) {
+                                    scoreBox.style.backgroundColor = "#FFFF00";
+                                } else if (score >= 40) {
+                                    scoreBox.style.backgroundColor = "#FFA500";
+                                } else {
+                                    scoreBox.style.backgroundColor = "#FF0000";
+                                }
                             }
+                            spinner.classList.remove("show");
                         }
                     };
 
-                    xhr.open("POST", "process/updateDiscipline.php", true);
+                    xhr.open("POST", "{{ route('update.discipline') }}");
+                    xhr.setRequestHeader("X-CSRF-TOKEN", document.querySelector('meta[name="csrf-token"]').content);
                     xhr.send(form);
                 }
             }

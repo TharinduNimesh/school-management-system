@@ -77,6 +77,9 @@ class StudentController extends Controller
             $student->emergency_email = $request->emergrencyEmail;
             $student->address = $request->address;
 
+            // add discipline marks
+            $student->discipline_marks = 100;
+
             // this return true if Student Added
             $studentAdded = $student->save();
 
@@ -111,6 +114,82 @@ class StudentController extends Controller
         else {
             return 'invalid';
         }
+    }
+
+    public function searchStudentForDiscipline(Request $request) {
+        $student = $this->show($request->index);
+        if($student != 'invalid') {
+            $class = self::getClass($student->index_number, Date("Y"));
+            $response = new \stdClass();
+            $response->index = $student->index_number;
+            $response->name = $student->initial_name;
+            try {
+                $response->class = $class["grade"] . " - " . $class["class"];
+            } catch (\Throwable $th) {
+                $response->class = "Not Enrolled";
+            }
+            if($student->discipline_marks == null) {
+                $response->marks = 100;
+            } else {
+                $response->marks = $student->discipline_marks;
+            }
+            return $response;
+        } else {
+            return 'invalid';
+        }
+    }
+
+    public function updateDiscipline(Request $request) {
+        $student = Student::where('index_number', $request->index)->first();
+        if($student != null) {
+            if($student->discipline_marks == null) {
+                $student->discipline_marks = 100;
+            }
+
+            if($student->discipline_marks - $request->marks < 0) {
+                return 'error';
+            } else {
+                $student->discipline_marks -= $request->marks;
+                $details = $student->discipline_details;
+                if($details == null) {
+                    $details = array();
+                }
+                $newRecord = new \stdClass();
+                $newRecord->date = Date("Y-m-d");
+                $newRecord->marks = $request->marks;
+                $newRecord->reason = $request->description;
+                $newRecord->teacher = $request->teacher_id;
+                $newRecord->teacher_name = $request->name;
+                $newRecord->role = $request->role;
+
+                array_push($details, $newRecord);
+                $student->discipline_details = $details;
+            }
+
+            $student->save();
+            return 'success';
+        } else {
+            return 'invalid';
+        }
+    }
+
+    public function live(Request $request) {
+        $students = Student::where("full_name", "like", "%$request->name%")->get();
+        $response = array();
+        foreach ($students as $student) {
+            $class = self::getClass($student->index_number, Date("Y"));
+            $obj = new \stdClass();
+            $obj->index = $student->index_number;
+            $obj->name = $student->initial_name;
+            try {
+                $obj->class = $class["grade"] . " - " . $class["class"];
+            } catch (\Throwable $th) {
+                $obj->class = "Not Enrolled";
+            }
+
+            array_push($response, $obj);
+        }
+        return $response;
     }
 
     public function searchMarks(Request $request) {
