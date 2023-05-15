@@ -31,7 +31,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-
+                                @foreach ($students as $key => $student)
+                                    <tr>
+                                        <td>{{ $key + 1 }}</td>
+                                        <td>{{ $student->name }}</td>
+                                        <td>{{ $student->book_title }}</td>
+                                        <td>{{ $student->book_id }}</td>
+                                        <td>{{ $student->end_date }}</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -53,12 +61,51 @@
                                 </tr>
                             </thead>
                             <tbody>
-
+                                @foreach ($teachers as $key => $teacher)
+                                    <tr>
+                                        <td>{{ $key + 1 }}</td>
+                                        <td>{{ $teacher->name }}</td>
+                                        <td>{{ $teacher->book_title }}</td>
+                                        <td>{{ $teacher->book_id }}</td>
+                                        <td>{{ $teacher->end_date }}</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
+
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary rounded-top p-4">
+                    <h3 class="text-dark">Staff Late List</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>No</th>
+                                    <th>Teacher</th>
+                                    <th>Book Title</th>
+                                    <th>Book ID</th>
+                                    <th>End Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($staff as $key => $s)
+                                    <tr>
+                                        <td>{{ $key + 1 }}</td>
+                                        <td>{{ $s->name }}</td>
+                                        <td>{{ $s->book_title }}</td>
+                                        <td>{{ $s->book_id }}</td>
+                                        <td>{{ $s->end_date }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
         </div>
             <!-- Form End -->
 

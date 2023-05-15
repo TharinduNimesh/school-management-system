@@ -17,6 +17,7 @@ use App\Http\Controllers\LearningController;
 use App\Http\Controllers\MarksController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\AccessoryController;
+use App\Http\Controllers\BookController;
 use App\Mail\StudentAssignment;
 
 /*
@@ -146,18 +147,14 @@ Route::prefix('library')->middleware(['auth', 'IsLibrarian'])->group(function() 
     Route::get('dashboard', function() {
         return view('library.dashboard');
     })->name('library.dashboard');
-    Route::get('books/add', function() {
-        return view('library.addbooks');
-    })->name('library.addbooks');
+    Route::get('books/add', [BookController::class, "navigateToAddBooks"])->name('library.addbooks');
     Route::get('books/search', function() {
         return view('library.search');
     })->name('library.search');
     Route::get('books/manage', function() {
         return view('library.manage');
     })->name('library.manage');
-    Route::get('lateList', function() {
-        return view('library.lateList');
-    })->name('library.lateList');
+    Route::get('lateList', [BookController::class, "navigateToLateList"])->name('library.lateList');
 });
 
 // Sport Routes
@@ -281,6 +278,14 @@ Route::post('student/search/marks', [StudentController::class, 'searchMarks'])->
 Route::post('request/subject/aesthetic', [SubjectController::class, 'requestAestheticSubject'])->name('request.aesthetic.subject');
 Route::post("request/subject/ol", [SubjectController::class, 'requestOlSubject'])->name('request.ol.subject');
 Route::post("send/feedback", [LearningController::class, 'sendFeedback'])->name('send.feedback');
+
+// librarian function routes
+Route::post('add/book', [BookController::class, 'add'])->name('add.book');
+Route::post('borrow/book', [BookController::class, 'borrow'])->name('borrow.book');
+Route::get('search/book/{id}', [BookController::class, 'search'])->name('search.book');
+
+// sports function routes
+Route::post('add/student/sport', [SportsController::class, 'addStudent'])->name('add.student.to.sport');
 
 // email routes
 Route::get('email/assignment', function() {

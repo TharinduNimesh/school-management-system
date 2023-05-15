@@ -218,7 +218,7 @@
           }
         }
 
-        xhr.open("GET", "process/bookById.php?id=" + bookId + "", true);
+        xhr.open("GET", "{{ route('search.book', [':id']) }}".replace(':id', bookId), true);
         xhr.send();
       }
     }

@@ -36,7 +36,7 @@
                         <label for="floatingInput">Date</label>
                     </div>
                     <div class="d-grid gap-2">
-                        <button class="btn btn-primary" type="button" onclick="studentBooks();">Submit</button>
+                        <button class="btn btn-primary" data-role="student" type="button" onclick="borrow(this);">Submit</button>
                     </div>
                 </div>
             </div>
@@ -60,7 +60,7 @@
                         <label for="floatingInput">Date</label>
                     </div>
                     <div class="d-grid gap-2">
-                        <button class="btn btn-primary" type="button" onclick="teacherBooks();">Submit</button>
+                        <button class="btn btn-primary" data-role="teacher" onclick="borrow(this);" type="button">Submit</button>
                     </div>
                 </div>
             </div>
@@ -69,22 +69,22 @@
                 <div class="bg-secondary rounded h-100 p-3">
                     <h3 class="mb-4 text-dark">Non-Academic</h3>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control bg-secondary text-dark" id="floatingInput"
-                            placeholder="name@example.com">
-                        <label for="floatingInput">Index Number</label>
+                        <input type="text" class="form-control bg-secondary text-dark"
+                            placeholder="name@example.com" id="staffNIC">
+                        <label for="floatingInput">NIC Number</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control bg-secondary text-dark" id="floatingInput"
+                        <input type="text" class="form-control bg-secondary text-dark" id="staffBookId"
                             placeholder="name@example.com">
                         <label for="floatingInput">Book ID</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control bg-secondary text-dark" id="floatingInput"
+                        <input type="date" class="form-control bg-secondary text-dark" id="staffDate"
                             placeholder="name@example.com">
                         <label for="floatingInput">Date</label>
                     </div>
                     <div class="d-grid gap-2">
-                        <button class="btn btn-primary" type="button">Submit</button>
+                        <button class="btn btn-primary" data-role="staff" onclick="borrow(this);" type="button">Submit</button>
                     </div>
                 </div>
             </div>
@@ -101,12 +101,26 @@
     @include('public_components.js')
     <script>
         hamburger("manage");
-        function studentBooks() {
-            let studentIndex = document.getElementById("studentIndex").value;
-            let studentBookId = document.getElementById("studentBookId").value;
-            let studentDate = document.getElementById("studentDate").value;
+        function borrow(Button) {
+            var index;
+            var bookId;
+            var date;
+            if(Button.dataset.role == "student") {
+                index = document.getElementById("studentIndex").value;
+                bookId = document.getElementById("studentBookId").value;
+                date = document.getElementById("studentDate").value;
+            }
+            else if(Button.dataset.role == "teacher") {
+                index = document.getElementById("teacherNIC").value;
+                bookId = document.getElementById("teacherBookId").value;
+                date = document.getElementById("teacherDate").value;
+            } else if(Button.dataset.role == "staff") {
+                index = document.getElementById("staffNIC").value;
+                bookId = document.getElementById("staffBookId").value;
+                date = document.getElementById("staffDate").value;
+            }
 
-            if (studentIndex.trim() == '' || studentBookId.trim() == "" || studentDate == '') {
+            if (index.trim() == '' || bookId.trim() == "" || date == '') {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Oops...',
@@ -116,9 +130,10 @@
             else {
                 var xhr = new XMLHttpRequest();
                 var form = new FormData();
-                form.append("index", studentIndex);
-                form.append("bookId", studentBookId);
-                form.append("date", studentDate);
+                form.append("index", index);
+                form.append("bookId", bookId);
+                form.append("date", date);
+                form.append("role", Button.dataset.role);
 
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState == 4 && xhr.status == 200) {
@@ -128,7 +143,7 @@
                             Swal.fire({
                                 icon: 'warning',
                                 title: 'WARNING',
-                                text: "Invalid Index Number. Please Recheck."
+                                text: "Invalid Person ID. Please Recheck."
                             });
                         }
                         else if (response == 'invalidBook') {
@@ -138,11 +153,18 @@
                                 text: "Invalid Book ID. Please Add This Book First."
                             });
                         }
-                        else if (response == 'studentHaveABook') {
+                        else if (response == 'personHaveABook') {
                             Swal.fire({
                                 icon: 'warning',
                                 title: 'WARNING',
-                                text: "This Student Already Have A Book"
+                                text: "This Person Already Have A Book"
+                            });
+                        }
+                        else if(response == "notAvailable") {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'WARNING',
+                                text: "This Book Is Not Available At The Moment."
                             });
                         }
                         else if (response == "success") {
@@ -152,73 +174,19 @@
                                 title: 'New Record Added',
                                 showConfirmButton: false,
                                 timer: 1500
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!'
                             });
                         }
                     }
                 }
 
-                xhr.open("POST", "process/studentBooks.php", true);
-                xhr.send(form);
-            }
-        }
-
-        function teacherBooks() {
-            let teacherNIC = document.getElementById("teacherNIC").value;
-            let teacherBookId = document.getElementById("teacherBookId").value;
-            let teacherDate = document.getElementById("teacherDate").value;
-
-            if (teacherNIC.trim() == '' || teacherBookId.trim() == "" || teacherDate == '') {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Oops...',
-                    text: "It's Look Like You Aren't Fill All Text Field"
-                });
-            }
-            else {
-                var xhr = new XMLHttpRequest();
-                var form = new FormData();
-                form.append("nic", teacherNIC);
-                form.append("bookId", teacherBookId);
-                form.append("date", teacherDate);
-
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        // handle response 
-                        var response = xhr.responseText;
-                        if (response == 'invalidTeacher') {
-                            Swal.fire({
-                                icon: 'warning',
-                                title: 'WARNING',
-                                text: "Invalid Teacher NIC. Please Recheck."
-                            });
-                        }
-                        else if (response == 'teacherHaveABook') {
-                            Swal.fire({
-                                icon: 'warning',
-                                title: 'WARNING',
-                                text: "This Teacher Already Have A Book"
-                            });
-                        }
-                        else if (response == 'invalidBook') {
-                            Swal.fire({
-                                icon: 'warning',
-                                title: 'WARNING',
-                                text: "Invalid Book ID. Please Add This Book First."
-                            });
-                        }
-                        else if (response == "success") {
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'success',
-                                title: 'New Record Added',
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
-                        }
-                    }
-                };
-
-                xhr.open("POST", "process/teacherBooks.php", true);
+                xhr.open("POST", "{{ route('borrow.book') }}");
+                xhr.setRequestHeader("X-CSRF-TOKEN", document.querySelector('meta[name="csrf-token"]').content);
                 xhr.send(form);
             }
         }
