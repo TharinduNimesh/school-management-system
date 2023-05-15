@@ -177,7 +177,7 @@ class ClassController extends Controller
 
     public static function getCurrentTeacher($grade, $class) {
         $teacher = Teacher::where("classes", "elemMatch", [
-            "start_year" => null,
+            "end_year" => null,
             "grade" => $grade,
             "class" => $class
         ])->first();

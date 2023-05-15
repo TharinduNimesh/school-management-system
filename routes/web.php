@@ -132,9 +132,7 @@ Route::prefix('admin')->middleware(['auth', 'IsAdmin'])->group(function() {
         return view('admin.discipline');
     })->name('admin.discipline');
     Route::get('add/teacher/subject', [SubjectController::class, 'navigateToTeacherSubject'])->name('admin.teacher.subject');
-    Route::get('manage/accessories', function() {
-        return view('admin.accessories');
-    })->name('admin.accessories');
+    Route::get('manage/accessories', [AccessoryController::class, 'adminNavigateToAccessories'])->name('admin.accessories');
     Route::get("manage/class/record", function() {
         return view("admin.subject");
     })->name('admin.class.report');
@@ -238,6 +236,7 @@ Route::prefix('search')->group(function() {
     Route::post('student/discipline', [StudentController::class, 'searchStudentForDiscipline'])->name('search.student.discipline');
     Route::post("teacher", [TeacherController::class, 'show'])->name('search.teacher');
     Route::post('class/record', [LearningController::class, 'showRecord'])->name('search.class.record');
+    Route::get('accessories/{grade}/{class}', [AccessoryController::class, 'show'])->name('search.accessories');
 });
 
 // admin update discipline
@@ -247,6 +246,7 @@ Route::delete('remove/section/head', [TeacherController::class, 'removeSectionHe
 Route::post('remove/teacher/subject/grade', [TeacherController::class, 'removeSubjectFromGrade'])->name('remove.grade.from.teacher');
 Route::post('remove/teacher/subject/all', [TeacherController::class, 'removeSubjectFromAll'])->name('remove.all.grade.from.teacher');
 Route::post('show/grade/teacher/subject', [TeacherController::class, 'showSubjectGrade'])->name('show.grade.for.subject');
+Route::delete('delete/accessory/{id}', [AccessoryController::class, 'deleteRequest'])->name('delete.accessory.request');
 
 // admin route for get feedbacks
 Route::post('feedbacks', [LearningController::class, 'getFeedbacks'])->name('get.feedbacks');

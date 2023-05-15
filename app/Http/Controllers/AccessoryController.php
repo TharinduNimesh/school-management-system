@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Accessory;
 use App\Models\RequestedAccessory;
+use App\Models\Teacher;
 
 class AccessoryController extends Controller
 {
@@ -40,8 +41,8 @@ class AccessoryController extends Controller
             $accessoryRequest = new RequestedAccessory();
             $accessoryRequest->subject = $request->subject;
             $accessoryRequest->description = $request->description;
-            $accessoryRequest->teacher_nic = auth()->user()->name;
-            $accessoryRequest->teacher_name = auth()->user()->index;
+            $accessoryRequest->teacher_nic = auth()->user()->index;
+            $accessoryRequest->teacher_name = auth()->user()->name;
             $accessoryRequest->grade = $teacher->grade;
             $accessoryRequest->class = $teacher->class;
             $accessoryRequest->date = Date("Y-m-d");
@@ -54,5 +55,53 @@ class AccessoryController extends Controller
             }
         }
         return "not allowed";
+    }
+
+    public function show($grade, $class) {
+        $accessories = Accessory::where('grade', $grade)
+        ->where('class', $class)
+        ->first();
+
+        $studentList = ClassController::getStudentList($grade, $class, Date("Y"));
+
+        $response = new \stdClass();
+        try {
+            $response->deskCount = $accessories->tables;
+            $response->chairCount = $accessories->chairs;
+        } catch (\Throwable $th) {
+            $response->deskCount = "Not Set";
+            $response->chairCount = "Not Set";
+        }
+        $response->students = count($studentList);
+        ClassController::getCurrentTeacher($grade, $class) == null ? $response->teacher = "Not Set" : $response->teacher = ClassController::getCurrentTeacher($grade, $class)->full_name;
+        
+        return $response;
+    }
+
+    public function deleteRequest($id) {
+        $request = RequestedAccessory::find($id);
+        $delete = $request->delete();
+
+        return redirect()->back();
+    }
+
+    public function adminNavigateToAccessories() {
+        $requests = RequestedAccessory::all();
+        $totalDesk = 0;
+        $totalChair = 0;
+        $accessories = Accessory::all();
+        foreach ($accessories as $item) {
+            $totalChair += $item->chairs;
+            $totalDesk += $item->tables;
+        }
+        if($requests == null) {
+            $requests = [];
+        }
+
+        return view('admin.accessories', [
+            'requests' => $requests,
+            'totalDesks' => $totalDesk,
+            'totalChairs' => $totalChair
+        ]);
     }
 }
