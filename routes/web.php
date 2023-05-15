@@ -16,6 +16,7 @@ use App\Http\Controllers\ClassController;
 use App\Http\Controllers\LearningController;
 use App\Http\Controllers\MarksController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\AccessoryController;
 use App\Mail\StudentAssignment;
 
 /*
@@ -89,9 +90,7 @@ Route::prefix('teacher')->middleware(['auth', 'IsTeacher'])->group(function() {
     Route::get('search/student', function() {
         return view('teacher.search');
     })->name('teacher.search');
-    Route::get('manage/accessories', function() {
-        return view("teacher.accessories");
-    })->name('teacher.accessories');
+    Route::get('manage/accessories', [TeacherController::class, "navigateToAccessories"])->name('teacher.accessories');
     Route::get('send/message', function() {
         return view("teacher.message");
     })->name('teacher.message');
@@ -273,6 +272,8 @@ Route::post('update/marks', [MarksController::class, 'update'])->name('update.ma
 Route::post('teacher/search/marks', [TeacherController::class, 'teacherSearchMarks'])->name('teacher.search.marks');
 Route::post('add/learning/task', [LearningController::class, 'addTask'])->name('add.learning.task');
 Route::post('report/feedback', [LearningController::class, 'reportFeedback'])->name('report.feedback');
+Route::post('update/accessories', [AccessoryController::class, 'updateAccessories'])->name('update.accessories');
+Route::post('request/accessories', [AccessoryController::class, 'requestAccessories'])->name('send.accessories.request');
 
 // Student Function Routes
 Route::post('submit/assignment', [AssignmentController::class, 'submit'])->name('submit.assignment');

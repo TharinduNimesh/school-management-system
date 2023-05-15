@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Accessory;
 
 class TeacherController extends Controller
 {
@@ -342,6 +343,25 @@ class TeacherController extends Controller
         
         return view('teacher.feedback', [
             "records" => $response
+        ]);
+    }
+
+    public function navigateToAccessories() {
+        $teacher = self::getClass(auth()->user()->index, Date("Y"));
+        $accessories = Accessory::where("grade", $teacher->grade)
+        ->where("class", $teacher->class)
+        ->first();
+
+        if($accessories == null) {
+            return view('teacher.accessories', [
+                "desks" => "Not Set",
+                "chairs" => "Not Set",
+            ]);
+        }
+
+        return view('teacher.accessories', [
+            "desks" => $accessories["tables"],
+            "chairs" => $accessories["chairs"],
         ]);
     }
 }
