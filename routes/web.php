@@ -148,9 +148,7 @@ Route::prefix('library')->middleware(['auth', 'IsLibrarian'])->group(function() 
         return view('library.dashboard');
     })->name('library.dashboard');
     Route::get('books/add', [BookController::class, "navigateToAddBooks"])->name('library.addbooks');
-    Route::get('books/search', function() {
-        return view('library.search');
-    })->name('library.search');
+    Route::get('books/search', [BookController::class, 'navigateToSearch'])->name('library.search');
     Route::get('books/manage', function() {
         return view('library.manage');
     })->name('library.manage');
@@ -283,6 +281,7 @@ Route::post("send/feedback", [LearningController::class, 'sendFeedback'])->name(
 Route::post('add/book', [BookController::class, 'add'])->name('add.book');
 Route::post('borrow/book', [BookController::class, 'borrow'])->name('borrow.book');
 Route::get('search/book/{id}', [BookController::class, 'search'])->name('search.book');
+Route::get('return/book/{id}', [BookController::class, 'returnBook'])->name('return.book');
 
 // sports function routes
 Route::post('add/student/sport', [SportsController::class, 'addStudent'])->name('add.student.to.sport');

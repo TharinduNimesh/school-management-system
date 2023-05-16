@@ -3,7 +3,11 @@
 
 <head>
     @include('library.components.head')
-
+    <style>
+      .space {
+        white-space: nowrap;
+      }
+    </style>
 </head>
 
 <body>
@@ -55,9 +59,9 @@
                   <th>Name</th>
                   <th>Copies</th>
                   <th>Author</th>
-                  <th>Borrowing count</th>
+                  <th class="space">Borrowing count</th>
                   <th>Status</th>
-                  <th>Holder Info</th>
+                  <th class="space">Holder Info</th>
                 </tr>
               </thead>
               <tbody id="tBody">
@@ -76,7 +80,10 @@
           <div class="input-group mb-3">
             <select class="form-select bg-secondary text-dark" id="author"
               aria-label="Example select with button addon">
-
+              <option value="0">Select an author</option>
+              @foreach ($authors as $author)
+                <option>{{ $author }}</option>
+              @endforeach
             </select>
             <button class="btn btn-primary" type="button" onclick="bookByAuthor();">Search</button>
           </div>
@@ -104,7 +111,10 @@
           <h3 class="text-dark">Search By Book Title</h3>
           <div class="input-group mb-3">
             <select class="form-select bg-secondary text-dark" id="title" aria-label="Example select with button addon">
-
+              <option value="0">Select a title</option>
+              @foreach ($titles as $title)
+                <option>{{ $title }}</option>
+              @endforeach
             </select>
             <button class="btn btn-primary" type="button" onclick="bookByTitle();">Search</button>
           </div>
@@ -156,64 +166,97 @@
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
           if (xhr.readyState == 4 && xhr.status == 200) {
-            // handle response 
-            var response = JSON.parse(xhr.responseText);
-            var tbody = document.getElementById("tBody");
-            if (response.status == 'error') {
-              tbody.innerHTML = '';
-              var row = document.createElement("tr");
-              var col = document.createElement("th");
-              col.colSpan = 7;
-              col.innerHTML = 'There are no books with this ID'
-              col.style.color = "red";
-              col.style.backgroundColor = "orange";
-              row.appendChild(col);
-              tbody.appendChild(row)
+            var response = xhr.responseText;
+            if (response == "invalid") {
+              document.getElementById("tBody").innerHTML = '<th style="color: red; background: orange;" colspan="7">Book Not Found</th>';
             }
-            else if (response.status == 'success') {
-              tbody.innerHTML = '';
-              var colNames = ["id", "name", "copies", "author", "count", "st"];
-              var row = document.createElement("tr");
-              for (let i = 0; i < 7; i++) {
-                var col = document.createElement("th");
-                var cName = colNames[i];
-                if (cName == 'copies') {
-                  col.innerHTML = response.copies;
-                  row.appendChild(col);
-                  continue;
-                }
-                if (i == 6) {
-                  col.innerHTML = response.late;
-                  if (response.late != 'none') {
-                    col.style.cursor = "pointer";
-                    col.setAttribute("data-bs-toggle", "modal");
-                    col.setAttribute("data-bs-target", "#exampleModal");
-                    col.id = "holder" + response.borrowId;
-                    document.getElementById("updateBTN").setAttribute("data-borrow-id", response.borrowId);
-                    document.getElementById("updateBTN").setAttribute("data-borrow-person", response.borrowPerson);
-                    document.getElementById("updateBTN").setAttribute("data-book-id", response.bookId);
+            else {
+              try {
+                response = JSON.parse(response);
+                var row = document.createElement("tr");
+                var id = document.createElement("td");
+                var name = document.createElement("td");
+                var copies = document.createElement("td");
+                var author = document.createElement("td");
+                var borrowCount = document.createElement("td");
+                var status = document.createElement("td");
+                var holder = document.createElement("td");
+
+                id.innerHTML = response.id;
+                name.innerHTML = response.title;
+                copies.innerHTML = response.copies;
+                author.innerHTML = response.author;
+                author.classList.add("space");
+                borrowCount.innerHTML = response.borrowingCount;
+                if(response.available) {
+                  status.innerHTML = "Available";
+                } else {
+                  status.innerHTML = "Unavailable";
+                  status.style.backgroundColor = "red";
+                  status.style.color = "white";
+                  holder.innerHTML = response.holder_name + " - " + response.role;
+                  holder.classList.add("space");
+                  holder.dataset.id = response.borrowed_id;
+                  if(response.late) {
+                    holder.style.backgroundColor = "red";
+                    holder.style.color = "white";
+                  } else {
+                    holder.style.backgroundColor = "green";
+                    holder.style.color = "white";
                   }
-                  if (response.lateStatus == 'Yes') {
-                    col.style.backgroundColor = "red";
-                    col.style.color = "white";
+                  holder.style.cursor = "pointer";
+                  holder.onclick = function() {
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function() {
+                      if(xhr.readyState == 4 && xhr.status == 200) {
+                        // sweet alert is response success
+                        if(xhr.responseText == "success") {
+                          Swal.fire({
+                            icon: 'success',
+                            title: 'SUCCESS',
+                            text: "Book Returned Successfully",
+                          });
+                          searchById();
+                        } else if(xhr.response == "invalid") {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'ERROR',
+                            text: "It seems like the book is already returned",
+                          });
+                        } else {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'ERROR',
+                            text: xhr.responseText,
+                          });
+                        }
+                      }
+                    }
+
+                    xhr.open("GET", "{{ route('return.book', [':id']) }}".replace(':id', event.target.dataset.id), true);
+                    xhr.send();
                   }
-                  row.appendChild(col);
-                  continue;
                 }
-                if (cName == 'st') {
-                  if (response.book[cName] == '0') {
-                    col.innerHTML = 'Not Available';
-                  }
-                  else {
-                    col.innerHTML = 'Available';
-                  }
-                }
-                else {
-                  col.innerHTML = response.book[cName];
-                }
-                row.appendChild(col);
+
+                row.appendChild(id);
+                row.appendChild(name);
+                row.appendChild(copies);
+                row.appendChild(author);
+                row.appendChild(borrowCount);
+                row.appendChild(status);
+                row.appendChild(holder);
+
+                document.getElementById("tBody").innerHTML = "";
+                document.getElementById("tBody").appendChild(row);
+
+
+              } catch (error) {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'ERROR',
+                  text: "Something Went Wrong",
+                });
               }
-              tbody.appendChild(row);
             }
           }
         }
@@ -221,38 +264,6 @@
         xhr.open("GET", "{{ route('search.book', [':id']) }}".replace(':id', bookId), true);
         xhr.send();
       }
-    }
-
-    function updateStatus(Button) {
-      let borrowId = Button.dataset.borrowId;
-      let borrowPerson = Button.dataset.borrowPerson;
-      let bookId = Button.dataset.bookId;
-
-      var xhr = new XMLHttpRequest();
-      var form = new FormData();
-      form.append("id", borrowId);
-      form.append("person", borrowPerson);
-      form.append("bookId", bookId);
-
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-          // handle response 
-          var response = xhr.responseText;
-          if (response == "success") {
-            Swal.fire({
-              position: 'top-end',
-              icon: 'success',
-              title: 'Book Status Changed',
-              showConfirmButton: false,
-              timer: 1500
-            });
-            document.getElementById("holder" + borrowId).innerHTML = "none";
-          }
-        }
-      }
-
-      xhr.open("POST", "process/updateStatus.php", true);
-      xhr.send(form);
     }
 
     function bookByAuthor() {
