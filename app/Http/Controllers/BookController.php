@@ -135,6 +135,55 @@ class BookController extends Controller
         return "invalid";
     }
 
+    public function searchByAuthor($author) {
+        $books = Book::where("author", $author)
+        ->get();
+
+        $list = [];
+        foreach ($books as $book) {
+            $obj = new \stdClass();
+            $obj->id = $book["book_id"];
+            $obj->title = $book["title"];
+            $obj->available = self::isAvailable($book["book_id"]);
+
+            array_push($list, $obj);
+        }
+
+        $count = Book::where("author", $author)
+        ->distinct("title")
+        ->get();
+
+        $response = new \stdClass();
+        $response->books = $list;
+        $response->count = count($count);
+        
+        return $response;
+    }
+
+    public function searchByTitle($title) {
+        $books = Book::where("title", $title)
+        ->get();
+
+        $list = [];
+        foreach ($books as $book) {
+            $obj = new \stdClass();
+            $obj->id = $book["book_id"];
+            $obj->author = $book["author"];
+            $obj->available = self::isAvailable($book["book_id"]);
+
+            array_push($list, $obj);
+        }
+
+        $count = Book::where("title", $title)
+        ->get();
+
+        $response = new \stdClass();
+        $response->books = $list;
+        $response->count = count($count);
+        
+        return $response;
+    }
+
     public static function isAvailable($id) {
         $book = Book::where("book_id", $id)->first();
         if($book != null) {

@@ -281,6 +281,8 @@ Route::post("send/feedback", [LearningController::class, 'sendFeedback'])->name(
 Route::post('add/book', [BookController::class, 'add'])->name('add.book');
 Route::post('borrow/book', [BookController::class, 'borrow'])->name('borrow.book');
 Route::get('search/book/{id}', [BookController::class, 'search'])->name('search.book');
+Route::get('search/book/author/{author}', [BookController::class, 'searchByAuthor'])->name('search.by.author');
+Route::get('search/book/title/{title}', [BookController::class, 'searchByTitle'])->name('search.by.title');
 Route::get('return/book/{id}', [BookController::class, 'returnBook'])->name('return.book');
 
 // sports function routes

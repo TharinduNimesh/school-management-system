@@ -268,6 +268,8 @@
 
     function bookByAuthor() {
       var author = document.getElementById("author").value;
+      document.getElementById("tBody2").innerHTML = '';
+      document.getElementById("booksCount").innerHTML = "None";
 
       if (author == "0") {
         Swal.fire({
@@ -280,47 +282,44 @@
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
           if (xhr.readyState == 4 && xhr.status == 200) {
-            // handle response
-            var tBody2 = document.getElementById("tBody2");
             var response = JSON.parse(xhr.responseText);
-            if (response[0].status == "error") {
-              document.getElementById("booksCount").innerHTML = '0';
-              tBody2.innerHTML = "<tr><th colspan='3' style='background: orange; color: red;'>This Author Hasn't Any Book</th></tr>";
-            }
-            else {
-              var names = ["id", "title", "status"]
-              tBody2.innerHTML = '';
-              document.getElementById("booksCount").innerHTML = response.length;
-              for (let i = 0; i < response.length; i++) {
-                var row = document.createElement("tr");
-                for (let a = 0; a < names.length; a++) {
-                  var col = document.createElement("td");
-                  if (a == 2) {
-                    if (response[i].book["status"] == "1") {
-                      col.innerHTML = "Available";
-                    }
-                    else {
-                      col.innerHTML = "Not Available";
-                    }
-                  }
-                  else {
-                    col.innerHTML = response[i].book[names[a]];
-                  }
-                  row.appendChild(col);
-                }
-                tBody2.appendChild(row);
+            document.getElementById("booksCount").innerHTML = response.count;
+            response.books.forEach(book => {
+              var row = document.createElement("tr");
+              var id = document.createElement("td");
+              var name = document.createElement("td");
+              var status = document.createElement("td");
+
+              id.innerHTML = book.id;
+              name.innerHTML = book.title;
+              if (book.available) {
+                status.innerHTML = "Available";
+                status.style.backgroundColor = "green";
+                status.style.color = "white";
+              } else {
+                status.innerHTML = "Unavailable";
+                status.style.backgroundColor = "red";
+                status.style.color = "white";
               }
-            }
+
+              row.appendChild(id);
+              row.appendChild(name);
+              row.appendChild(status);
+
+              document.getElementById("tBody2").appendChild(row);
+            });
           }
         }
 
-        xhr.open("GET", "process/bookByAuthor.php?id=" + author + "", true);
+        xhr.open("GET", "{{ route('search.by.author', [':author']) }}".replace(':author', author));
         xhr.send();
       }
     }
 
     function bookByTitle() {
       var title = document.getElementById("title").value;
+      document.getElementById("tBody3").innerHTML = '';
+      document.getElementById("copiesCount").innerHTML = "None";
 
       if (title == '0') {
         Swal.fire({
@@ -334,40 +333,36 @@
         xhr.onreadystatechange = function () {
           if (xhr.readyState == 4 && xhr.status == 200) {
             // handle response
-            var tBody3 = document.getElementById("tBody3");
             var response = JSON.parse(xhr.responseText);
-            if (response[0].status == "error") {
-              document.getElementById("copiesCount").innerHTML = '0';
-              tBody3.innerHTML = "<tr><th colspan='3' style='background: orange; color: red;'>No Any Books Exists</th></tr>";
-            }
-            else {
-              var names = ["id", "author", "status"]
-              tBody3.innerHTML = '';
-              document.getElementById("copiesCount").innerHTML = response.length;
-              for (let i = 0; i < response.length; i++) {
-                var row = document.createElement("tr");
-                for (let a = 0; a < names.length; a++) {
-                  var col = document.createElement("td");
-                  if (a == 2) {
-                    if (response[i].book["status"] == "1") {
-                      col.innerHTML = "Available";
-                    }
-                    else {
-                      col.innerHTML = "Not Available";
-                    }
-                  }
-                  else {
-                    col.innerHTML = response[i].book[names[a]];
-                  }
-                  row.appendChild(col);
-                }
-                tBody3.appendChild(row);
+            document.getElementById("copiesCount").innerHTML = response.count;
+            response.books.forEach(book => {
+              var row = document.createElement("tr");
+              var id = document.createElement("td");
+              var name = document.createElement("td");
+              var status = document.createElement("td");
+
+              id.innerHTML = book.id;
+              name.innerHTML = book.author;
+              if (book.available) {
+                status.innerHTML = "Available";
+                status.style.backgroundColor = "green";
+                status.style.color = "white";
+              } else {
+                status.innerHTML = "Unavailable";
+                status.style.backgroundColor = "red";
+                status.style.color = "white";
               }
-            }
+
+              row.appendChild(id);
+              row.appendChild(name);
+              row.appendChild(status);
+
+              document.getElementById("tBody3").appendChild(row);
+            });
           }
         }
 
-        xhr.open("GET", "process/bookByTitle.php?id=" + title + "", true);
+        xhr.open("GET", "{{ route('search.by.title', [':title']) }}".replace(':title', title));
         xhr.send();
       }
     }
