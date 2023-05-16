@@ -144,13 +144,9 @@ Route::prefix('admin')->middleware(['auth', 'IsAdmin'])->group(function() {
 
 // Library Routes
 Route::prefix('library')->middleware(['auth', 'IsLibrarian'])->group(function() {
-    Route::get('dashboard', function() {
-        return view('library.dashboard');
-    })->name('library.dashboard');
+    Route::get('dashboard', [BookController::class, "navigateToDashboard"])->name('library.dashboard');
     Route::get('books/add', [BookController::class, "navigateToAddBooks"])->name('library.addbooks');
-    Route::get('books/search', function() {
-        return view('library.search');
-    })->name('library.search');
+    Route::get('books/search', [BookController::class, 'navigateToSearch'])->name('library.search');
     Route::get('books/manage', function() {
         return view('library.manage');
     })->name('library.manage');
@@ -283,6 +279,9 @@ Route::post("send/feedback", [LearningController::class, 'sendFeedback'])->name(
 Route::post('add/book', [BookController::class, 'add'])->name('add.book');
 Route::post('borrow/book', [BookController::class, 'borrow'])->name('borrow.book');
 Route::get('search/book/{id}', [BookController::class, 'search'])->name('search.book');
+Route::get('search/book/author/{author}', [BookController::class, 'searchByAuthor'])->name('search.by.author');
+Route::get('search/book/title/{title}', [BookController::class, 'searchByTitle'])->name('search.by.title');
+Route::get('return/book/{id}', [BookController::class, 'returnBook'])->name('return.book');
 
 // sports function routes
 Route::post('add/student/sport', [SportsController::class, 'addStudent'])->name('add.student.to.sport');
