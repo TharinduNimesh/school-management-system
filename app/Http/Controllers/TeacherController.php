@@ -8,6 +8,8 @@ use App\Models\Marks;
 use App\Models\SectionHead;
 use App\Models\Teacher;
 use App\Models\User;
+use App\Models\Leaves;
+use App\Models\ShortLeaves;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -79,6 +81,32 @@ class TeacherController extends Controller
         } else {
             return $teacher;
         }
+    }
+
+    public function search($nic) {
+        $teacher = Teacher::where('nic', $nic)->first();
+        if($teacher != null) {
+            $leaves = Leaves::where('nic', $nic)
+            ->where("status", "accepted")
+            ->get();
+
+            $shortLeaves = ShortLeaves::where('nic', $nic)->get();
+
+            $response = new \stdClass();
+            $response->teacher = $teacher;
+            $response->leaves = $leaves;
+            $response->shortLeaves = $shortLeaves;
+            $response->class = TeacherController::getClass($nic, Date("Y"));
+
+            return $response;
+        } else {
+            return "Invalid";
+        }
+    }
+
+    public function live($name) {
+        $teachers = Teacher::where('full_name', 'like', "%$name%")->get();
+        return $teachers;
     }
 
     public function makeAsSectionHead(Request $request) {

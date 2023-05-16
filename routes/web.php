@@ -228,6 +228,8 @@ Route::prefix('search')->group(function() {
     Route::post('student/live', [StudentController::class, 'live'])->name('live.search.student');
     Route::post('student/discipline', [StudentController::class, 'searchStudentForDiscipline'])->name('search.student.discipline');
     Route::post("teacher", [TeacherController::class, 'show'])->name('search.teacher');
+    Route::get("teacher/all/{nic}", [TeacherController::class, 'search'])->name('search.teacher.all.details');
+    Route::get("teacher/live/{id}", [TeacherController::class, 'live'])->name('live.search.teacher');
     Route::post('class/record', [LearningController::class, 'showRecord'])->name('search.class.record');
     Route::get('accessories/{grade}/{class}', [AccessoryController::class, 'show'])->name('search.accessories');
 });
