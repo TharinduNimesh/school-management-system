@@ -144,9 +144,7 @@ Route::prefix('admin')->middleware(['auth', 'IsAdmin'])->group(function() {
 
 // Library Routes
 Route::prefix('library')->middleware(['auth', 'IsLibrarian'])->group(function() {
-    Route::get('dashboard', function() {
-        return view('library.dashboard');
-    })->name('library.dashboard');
+    Route::get('dashboard', [BookController::class, "navigateToDashboard"])->name('library.dashboard');
     Route::get('books/add', [BookController::class, "navigateToAddBooks"])->name('library.addbooks');
     Route::get('books/search', [BookController::class, 'navigateToSearch'])->name('library.search');
     Route::get('books/manage', function() {

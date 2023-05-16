@@ -273,4 +273,36 @@ class BookController extends Controller
 
         return view('library.search', ['titles' => $data->titles, 'authors' => $data->authors]);
     }
+
+    public function navigateToDashboard() {
+        $allBooks = Book::all();
+        $unavailable = BorrowedBook::where("returned", false)->get();
+        $available = count($allBooks) - count($unavailable);
+        $titles = self::listAuthorsAndTitles()->titles;
+
+        $authors = array();
+        $count = array();
+        foreach ($titles as $title) {
+            $count[$title] = 0;
+            $author = $allBooks->where('title', $title)->first();
+            $authors[$title] = $author->author;
+        }
+
+        $borrowed = BorrowedBook::all();
+
+        foreach ($borrowed as $book) {
+            if(count($count) >= 10) {
+                break;
+            } 
+            $count[$book->title] += 1;
+        }
+        arsort($count);
+
+        return view('library.dashboard', [
+            'available' => $available,
+            'all' => count($allBooks),
+            'books' => $count,
+            'authors' => $authors
+        ]);
+    }
 }
