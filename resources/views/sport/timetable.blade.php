@@ -46,7 +46,7 @@
                     <h5 class=" text-dark">More Information</h5>
                     <div class="form-floating">
                         <textarea class="form-control bg-secondary text-dark" placeholder="Leave a comment here"
-                            id="floatingTextarea2" style="height: 100px"></textarea>
+                            id="description" style="height: 100px"></textarea>
                         <label for="floatingTextarea2">Type here...</label>
                     </div>
                     <br>
@@ -73,6 +73,39 @@
     <!-- JavaScript Libraries -->
     @include('public_components.js')
     <!-- Template Javascript -->
+
+    <script>
+        
+        validateForm = () => {
+            let place = document.getElementById('place').value;
+            let day = document.getElementById('day').value;
+            let startTime = document.getElementById('start-time').value;
+            let endTime = document.getElementById('end-time').value;
+            let description = document.getElementById('description').value;
+
+            if (place == "" || day == "" || startTime == "" || endTime == "" || description == "") {
+                alert("Please fill all the fields");
+                return false;
+            }
+        }
+        
+        var data = new FormData();  
+        data.append('place', place);
+        data.append('day', day);
+        data.append('startTime', startTime);
+        data.append('endTime', endTime);
+        data.append('description', description);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:8000/api/sport/timetable', true);
+        xhr.send(data);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                console.log(xhr.responseText);
+            }
+        }
+        
+    </script>
 
 </body>
 
