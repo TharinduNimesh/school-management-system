@@ -4,45 +4,76 @@
     @endif
 @endauth
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="/css/mainstyle.css">
-    <link rel="stylesheet" href="/css/mystyle.css">
-    <title>Admin Login</title>
+    @include('login.components.head')
 </head>
 
 <body>
-    <div class="container" style="justify-content: center;">
-        <div class="content">
-            <div class="banner">
-                <h1>MANAGEMENT SYSTEM</h1>
-                <h3>Welcome to the Sri Dharmaloka College School Management System</h3>
-                <br>
-                <h5>EverSoft it Solutions.</h5>
-            </div>
-            <form>
-                @csrf
-                <div class="form">
-                    <lable class="topic">Admin LogIn</lable>
-                    <img src="/img/badge.png" />
-                    <p class="failed" id="failed">Login Failed</p>
-                    <input type="text" id="nic" autocomplete placeholder="NIC NO" value="">
-                    <input type="password" id="password" placeholder="Password" value="">
-                    <button type="button" onclick="adminLogin();">Sign In</button>
-                    <p>Back to <a href="{{ route('home.index') }}">Home</a> menu</p>
-                    <a href="#" id="r">Forgot Your Password?</a>
-                </div>
-            </form>
-        </div>
-    </div>
+    <!-- Content Start -->
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Background Animation Start -->
+    <div id="bg">
+        <canvas></canvas>
+        <canvas></canvas>
+        <canvas></canvas>
+    </div>
+    <!-- Background Animation End -->
+    <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+        <div class="container">
+            <div class="card login-card">
+                <div class="row no-gutters">
+                    <div class="col-md-5">
+                        <img src="/img/Admin.jpg" alt="login" class="login-card-img">
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body">
+                            <div class="brand-wrapper">
+                                <h1>ADMIN LOGIN</h1>
+                            </div>
+                            <p class="login-card-description">School Management System</p>
+                            <form action="#!">
+                                <p id="invalid-feedback" class="text-danger text-center invalid-login d-none">
+                                  Invalid NIC Number Or Password
+                                </p>
+                                <div class="form-group">
+                                    <label for="NIC" class="">NIC Number</label>
+                                    <input type="text" name="NIC" id="nic" class="form-control"
+                                        placeholder="Enter Your NIC Number">
+                                </div>
+                                <div class="form-group mb-4">
+                                    <label for="password" class="">Password</label>
+                                    <input id="password-field" type="password" class="form-control" name="password"
+                                        placeholder="Enter Your Password">
+                                    <span toggle="#password-field"
+                                        class="fa fa-fw fa-eye field-icon toggle-password mr-2"></span>
+                                </div>
+                                <input name="login" id="login" class="btn btn-block login-btn mb-4" type="button"
+                                    value="Login" onclick="adminLogin();">
+                            </form>
+                            <a href="#!" class="forgot-password-link">Forgot password?</a>
+                            <p class="login-card-footer-text">Go Back To <a href="{{ route('home.index') }}"
+                                    class="text-reset "><u>Home</u></a>
+                            </p>
+                            <nav class="login-card-footer-nav">
+                                <a href="https://eversoft.cf/">Terms of use.</a>
+                                <a href="https://eversoft.cf/">EverSoft it Solutions.</a>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Content End -->
+
+    <!-- JavaScript File -->
+    @include('login.components.javascript')
     <script>
         function adminLogin() {
             const index = document.getElementById("nic").value;
-            const password = document.getElementById("password").value;
+            const password = document.getElementById("password-field").value;
+            document.getElementById('invalid-feedback').classList.add('d-none');
 
             var form = new FormData();
             form.append('index', index);
@@ -51,22 +82,20 @@
 
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {
-                if(xhr.readyState == 4 && xhr.status == 200) {
-                    document.getElementById('failed').style.display = 'none';
+                if (xhr.readyState == 4 && xhr.status == 200) {
                     var response = xhr.responseText;
-                    if(response == 'success') {
+                    if (response == 'success') {
                         window.location = "{{ route('admin.dashboard') }}";
-                    } else if(response == 'invalid') {
-                        document.getElementById('failed').style.display = 'block';
+                    } else {
+                        document.getElementById('invalid-feedback').classList.remove('d-none');
                     }
                 }
             }
 
-            xhr.open('POST', '{{ route("login") }}');
+            xhr.open('POST', '{{ route('login') }}');
             xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
             xhr.send(form);
         }
     </script>
 </body>
-
 </html>

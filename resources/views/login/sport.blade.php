@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  @include('Login2.components.head')
+  @include('login.components.head')
 </head>
 
 <body>
@@ -20,14 +20,14 @@
       <div class="card login-card">
         <div class="row no-gutters">
           <div class="col-md-5">
-            <img src="/img/Teacher.jpg" alt="login" class="login-card-img">
+            <img src="/img/Sport.jpg" alt="login" class="login-card-img">
           </div>
           <div class="col-md-7">
             <div class="card-body">
               <div class="brand-wrapper">
-                <h1>TEACHER LOGIN</h1>
+                <h1>SPORT LOGIN</h1>
               </div>
-              <p class="login-card-description">Teacher Management System</p>
+              <p class="login-card-description">Sport Management System</p>
               <form action="#!">
                 <div class="form-group">
                   <label for="NIC" class="">NIC No</label>
@@ -57,7 +57,7 @@
   <!-- Content End -->
 
   <!-- JavaScript File -->
-  @include('Login2.components.javaScript')
+  @include('login.components.javaScript')
 </body>
 
 </html>
