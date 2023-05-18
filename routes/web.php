@@ -53,7 +53,9 @@ Route::get('teacher/login', function() {
 Route::get('library/login', function() {
     return view('login.library');
 })->name('library.login');
-
+Route::get('coach/login', function () {
+    return view('login.sport');
+})->name('sport.login');
 
 // Student Routes
 Route::prefix('student')->middleware(['auth', 'IsStudent'])->group(function () {
@@ -158,9 +160,7 @@ Route::prefix('sport')->group(function() {
     Route::get('dashboard', function() {
         return view('sport.dashboard');
     })->name('sport.dashboard');
-    Route::get('add/student', function() {
-        return view('sport.addStudent');
-    })->name('sport.add.student');
+    Route::get('add/student', [SportController::class, "navigateToAddStudent"])->name('sport.add.student');
     Route::get('add/timetable', function() {
         return view('sport.timetable');
     })->name('sport.add.timetable');
@@ -286,7 +286,7 @@ Route::get('search/book/title/{title}', [BookController::class, 'searchByTitle']
 Route::get('return/book/{id}', [BookController::class, 'returnBook'])->name('return.book');
 
 // sports function routes
-Route::post('add/student/sport', [SportsController::class, 'addStudent'])->name('add.student.to.sport');
+Route::post('add/student/sport', [SportController::class, 'addStudent'])->name('add.student.to.sport');
 
 // email routes
 Route::get('email/assignment', function() {

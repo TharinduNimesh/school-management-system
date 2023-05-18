@@ -42,7 +42,7 @@
                 <input name="login" id="login" class="btn btn-block login-btn mb-4" type="button" value="Login">
               </form>
               <a href="#!" class="forgot-password-link">Forgot password?</a>
-              <p class="login-card-footer-text">Login as a <a href="#!" class="text-reset "><u>Teacher</u></a>
+              <p class="login-card-footer-text">Go Back To <a href="{{ route('home.index') }}" class="text-reset "><u>Home</u></a>
               </p>
               <nav class="login-card-footer-nav">
                 <a href="https://eversoft.cf/">Terms of use.</a>
@@ -57,7 +57,7 @@
   <!-- Content End -->
 
   <!-- JavaScript File -->
-  @include('login.components.javaScript')
+  @include('login.components.javascript')
 </body>
 
 </html>

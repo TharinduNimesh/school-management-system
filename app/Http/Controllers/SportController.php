@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Coach;
 use App\Models\Sport;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -76,16 +77,25 @@ class SportController extends Controller
             $coaches = Coach::where('nic', $request->nic)->first();
             // check already caoch exist with given nic
             if($coaches == null) {
+                // add details to coach table
                 $coach = new Coach();
                 $coach->name = $request->name;
                 $coach->nic = $request->nic;
-                $coach->password = Hash::make($request->password);
                 $coach->mobile = $request->mobile;
                 $sports = [
                     $request->sport
                 ];
                 $coach->sports = $sports;
                 $coach->save();
+
+                // add details to user table
+                $user = new User();
+                $user->name = $request->name;
+                $user->index = $request->nic;
+                $user->email = "johndoe@example.com";
+                $user->password = Hash::make($request->password);
+                $user->role = "coach";
+                $user->save();
 
                 $messageBag->add("success", "Coach Added successfully");
                 return $this->navigateToAdminSport($messageBag);
@@ -98,6 +108,47 @@ class SportController extends Controller
         }
     }
 
+    public function addStudent(Request $request) {
+        $student = Student::where('index_number', $request->index)->first();
+        $sports = $student->sports;
+        $isValid = false;
+        if($sports == null) {
+            $sports = [];
+            $isValid = true;
+        }
+
+        if($isValid == false) {
+            $isValid = true;
+            foreach ($sports as $sport) {
+                if($sport["name"] == $request->sport) {
+                    $isValid = false;
+                    break;
+                }
+            }
+        }
+
+        if($isValid) {
+            $sport_object = [
+                "name" => $request->sport,
+                "start_date" => Date("Y-m-d"),
+                "end_date" => null,
+                "awards" => []
+            ];
+
+            array_push($sports, $sport_object);
+            $student->sports = $sports;
+            $student->save();
+
+            return "success";
+        }
+        return "already";
+    }
+
+    public static function getSportList($nic) {
+        $coach = Coach::where('nic', $nic)->first();
+        return $coach->sports;
+    }
+
     public function navigateToAdminSport($errors = null, $success = null) {
         $sports = Sport::all();
 
@@ -105,6 +156,14 @@ class SportController extends Controller
         return view('admin.sport', [
             "sports" => $sports,
             "coach_errors" => $errors
+        ]);
+    }
+
+    public function navigateToAddStudent() {
+        $sports = self::getSportList("200515403527");
+
+        return view("sport.addStudent", [
+            "sports" => $sports
         ]);
     }
 }
