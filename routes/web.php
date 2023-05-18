@@ -165,9 +165,7 @@ Route::prefix('sport')->group(function() {
         return view('sport.timetable');
     })->name('sport.add.timetable');
     Route::get('add/awards', [SportController::class, 'naivgateToAddAwards'])->name('sport.add.awards');
-    Route::get('list/student', function() {
-        return view('sport.studentList');
-    })->name('sport.student.list');
+    Route::get('list/student', [SportController::class, "navigateToStudentList"])->name('sport.student.list');
 });
 
 // login functions
@@ -287,6 +285,7 @@ Route::get('return/book/{id}', [BookController::class, 'returnBook'])->name('ret
 Route::post('add/student/sport', [SportController::class, 'addStudent'])->name('add.student.to.sport');
 Route::get('search/student/{sport}/{id}', [SportController::class, 'searchStudent'])->name('search.student.sport');
 Route::post('add/award', [SportController::class, 'addAward'])->name('add.award');
+Route::post('search/award', [SportController::class, 'searchAwards'])->name('search.award');
 
 // email routes
 Route::get('email/assignment', function() {

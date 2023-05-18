@@ -203,6 +203,30 @@ class SportController extends Controller
         }
     }
 
+    public function searchAwards(Request $request) {
+        $awards = self::getAwards($request->index, $request->sport);
+
+        if($awards == null) {
+            return [];
+        }
+        
+        return $awards;
+    }
+
+    public static function getAwards($index, $sport) {
+        $student = Student::where('index_number', $index)->first();
+        $sports = $student->sports;
+        $awards = null;
+        foreach ($sports as $sport_object) {
+            if($sport_object["name"] == $sport) {
+                $awards = $sport_object["awards"];
+                break;
+            }
+        }
+
+        return $awards;
+    }
+
     public static function getSportList($nic) {
         $coach = Coach::where('nic', $nic)->first();
         return $coach->sports;
@@ -215,15 +239,18 @@ class SportController extends Controller
             $sports = $student->sports;
             foreach ($sports as $sport_object) {
                 if($sport_object["name"] == $sport) {
-                    $student_object = [
-                        "name" => $student->initial_name,
-                        "index" => $student->index_number,
-                        "mobile" => $student->emergency_number,
-                        "email" => $student->emergency_email,
-                        "team" => $sport_object["team"],
-                        "awards" => $sport_object["awards"]
-                    ];
-                    array_push($studentList, $student_object);
+                    if($sport_object["end_date"] == null) {
+                        $student_object = [
+                            "name" => $student->initial_name,
+                            "index" => $student->index_number,
+                            "sport" => $sport_object["name"],
+                            "mobile" => $student->emergency_number,
+                            "email" => $student->emergency_email,
+                            "team" => $sport_object["team"],
+                            "awards" => $sport_object["awards"]
+                        ];
+                        array_push($studentList, $student_object);
+                    }
                 }
             }
         }
@@ -254,6 +281,22 @@ class SportController extends Controller
 
         return view("sport.awards", [
             "sports" => $sports
+        ]);
+    }
+
+    public function navigateToStudentList() {
+        $sports = self::getSportList("200515403527");
+
+        $players = [];
+        foreach ($sports as $sport) {
+            $students = self::getStudentList($sport);
+            foreach ($students as $student) {
+                array_push($players, $student);
+            }
+        }
+
+        return view('sport.studentList', [
+            "players" => $players
         ]);
     }
 }
