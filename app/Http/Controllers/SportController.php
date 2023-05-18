@@ -132,6 +132,7 @@ class SportController extends Controller
                 "name" => $request->sport,
                 "start_date" => Date("Y-m-d"),
                 "end_date" => null,
+                "team" => "None",
                 "awards" => []
             ];
 
@@ -144,9 +145,90 @@ class SportController extends Controller
         return "already";
     }
 
+    public function searchStudent($sport, $index) {
+        $students = self::getStudentList($sport);
+
+        $response = null;
+        foreach ($students as $student) {
+            if($student["index"] == $index) {
+                $response = $student;
+                break;
+            }
+        }
+
+        if($response == null) {
+            return "not_found";
+        } else {
+            return $response;
+        }
+    }
+
+    public function addAward(Request $request) {
+        $dates = [];
+
+        for ($i=0; $i <= 7; $i++) { 
+            $date = Date("Y-m-d", strtotime("-$i days"));
+            array_push($dates, $date);
+        }
+
+        if(in_array($request->date, $dates)) {
+            $student = Student::where('index_number', $request->index)->first();
+            $sports = $student->sports;
+    
+            foreach ($sports as &$sport) {
+                if ($sport["name"] == $request->sport) {
+                    $awards = $sport["awards"];
+                    $award_object = [
+                        "competition" => $request->competition,
+                        "category" => $request->category,
+                        "place" => $request->place,
+                        "date" => Date("Y-m-d"),
+                        "description" => $request->description
+                    ];
+                    array_push($awards, $award_object);
+                    $sport["awards"] = $awards;
+            
+                    $student->sports = $sports;
+                    $added = $student->save();
+                    if ($added == true) {
+                        return "success";
+                    } else {
+                        return "error";
+                    }
+                    break;
+                }
+            }
+        } else {
+            return "invalid_date";
+        }
+    }
+
     public static function getSportList($nic) {
         $coach = Coach::where('nic', $nic)->first();
         return $coach->sports;
+    }
+
+    public static function getStudentList($sport) {
+        $students = Student::where('sports', '!=', null)->get();
+        $studentList = [];
+        foreach ($students as $student) {
+            $sports = $student->sports;
+            foreach ($sports as $sport_object) {
+                if($sport_object["name"] == $sport) {
+                    $student_object = [
+                        "name" => $student->initial_name,
+                        "index" => $student->index_number,
+                        "mobile" => $student->emergency_number,
+                        "email" => $student->emergency_email,
+                        "team" => $sport_object["team"],
+                        "awards" => $sport_object["awards"]
+                    ];
+                    array_push($studentList, $student_object);
+                }
+            }
+        }
+
+        return $studentList;
     }
 
     public function navigateToAdminSport($errors = null, $success = null) {
@@ -163,6 +245,14 @@ class SportController extends Controller
         $sports = self::getSportList("200515403527");
 
         return view("sport.addStudent", [
+            "sports" => $sports
+        ]);
+    }
+
+    public function naivgateToAddAwards() {
+        $sports = self::getSportList("200515403527");
+
+        return view("sport.awards", [
             "sports" => $sports
         ]);
     }
