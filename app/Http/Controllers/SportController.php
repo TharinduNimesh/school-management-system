@@ -209,7 +209,7 @@ class SportController extends Controller
         if($awards == null) {
             return [];
         }
-        
+
         return $awards;
     }
 
@@ -261,7 +261,6 @@ class SportController extends Controller
     public function navigateToAdminSport($errors = null, $success = null) {
         $sports = Sport::all();
 
-        // return admin sport view with all sport details
         return view('admin.sport', [
             "sports" => $sports,
             "coach_errors" => $errors
@@ -297,6 +296,14 @@ class SportController extends Controller
 
         return view('sport.studentList', [
             "players" => $players
+        ]);
+    }
+
+    public function navigateToTimeTable() {
+        $sports = self::getSportList("200515403527");
+
+        return view('sport.timetable', [
+            "sports" => $sports
         ]);
     }
 }

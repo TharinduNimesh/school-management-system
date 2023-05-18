@@ -18,6 +18,7 @@ use App\Http\Controllers\MarksController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\AccessoryController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\MailController;
 use App\Mail\StudentAssignment;
 
 /*
@@ -161,9 +162,7 @@ Route::prefix('sport')->group(function() {
         return view('sport.dashboard');
     })->name('sport.dashboard');
     Route::get('add/student', [SportController::class, "navigateToAddStudent"])->name('sport.add.student');
-    Route::get('add/timetable', function() {
-        return view('sport.timetable');
-    })->name('sport.add.timetable');
+    Route::get('add/timetable', [SportController::class, "navigateToTimeTable"])->name('sport.add.timetable');
     Route::get('add/awards', [SportController::class, 'naivgateToAddAwards'])->name('sport.add.awards');
     Route::get('list/student', [SportController::class, "navigateToStudentList"])->name('sport.student.list');
 });
@@ -286,6 +285,7 @@ Route::post('add/student/sport', [SportController::class, 'addStudent'])->name('
 Route::get('search/student/{sport}/{id}', [SportController::class, 'searchStudent'])->name('search.student.sport');
 Route::post('add/award', [SportController::class, 'addAward'])->name('add.award');
 Route::post('search/award', [SportController::class, 'searchAwards'])->name('search.award');
+Route::post('send/timetable', [MailController::class, 'sendTimetable'])->name('send.sport.timetable');
 
 // email routes
 Route::get('email/assignment', function() {
