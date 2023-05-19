@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\LeavesController;
@@ -7,9 +10,6 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SportController;
 use App\Http\Controllers\StaffController;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\ClassController;
@@ -19,6 +19,7 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\AccessoryController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\TeamController;
 use App\Mail\StudentAssignment;
 
 /*
@@ -161,6 +162,7 @@ Route::prefix('sport')->group(function() {
     Route::get('dashboard', function() {
         return view('sport.dashboard');
     })->name('sport.dashboard');
+    Route::get('manage/teams', [TeamController::class, 'navigateToTeams'])->name('sport.teams');
     Route::get('add/student', [SportController::class, "navigateToAddStudent"])->name('sport.add.student');
     Route::get('add/timetable', [SportController::class, "navigateToTimeTable"])->name('sport.add.timetable');
     Route::get('add/awards', [SportController::class, 'naivgateToAddAwards'])->name('sport.add.awards');
@@ -286,6 +288,7 @@ Route::get('search/student/{sport}/{id}', [SportController::class, 'searchStuden
 Route::post('add/award', [SportController::class, 'addAward'])->name('add.award');
 Route::post('search/award', [SportController::class, 'searchAwards'])->name('search.award');
 Route::post('send/timetable', [MailController::class, 'sendTimetable'])->name('send.sport.timetable');
+Route::post('add/team/student', [TeamController::class, 'addStudent'])->name('add.student.to.team');
 
 // email routes
 Route::get('email/assignment', function() {
