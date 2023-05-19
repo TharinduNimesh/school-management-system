@@ -289,6 +289,7 @@ Route::post('add/award', [SportController::class, 'addAward'])->name('add.award'
 Route::post('search/award', [SportController::class, 'searchAwards'])->name('search.award');
 Route::post('send/timetable', [MailController::class, 'sendTimetable'])->name('send.sport.timetable');
 Route::post('add/team/student', [TeamController::class, 'addStudent'])->name('add.student.to.team');
+Route::get('search/team/{sport}/{team}', [TeamController::class, 'searchTeam'])->name('search.sport.team');
 
 // email routes
 Route::get('email/assignment', function() {

@@ -3,6 +3,11 @@
 
 <head>
     @include('sport.components.head')
+    <style>
+        .space {
+            white-space: nowrap;
+        }
+    </style>
 </head>
 
 <body>
@@ -56,7 +61,7 @@
                             </div>
                             <div>
                                 <div class="d-grid gap-2 col-6 mx-auto mt-3">
-                                    <button type="submit" class="btn btn-primary col-sm-12 col-xl-12">Search<i
+                                    <button onclick="searchTeam();" type="submit" class="btn btn-primary col-sm-12 col-xl-12">Search<i
                                             class="bi bi-search ms-2"></i></button>
                                 </div>
                             </div>
@@ -76,15 +81,7 @@
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">Kamal</th>
-                                        <td>200505904455</td>
-                                        <td>4 Month</td>
-                                        <td>
-                                            <button type="button" class="btn btn-danger btn-sm">Remove</button>
-                                        </td>
-                                    </tr>
+                                <tbody id="playerList">
 
                                 </tbody>
                             </table>
@@ -102,6 +99,9 @@
                 <div class="col-sm-12 col-xl-12">
                     <div class="bg-secondary rounded h-100 p-4">
                         <h3 class="mb-4 text-dark">Add Students To Teams</h3>
+                        <div class="alert alert-danger">
+                            <strong>WARNING : </strong> When You Choosing A Team, Make Sure To Select Team That Compatible With Sport
+                        </div>
                         <div class="form-floating mb-3">
                             <input type="email" class="form-control bg-secondary text-dark" id="Index"
                                 placeholder="name@example.com">
@@ -116,8 +116,8 @@
                             <select class="form-select bg-secondary text-dark" id="Teams"
                                 aria-label="Floating label select example">
                                 <option selected value="0">Select A Team</option>
-                                @foreach ($teams as $team)
-                                    <option>{{ $team }}</option>
+                                @foreach ($teams as $key =>  $team)
+                                    <option>{{ $key }} - {{ $team }}</option>
                                 @endforeach
                             </select>
                             <label for="floatingSelect">Team Title List</label>
@@ -164,6 +164,91 @@
     @include('public_components.js')
     <!-- Template Javascript -->
     <script>
+
+        function searchTeam() {
+            const sport = document.getElementById("SearchSport");
+            const team = document.getElementById("SearchTeam");
+            document.getElementById("playerList").innerHTML = "";
+
+            if(sport.value == '0' || team.value == "0") {
+                   Swal.fire({
+                        icon: 'warning',
+                        title: 'Oops...',
+                        text: 'Please Selec a sport and a team',
+                    })
+                    return;
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "{{ route('search.sport.team', [':sport', ':team']) }}".replace(':sport', sport.value).replace(':team', team.value));
+            xhr.onload = function() {
+                if (xhr.status == 200) {
+                    var data = xhr.responseText;
+                    if(data == 'failed') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Team Not Found!',
+                        })
+                        return;
+                    }
+                    var result = JSON.parse(data);
+                    result.forEach(player => {
+                        var row = document.createElement("tr");
+                        var index = document.createElement("th");
+                        index.scope = "row";
+                        index.innerText = player.index_number;
+
+                        var name = document.createElement("td");
+                        name.innerText = player.name;
+                        name.classList.add("space");
+
+                        var joinDate = document.createElement("td");
+                        joinDate.innerText = player.start_date;
+
+                        var action = document.createElement("td");
+                        action.classList.add("space");
+                        var button1 = document.createElement("button");
+                        button1.type = "button";
+                        button1.className = "btn btn-danger btn-sm mx-3";
+                        button1.innerText = "Remove";
+                        button1.dataset.index = player.index_number;
+                        button1.dataset.team = team.value;
+                        button1.onclick = function() {
+                            removePlayer(player.index, result.team);
+                        }
+
+                        var button2 = document.createElement("button");
+                        button2.type = "button";
+                        button2.className = "btn btn-success btn-sm";
+                        button2.innerText = "Change Position";
+                        button2.dataset.index = player.index_number;
+                        button2.dataset.team = team.value;
+                        button2.onclick = function() {
+                            removePlayer(player.index, result.team);
+                        }
+
+                        action.appendChild(button1);
+                        action.appendChild(button2);
+
+                        row.appendChild(index);
+                        row.appendChild(name);
+                        row.appendChild(joinDate);
+                        row.appendChild(action);
+
+                        document.getElementById("playerList").appendChild(row);
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something Went Wrong!',
+                    })
+                }
+            }
+            xhr.send();
+        }
+
         const teams = [];
 
         function addTeam() {
@@ -236,6 +321,10 @@
                                     if(selectedOption.dataset.category == 'new') {
                                         location.reload();
                                     }
+
+                                    if(document.getElementById("SearchSport").value != "0" && document.getElementById("SearchTeam").value != "0") {
+                                        searchTeam();
+                                    }
                                 }
                             })
                         } else if (this.response == "failed") {
@@ -265,6 +354,12 @@
                                 icon: 'error',
                                 title: 'Oops...',
                                 text: 'Student Already Exist In A Team!',
+                            })
+                        } else if (this.response == "teamExist") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Team Already Exist!',
                             })
                         }
                         document.getElementById("spinner").classList.remove("show");

@@ -28,6 +28,14 @@ class TeamController extends Controller
             }
 
             if ($request->category == "new") {
+                $validate = SportTeam::where('name', $request->team)
+                    ->where('sport', $request->sport)
+                    ->first();
+                
+                if($validate != null) {
+                        return "teamExist";
+                }
+
                 $newTeam = new SportTeam();
                 $newTeam->name = $request->team;
                 $newTeam->sport = $request->sport;
@@ -79,7 +87,25 @@ class TeamController extends Controller
     
         return 'invalid';
     }
-    
+
+    public function searchTeam() {
+        $players = self::getPlayersList(request()->sport, request()->team);
+
+        if($players != null) {
+            return $players;
+        } else {
+            return "failed";
+        }
+    }
+
+    public static function getPlayersList($sport, $team) {
+        $teams = SportTeam::where('sport', $sport)
+        ->where('name', $team)
+        ->where('end_date', null)
+        ->first();
+
+        return $teams->players;
+    }
 
     public static function getTeamList($sport) {
         $teams = SportTeam::where('sport', $sport)->get();
@@ -94,7 +120,7 @@ class TeamController extends Controller
             $myTeams = self::getTeamList($sport);
 
             foreach ($myTeams as $team) {
-                array_push($teams, $team->name);
+                $teams[$sport] = $team->name;
             }
         }
 
