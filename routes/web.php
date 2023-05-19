@@ -290,6 +290,8 @@ Route::post('search/award', [SportController::class, 'searchAwards'])->name('sea
 Route::post('send/timetable', [MailController::class, 'sendTimetable'])->name('send.sport.timetable');
 Route::post('add/team/student', [TeamController::class, 'addStudent'])->name('add.student.to.team');
 Route::get('search/team/{sport}/{team}', [TeamController::class, 'searchTeam'])->name('search.sport.team');
+Route::get('remove/player/{sport}/{team}/{index}', [TeamController::class, 'removePlayer'])->name('remove.player');
+
 
 // email routes
 Route::get('email/assignment', function() {

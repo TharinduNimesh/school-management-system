@@ -77,6 +77,7 @@
                                     <tr>
                                         <th scope="col">Index No</th>
                                         <th scope="col">Name</th>
+                                        <th scope="col">Position</th>
                                         <th scope="col">Join Date</th>
                                         <th scope="col">Action</th>
                                     </tr>
@@ -165,6 +166,41 @@
     <!-- Template Javascript -->
     <script>
 
+        function removePlayer() {
+            const index = event.target.dataset.index;
+            const sport = event.target.dataset.sport;
+            const team = event.target.dataset.team;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "{{ route('remove.player', [ ':sport', ':team', ':index']) }}".replace(':index', index).replace(':sport', sport).replace(':team', team));
+            xhr.onload = function() {
+                if (xhr.status == 200) {
+                    var data = xhr.responseText;
+                    if(data == 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Player Removed Successfully!',
+                        })
+                        document.getElementById("row" + index).remove();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                        })
+                    }
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
+                }
+            }
+            xhr.send();
+        }
+
         function searchTeam() {
             const sport = document.getElementById("SearchSport");
             const team = document.getElementById("SearchTeam");
@@ -195,6 +231,8 @@
                     var result = JSON.parse(data);
                     result.forEach(player => {
                         var row = document.createElement("tr");
+                        row.id = "row" + player.index_number;
+
                         var index = document.createElement("th");
                         index.scope = "row";
                         index.innerText = player.index_number;
@@ -202,6 +240,9 @@
                         var name = document.createElement("td");
                         name.innerText = player.name;
                         name.classList.add("space");
+
+                        var position = document.createElement("td");
+                        position.innerText = player.position;
 
                         var joinDate = document.createElement("td");
                         joinDate.innerText = player.start_date;
@@ -214,8 +255,9 @@
                         button1.innerText = "Remove";
                         button1.dataset.index = player.index_number;
                         button1.dataset.team = team.value;
+                        button1.dataset.sport = sport.value;
                         button1.onclick = function() {
-                            removePlayer(player.index, result.team);
+                            removePlayer();
                         }
 
                         var button2 = document.createElement("button");
@@ -233,6 +275,7 @@
 
                         row.appendChild(index);
                         row.appendChild(name);
+                        row.appendChild(position);
                         row.appendChild(joinDate);
                         row.appendChild(action);
 

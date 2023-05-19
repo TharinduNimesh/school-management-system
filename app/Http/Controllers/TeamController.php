@@ -98,6 +98,51 @@ class TeamController extends Controller
         }
     }
 
+    public function removePlayer($sportName, $teamName, $index) {
+        $team = SportTeam::where('sport', $sportName)
+            ->where('name', $teamName)
+            ->where('end_date', null)
+            ->first();
+    
+        $player = null;
+        $players = [];
+        foreach ($team->players as $p) {
+            if ($p["index_number"] == $index && $p["end_date"] == null) {
+                $player = $p;
+            } else {
+                $players[] = $p;
+            }
+        }
+        $player["end_date"] = date("Y-m-d");
+        $players[] = $player;
+        $team->players = $players;
+    
+        $save1 = $team->save();
+    
+        $student = Student::where('index_number', $index)
+            ->first();
+    
+        $object = null;
+        $sports = [];
+        foreach ($student->sports as $studentSport) {
+            if ($studentSport["name"] == $sportName) {
+                $object = $studentSport;
+            } else {
+                $sports[] = $studentSport;
+            }
+        }
+        $object["team"] = "None";
+        $sports[] = $object;
+        $student->sports = $sports;
+        $save2 = $student->save();
+    
+        if ($save1 && $save2) {
+            return "success";
+        } else {
+            return "failed";
+        }
+    }    
+
     public static function getPlayersList($sport, $team) {
         $teams = SportTeam::where('sport', $sport)
         ->where('name', $team)
