@@ -168,6 +168,7 @@ Route::prefix('sport')->group(function() {
     Route::get('add/timetable', [SportController::class, "navigateToTimeTable"])->name('sport.add.timetable');
     Route::get('add/awards', [SportController::class, 'naivgateToAddAwards'])->name('sport.add.awards');
     Route::get('list/student', [SportController::class, "navigateToStudentList"])->name('sport.student.list');
+    Route::get('list/requests', [SportController::class, 'navigateToRequests'])->name('sport.requests');
 });
 
 // login functions
@@ -295,6 +296,7 @@ Route::post('add/team/student', [TeamController::class, 'addStudent'])->name('ad
 Route::get('search/team/{sport}/{team}', [TeamController::class, 'searchTeam'])->name('search.sport.team');
 Route::get('remove/player/{sport}/{team}/{index}', [TeamController::class, 'removePlayer'])->name('remove.player');
 Route::post('change/position', [TeamController::class, 'changePosition'])->name('change.position');
+Route::post('sport/request/action', [SportController::class, 'requestAction'])->name('sport.request.action');
 
 // email routes
 Route::get('email/assignment', function() {

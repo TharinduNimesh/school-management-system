@@ -270,7 +270,7 @@ class SportController extends Controller
             ->where('sport', $name)
             ->first();
     
-            if($request != null) {
+            if($requests != null) {
                 return 'requested';
             }
         }
@@ -282,7 +282,7 @@ class SportController extends Controller
                 $request->name = auth()->user()->name;
                 $request->sport = $name;
                 $request->index_number = auth()->user()->index;
-                $request->class = "$class->grade-$class->class";
+                $request->class = strval($class['grade']) . '-' . $class['class'];
         
                 $request->save();
         
@@ -291,6 +291,35 @@ class SportController extends Controller
         }
 
         return 'error';
+    }
+
+    public function requestAction() {
+        $request = RequestedSport::find(request()->id);
+        if(request()->action == "approve") {
+            $req = new Request([
+                'sport' => $request->sport,
+                'index' => $request->index_number,
+            ]);
+
+            $this->addStudent($req);
+        }
+        $request->delete();
+        return redirect()->back();
+    }
+
+    public function navigateToRequests() {
+        $sports = self::getSportList("200515403527");
+
+        $requests = [];
+        foreach ($sports as $sport) {
+            $request = RequestedSport::where('sport', $sport)->get();
+            array_push($requests, $request);
+        }
+
+        $requests = RequestedSport::all();
+        return view('sport.requests', [
+            'requests' => $requests
+        ]);
     }
 
     public static function getAwards($index, $sport) {
