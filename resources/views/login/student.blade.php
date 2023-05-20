@@ -75,7 +75,7 @@
         function studentLogin() {
             const index = document.getElementById("indexNo").value;
             const password = document.getElementById("password-field").value;
-            document.getElementById('invalid-feedback').classList.remove('d-none');
+            document.getElementById('invalid-feedback').classList.add('d-none');
 
             var form = new FormData();
             form.append('index', index);
@@ -89,7 +89,7 @@
                     if (response == 'success') {
                         window.location = "{{ route('student.dashboard') }}";
                     } else {
-                        document.getElementById('invalid-feedback').classList.add('d-block');
+                        document.getElementById('invalid-feedback').classList.remove('d-none');
                     }
                 }
             }
