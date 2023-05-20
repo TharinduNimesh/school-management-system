@@ -138,8 +138,8 @@ class SubjectController extends Controller
             if($request->type == "one") {
                 self::addAlSubjectRequestRecord(auth()->user()->index, $request->scheme, $request->subjects, $request->medium);
             } else if($request->type == "two") {
-                self::addAlSubjectRequestRecord(auth()->user()->index, $request->scheme, $request->first, $request->first_medium);
-                self::addAlSubjectRequestRecord(auth()->user()->index, $request->scheme, $request->second, $request->second_medium);
+                self::addAlSubjectRequestRecord(auth()->user()->index, $request->first_scheme, $request->first, $request->first_medium);
+                self::addAlSubjectRequestRecord(auth()->user()->index, $request->second_scheme, $request->second, $request->second_medium);
             }
 
             return 'success';
@@ -172,6 +172,11 @@ class SubjectController extends Controller
         $request->save();
     }
 
+    public function rejectALRequest($id) {
+        RequestedSubject::find($id)->delete();
+        return "success";
+    }
+
     public function navigateToStudentSubject() {
         $aesthetic = StudentsSubject::where('category', 'aesthetics')->where('deadline', '>=', Date("Y-m-d"))->first();
         $ol = StudentsSubject::where('category', 'ol')->where('deadline', '>=', Date("Y-m-d"))->first();
@@ -179,6 +184,8 @@ class SubjectController extends Controller
 
         $aestheticRequests = RequestedSubject::where("category", "aesthetics")->get();
         $olRequests = RequestedSubject::where("category", "ol")->get();
+        $alRequests = RequestedSubject::where("category", "al")->get();
+
         $olSubjects = self::getBucketSubjects("ol");
 
         if($aesthetic != null) {
@@ -201,7 +208,9 @@ class SubjectController extends Controller
             "olRequests" => $olRequests,
             "ol_bucket_1" => $olSubjects->bucket_1,
             "ol_bucket_2" => $olSubjects->bucket_2,
-            "ol_bucket_3" => $olSubjects->bucket_3
+            "ol_bucket_3" => $olSubjects->bucket_3,
+            "alRequests" => $alRequests,
+            "schemes" => self::getSchemes()
         ]);
     }
 
@@ -214,9 +223,9 @@ class SubjectController extends Controller
     public static function getSchemes() {
         $schemes = [
             "Commerce",
-            "Arts",
+            "Art",
             "Maths",
-            "Bio Science",
+            "Bio",
             "Technology",
             "NVQ"
         ];

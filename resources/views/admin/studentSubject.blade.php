@@ -48,27 +48,7 @@
                   </tr>
                 </thead>
                 <tbody id="marksBody">
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Sinhala</td>
-                    <td>80</td>
-                    <td>81</td>
-                    <td>81</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>maths</td>
-                    <td>80</td>
-                    <td>81</td>
-                    <td>81</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>History</td>
-                    <td>80</td>
-                    <td>81</td>
-                    <td>81</td>
-                  </tr>
+
                 </tbody>
               </table>
             </div>
@@ -249,6 +229,16 @@
           <div class="col-12">
             <div class="bg-secondary rounded h-100 p-4">
               <div id="bucket_3_chart" style="height: 300px; width: 100%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid pt-4 px-4 d-none" id="schemeContainer">
+        <div class="row g-2">
+          <div class="col-md-12 col-12 text-center">
+            <div class="bg-secondary rounded h-100 p-4">
+              <div id="schemeChart" style="height: 300px; width: 100%;"></div>
             </div>
           </div>
         </div>
@@ -488,64 +478,53 @@
                         <tr>
                           <th scope="col">No</th>
                           <th scope="col">Name</th>
-                          <th scope="col" colspan="2">stream</th>
-                          <th scope="col" colspan="2">Subject 1</th>
-                          <th scope="col" colspan="2">Subject 2</th>
-                          <th scope="col" colspan="2">Subject 3</th>
-                        </tr>
-                      </thead>
-                      <thead class="table">
-                        <tr>
-                          <td scope="col">##</td>
-                          <td scope="col">##</td>
-                          <td scope="col">Stream_choise-1</td>
-                          <td scope="col">Stream_choise-2</td>
-                          <td scope="col">Subject_choise-1</td>
-                          <td scope="col">Subject_choise-2</td>
-                          <td scope="col">Subject_choise-1</td>
-                          <td scope="col">Subject_choise-2</td>
-                          <td scope="col">Subject_choise-1</td>
-                          <td scope="col">Subject_choise-2</td>
-
+                          <th scope="col">stream</th>
+                          <th scope="col" class="space">Subject 1</th>
+                          <th scope="col" class="space">Subject 2</th>
+                          <th scope="col" class="space">Subject 3</th>
+                          <th scope="col" class="space">Medium</th>
+                          <th colspan="2">Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>sachith prasan</td>
-                          <td>Commerce</td>
-                          <td>B.S</td>
-                          <td>Art</td>
-                          <td>Drama</td>
-                          <td>ICT</td>
-                          <td>Teachnology</td>
-                          <td>Teachnology</td>
-                          <td>Teachnology</td>
+                        @php
+                          $ALSchemes = [
+                            "Maths" => 0,
+                            "Bio" => 0,
+                            "Commerce" => 0,
+                            "Technology" => 0,
+                            "Art" => 0,
+                            "NVQ" => 0
+                          ];
+
+                          $ALSinhala = 0;
+                          $ALEnglish = 0;
+                          $ALTamil = 0;
+                        @endphp
+                        @foreach ($alRequests as $key => $request)
+                        <tr id="alRow{{ $request['_id'] }}">
+                          <td scope="col">{{ $key + 1 }}</td>
+                          <td scope="col" class="space">{{ $request['name'] }}</td>
+                          <td scope="col">{{ $request['scheme'] }}</td>
+                          @php
+                          $ALSchemes[$request['scheme']] ++
+                          @endphp
+                          @foreach ($request["subjects"] as $subject)
+                            <td scope="col" class="space">{{ $subject }}</td>
+                          @endforeach
+                          <td scope="col" class="space">{{ $request['medium'] }}</td>
+                          <td>
+                            <button class="btn btn-success px-2">Approve</button>
+                          </td>
+                          <td>
+                            <button class="btn btn-danger px-2" data-id="{{ $request['_id'] }}" onclick="rejectAlRequest();">Reject</button>
+                          </td>
                         </tr>
-                        <tr>
-                          <td>1</td>
-                          <td>Tharindu Nimesh</td>
-                          <td>Teachnology</td>
-                          <td>Civic</td>
-                          <td>Art</td>
-                          <td>Drama</td>
-                          <td>ICT</td>
-                          <td>Teachnology</td>
-                          <td>Teachnology</td>
-                          <td>Teachnology</td>
-                        </tr>
-                        <tr>
-                          <td>1</td>
-                          <td>lisath Methsadu</td>
-                          <td>Art</td>
-                          <td>Civic</td>
-                          <td>Art</td>
-                          <td>Drama</td>
-                          <td>ICT</td>
-                          <td>Teachnology</td>
-                          <td>Teachnology</td>
-                          <td>Teachnology</td>
-                        </tr>
+                        @php
+                          $medium = $request["medium"];
+                          ${'AL' . $medium} ++;
+                        @endphp
+                        @endforeach
                       </tbody>
                     </table>
                   </div>
@@ -671,6 +650,9 @@
       const olList = document.getElementById("olSubjectList");
       const aestheticsList = document.getElementById("aestheticSubjectList");
       const bucketChartContainer = document.getElementById("bucketChartContainer");
+      const schemeContainer = document.getElementById("schemeContainer");
+
+      schemeContainer.classList.add("d-none");
       subjectGraph.classList.add("d-none");
       mediumContainer.classList.add("d-none");
       olList.classList.add("d-none");
@@ -937,6 +919,90 @@
           if(!mediumCanBeDisplay) {
             mediumContainer.classList.add("d-none");
           }
+      } else if (grade.value == "12") {
+        twelve.classList.remove("d-none");
+        mediumContainer.classList.remove("d-none");
+        schemeContainer.classList.remove("d-none");
+        
+        if("{{ $ALSinhala }}" != 0 || "{{ $ALEnglish }}" != 0 || "{{ $ALTamil }}" != 0) {
+          mediumCanBeDisplay = true;
+        }
+
+        var options = {
+        title: {
+          text: "Medium Summary"
+        },
+        data: [{
+          type: "pie",
+          startAngle: 45,
+          showInLegend: "true",
+          legendText: "{label}",
+          indexLabel: "{label} ({y})",
+          yValueFormatString: "#,##0.#" % "",
+          dataPoints: [{
+              label: "Sinhala",
+              y: "{{ $ALSinhala }}"
+            },
+            {
+              label: "English",
+              y: "{{ $ALEnglish }}"
+            },
+            {
+              label: "Tamil",
+              y: "{{ $ALTamil }}"
+            }
+          ]
+        }]
+      };
+
+      $("#chartContainer").CanvasJSChart(options);
+
+      var schemeOptions = {
+        title: {
+          text: "Scheme Summary"
+        },
+        data: [{
+          type: "pie",
+          startAngle: 45,
+          showInLegend: "true",
+          legendText: "{label}",
+          indexLabel: "{label} ({y})",
+          yValueFormatString: "#,##0.#" % "",
+          dataPoints: [{
+              label: "Art",
+              y: "{{ $ALSchemes['Art'] }}"
+            },
+            {
+              label: "Bio Science",
+              y: "{{ $ALSchemes['Bio'] }}"
+            },
+            {
+              label: "Maths",
+              y: "{{ $ALSchemes['Maths'] }}"
+            },
+            {
+              label: "Technology",
+              y: "{{ $ALSchemes['Technology'] }}"
+            },
+            {
+              label: "Commerce",
+              y: "{{ $ALSchemes['Commerce'] }}"
+            },
+            {
+              label: "NVQ",
+              y: "{{ $ALSchemes['NVQ'] }}"
+            }
+          ]
+        }]
+      };
+
+      $("#schemeChart").CanvasJSChart(schemeOptions);
+
+      if(!mediumCanBeDisplay) {
+        mediumContainer.classList.add("d-none");
+        schemeContainer.classList.add("d-none");
+      }
+
       }
 
       try {
@@ -1141,6 +1207,18 @@
       xhr.open("POST", "{{ route('student.subject.action.ol') }}");
       xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
       xhr.send(form);
+    }
+
+    function rejectAlRequest() {
+      var id = event.target.dataset.id;
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "{{ route('reject.al.request', ':id') }}".replace(':id', id));
+      xhr.onload = function() {
+        if(xhr.status == 200) {
+          document.getElementById("alRow" + id).remove();
+        }
+      }
+      xhr.send();
     }
   </script>
 </body>

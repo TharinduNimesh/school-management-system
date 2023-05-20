@@ -558,19 +558,20 @@
           } 
           const request = {
             "type": "two",
-            "scheme": firstScheme.value,
+            "first_scheme": firstScheme.value,
+            "second_scheme": secondScheme.value,
             "first" : {
-              "subject_1": subjects_1[0].value,
-              "subject_2": subjects_1[1].value,
-              "subject_3": subjects_1[2].value,
+              "subject_1": subjects_1[1].value,
+              "subject_2": subjects_1[2].value,
+              "subject_3": subjects_1[3].value,
             },
-            "first_medium": subjects_1[3].value,
+            "first_medium": subjects_1[4].value,
             "second" : {
-              "subject_1": subjects_2[0].value,
-              "subject_2": subjects_2[1].value,
-              "subject_3": subjects_2[2].value,
+              "subject_1": subjects_2[1].value,
+              "subject_2": subjects_2[2].value,
+              "subject_3": subjects_2[3].value,
             },
-            "second_medium": subjects_2[3].value,
+            "second_medium": subjects_2[4].value,
           };
           sendAlRequest(JSON.stringify(request));
         } else {
@@ -586,11 +587,11 @@
                 "type": "one",
                 "scheme": firstScheme.value,
                 "subjects" : {
-                  "subject_1": subjects_1[0].value,
-                  "subject_2": subjects_1[1].value,
-                  "subject_3": subjects_1[2].value,
+                  "subject_1": subjects_1[1].value,
+                  "subject_2": subjects_1[2].value,
+                  "subject_3": subjects_1[3].value,
                 },
-                "medium": subjects_1[3].value,
+                "medium": subjects_1[4].value,
               };
               sendAlRequest(JSON.stringify(request));
             } 
