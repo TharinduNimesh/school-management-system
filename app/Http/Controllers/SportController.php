@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Coach;
 use App\Models\Sport;
 use App\Models\Student;
+use App\Models\User;
+use App\Models\RequestedSport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -211,6 +213,81 @@ class SportController extends Controller
         }
 
         return $awards;
+    }
+
+    public function search($name) {
+        $sport = Sport::where('name', $name)->first();
+        $coaches = Coach::all();
+
+        $response = [
+            "sport" => $sport,
+            "coach" => null,
+        ];
+
+        foreach ($coaches as $coach) {
+            foreach ($coach->sports as $sport) {
+                if($sport == $name) {
+                    $response["coach"] = $coach;
+                }
+            }
+        }
+
+        return $response;
+    }
+
+    public function request($name) {
+        $coach = Coach::all();
+        $isValid = false;
+
+        foreach ($coach as $coach_object) {
+            foreach ($coach_object->sports as $sport) {
+                if($sport == $name) {
+                    $isValid = true;
+                }
+            }
+        }
+        
+        if(!$isValid) {
+            return 'noCoach';
+        }
+
+        if($isValid) {
+            $student = Student::where('index_number', auth()->user()->index)->first();
+            $sports = $student->sports;
+            if($sports == null) {
+                $isValid = true;
+            } else {
+                foreach ($sports as $sport) {
+                    if($sport["name"] == $name && $sport["end_date"] == null) {
+                        return 'already';
+                    }
+                }
+            }
+        }
+
+        if($isValid) {
+            $requests = RequestedSport::where('index_number', auth()->user()->index)
+            ->where('sport', $name)
+            ->first();
+    
+            if($request != null) {
+                return 'requested';
+            }
+        }
+
+        if($isValid) {
+            $request = new RequestedSport();
+            $request->name = auth()->user()->name;
+            $request->sport = $name;
+            $request->index_number = auth()->user()->index;
+            $request->class = StudentController::getClass(auth()->user()->index, Date("Y"));
+    
+            $request->save();
+    
+            return 'success';
+        }
+
+        return 'error';
     }
 
     public static function getAwards($index, $sport) {

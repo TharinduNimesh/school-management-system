@@ -73,6 +73,7 @@ Route::prefix('student')->middleware(['auth', 'IsStudent'])->group(function () {
     Route::get('timetable', function() {
         return view('student.timetable');
     })->name('student.timetable');
+    Route::get('request/sports', [StudentController::class, 'navigateToSports'])->name('student.sports');
     Route::get('feedback', [StudentController::class, 'navigateToFeedback'])->name("student.feedback");
     Route::get('request/subject', [StudentController::class, 'navigateToSubject'])->name('student.subject');
     Route::get('assignments', [AssignmentController::class, 'navigateToStudentAssignments'])->name('student.assignments');
@@ -273,6 +274,8 @@ Route::post('student/search/marks', [StudentController::class, 'searchMarks'])->
 Route::post('request/subject/aesthetic', [SubjectController::class, 'requestAestheticSubject'])->name('request.aesthetic.subject');
 Route::post("request/subject/ol", [SubjectController::class, 'requestOlSubject'])->name('request.ol.subject');
 Route::post("send/feedback", [LearningController::class, 'sendFeedback'])->name('send.feedback');
+Route::get('search/sport/{name}', [SportController::class, 'search'])->name('search.sport');
+Route::get('request/sport/{name}', [SportController::class, 'request'])->name('request.sport');
 
 // librarian function routes
 Route::post('add/book', [BookController::class, 'add'])->name('add.book');

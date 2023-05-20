@@ -10,6 +10,7 @@ use App\Models\StudentAttendance;
 use App\Models\StudentsSubject;
 use App\Models\LearningRecord;
 use App\Models\User;
+use App\Models\Sport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
@@ -357,6 +358,20 @@ class StudentController extends Controller
 
         return view('student.feedback', [
             'records' => $response
+        ]);
+    }
+
+    public function navigateToSports() {
+        $all = Sport::all();
+        $sports = [];
+        foreach ($all as $sport) {
+            if(!in_array($sport->name, $sports)) {
+                array_push($sports, $sport->name);
+            }
+        }
+
+        return view('student.sports', [
+            'sports' => $sports
         ]);
     }
 }
