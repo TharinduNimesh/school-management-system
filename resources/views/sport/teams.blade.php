@@ -28,7 +28,6 @@
             @include('sport.components.navbar')
             <!-- Navbar End -->
 
-
             <!-- Content Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="col-sm-12 col-xl-12">
@@ -61,7 +60,8 @@
                             </div>
                             <div>
                                 <div class="d-grid gap-2 col-6 mx-auto mt-3">
-                                    <button onclick="searchTeam();" type="submit" class="btn btn-primary col-sm-12 col-xl-12">Search<i
+                                    <button onclick="searchTeam();" type="submit"
+                                        class="btn btn-primary col-sm-12 col-xl-12">Search<i
                                             class="bi bi-search ms-2"></i></button>
                                 </div>
                             </div>
@@ -94,6 +94,30 @@
             </div>
             <!-- Content End -->
 
+            <div class="modal fade" tabindex="-1" id="positionModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-dark">Change Position</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-dark" style="color: white" id="basic-addon1">Position</span>
+                                <input type="text" class="form-control text-dark bg-secondary" placeholder="Enter New Position" aria-label="Username"
+                                    aria-describedby="basic-addon1" id="newPosition">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" id="changePositionButton" onclick="changePosition();"
+                                class="btn" style="background-color: rgb(0, 102, 255); color: white;">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
             <!-- Student Start -->
             <div class="container-fluid pt-4 px-4">
@@ -101,7 +125,8 @@
                     <div class="bg-secondary rounded h-100 p-4">
                         <h3 class="mb-4 text-dark">Add Students To Teams</h3>
                         <div class="alert alert-danger">
-                            <strong>WARNING : </strong> When You Choosing A Team, Make Sure To Select Team That Compatible With Sport
+                            <strong>WARNING : </strong> When You Choosing A Team, Make Sure To Select Team That
+                            Compatible With Sport
                         </div>
                         <div class="form-floating mb-3">
                             <input type="email" class="form-control bg-secondary text-dark" id="Index"
@@ -117,7 +142,7 @@
                             <select class="form-select bg-secondary text-dark" id="Teams"
                                 aria-label="Floating label select example">
                                 <option selected value="0">Select A Team</option>
-                                @foreach ($teams as $key =>  $team)
+                                @foreach ($teams as $key => $team)
                                     <option>{{ $key }} - {{ $team }}</option>
                                 @endforeach
                             </select>
@@ -142,20 +167,19 @@
                             <label for="floatingSelect">Sport Title List</label>
                         </div>
                         <div class="d-grid gap-2 col-6 mx-auto mt-3">
-                            <button class="btn btn-primary" type="button" onclick="addStudentToTeam();">Submit</button>
+                            <button class="btn btn-primary" type="button"
+                                onclick="addStudentToTeam();">Submit</button>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Student End -->
 
-
             <!-- Footer Start -->
             @include('public_components.footer')
             <!-- Footer End -->
         </div>
         <!-- Content End -->
-
 
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
@@ -166,17 +190,51 @@
     <!-- Template Javascript -->
     <script>
 
+        function changePosition() {
+            var form = new FormData();
+            form.append("index", event.target.dataset.index);
+            form.append("sport", event.target.dataset.sport);
+            form.append("team", event.target.dataset.team);
+            form.append("pastPosition", event.target.dataset.position);
+            form.append("position", document.getElementById("newPosition").value);
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "{{ route('change.position') }}");
+            xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+            xhr.onload = function() {
+                if (xhr.status == 200) {
+                    var data = xhr.responseText;
+                    if (data == 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Position Changed Successfully!',
+                        })
+                        document.getElementById("position" + event.target.dataset.index).innerHTML = document.getElementById("newPosition").value;
+                        $("#positionModal").modal("hide");
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                        })
+                    }
+                }
+            }
+            xhr.send(form);
+        }
+
         function removePlayer() {
             const index = event.target.dataset.index;
             const sport = event.target.dataset.sport;
             const team = event.target.dataset.team;
 
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", "{{ route('remove.player', [ ':sport', ':team', ':index']) }}".replace(':index', index).replace(':sport', sport).replace(':team', team));
+            xhr.open("GET", "{{ route('remove.player', [':sport', ':team', ':index']) }}".replace(':index', index).replace(
+                ':sport', sport).replace(':team', team));
             xhr.onload = function() {
                 if (xhr.status == 200) {
                     var data = xhr.responseText;
-                    if(data == 'success') {
+                    if (data == 'success') {
                         Swal.fire({
                             icon: 'success',
                             title: 'Success',
@@ -206,25 +264,26 @@
             const team = document.getElementById("SearchTeam");
             document.getElementById("playerList").innerHTML = "";
 
-            if(sport.value == '0' || team.value == "0") {
-                   Swal.fire({
-                        icon: 'warning',
-                        title: 'Oops...',
-                        text: 'Please Selec a sport and a team',
-                    })
-                    return;
+            if (sport.value == '0' || team.value == "0") {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops...',
+                    text: 'Please Selec a sport and a team',
+                })
+                return;
             }
 
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", "{{ route('search.sport.team', [':sport', ':team']) }}".replace(':sport', sport.value).replace(':team', team.value));
+            xhr.open("GET", "{{ route('search.sport.team', [':sport', ':team']) }}".replace(':sport', sport.value).replace(
+                ':team', team.value));
             xhr.onload = function() {
                 if (xhr.status == 200) {
                     var data = xhr.responseText;
-                    if(data == 'failed') {
+                    if (data == 'failed') {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
-                            text: 'Team Not Found!',
+                            text: 'Team Doesn\'t exist or no players in the team!',
                         })
                         return;
                     }
@@ -242,6 +301,7 @@
                         name.classList.add("space");
 
                         var position = document.createElement("td");
+                        position.id = "position" + player.index_number;
                         position.innerText = player.position;
 
                         var joinDate = document.createElement("td");
@@ -266,8 +326,16 @@
                         button2.innerText = "Change Position";
                         button2.dataset.index = player.index_number;
                         button2.dataset.team = team.value;
+                        button2.dataset.sport = sport.value;
+                        button2.dataset.position = player.position;
                         button2.onclick = function() {
-                            removePlayer(player.index, result.team);
+                            const button = document.getElementById("changePositionButton");
+                            button.dataset.index = event.target.dataset.index;
+                            button.dataset.team = event.target.dataset.team;
+                            button.dataset.sport = event.target.dataset.sport;
+                            button.dataset.position = event.target.dataset.position;
+
+                            $("#positionModal").modal("show");
                         }
 
                         action.appendChild(button1);
@@ -361,11 +429,12 @@
                                 text: 'Student Added To Team Successfully!',
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    if(selectedOption.dataset.category == 'new') {
+                                    if (selectedOption.dataset.category == 'new') {
                                         location.reload();
                                     }
 
-                                    if(document.getElementById("SearchSport").value != "0" && document.getElementById("SearchTeam").value != "0") {
+                                    if (document.getElementById("SearchSport").value != "0" && document
+                                        .getElementById("SearchTeam").value != "0") {
                                         searchTeam();
                                     }
                                 }
@@ -391,7 +460,7 @@
                                 title: 'Oops...',
                                 text: 'Student Already Exist In This Team!',
                             })
-                        } else if(this.response == 'already') {
+                        } else if (this.response == 'already') {
                             // create sweetalert error message
                             Swal.fire({
                                 icon: 'error',

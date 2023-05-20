@@ -291,7 +291,7 @@ Route::post('send/timetable', [MailController::class, 'sendTimetable'])->name('s
 Route::post('add/team/student', [TeamController::class, 'addStudent'])->name('add.student.to.team');
 Route::get('search/team/{sport}/{team}', [TeamController::class, 'searchTeam'])->name('search.sport.team');
 Route::get('remove/player/{sport}/{team}/{index}', [TeamController::class, 'removePlayer'])->name('remove.player');
-
+Route::post('change/position', [TeamController::class, 'changePosition'])->name('change.position');
 
 // email routes
 Route::get('email/assignment', function() {

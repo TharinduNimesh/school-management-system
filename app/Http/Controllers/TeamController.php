@@ -66,6 +66,20 @@ class TeamController extends Controller
             $added = $team->save();
     
             if ($added) {
+                if($student->sport_positions == null) {
+                    $student->sport_positions = [];
+                }
+    
+                $newPosition = [
+                    "sport" => $request->sport,
+                    "team" => $request->team,
+                    "position" => $request->position,
+                    "start_date" => date("Y-m-d"),
+                    "end_date" => null
+                ];
+    
+                $student->sport_positions = array_merge($student->sport_positions, [$newPosition]);
+
                 $object = null;
                 $sports = [];
                 foreach ($student->sports as $sport) {
@@ -91,7 +105,7 @@ class TeamController extends Controller
     public function searchTeam() {
         $players = self::getPlayersList(request()->sport, request()->team);
 
-        if($players != null) {
+        if(count($players) > 0) {
             return $players;
         } else {
             return "failed";
@@ -121,6 +135,19 @@ class TeamController extends Controller
     
         $student = Student::where('index_number', $index)
             ->first();
+
+        $otherPositions = [];
+        $position = null;
+        foreach ($student->sport_positions as $sportPosition) {
+            if ($sportPosition["sport"] == $sportName && $sportPosition["team"] == $teamName && $sportPosition["end_date"] == null) {
+                $position = $sportPosition;
+            } else {
+                $otherPositions[] = $sportPosition;
+            }
+        }
+        $position["end_date"] = date("Y-m-d");
+        $otherPositions[] = $position;
+        $student->sport_positions = $otherPositions;
     
         $object = null;
         $sports = [];
@@ -143,13 +170,76 @@ class TeamController extends Controller
         }
     }    
 
+    public function changePosition() {
+        $team = SportTeam::where('sport', request()->sport)
+            ->where('name', request()->team)
+            ->where('end_date', null)
+            ->first();
+    
+        $player = null;
+        $players = [];
+        foreach ($team->players as $p) {
+            if ($p["index_number"] == request()->index && $p["end_date"] == null) {
+                $player = $p;
+            } else {
+                $players[] = $p;
+            }
+        }
+        $player["position"] = request()->position;
+        $players[] = $player;
+        $team->players = $players;
+
+        $student = Student::where('index_number', request()->index)
+            ->first();
+
+        $otherPositions = [];
+        $position = null;
+        foreach ($student->sport_positions as $sportPosition) {
+            if ($sportPosition["sport"] == request()->sport && $sportPosition["team"] == request()->team) {
+                $position = $sportPosition;
+            } else {
+                $otherPositions[] = $sportPosition;
+            }
+        }
+        $position["end_date"] = Date("Y-m-d");
+        $newPosition = [
+            "sport" => request()->sport,
+            "team" => request()->team,
+            "position" => request()->position,
+            "start_date" => Date("Y-m-d"),
+            "end_date" => null
+        ];
+        $otherPositions[] = $position;
+        $otherPositions[] = $newPosition;
+        $student->sport_positions = $otherPositions;
+    
+        $student->save();
+        $save = $team->save();
+    
+        if ($save) {
+            return "success";
+        } else {
+            return "failed";
+        }
+    }
+
     public static function getPlayersList($sport, $team) {
         $teams = SportTeam::where('sport', $sport)
         ->where('name', $team)
         ->where('end_date', null)
         ->first();
 
-        return $teams->players;
+        $players = [];
+
+        if($team != null) {
+            foreach ($teams->players as $player) {
+                if($player["end_date"] == null) {
+                    $players[] = $player;
+                }
+            }
+        }
+
+        return $players;
     }
 
     public static function getTeamList($sport) {
