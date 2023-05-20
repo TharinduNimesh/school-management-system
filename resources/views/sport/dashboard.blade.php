@@ -129,6 +129,7 @@
     <!-- Template Javascript -->
     
     <script>
+        hamburger("dashboard")
             $('#calender').datetimepicker({
         inline: true,
         format: 'L'

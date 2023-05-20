@@ -172,7 +172,7 @@
         @include('public_components.js')
 
         <script>
-
+            hamburger("awards")
             var indexNumber = '';
             var sportName = '';
 

@@ -189,7 +189,7 @@
     @include('public_components.js')
     <!-- Template Javascript -->
     <script>
-
+        hamburger("team")
         function changePosition() {
             var form = new FormData();
             form.append("index", event.target.dataset.index);

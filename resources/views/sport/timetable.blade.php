@@ -85,6 +85,7 @@
     <!-- Template Javascript -->
 
     <script>
+        hamburger("timetable")
         function sendMail() {
             let place = document.getElementById('place').value;
             let day = document.getElementById('day').value;

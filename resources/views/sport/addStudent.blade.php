@@ -142,6 +142,7 @@
 
     @include('public_components.js')
     <script>
+        hamburger("addStudent");
         function studentLiveSearch() {
             document.getElementById("item-container").style.display = "";
             var name = document.getElementById("typing").value;

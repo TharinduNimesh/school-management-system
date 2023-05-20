@@ -118,6 +118,7 @@
     @include('public_components.js')
     <!-- Template Javascript -->
     <script>
+        hamburger("studentList")
         // create getAwards function and send data set values to server using xhr
         function getAwards() {
             document.getElementById('awardsBody').innerHTML = "";
