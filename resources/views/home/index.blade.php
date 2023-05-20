@@ -232,7 +232,7 @@
         </div>
         <div class="row g-5">
             <div class="col-lg-4">
-                <div class="team-item position-relative overflow-hidden">
+                <div class="team-item position-relative overflow-hidden rounded-3">
                     <button><a href="{{ route('student.login') }}">
                             <img class="img-fluid w-100" src="/img/studentLogin.jpg" alt="">
                             <div class="position-absolute fixed-bottom bg-primary p-4">
@@ -242,7 +242,7 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="team-item position-relative overflow-hidden">
+                <div class="team-item position-relative overflow-hidden rounded-3">
                     <button><a href="{{ route('teacher.login') }}">
                             <img class="img-fluid w-100" src="/img/teacherLogin.jpg" alt="">
                             <div class="position-absolute fixed-bottom bg-primary p-4">
@@ -252,7 +252,7 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="team-item position-relative overflow-hidden">
+                <div class="team-item position-relative overflow-hidden rounded-3">
                     <button><a href="{{ route('admin.login') }}">
                             <img class="img-fluid w-100" src="/img/adminLogin.jpg" alt="">
                             <div class="position-absolute fixed-bottom bg-primary p-4">
@@ -262,7 +262,7 @@
                 </div>
             </div>
             <div class="col-lg-4 lbLogin">
-                <div class="team-item position-relative overflow-hidden">
+                <div class="team-item position-relative overflow-hidden rounded-3">
                     <button><a href="{{ route('library.login') }}">
                             <img class="img-fluid w-100" src="/img/libraryLogin.png" alt="">
                             <div class="position-absolute fixed-bottom bg-primary p-4">
