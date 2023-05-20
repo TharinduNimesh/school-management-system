@@ -129,6 +129,37 @@ class SubjectController extends Controller
         }
     }
 
+    public function requestAlSubject() {
+        $request = json_decode(request()->data);
+        $validate = RequestedSubject::where("index_number", auth()->user()->index)
+        ->where('category', 'al')
+        ->first();
+        if($validate == null) {
+            if($request->type == "one") {
+                self::addAlSubjectRequestRecord(auth()->user()->index, $request->scheme, $request->subjects, $request->medium);
+            } else if($request->type == "two") {
+                self::addAlSubjectRequestRecord(auth()->user()->index, $request->scheme, $request->first, $request->first_medium);
+                self::addAlSubjectRequestRecord(auth()->user()->index, $request->scheme, $request->second, $request->second_medium);
+            }
+
+            return 'success';
+        }
+        return 'already';
+    }
+
+    public static function addAlSubjectRequestRecord($index, $scheme, $subjects, $medium) {
+        $student = Student::where("index_number", $index)->first();
+        $request = new RequestedSubject();
+        $request->index_number = $index;
+        $request->scheme = $scheme;
+        $request->name = $student->initial_name;
+        $request->category = 'al';
+        $request->subjects = $subjects;
+        $request->medium = $medium;
+
+        $request->save();
+    }
+
     public static function addOlSubjectRequestRecord($index, $subjects, $medium) {
         $student = Student::where("index_number", $index)->first();
         $request = new RequestedSubject();
@@ -178,6 +209,19 @@ class SubjectController extends Controller
         return view('admin.teacherSubject', [
             "subjects" => self::getAllSubjects()
         ]);
+    }
+
+    public static function getSchemes() {
+        $schemes = [
+            "Commerce",
+            "Arts",
+            "Maths",
+            "Bio Science",
+            "Technology",
+            "NVQ"
+        ];
+
+        return $schemes;
     }
 
     public static function getBucketSubjects($category) {

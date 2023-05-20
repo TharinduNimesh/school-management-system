@@ -274,6 +274,7 @@ Route::post('submit/assignment', [AssignmentController::class, 'submit'])->name(
 Route::post('student/search/marks', [StudentController::class, 'searchMarks'])->name('student.search.marks');
 Route::post('request/subject/aesthetic', [SubjectController::class, 'requestAestheticSubject'])->name('request.aesthetic.subject');
 Route::post("request/subject/ol", [SubjectController::class, 'requestOlSubject'])->name('request.ol.subject');
+Route::post('request/subject/al', [SubjectController::class, 'requestAlSubject'])->name('request.al.subject');
 Route::post("send/feedback", [LearningController::class, 'sendFeedback'])->name('send.feedback');
 Route::get('search/sport/{name}', [SportController::class, 'search'])->name('search.sport');
 Route::get('request/sport/{name}', [SportController::class, 'request'])->name('request.sport');
