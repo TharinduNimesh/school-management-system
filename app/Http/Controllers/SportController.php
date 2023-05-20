@@ -246,7 +246,7 @@ class SportController extends Controller
                 }
             }
         }
-        
+
         if(!$isValid) {
             return 'noCoach';
         }
@@ -276,15 +276,18 @@ class SportController extends Controller
         }
 
         if($isValid) {
-            $request = new RequestedSport();
-            $request->name = auth()->user()->name;
-            $request->sport = $name;
-            $request->index_number = auth()->user()->index;
-            $request->class = StudentController::getClass(auth()->user()->index, Date("Y"));
-    
-            $request->save();
-    
-            return 'success';
+            $class = StudentController::getClass(auth()->user()->index, Date("Y"));
+            if($class != null) {
+                $request = new RequestedSport();
+                $request->name = auth()->user()->name;
+                $request->sport = $name;
+                $request->index_number = auth()->user()->index;
+                $request->class = "$class->grade-$class->class";
+        
+                $request->save();
+        
+                return 'success';
+            }
         }
 
         return 'error';
