@@ -3,6 +3,11 @@
 
 <head>
     @include('teacher.components.head')
+    <style>
+        .space {
+            white-space: nowrap;
+        }
+    </style>
 </head>
 
 <body>
@@ -75,15 +80,10 @@
                         <div class="bg-secondary rounded h-100 p-4">
                             <h3 class="mb-4 text-dark">Short leaves List</h3>
                             <div class="row">
-                                <div class="mb-3 col-md-6">
+                                <div class="mb-3">
                                     <label for="Indexnumber" class="form-label">Search by Index No</label>
                                     <input class="form-control bg-secondary text-dark" type="text" id="studentIndex"
                                         name="Indexnumber" value="" autofocus placeholder="Enter student Index No" />
-                                </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="Date" class="form-label">Date</label>
-                                    <input class="form-control bg-secondary text-dark" type="date" name="Date" id="date"
-                                        value="" placeholder="Enter Date" />
                                 </div>
                                 <div class="d-grid">
                                     <button class="btn btn-primary mb-4" onclick="searchLeave();">Search</button>
@@ -94,9 +94,10 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">Name</th>
+                                            <th scope="col">Date</th>
                                             <th scope="col">Time</th>
-                                            <th scope="col">Parent NIC</th>
-                                            <th scope="col">Parent Name</th>
+                                            <th scope="col" class="space">Parent NIC</th>
+                                            <th scope="col" class="space">Parent Name</th>
                                             <th scope="col">Reason</th>
                                             <th scope="col">Teacher</th>
                                         </tr>
@@ -112,13 +113,11 @@
             </div>
             <!-- Table end -->
 
-
             <!-- Footer Start -->
             @include('public_components.footer')
             <!-- Footer End -->
         </div>
         <!-- Content End -->
-
 
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
@@ -131,76 +130,71 @@
     <script>
         function searchLeave() {
             const index = document.getElementById("studentIndex");
-            const date = document.getElementById("date");
             const table = document.getElementById("leavesTable");
+            const tableBody = document.getElementById("tableBody");
 
-            if (index.value.trim() == '' || date.value == '') {
+            table.classList.add("d-none");
+            tableBody.innerHTML = "";
+
+            if (index.value.trim() == '') {
                 Swal.fire(
                     'ERROR',
                     'Please Enter A Registration Number And A Date',
                     'warning'
                 );
-                table.classList.add("d-none");
             } else {
-                var form = new FormData();
-                form.append("index", index.value);
-                form.append("date", date.value);
 
                 var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        // handle response
-                        const tbody = document.getElementById("tableBody");
-                        var response = JSON.parse(xhr.responseText);
-                        console.log(response);
-
-                        if (response.status == "noData") {
+                xhr.onload = function () {
+                    if(xhr.status == 200) {
+                        var response = xhr.responseText;
+                        if(response == "noData") {
                             Swal.fire(
-                                'Sorry',
-                                'No Data To Display For This Registration Number And Date',
-                                'question'
+                                'ERROR',
+                                'No Data Found',
+                                'warning'
                             );
-                            table.classList.add("d-none");
                         } else {
-                            tbody.innerHTML = '';
                             table.classList.remove("d-none");
-                            const newRow = document.createElement("tr");
+                            response = JSON.parse(response);
+                            response.forEach(record => {
+                                var row = document.createElement("tr");
+                                var name = document.createElement("td");
+                                var date = document.createElement("td");
+                                var time = document.createElement("td");
+                                var nic = document.createElement("td");
+                                var parentName = document.createElement("td");
+                                var reason = document.createElement("td");
+                                var teacher = document.createElement("td");
 
-                            const nameCell = document.createElement("th");
-                            nameCell.setAttribute("scope", "row");
-                            nameCell.textContent = response.data["student"];
+                                name.innerHTML = record.name;
+                                name.classList.add("space");
+                                date.innerHTML = record.date;
+                                time.innerHTML = record.time;
+                                nic.innerHTML = record.guardian_nic;
+                                parentName.innerHTML = record.guardian_name;
+                                parentName.classList.add("space");
+                                reason.innerHTML = record.reason;
+                                reason.classList.add("space");
+                                teacher.innerHTML = record.teacher_name;
+                                teacher.classList.add("space");
 
-                            const timeCell = document.createElement("td");
-                            timeCell.textContent = response.data["time"];
+                                row.appendChild(name);
+                                row.appendChild(date);
+                                row.appendChild(time);
+                                row.appendChild(nic);
+                                row.appendChild(parentName);
+                                row.appendChild(reason);
+                                row.appendChild(teacher);
 
-                            const idCell = document.createElement("td");
-                            idCell.textContent = response.data["guardian_nic"];
-
-                            const surnameCell = document.createElement("td");
-                            surnameCell.textContent = response.data["guardian_name"];
-
-                            const bla1Cell = document.createElement("td");
-                            bla1Cell.textContent = response.data["reason"];
-
-                            const bla2Cell = document.createElement("td");
-                            bla2Cell.textContent = response.data["teacher"];
-
-                            // append the cells to the new row
-                            newRow.appendChild(nameCell);
-                            newRow.appendChild(timeCell);
-                            newRow.appendChild(idCell);
-                            newRow.appendChild(surnameCell);
-                            newRow.appendChild(bla1Cell);
-                            newRow.appendChild(bla2Cell);
-
-                            tbody.appendChild(newRow);
+                                tableBody.appendChild(row);
+                            })
                         }
-
                     }
                 }
 
-                xhr.open("POST", "process/searchStudentShortLeaves.php", true);
-                xhr.send(form);
+                xhr.open("GET", "{{ route('search.dismiss.student', ':id') }}".replace(':id', index.value));
+                xhr.send();
             }
         }
 
@@ -231,49 +225,66 @@
                     const name = document.getElementById("guardianName");
                     const nic = document.getElementById("guardianNic");
 
-                    const obj = {
-                        "index": index.value,
-                        "name": name.value,
-                        "nic": nic.value,
-                        "reason": reason.value,
-                    }
                     var form = new FormData();
-                    form.append("form", JSON.stringify(obj));
+                    form.append("index", index.value);
+                    form.append("name", name.value);
+                    form.append("nic", nic.value);
+                    form.append("reason", reason.value);
 
                     var xhr = new XMLHttpRequest();
-                    xhr.onreadystatechange = function () {
-                        if (xhr.readyState == 4 && xhr.sstatus == 200) {
-                            // handle response
-                            var response = JSON.parse(xhr.responseText);
-                            if (response.status == 'invalidIndex') {
+                    xhr.onload = function() {
+                        if (xhr.status == 200) {
+                            var response = xhr.responseText;
+                            if (response == "invalid_guardian") {
+                                Swal.fire(
+                                    'ATTENTION',
+                                    'Guardian NIC Not Match With Records In The System, But Record Was Added',
+                                    'warning'
+                                );
+                                myForm.forEach(input => {
+                                    input.value = '';
+                                });
+                                reason.value = '';
+                            } else if (response == "invalid_student") {
                                 Swal.fire(
                                     'ERROR',
-                                    'The Registration Number That You Given Is Invalid',
+                                    'Invalid Student Index Number',
                                     'error'
                                 );
-                            } else if (response.status == 'invalidParent') {
+                            } else if (response == "permission") {
                                 Swal.fire(
                                     'ERROR',
-                                    'Record Added Successfully, But Parent\'s NIC Number Seems Invalid',
+                                    'You Do Not Have Permission To Do This',
                                     'error'
                                 );
+                            } else if (response == "success") {
+                                Swal.fire(
+                                    'SUCCESS',
+                                    'Student Leave Recorded Successfully',
+                                    'success'
+                                );
+                                myForm.forEach(input => {
+                                    input.value = '';
+                                });
+                                reason.value = '';
                             } else {
-                                Swal.fire({
-                                    position: 'top-end',
-                                    icon: 'success',
-                                    title: 'Record Added Successfully',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                })
+                                Swal.fire(
+                                    'ERROR',
+                                    'Something Went Wrong',
+                                    'error'
+                                );
                             }
-
-                            inputs.forEach(input => {
-                                input.value = '';
-                            });
+                        } else {
+                            Swal.fire(
+                                'ERROR',
+                                'Something Went Wrong',
+                                'error'
+                            );
                         }
                     }
 
-                    xhr.open("POST", "process/leaveAStudent.php", true);
+                    xhr.open("POST", "{{ route('dismiss.student') }}");
+                    xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
                     xhr.send(form);
                 }
 

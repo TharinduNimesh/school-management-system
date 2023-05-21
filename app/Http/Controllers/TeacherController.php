@@ -148,6 +148,35 @@ class TeacherController extends Controller
         return redirect()->back();
     }
 
+    public static function hasPermission($nic, $index) {
+        if(auth()->user()->role == "admin") {
+            return true;
+        }
+
+        $student_class = StudentController::getClass($index, Date("Y"));
+        $isSectionHead = SectionHead::where('nic', $nic)
+        ->whereNull('end_date')
+        ->first();
+
+        if($isSectionHead != null) {
+            if($isSectionHead->section == $student_class["grade"]) {
+                return true;
+            }
+        } else {
+            $teacher_class = TeacherController::getClass($nic, Date("Y"));
+
+            if($teacher_class != null) {
+                if($teacher_class->grade == $student_class["grade"] && $teacher_class->class == $student_class["class"]) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+    }
+
     public static function getClass($nic, $year) {
         $teacher = Teacher::where('nic', $nic)->first();
         if($teacher != null) {

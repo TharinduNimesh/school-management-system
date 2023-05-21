@@ -209,6 +209,74 @@ class StudentController extends Controller
         }
     }
 
+    public function dismiss() {
+        $response = null;
+        $hasPermission = TeacherController::hasPermission(auth()->user()->index, request()->index);
+        if($hasPermission) {
+            $student = Student::where('index_number', request()->index)->first();
+            if($student != null) {
+                $NICs = [];
+                array_push($NICs, $student->father_nic);
+                array_push($NICs, $student->mother_nic);
+                array_push($NICs, $student->guardian_nic);
+                if(!in_array(request()->nic, $NICs)) {
+                    $response = 'invalid_guardian';
+                }
+                $dismissals = $student->dismissals;
+                if($dismissals == null) {
+                    $dismissals = array();
+                }
+                $newRecord = new \stdClass();
+                $newRecord->guardian_nic = request()->nic;
+                $newRecord->guardian_name = request()->name;
+                $newRecord->reason = request()->reason;
+                $newRecord->date = Date("Y-m-d");
+                $newRecord->time = Date("H:i:s");
+                $newRecord->teacher = auth()->user()->index;
+                $newRecord->teacher_name = auth()->user()->name;
+
+                array_push($dismissals, $newRecord);
+
+                $student->dismissals = $dismissals;
+                $student->save();
+                
+                if($response == null) {
+                    $response = 'success';
+                }
+            } else {
+                $response = 'invalid_student';
+            }
+        } else {
+            $response = 'permission';
+        }
+
+        return $response;
+    }
+
+    public function searchDismiss($index) {
+        $student = Student::where('index_number', $index)->first();
+        if($student->dismissals == null) {
+            return 'noData';
+        } else {
+            $response = [];
+            foreach ($student->dismissals as $record) {
+                $obj = new \stdClass();
+                $obj->name = $student->initial_name;
+                $obj->guardian_nic = $record["guardian_nic"];
+                $obj->guardian_name = $record["guardian_name"];
+                $obj->reason = $record["reason"];
+                $obj->date = $record["date"];
+                $obj->time = $record["time"];
+                $obj->teacher = $record["teacher"];
+                $obj->teacher_name = $record["teacher_name"];
+
+                array_push($response, $obj);
+            }
+
+            return $response;
+        }
+    }
+
     public static function getAttendancePrecentage($index, $year) {
         $attendace_data = StudentAttendance::select('attendance')->where('index_number', $index)->where('year', $year)->first();
         $dateCount = AttendanceController::getSchoolHoldDateCount(Date("Y"));
