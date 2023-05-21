@@ -23,8 +23,8 @@ class SportController extends Controller
 
         // check if validation pass or not
         if($validator->fails()) {
-            return redirect()->route("admin.sports")->with([
-                "errors" => $validator->errors()
+            return redirect()->back()->withErrors([
+                "sport_validation_errors" => json_encode($validator->errors())
             ]);
         }
             // if validation pass this wil run
@@ -40,22 +40,22 @@ class SportController extends Controller
                 $sportAdded = $sport->save();
 
                 if($sportAdded) {
-                    $errorBag->add("error", "Sport Added Successfully");
-                    return view("admin.sport")->with([
-                        "success" => $errorBag,
+                    $errorBag->add("success", "Sport Added Successfully");
+                    return redirect()->back()->withErrors([
+                        "sport_success" => $errorBag
                     ]);
                 } else {
                     $errorBag->add("error", "Something Went Wrong");
-                    return redirect()->route("admin.sports")->with([
-                        "errors" => $errorBag
+                    return redirect()->back()->withErrors([
+                        "sport_errors" => $errorBag
                     ]);
                 }
             }
                 // this will run if sport already exist
             else {
                 $errorBag->add("error", "This Sport Already Added Previously");
-                return redirect()->route("admin.sports")->with([
-                    "errors" => $errorBag
+                return redirect()->back()->withErrors([
+                    "sport_errors" => $errorBag
                 ]);
             }
         }
@@ -72,9 +72,17 @@ class SportController extends Controller
         // check validation failed or not
         if($validator->fails()) {
             // if validation failed return an error
-            return $this->navigateToAdminSport($validator->errors());
+            return redirect()->back()->withErrors([
+                "coach_validation_errors" => $validator->errors()
+            ]);
         } else {
             $messageBag = $validator->getMessageBag();
+
+            if($request->sports == null) {
+                $messageBag->add("error", "Please Select At Least One Sport");
+                return redirect()->back()->withErrors(["coach_errors" => $messageBag]);
+            }
+
             // get current coaches details
             $coaches = Coach::where('nic', $request->nic)->first();
             // check already caoch exist with given nic
@@ -84,28 +92,25 @@ class SportController extends Controller
                 $coach->name = $request->name;
                 $coach->nic = $request->nic;
                 $coach->mobile = $request->mobile;
-                $sports = [
-                    $request->sport
-                ];
-                $coach->sports = $sports;
+                $coach->sports = $request->sports;
                 $coach->save();
 
                 // add details to user table
                 $user = new User();
                 $user->name = $request->name;
                 $user->index = $request->nic;
-                $user->email = "johndoe@example.com";
+                $user->email = $request->email;
                 $user->password = Hash::make($request->password);
                 $user->role = "coach";
                 $user->save();
 
                 $messageBag->add("success", "Coach Added successfully");
-                return $this->navigateToAdminSport($messageBag);
+                return redirect()->back()->withErrors(["coach_success" => $messageBag]);
             }
                 // this will return if coach already exist with given nic
             else {
                 $messageBag->add("error", "A Coach Already Exist With Given NIC");
-                return $this->navigateToAdminSport($messageBag);
+                return redirect()->back()->withErrors(["coach_errors" => $messageBag]);
             }
         }
     }
