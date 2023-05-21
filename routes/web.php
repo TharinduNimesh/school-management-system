@@ -247,9 +247,8 @@ Route::post('show/grade/teacher/subject', [TeacherController::class, 'showSubjec
 Route::delete('delete/accessory/{id}', [AccessoryController::class, 'deleteRequest'])->name('delete.accessory.request');
 Route::get('reject/request/al/{id}', [SubjectController::class, 'rejectALRequest'])->name('reject.al.request');
 Route::get('accept/request/al{id}', [SubjectController::class, 'acceptALRequest'])->name('accept.al.request');
-
-// admin route for get feedbacks
 Route::post('feedbacks', [LearningController::class, 'getFeedbacks'])->name('get.feedbacks');
+Route::get('resign/teacher/{id}', [TeacherController::class, 'resign'])->name('resign.teacher');
 
 // admin manage student subject routes
 Route::post('activate/request', [SubjectController::class, 'activate'])->name('request.activate');

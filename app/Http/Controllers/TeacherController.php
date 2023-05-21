@@ -148,6 +148,38 @@ class TeacherController extends Controller
         return redirect()->back();
     }
 
+    public function resign($nic) {
+        $teacher = Teacher::where('nic', $nic)->first();
+        $teacher->resigned_at = Date("Y-m-d");
+        $teacher->save();
+
+        $teacher_class = TeacherController::getClass($nic, Date("Y"));
+        if($teacher_class != null) {
+            Teacher::where('nic', $nic)
+            ->where('classes.end_year', null)
+            ->update(
+                [
+                    'classes.$[elem].end_year' => date('Y')
+                ],
+                [
+                    'arrayFilters' => [
+                        ['elem.end_year' => null]
+                    ]
+                ]
+            );
+        }
+
+        $user = User::where('index', $nic)
+        ->where('role', 'teacher')
+        ->first();
+
+        if($user != null) {
+            $user->delete();
+        }
+
+        return Date("Y-m-d");
+    }
+
     public static function hasPermission($nic, $index) {
         if(auth()->user()->role == "admin") {
             return true;

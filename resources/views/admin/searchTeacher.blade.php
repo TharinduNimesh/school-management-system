@@ -76,13 +76,26 @@
                 </div>
             </div>
             <!-- Sale & Revenue End -->
-
-            <x-modal
-                message="<p>Are you sure you want to remove this teacher from the school? This action cannot be
-                                undone and will result in the removal of all associated data and records. Please confirm
-                                your decision before proceeding.</p>"
-                title="Warning" onConfirm="teacherResignation();" id="resignationModal" isCentered="false" />
-
+            <div class="modal fade" tabindex="-1" id="resignationModal">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title text-dark">WARNING</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Are you sure you want to remove this teacher from the school? This action cannot be
+                        undone and will result in the removal of all associated data and records. Please confirm
+                        your decision before proceeding.</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-danger" onclick="teacherResignation();">Resign</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
             <!-- Profile Start -->
             <div class="container-fluid pt-4 px-4">
 
@@ -150,19 +163,31 @@
                                     <button class="btn btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#updateModal">Update</button>
                                 </div>
-
-                                <x-modal
-                                    message="Please note that updating a teacher's personal details can have
-                                                    significant legal and administrative implications. Ensure that the
-                                                    changes are accurate and necessary before proceeding. Any
-                                                    unauthorized changes can result in legal and disciplinary action. Do
-                                                    you wish to continue with this update?"
-                                    title="Warning" id="updateModal" onConfirm="updateTeacherData();"
-                                    isCentered="false" />
                             </div>
                             <!-- /Account -->
                         </div>
-
+                        <div class="modal" tabindex="-1">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title text-dark">Update Teacher Details</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  <p>Please note that updating a teacher's personal details can have
+                                    significant legal and administrative implications. Ensure that the
+                                    changes are accurate and necessary before proceeding. Any
+                                    unauthorized changes can result in legal and disciplinary action. Do
+                                    you wish to continue with this update?</p>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                  <button type="button" class="btn btn-success" onclick="updateTeacherData()">Update</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
                     </div>
                 </div>
             </div>
@@ -286,9 +311,12 @@
             }
         }
 
+        var teacherNIC = '';
+
         function searchTeacher() {
             var name = document.getElementById("teacherName");
             var nic = document.getElementById("teacherNic");
+            teacherNIC = '';
             // clearn all tables and set sample values to input
             document.getElementById("subjectBody").innerHTML = '';
             document.getElementById("leavesBody").innerHTML = '';
@@ -343,6 +371,7 @@
                             });
                             document.getElementById("nic").dataset.nic = 0;
                         } else {
+                            teacherNIC = searchable;
                             response = JSON.parse(response);
                             document.getElementById("gradeClass").innerHTML = response.class == null ? "Not Assigned" : response.class.grade + " - " + response.class.class;
                             document.getElementById("resignation").innerHTML = response.teacher.resigned_at == null ? "Not Resigned" : response.teacher.resigned_at;
@@ -438,8 +467,7 @@
         }
 
         function teacherResignation() {
-            const nic = document.getElementById("nic");
-            if (nic.dataset.nic == 0) {
+            if (teacherNIC == '') {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Sorry',
@@ -447,14 +475,20 @@
                 });
             } else {
                 var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        // handle response
+                xhr.onload = function() {
+                    if (xhr.status == 200) {
                         document.getElementById("resignation").innerHTML = xhr.responseText;
+                        $("#resignationModal").modal('hide');
+                    } else {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Sorry',
+                            text: "Something went wrong"
+                        });
                     }
                 }
 
-                xhr.open("GET", "process/teacherResignation.php?nic=" + nic.dataset.nic + '', true);
+                xhr.open("GET", "{{ route('resign.teacher', ':id') }}".replace(':id', teacherNIC));
                 xhr.send();
             }
         }
