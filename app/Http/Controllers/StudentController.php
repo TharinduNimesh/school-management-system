@@ -117,6 +117,23 @@ class StudentController extends Controller
         }
     }
 
+    public function search($id) {
+        $student = $this->show($id);
+        if($student != 'invalid') {
+            $book = BorrowedBook::where('holder_id', $id)
+            ->where('returned', false)
+            ->first();
+            $class = self::getClass($id, Date("Y"));
+            $response = [
+                "status" => "success",
+                "student" => $student,
+                "class" => $class,
+                "book" => $book
+            ];
+        }
+        return ["status" => "invalid"];
+    }
+
     public function searchStudentForDiscipline(Request $request) {
         $student = $this->show($request->index);
         if($student != 'invalid') {

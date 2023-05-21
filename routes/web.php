@@ -234,6 +234,7 @@ Route::prefix('search')->group(function() {
     Route::get("teacher/live/{id}", [TeacherController::class, 'live'])->name('live.search.teacher');
     Route::post('class/record', [LearningController::class, 'showRecord'])->name('search.class.record');
     Route::get('accessories/{grade}/{class}', [AccessoryController::class, 'show'])->name('search.accessories');
+    Route::get("student/all/{id}", [StudentController::class, 'search'])->name('search.student.all.details');
 });
 
 // admin update discipline

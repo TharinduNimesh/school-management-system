@@ -152,11 +152,11 @@
                                 </div>
 
                                 <x-modal
-                                    message="<p>Please note that updating a teacher's personal details can have
+                                    message="Please note that updating a teacher's personal details can have
                                                     significant legal and administrative implications. Ensure that the
                                                     changes are accurate and necessary before proceeding. Any
                                                     unauthorized changes can result in legal and disciplinary action. Do
-                                                    you wish to continue with this update?</p>"
+                                                    you wish to continue with this update?"
                                     title="Warning" id="updateModal" onConfirm="updateTeacherData();"
                                     isCentered="false" />
                             </div>
@@ -179,7 +179,6 @@
                                 <tr>
                                     <th scope="col">No</th>
                                     <th scope="col">Subject</th>
-                                    <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="subjectBody">
@@ -358,74 +357,76 @@
                             document.getElementById("nationality").value = response.teacher.nationality;
                             document.getElementById("religion").value = response.teacher.religion;
                             document.getElementById("qualification").value = response.teacher.qualifications;
-                            const subjects = [];
-                            var num = 1;
-                            response.teacher.subjects.forEach((subject, index) => {
+                            
+                            try {
+                                const subjects = [];
+                                var num = 1;
+                                response.teacher.subjects.forEach((subject, index) => {
                                 if (!subjects.includes(subject.subject)) {
 
                                     var row = document.createElement("tr");
                                     var no = document.createElement("td");
                                     var subjectName = document.createElement("td");
-                                    var action = document.createElement("td");
-                                    var moreButton = document.createElement("button");
 
                                     no.innerHTML = num;
                                     subjectName.innerHTML = subject.subject;
-                                    moreButton.innerHTML = "More";
-                                    moreButton.classList.add("btn");
-                                    moreButton.classList.add("btn-success");
-                                    moreButton.classList.add("btn-sm");
-                                    moreButton.classList.add("text-white");
-                                    moreButton.dataset.subject = subject.subject;
-                                    moreButton.dataset.teacher = response.teacher.nic;
 
                                     row.appendChild(no);
                                     row.appendChild(subjectName);
-                                    action.appendChild(moreButton);
-                                    row.appendChild(action);
 
                                     document.getElementById("subjectBody").appendChild(row);
                                     subjects.push(subject.subject);
                                     num++;
                                 }
                             });
+                            } catch (error) {
+                                console.log("no Subjects");
+                            }
 
-                            response.leaves.forEach((leave, index) => {
-                                var row = document.createElement("tr");
-                                var no = document.createElement("td");
-                                var reason = document.createElement("td");
-                                var date = document.createElement("td");
+                            try {
+                                response.leaves.forEach((leave, index) => {
+                                    var row = document.createElement("tr");
+                                    var no = document.createElement("td");
+                                    var reason = document.createElement("td");
+                                    var date = document.createElement("td");
 
-                                no.innerHTML = index + 1;
-                                reason.innerHTML = leave.reason;
-                                date.innerHTML = leave.date;
+                                    no.innerHTML = index + 1;
+                                    reason.innerHTML = leave.reason;
+                                    date.innerHTML = leave.date;
 
-                                row.appendChild(no);
-                                row.appendChild(reason);
-                                row.appendChild(date);
+                                    row.appendChild(no);
+                                    row.appendChild(reason);
+                                    row.appendChild(date);
 
-                                document.getElementById("leavesBody").appendChild(row);
-                            });
+                                    document.getElementById("leavesBody").appendChild(row);
+                                });
+                            } catch (error) {
+                                console.log("no Leaves");
+                            }
 
-                            response.shortLeaves.forEach((leaves, index) => {
-                                var row = document.createElement("tr");
-                                var no = document.createElement("td");
-                                var reason = document.createElement("td");
-                                var date = document.createElement("td");
-                                var time = document.createElement("td");
+                            try {
+                                response.shortLeaves.forEach((leaves, index) => {
+                                    var row = document.createElement("tr");
+                                    var no = document.createElement("td");
+                                    var reason = document.createElement("td");
+                                    var date = document.createElement("td");
+                                    var time = document.createElement("td");
 
-                                no.innerHTML = index + 1;
-                                reason.innerHTML = leaves.reason;
-                                date.innerHTML = leaves.date;
-                                time.innerHTML = leaves.time;
+                                    no.innerHTML = index + 1;
+                                    reason.innerHTML = leaves.reason;
+                                    date.innerHTML = leaves.date;
+                                    time.innerHTML = leaves.time;
 
-                                row.appendChild(no);
-                                row.appendChild(reason);
-                                row.appendChild(date);
-                                row.appendChild(time);
+                                    row.appendChild(no);
+                                    row.appendChild(reason);
+                                    row.appendChild(date);
+                                    row.appendChild(time);
 
-                                document.getElementById("shortLeavesBody").appendChild(row);
-                            });
+                                    document.getElementById("shortLeavesBody").appendChild(row);
+                                });
+                            } catch (error) {
+                                console.log("no Short Leaves");
+                            }
                         }
                         document.getElementById("spinner").classList.remove("show");
                     }

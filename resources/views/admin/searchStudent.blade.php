@@ -46,13 +46,11 @@
         @include('admin.components.sidebar')
         <!-- Sidebar End -->
 
-
         <!-- Content Start -->
         <div class="content">
             <!-- Navbar Start -->
             @include('admin.components.navbar')
             <!-- Navbar End -->
-
 
             <!-- Sale & Revenue Start -->
             <div class="container-fluid pt-4 px-4">
@@ -162,8 +160,8 @@
                             <div class="row d-flex align-items-center">
                                 <div class="col-8 col-md-5 col-lg-4">
                                     <div class="p-3">
-                                        <div class="img d-flex justify-content-center align-items-center" id="imgBox"
-                                            onclick="viewImage();" data-img="profileImg/default.png">
+                                        <div class="img d-flex justify-content-center align-items-center"
+                                            id="imgBox" onclick="viewImage();" data-img="profileImg/default.png">
                                             <img style="border-radius: 50%; width: 90%;" src="profileImg/default.png"
                                                 id="profilePic">
                                         </div>
@@ -180,12 +178,13 @@
 
                                 <!-- image modal start  -->
 
-                                <div class="modal fade " id="imgModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                    aria-hidden="true">
+                                <div class="modal fade " id="imgModal" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">Crop Your
+                                                <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">Crop
+                                                    Your
                                                     Image</h1>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
@@ -213,8 +212,8 @@
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="headingOne">
                                         <button class="accordion-button btn btn-primary" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
-                                            aria-controls="collapseOne">
+                                            data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                                            aria-expanded="true" aria-controls="collapseOne">
                                             Student Information
                                         </button>
                                     </h2>
@@ -232,7 +231,8 @@
                                                     <label for="Namewithinitials" class="form-label">Name with
                                                         initials</label>
                                                     <input class="form-control bg-secondary text-dark" type="text"
-                                                        name="initialName" id="initialName" value="Ex: A.B.C. Perera" />
+                                                        name="initialName" id="initialName"
+                                                        value="Ex: A.B.C. Perera" />
                                                 </div>
                                                 <div class="mb-3 col-md-6">
                                                     <label for="Dateofbirth" class="form-label">Date of birth</label>
@@ -260,7 +260,8 @@
                                                 <div class="mb-3 col-md-6">
                                                     <label for="Scholarship" class="form-label">Scholarship</label>
                                                     <input type="text" class="text-dark form-control bg-secondary"
-                                                        id="scholarship" name="Scholarship" value="Ex: Yes" disabled />
+                                                        id="scholarship" name="Scholarship" value="Ex: Yes"
+                                                        disabled />
                                                 </div>
                                                 <div class="mb-3 col-md-6">
                                                     <label for="Nerollyear" class="form-label">Enroll year</label>
@@ -298,13 +299,15 @@
                                                     <div class="input-group input-group-merge">
                                                         <span class="input-group-text" id="houseColor"
                                                             style="background: green"></span>
-                                                        <input type="text" id="houseName" disabled name="phoneNumber"
+                                                        <input type="text" id="houseName" disabled
+                                                            name="phoneNumber"
                                                             class="form-control text-dark bg-secondary"
                                                             value="Ex: Welusumana" />
                                                     </div>
                                                 </div>
                                                 <div class="mb-3 col-md-6">
-                                                    <label class="form-label" for="distance">Distance to School</label>
+                                                    <label class="form-label" for="distance">Distance to
+                                                        School</label>
                                                     <div class="input-group input-group-merge">
                                                         <input type="text" id="disToSchool" name="disToSchool"
                                                             class="form-control text-dark bg-secondary"
@@ -313,8 +316,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="mt-2">
-                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                        data-bs-target="#exampleModal">
+                                                    <button type="button" class="btn btn-primary"
+                                                        data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                         Update
                                                     </button>
                                                 </div>
@@ -409,14 +412,14 @@
                                                 <div class="mb-3 col-md-6">
                                                     <label for="GuardianName" class="form-label">Father Email</label>
                                                     <input disabled id="FatherEmail"
-                                                        class="form-control bg-secondary text-dark" name="GuardianName"
-                                                        value="Ex: abc@outlook.com" />
+                                                        class="form-control bg-secondary text-dark"
+                                                        name="GuardianName" value="Ex: abc@outlook.com" />
                                                 </div>
                                                 <div class="mb-3 col-md-6">
                                                     <label for="GuardianName" class="form-label">Guardian Name</label>
                                                     <input disabled id="GuardianName"
-                                                        class="form-control bg-secondary text-dark" name="GuardianName"
-                                                        value="" />
+                                                        class="form-control bg-secondary text-dark"
+                                                        name="GuardianName" value="" />
                                                 </div>
                                                 <div class="mb-3 col-md-6">
                                                     <label for="GuardianNIC" class="form-label">Guardian NIC</label>
@@ -445,10 +448,11 @@
                                                         name="GuardianJobAddress" value="" />
                                                 </div>
                                                 <div class="mb-3 col-md-6">
-                                                    <label for="GuardianEmail" class="form-label">Guardian Email</label>
+                                                    <label for="GuardianEmail" class="form-label">Guardian
+                                                        Email</label>
                                                     <input disabled id="GuardianEmail"
-                                                        class="form-control bg-secondary text-dark" name="GuardianEmail"
-                                                        value="" />
+                                                        class="form-control bg-secondary text-dark"
+                                                        name="GuardianEmail" value="" />
                                                 </div>
                                             </div>
                                         </div>
@@ -503,7 +507,8 @@
                                                         value="Ex: 432/1 B, Ganemulla, Kadawatha." />
                                                 </div>
                                                 <div class="mb-3 col-md-6">
-                                                    <label class="form-label" for="phoneNumber">Emergency Number</label>
+                                                    <label class="form-label" for="phoneNumber">Emergency
+                                                        Number</label>
                                                     <div class="input-group input-group-merge">
                                                         <span class="input-group-text">LK (+94)</span>
                                                         <input type="text" id="emNumber" name="emNumber"
@@ -512,7 +517,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="mb-3 col-md-6">
-                                                    <label class="form-label" for="phoneNumber">Emergency Email</label>
+                                                    <label class="form-label" for="phoneNumber">Emergency
+                                                        Email</label>
                                                     <input type="text" id="emEmail" name="emEmail"
                                                         class="form-control  bg-secondary text-dark"
                                                         value="Ex: abc@yahoo.com" />
@@ -588,9 +594,11 @@
                                     Are you sure to save changes ?
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn" data-bs-dismiss="modal" onclick="updateContact();"
-                                        style="background: #006ee5; color: white;">Save changes</button>
+                                    <button type="button" class="btn btn-light"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn" data-bs-dismiss="modal"
+                                        onclick="updateContact();" style="background: #006ee5; color: white;">Save
+                                        changes</button>
                                 </div>
                             </div>
                         </div>
@@ -599,8 +607,8 @@
 
                     <!-- resignation modal -->
 
-                    <div class="modal fade" id="reModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
-                        tabindex="-1">
+                    <div class="modal fade" id="reModal" aria-hidden="true"
+                        aria-labelledby="exampleModalToggleLabel" tabindex="-1">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -611,7 +619,8 @@
                                 </div>
                                 <div class="modal-body">
                                     Enter date of Resignation:
-                                    <input class="form-control bg-secondary text-dark pt-2" id="date" type="date" />
+                                    <input class="form-control bg-secondary text-dark pt-2" id="date"
+                                        type="date" />
                                 </div>
                                 <div class="modal-footer">
                                     <button class="btn" style="background: #026df7; color: white;"
@@ -666,7 +675,8 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title text-dark">Gallary View</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="container d-flex justify-content-center align-items-center"
@@ -684,7 +694,8 @@
 
 
             <!-- Back to Top -->
-            <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+            <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i
+                    class="bi bi-arrow-up"></i></a>
         </div>
 
         <!-- JavaScript Libraries -->
@@ -692,8 +703,8 @@
         <!-- Template Javascript -->
 </body>
 <script>
+    hamburger("searchStudent");
 
-hamburger("searchStudent");
     function viewImage() {
         const box = document.getElementById("imgBox");
 
@@ -703,7 +714,7 @@ hamburger("searchStudent");
     }
 
 
-    $("#upload").on("change", function () {
+    $("#upload").on("change", function() {
         const index = document.getElementById("studentIndexNumber");
         if (index.value == "Ex: 12345") {
             Swal.fire({
@@ -722,10 +733,10 @@ hamburger("searchStudent");
                 if (this.files[0].type.match(/^image\//)) {
                     var reader = new FileReader();
 
-                    reader.onload = function (e) {
+                    reader.onload = function(e) {
                         var img = new Image();
 
-                        img.onload = function () {
+                        img.onload = function() {
                             context.canvas.width = img.width;
                             context.canvas.height = img.height;
                             context.drawImage(img, 0, 0);
@@ -738,7 +749,7 @@ hamburger("searchStudent");
                         img.src = e.target.result;
                     };
 
-                    $("#uploadButton").on("click", function () {
+                    $("#uploadButton").on("click", function() {
                         var croppedCanvas = cropper.getCroppedCanvas();
                         var cropped = croppedCanvas.toDataURL();
                         var form = new FormData();
@@ -746,9 +757,10 @@ hamburger("searchStudent");
                         form.append("base64", cropped);
 
                         var xhr = new XMLHttpRequest();
-                        xhr.onreadystatechange = function () {
+                        xhr.onreadystatechange = function() {
                             if (xhr.readyState == 4 && xhr.status == 200) {
-                                document.getElementById("imgBox").dataset.img = "profileImg/" + index.value + ".png";
+                                document.getElementById("imgBox").dataset.img = "profileImg/" +
+                                    index.value + ".png";
                                 document.getElementById("profilePic").src = cropped;
                                 $("#imgModal").modal('hide');
                             }
@@ -776,234 +788,80 @@ hamburger("searchStudent");
     function searchStudent() {
         const index = document.getElementById("searchIndex");
         const name = document.getElementById("typing");
-
-        if (index.value.trim() == '' && name.value.trim() == '' || index.value.trim() != '' && name.value.trim() != '') {
+        if(index.value == '' && name.value == ''){
             Swal.fire({
                 icon: 'warning',
                 title: 'WARNING',
-                text: 'You must fill in one text field at a time'
+                text: 'Please Enter A Student Index Number Or Name'
             });
-        } else {
-            var studentIndex;
-            if (name.value.trim() != "") {
-                studentIndex = name.dataset.index;
-            } else {
-                studentIndex = index.value;
-            }
-
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    var response = JSON.parse(xhr.responseText);
-                    if (response.status == "error") {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'WARNING',
-                            text: 'Invalid Index Number'
-                        });
-                    } else if (response.status == "permission") {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'ERROR',
-                            text: 'Permission Denied'
-                        });
-                    } else {
-                        document.getElementById("paymentBtn").dataset.class = response.student["class"];
-                        document.getElementById("paymentBtn").dataset.grade = response.student["grade"];
-                        document.getElementById("paymentBtn").dataset.index = response.student["index_number"];
-                        document.getElementById("resignationBtn").dataset.index = response.student["index_number"];
-                        document.getElementById("fullName").value = response.student["full_name"];
-                        document.getElementById("initialName").value = response.student["initial_name"];
-                        document.getElementById("dob").value = response.student["date_of_birth"];
-                        document.getElementById("Gender").value = response.student["g_name"];
-                        document.getElementById("address").value = response.student["address"];
-                        document.getElementById("studentIndexNumber").value = response.student["index_number"];
-                        document.getElementById("scholarship").value = response.student["scholarship"];
-                        document.getElementById("startYear").value = response.student["enroll_year"];
-                        document.getElementById("startClass").value = response.student["encroll_class"];
-                        document.getElementById("pSchool").value = response.student["previous_school"];
-                        document.getElementById("nationality").value = response.student["n_name"];
-                        document.getElementById("religion").value = response.student["r_name"];
-                        var getHouse = response.student["index_number"] % 4;
-                        var houseName;
-                        var houseColor;
-                        if (getHouse == 0) {
-                            houseName = "Suranimala";
-                            houseColor = "green";
-                        } else if (getHouse == 1) {
-                            houseName = "Welusumana";
-                            houseColor = "yellow";
-                        } else if (getHouse == 2) {
-                            houseName = "Abhaya";
-                            houseColor = "red";
-                        } else {
-                            houseName = "Nandimithra";
-                            houseColor = "blue";
-                        }
-                        document.getElementById("houseName").value = houseName;
-                        document.getElementById("houseColor").style.backgroundColor = houseColor;
-                        document.getElementById("disToSchool").value = response.student["distance"];
-                        document.getElementById("attendance").innerHTML = parseInt(response.precentage) + "%";
-                        document.getElementById("resignation").innerHTML = response.student["date_of_resignation"] == null ? "none" : response.student["date_of_resignation"];
-                        document.getElementById("MotherName").value = response.student["mother_name"];
-                        document.getElementById("MotherNIC").value = response.student["mother_nic"];
-                        document.getElementById("MotherEmail").value = response.student["mother_email"];
-                        document.getElementById("MotherJob").value = response.student["mother_job"];
-                        document.getElementById("MotherJobAddress").value = response.student["mother_job_address"];
-                        document.getElementById("MotherNumber").value = response.student["mother_number"];
-
-                        document.getElementById("FatherName").value = response.student["father_name"];
-                        document.getElementById("FatherNIC").value = response.student["father_nic"];
-                        document.getElementById("FatherEmail").value = response.student["father_email"];
-                        document.getElementById("FatherJob").value = response.student["father_job"];
-                        document.getElementById("FatherJobAddress").value = response.student["father_job_address"];
-                        document.getElementById("FatherNumber").value = response.student["father_number"];
-
-                        document.getElementById("GuardianName").value = response.student["guardian_name"];
-                        document.getElementById("GuardianNIC").value = response.student["guardian_nic"];
-                        document.getElementById("GuardianEmail").value = response.student["guardian_email"];
-                        document.getElementById("GuardianJob").value = response.student["guardian_job"];
-                        document.getElementById("GuardianJobAddress").value = response.student["guardian_job_address"];
-                        document.getElementById("GuardianNumber").value = response.student["guardian_number"];
-
-                        document.getElementById("motherNumber").value = response.student["mother_number"];
-                        document.getElementById("motherEmail").value = response.student["mother_email"];
-                        document.getElementById("fatherEmail").value = response.student["father_email"];
-                        document.getElementById("fatherNumber").value = response.student["father_number"];
-                        document.getElementById("emEmail").value = response.student["emergency_email"];
-                        document.getElementById("emNumber").value = response.student["emergency_number"];
-                        document.getElementById("studentAddress").value = response.student["address"];
-                        document.getElementById("profilePic").src = "profileImg/" + response.student["path"];
-                        document.getElementById("imgBox").dataset.img = "profileImg/" + response.student["path"];
-                        document.getElementById("currentClass").innerHTML = response.student['grade'] + '-' + response.student["class"];
-                        document.getElementById("paymentViewer").style.backgroundColor = response.student["payment"] == 'yes' ? "#2cae6b" : "#ff2c2c";
-                        var score = response.student["score"];
-                        document.getElementById("dScore").innerHTML = score + "%";
-                        if (score >= 80) {
-                            scoreBox.style.backgroundColor = "#00FF00";
-                        } else if (score >= 60) {
-                            scoreBox.style.backgroundColor = "#FFFF00";
-                        } else if (score >= 40) {
-                            scoreBox.style.backgroundColor = "#FFA500";
-                        } else {
-                            scoreBox.style.backgroundColor = "#FF0000";
-                        }
-
-                        if (response.payment == "noData") {
-                            var tr = document.createElement("tr");
-                            var th = document.createElement("th");
-                            th.innerHTML = "There are No Data Available For This Student";
-                            th.style.backgroundColor = "orange";
-                            th.style.color = "red";
-                            th.colSpan = 4;
-                            tr.appendChild(th);
-                            document.getElementById("tbody").innerHTML = '';
-                            document.getElementById("tbody").appendChild(tr);
-                        }
-                        else {
-                            var tableCols = ["year", 'class', "full_name", "service_payment"];
-                            document.getElementById("tbody").innerHTML = '';
-                            for (let i = 0; i < response.payment.length; i++) {
-                                var tr = document.createElement("tr");
-                                for (let a = 0; a < tableCols.length; a++) {
-                                    var col = document.createElement("td");
-                                    if (a == 3) {
-                                        col.style.backgroundColor = response.payment[i].detailes[tableCols[a]] == 'yes' ? "#2cae6b" : "#ff2c2c";
-                                        tr.appendChild(col);
-                                        continue;
-                                    }
-                                    else if (a == 1) {
-                                        col.innerHTML = response.payment[i].detailes['grade'] + '-' + response.payment[i].detailes['class'];
-                                        tr.appendChild(col);
-                                        continue;
-                                    }
-                                    col.innerHTML = response.payment[i].detailes[tableCols[a]];
-                                    tr.appendChild(col);
-                                }
-                                document.getElementById("tbody").appendChild(tr);
-                            }
-                        }
-
-                        if (response.mistake == 'noData') {
-                            var tr = document.createElement("tr");
-                            var th = document.createElement("th");
-                            th.innerHTML = "There are No Data Available For This Student";
-                            th.style.backgroundColor = "orange";
-                            th.style.color = "red";
-                            th.colSpan = 4;
-                            tr.appendChild(th);
-                            document.getElementById("mistakeBody").innerHTML = '';
-                            document.getElementById("mistakeBody").appendChild(tr);
-                        }
-                        else {
-                            document.getElementById("mistakeBody").innerHTML = '';
-                            for (let i = 0; i < response.mistake.length; i++) {
-                                var tr = document.createElement("tr");
-                                for (let c = 0; c < 5; c++) {
-                                    var col = document.createElement("td");
-                                    if (c == 0) {
-                                        col.innerHTML = i + 1;
-                                    }
-                                    else if (c == 1) {
-                                        col.innerHTML = response.mistake[i]["mistake"]
-                                    }
-                                    else if (c == 2) {
-                                        col.innerHTML = response.mistake[i]["date"];
-                                    }
-                                    else if (c == 3) {
-                                        col.innerHTML = response.mistake[i]["name"];
-                                    }
-                                    else {
-                                        col.innerHTML = response.mistake[i]["grade"] + '-' + response.mistake[i]['class'];
-                                    }
-                                    tr.appendChild(col);
-                                }
-                                document.getElementById("mistakeBody").appendChild(tr);
-                            }
-                        }
-
-                    }
-                }
-            }
-
-            xhr.open("GET", "process/searchStudent.php?index=" + studentIndex + "", true);
-            xhr.send();
+            return;
         }
+        if(index.value != '' && name.value != ''){
+            Swal.fire({
+                icon: 'warning',
+                title: 'WARNING',
+                text: 'Please Enter A Student Index Number Or Name'
+            });
+            return;
+        }
+        var indexNumber = index.value;
+        if(name.value != '') {
+            indexNumber = name.dataset.index;
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function() {
+            if(xhr.status == 200) {
+                var response = JSON.parse(xhr.responseText);
+                console.log(response);
+            }
+        }
+
+        xhr.open('GET', "{{ route('search.student.all.details', ':id') }}".replace(':id', indexNumber));
+        xhr.send();
     }
 
     function studentLiveSearch() {
-        document.getElementById("item-container").style.display = '';
+        document.getElementById("item-container").style.display = "";
         var name = document.getElementById("typing").value;
 
-        if (name.trim() == '') {
-            document.getElementById("item-container").innerHTML = '';
+        if (name.trim() == "") {
+            document.getElementById("item-container").innerHTML = "";
         } else {
+            var form = new FormData();
+            form.append("name", name);
             var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     // handle response
-                    document.getElementById("item-container").innerHTML = '';
+                    document.getElementById("item-container").innerHTML = "";
                     var response = JSON.parse(xhr.responseText);
-                    for (let i = 0; i < response.length; i++) {
+                    response.forEach(student => {
                         var item = document.createElement("button");
-                        item.innerHTML = response[i].student['name'] + " - " + response[i].student['index_number'] +
-                            " - " + response[i].student['grade'] + "-" + response[i].student['class'];
+                        item.innerHTML =
+                            student["name"] +
+                            " - " +
+                            student["index"] +
+                            "-" +
+                            student["class"];
                         item.classList.add("list-group-item");
                         item.classList.add("list-group-item-action");
                         item.classList.add("text-dark");
-                        item.dataset.index = response[i].student['index_number'];
-                        item.onclick = function () {
+                        item.dataset.index = student["index"];
+                        item.onclick = function() {
                             document.getElementById("typing").value = this.innerHTML;
-                            document.getElementById("typing").dataset.index = this.dataset.index;
-                            document.getElementById("item-container").style.display = 'none';
-                        }
+                            document.getElementById("typing").dataset.index =
+                                this.dataset.index;
+                            document.getElementById("item-container").style.display =
+                                "none";
+                        };
                         document.getElementById("item-container").appendChild(item);
-                    }
+                    });
                 }
-            }
+            };
 
-            xhr.open("GET", "process/liveSearch.php?name=" + name + "", true);
-            xhr.send();
+            xhr.open("POST", "{{ route('live.search.student') }}");
+            xhr.setRequestHeader("X-CSRF-TOKEN", document.querySelector('meta[name="csrf-token"]').content);
+            xhr.send(form);
         }
     }
 
@@ -1027,7 +885,7 @@ hamburger("searchStudent");
             form.append("grade", grade);
 
             var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4) {
                     if (xhr.status == 200) {
                         var response = xhr.responseText;
@@ -1075,7 +933,7 @@ hamburger("searchStudent");
                 form.append("index", index);
 
                 var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function () {
+                xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4) {
                         if (xhr.status == 200) {
                             document.getElementById("resignation").innerHTML = date;
@@ -1125,7 +983,7 @@ hamburger("searchStudent");
             form.append("disToSchool", disToSchool);
 
             var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     Swal.fire({
                         position: 'top-end',
@@ -1150,8 +1008,7 @@ hamburger("searchStudent");
                 title: 'WARNING',
                 text: "Please Search A Student First"
             });
-        }
-        else {
+        } else {
             var motherNumber = document.getElementById("motherNumber").value;
             var fatherNumber = document.getElementById("fatherNumber").value;
             var motherEmail = document.getElementById("motherEmail").value;
@@ -1170,7 +1027,7 @@ hamburger("searchStudent");
             form.append("address", address);
 
             var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     Swal.fire({
                         position: 'top-end',
