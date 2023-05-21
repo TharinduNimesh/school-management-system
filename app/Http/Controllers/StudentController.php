@@ -11,6 +11,7 @@ use App\Models\StudentsSubject;
 use App\Models\LearningRecord;
 use App\Models\User;
 use App\Models\Sport;
+use App\Models\BorrowedBook;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
@@ -130,6 +131,7 @@ class StudentController extends Controller
                 "class" => $class,
                 "book" => $book
             ];
+            return $response;
         }
         return ["status" => "invalid"];
     }
