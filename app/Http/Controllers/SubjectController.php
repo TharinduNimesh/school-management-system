@@ -172,9 +172,43 @@ class SubjectController extends Controller
         $request->save();
     }
 
+    public function acceptALRequest($id) {
+        $request = RequestedSubject::find($id);
+        $student = Student::where('index_number', $request->index_number)->first();
+        $subjects = $student->subjects;
+        if($subjects == null) {
+            $object = new \stdClass();
+            $subjects = $object;
+        }
+        $subjects["al_scheme"] = $request->scheme;
+        $subjects["al_subject_1"] = $request->subjects["subject_1"];
+        $subjects["al_subject_2"] = $request->subjects["subject_2"];
+        $subjects["al_subject_3"] = $request->subjects["subject_3"];
+        $subjects["al_medium"] = $request->medium;
+        $student->subjects = $subjects;
+
+        $isUpdated = $student->save();
+        if($isUpdated) {
+            $requests = RequestedSubject::where("index_number", $request->index_number)
+            ->where("category", "al")
+            ->get();
+
+            $IDs = [];
+            foreach ($requests as $req) {
+                $this->rejectALRequest($req->_id);
+                array_push($IDs, $req->_id);
+            }
+
+            return ["status" => "success", "ids" => $IDs];
+        }
+    }
+
     public function rejectALRequest($id) {
-        RequestedSubject::find($id)->delete();
-        return "success";
+        $request = RequestedSubject::find($id);
+        if($request != null) {
+            $request->delete();
+            return "success";
+        }
     }
 
     public function navigateToStudentSubject() {
