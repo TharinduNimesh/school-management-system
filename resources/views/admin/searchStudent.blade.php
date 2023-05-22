@@ -813,6 +813,68 @@
             if(xhr.status == 200) {
                 var response = JSON.parse(xhr.responseText);
                 console.log(response);
+                var houseName;
+                var houseColor;
+                if(indexNumber % 4 == 0) {
+                    houseName = "{{ env('HOUSE_01_NAME') }}";
+                    houseColor = "{{ env('HOUSE_01_COLOR') }}";
+                }else if(indexNumber % 4 == 1){
+                    houseName = "{{ env('HOUSE_02_NAME') }}";
+                    houseColor = "{{ env('HOUSE_02_COLOR') }}";
+                }else if(indexNumber % 4 == 2){
+                    houseName = "{{ env('HOUSE_03_NAME') }}";
+                    houseColor = "{{ env('HOUSE_03_COLOR') }}";
+                }else if(indexNumber % 4 == 3){
+                    houseName = "{{ env('HOUSE_04_NAME') }}";
+                    houseColor = "{{ env('HOUSE_04_COLOR') }}";
+                }
+
+
+                document.getElementById("fullName").value=response.student.full_name;   
+                document.getElementById("initialName").value=response.student.initial_name;
+                document.getElementById("dob").value=response.student.date_of_birth;
+                document.getElementById("Gender").value=response.student.gender;
+                document.getElementById("address").value=response.student.address;
+                document.getElementById("studentIndexNumber").value=response.student.index_number;
+                document.getElementById("scholarship").value=response.student.scholarship;
+                document.getElementById("startYear").value=response.student.enroll_year;
+                document.getElementById("startClass").value=response.student.enroll_class;
+                document.getElementById("pSchool").value=response.student.previous_school;
+                document.getElementById("nationality").value=response.student.nationality;
+                document.getElementById("religion").value=response.student.religion;
+                document.getElementById("houseName").value=houseName;
+                document.getElementById("houseColor").style.background=houseColor;
+                document.getElementById("disToSchool").value=response.student.distance;
+
+                document.getElementById("MotherName").value=response.student.mother_name;
+                document.getElementById("MotherNIC").value=response.student.mother_nic;
+                document.getElementById("MotherEmail").value=response.student.mother_email;
+                document.getElementById("MotherJob").value=response.student.mother_job;
+                document.getElementById("MotherJobAddress").value=response.student.mother_job_address;
+                document.getElementById("MotherNumber").value=response.student.mother_mobile;
+
+                document.getElementById("FatherName").value=response.student.father_name;
+                document.getElementById("FatherNIC").value=response.student.father_nic;
+                document.getElementById("FatherEmail").value=response.student.father_email;
+                document.getElementById("FatherJob").value=response.student.father_job;
+                document.getElementById("FatherJobAddress").value=response.student.father_job_address;
+                document.getElementById("FatherNumber").value=response.student.father_mobile;
+
+                document.getElementById("GuardianName").value=response.student.guardian_name;
+                document.getElementById("GuardianNIC").value=response.student.guardian_nic;
+                document.getElementById("GuardianEmail").value=response.student.guardian_email;
+                document.getElementById("GuardianJob").value=response.student.guardian_job;
+                document.getElementById("GuardianJobAddress").value=response.student.guardian_job_address;
+                document.getElementById("GuardianNumber").value=response.student.guardian_mobile;
+
+                document.getElementById("motherEmail").value=response.student.mother_email;
+                document.getElementById("motherNumber").value=response.student.mother_mobile;
+                document.getElementById("fatherEmail").value=response.student.father_email;
+                document.getElementById("fatherNumber").value=response.student.father_mobile;
+                document.getElementById("studentAddress").value=response.student.address;
+                document.getElementById("emNumber").value=response.student.emergency_number;
+                document.getElementById("emEmail").value=response.student.emergency_email;
+
             }
         }
 
