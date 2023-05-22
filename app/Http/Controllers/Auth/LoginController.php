@@ -39,7 +39,11 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        // $this->middleware('guest')->except('logout');
+        if(Auth::check()) {
+            $path = null;
+            Auth::logout();
+        }
     }
 
     public function login(Request $request) {
@@ -50,9 +54,24 @@ class LoginController extends Controller
         ]);
 
         if(Auth::attempt($validate)) {
-            return 'success';
+            $path = null;
+            if(auth()->user()->role == "student") {
+                $path = route('student.dashboard');
+            } else if (auth()->user()->role == "teacher") {
+                $path = route('teacher.dashboard');
+            } else if (auth()->user()->role == "admin") {
+                $path = route('admin.dashboard');
+            } else if (auth()->user()->role == "librarian") {
+                $path = route('library.dashboard');
+            } else if (auth()->user()->role == "Coach") {
+                $path = route('sport.dashboard');
+            }
+            return [
+                'status' => 'success',
+                'path' => $path
+            ];
         } else {
-            return 'invalid';
+            return ['status' => 'invalid'];
         }
     }
 }

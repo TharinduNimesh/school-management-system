@@ -16,13 +16,11 @@
         @include('admin.components.sidebar')
         <!-- Sidebar End -->
 
-
         <!-- Content Start -->
         <div class="content">
             <!-- Navbar Start -->
             @include('admin.components.navbar')
             <!-- Navbar End -->
-
 
             <!-- Search Start -->
             <div class="container-fluid pt-4 px-4">
@@ -47,8 +45,6 @@
                 </div>
             </div>
             <!-- Search End -->
-
-
 
             <!-- Summery Start -->
             <div class="container-fluid pt-4 px-4">

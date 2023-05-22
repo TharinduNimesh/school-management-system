@@ -2,376 +2,317 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>Home - Sri Dharmaloka College</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="School Management System" name="keywords">
-    <meta content="School Management System Software That Created By Eversoft IT Solution For Sri Dharmaloka College" name="description">
 
-    <!-- Favicon -->
-    <link href="/img/badge.png" rel="icon">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900" rel="stylesheet">
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;600;700&family=Open+Sans:wght@400;600&display=swap"
-        rel="stylesheet">
+  <title>Home</title>
 
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Libraries Stylesheet -->
-    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="/css/homebootstrap.min.css" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="/css/homestyle.css" rel="stylesheet">
-    <style>
-        .lbLogin {
-            margin-left: 0%;
-        }
-        @media (min-width: 992px) {
-            .lbLogin {
-                margin-left: 33%;
-            }
-        }
-    </style>
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="/css/home/lightbox.css">
+  <link rel="stylesheet" href="/css/home/main.css">
+  <link rel="stylesheet" href="/css/home/owl.css">
+  <link rel="stylesheet" href="/css/home/flex-slider.css">
 </head>
 
-<div>
+<body>
 
-    <!-- Carousel Start -->
-    <div class="container-fluid p-0">
-        <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img class="w-100"
-                        src="https://imageio.forbes.com/specials-images/imageserve/607590ba05bd6e626df132b2/Cheerful-college-students-walking-out-of-campus-together--posing-outdoors/960x0.jpg?format=jpg&width=960"
-                        alt="Image">
-                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                        <div class="p-3" style="max-width: 900px;">
-                            <h5 class="text-white text-uppercase">Sri Dharmaloka College</h5>
-                            <h1 class="display-1 text-white mb-md-4">Welcome !</h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img class="w-100"
-                        src="https://imageio.forbes.com/specials-images/imageserve/61119e500b3efac99529e64e/Large-group-of-college-students-listening-to-their-professor-on-a-class-/960x0.jpg?format=jpg&width=960"
-                        alt="Image">
-                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                        <div class="p-3" style="max-width: 900px;">
-                            <h5 class="text-white text-uppercase">Welcome to the School Management System</h5>
-                            <h1 class="display-1 text-white mb-md-4">Your skills will be a tremendous asset to us as a
-                                company</h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
+  <!--header Start-->
+  <header class="main-header clearfix" role="header">
+    <div class="logo">
+      <a href="#"><em></em></a>
     </div>
-    <!-- Carousel End -->
+    <a href="#menu" class="menu-link"><i class="fa fa-bars"></i></a>
+    <nav id="menu" class="main-nav" role="navigation">
+      <ul class="main-menu">
+        <li class="active"><a href="#section1">Home</a></li>
+        <li><a href="#section6">Contact</a></li>
+        <li><a href="{{ route('login.index') }}">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+  <!--header End-->
 
 
-    <!-- About Start -->
-    <div class="container-fluid bg-secondary p-0">
-        <div class="row g-0">
-            <div class="col-lg-6 py-6 px-5">
-                <h1 class="display-5 mb-4">Welcome to <span class="text-primary">SCHOOL MANAGEMENT SYSTEM</span></h1>
-                <h4 class="text-primary mb-4">A student management system is also known as a student information system.
-                </h4>
-                <p class="mb-4">These systems work to coordinate scheduling and communications between faculty regarding
-                    students. This system exists to simplify information tracking for both parents and administrative
-                    staff.</p>
-            </div>
-            <div class="col-lg-6">
-                <div class="h-100 d-flex flex-column justify-content-center bg-primary p-5">
-                    <div class="d-flex text-white mb-5">
-                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center bg-white text-primary rounded-circle mx-auto mb-4"
-                            style="width: 60px; height: 60px;">
-                            <i class="fa fa-user-tie fs-4"></i>
-                        </div>
-                        <div class="ps-4">
-                            <h3>user friendly</h3>
-                            <p class="mb-0">it's a technical solution that is easy for all (or at least most) people to
-                                use to get their jobs done. This doesn't mean the software isn't complex and
-                                feature-rich behind the scenes or that anyone can step up to a computer and operate it
-                                correctly.</p>
-                        </div>
-                    </div>
-                    <div class="d-flex text-white mb-5">
-                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center bg-white text-primary rounded-circle mx-auto mb-4"
-                            style="width: 60px; height: 60px;">
-                            <i class="fa fa-chart-line fs-4"></i>
-                        </div>
-                        <div class="ps-4">
-                            <h3>Analysis of your data</h3>
-                            <p class="mb-0">Data analysis is the process of examining, cleaning, transforming and
-                                modeling data with the aim of finding useful information, informing conclusions.</p>
-                        </div>
-                    </div>
-                    <div class="d-flex text-white">
-                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center bg-white text-primary rounded-circle mx-auto mb-4"
-                            style="width: 60px; height: 60px;">
-                            <i class="bi bi-laptop fs-4"></i>
-                        </div>
-                        <div class="ps-4">
-                            <h3>Useful</h3>
-                            <p class="mb-0">Parents will be able to have full visibility of their children's school
-                                activities, assignments, attendance and performance. It also means a smoother transition
-                                between classes and grades, as all teachers have access to a single source of truth
-                                about their students' performance.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- ***** Main Banner Area Start ***** -->
+  <section class="section main-banner" id="top" data-section="section1">
+    <video autoplay muted loop id="bg-video">
+      <source src="/img/home_images/course-video.mp4" type="video/mp4" />
+    </video>
+
+    <div class="video-overlay header-text">
+      <div class="caption">
+        <h6>School Management System</h6>
+        <h2><em>WELCOME</em> !</h2>
+      </div>
     </div>
-    <!-- About End -->
+  </section>
+  <!-- ***** Main Banner Area End ***** -->
 
-    <hr>
-
-    <!-- Services Start -->
-    <div class="container-fluid pt-5 px-5">
-        <div class="text-center mx-auto mb-5" style="max-width: 600px;">
-            <h1 class="display-5 mb-0">What We Offer</h1>
-            <hr class="w-25 mx-auto bg-primary">
+  <!-- Category Start -->
+  <section class="features" id="section1">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-12">
+          <div class="features-post">
+            <div class="features-content">
+              <div class="content-show">
+                <h4><i class="fa fa-pencil"></i>All Courses</h4>
+              </div>
+              <div class="content-hide">
+                <p>Curabitur id eros vehicula, tincidunt libero eu, lobortis mi. In mollis eros a posuere imperdiet.
+                  Donec maximus elementum ex. Cras convallis ex rhoncus, laoreet libero eu, vehicula libero.</p>
+                <p class="hidden-sm">Curabitur id eros vehicula, tincidunt libero eu, lobortis mi. In mollis eros a
+                  posuere imperdiet.</p>
+                <div class="scroll-to-section"><a href="#section2">More Info.</a></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="row g-5">
-            <div class="col-lg-4 col-md-6">
-                <div class="service-item bg-secondary text-center px-5">
-                    <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle mx-auto mb-4"
-                        style="width: 90px; height: 90px;">
-                        <i class="fa fa-user-tie fa-2x"></i>
-                    </div>
-                    <h3 class="mb-3">user friendly</h3>
-                    <p class="mb-0">The user can fulfill their needs accurately and quickly without any inconvenience.
-                    </p>
-                </div>
+        <div class="col-lg-4 col-12">
+          <div class="features-post second-features">
+            <div class="features-content">
+              <div class="content-show">
+                <h4><i class="fa fa-graduation-cap"></i>Virtual Class</h4>
+              </div>
+              <div class="content-hide">
+                <p>Curabitur id eros vehicula, tincidunt libero eu, lobortis mi. In mollis eros a posuere imperdiet.
+                  Donec maximus elementum ex. Cras convallis ex rhoncus, laoreet libero eu, vehicula libero.</p>
+                <p class="hidden-sm">Curabitur id eros vehicula, tincidunt libero eu, lobortis mi. In mollis eros a
+                  posuere imperdiet.</p>
+                <div class="scroll-to-section"><a href="#section3">Details</a></div>
+              </div>
             </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="service-item bg-secondary text-center px-5">
-                    <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle mx-auto mb-4"
-                        style="width: 90px; height: 90px;">
-                        <i class="fa fa-chart-pie fa-2x"></i>
-                    </div>
-                    <h3 class="mb-3">Stretagic Planning</h3>
-                    <p class="mb-0">Stretagic Planning in the right way, looking to the future using the information and
-                        experience we have.</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="service-item bg-secondary text-center px-5">
-                    <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle mx-auto mb-4"
-                        style="width: 90px; height: 90px;">
-                        <i class="fa fa-chart-line fa-2x"></i>
-                    </div>
-                    <h3 class="mb-3">Analysis of your data</h3>
-                    <p class="mb-0">Data analysis is the process of examining, cleaning, transforming and
-                        modeling data with the aim of finding useful information, informing conclusions.</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="service-item bg-secondary text-center px-5">
-                    <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle mx-auto mb-4"
-                        style="width: 90px; height: 90px;">
-                        <i class="fa fa-chart-area fa-2x"></i>
-                    </div>
-                    <h3 class="mb-3">Financial Analaysis</h3>
-                    <p class="mb-0">Financial analysis involves evaluating a company's financial statements and
-                        information to assess its financial performance and position. It is used to make informed
-                        decisions.
-                    </p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="service-item bg-secondary text-center px-5">
-                    <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle mx-auto mb-4"
-                        style="width: 90px; height: 90px;">
-                        <i class="bi bi-laptop fa-2x"></i>
-                    </div>
-                    <h3 class="mb-3">Useful</h3>
-                    <p class="mb-0">Parents will be able to have full visibility of their children's school activities,
-                        assignments, attendance and performance.</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="service-item bg-secondary text-center px-5">
-                    <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle mx-auto mb-4"
-                        style="width: 90px; height: 90px;">
-                        <i class="bi bi-shield-check fa-2x"></i>
-                    </div>
-                    <h3 class="mb-3">Protects privacy</h3>
-                    <p class="mb-0">Data or information protection The protection of an individual's right to privacy.
-                    </p>
-                </div>
-            </div>
+          </div>
         </div>
+        <div class="col-lg-4 col-12">
+          <div class="features-post third-features">
+            <div class="features-content">
+              <div class="content-show">
+                <h4><i class="fa fa-book"></i>Real Meeting</h4>
+              </div>
+              <div class="content-hide">
+                <p>Curabitur id eros vehicula, tincidunt libero eu, lobortis mi. In mollis eros a posuere imperdiet.
+                  Donec maximus elementum ex. Cras convallis ex rhoncus, laoreet libero eu, vehicula libero.</p>
+                <p class="hidden-sm">Curabitur id eros vehicula, tincidunt libero eu, lobortis mi. In mollis eros a
+                  posuere imperdiet.</p>
+                <div class="scroll-to-section"><a href="#section4">Read More</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- Services End -->
+  </section>
+  <!-- Category End -->
 
-    <hr>
 
-    <!-- log Start -->
-    <div class="container-fluid pt-5 px-5">
-        <div class="text-center mx-auto mb-5" style="max-width: 600px;">
-            <h1 class="display-5 mb-0">Login your management system</h1>
-            <hr class="w-25 mx-auto bg-primary">
+  <!-- Achievement Start -->
+  <section class="section why-us" data-section="section2">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="section-heading">
+            <h2>Why choose Grad School?</h2>
+          </div>
         </div>
-        <div class="row g-5">
-            <div class="col-lg-4">
-                <div class="team-item position-relative overflow-hidden rounded-3">
-                    <button><a href="{{ route('student.login') }}">
-                            <img class="img-fluid w-100" src="/img/studentLogin.jpg" alt="">
-                            <div class="position-absolute fixed-bottom bg-primary p-4">
-                                <h3 class="text-white">Student login</h3>
-                            </div>
-                        </a></button>
+        <div class="col-md-12">
+          <div id='tabs'>
+            <ul>
+              <li><a href='#tabs-1'>Best Education</a></li>
+              <li><a href='#tabs-2'>Top Management</a></li>
+              <li><a href='#tabs-3'>Quality Meeting</a></li>
+            </ul>
+            <section class='tabs-content'>
+              <article id='tabs-1'>
+                <div class="row">
+                  <div class="col-md-6">
+                    <img src="/img/home_images/choose-us-image-01.png" alt="">
+                  </div>
+                  <div class="col-md-6">
+                    <h4>Best Education</h4>
+                    <p>Grad School is free educational HTML template with Bootstrap 4.5.2 CSS layout. Feel free to use
+                      it for educational or commercial purposes. You may want to make to
+                      TemplateMo. Please tell your friends about us. Thank you.</p>
+                  </div>
                 </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="team-item position-relative overflow-hidden rounded-3">
-                    <button><a href="{{ route('teacher.login') }}">
-                            <img class="img-fluid w-100" src="/img/teacherLogin.jpg" alt="">
-                            <div class="position-absolute fixed-bottom bg-primary p-4">
-                                <h3 class="text-white">Teacher login</h3>
-                            </div>
-                        </a></button>
+              </article>
+              <article id='tabs-2'>
+                <div class="row">
+                  <div class="col-md-6">
+                    <img src="/img/home_images/choose-us-image-02.png" alt="">
+                  </div>
+                  <div class="col-md-6">
+                    <h4>Top Level</h4>
+                    <p>You can modify this HTML layout by editing contents and adding more pages as you needed. Since
+                      this template has options to add dropdown menus, you can put many HTML pages.</p>
+                    <p>Suspendisse tincidunt, magna ut finibus rutrum, libero dolor euismod odio, nec interdum quam
+                      felis non ante.</p>
+                  </div>
                 </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="team-item position-relative overflow-hidden rounded-3">
-                    <button><a href="{{ route('admin.login') }}">
-                            <img class="img-fluid w-100" src="/img/adminLogin.jpg" alt="">
-                            <div class="position-absolute fixed-bottom bg-primary p-4">
-                                <h3 class="text-white">Admin login</h3>
-                            </div>
-                        </a></button>
+              </article>
+              <article id='tabs-3'>
+                <div class="row">
+                  <div class="col-md-6">
+                    <img src="/img/home_images/choose-us-image-03.png" alt="">
+                  </div>
+                  <div class="col-md-6">
+                    <h4>Quality Meeting</h4>
+                    <p>You are NOT allowed to redistribute this template ZIP file on any template collection website.
+                      However, you can use this template to convert into a specific theme for any kind of CMS platform
+                      such as WordPress. For more information, you shall now.</p>
+                  </div>
                 </div>
-            </div>
-            <div class="col-lg-4 lbLogin">
-                <div class="team-item position-relative overflow-hidden rounded-3">
-                    <button><a href="{{ route('library.login') }}">
-                            <img class="img-fluid w-100" src="/img/libraryLogin.png" alt="">
-                            <div class="position-absolute fixed-bottom bg-primary p-4">
-                                <h3 class="text-white">Library login</h3>
-                            </div>
-                        </a></button>
-                </div>
-            </div>
+              </article>
+            </section>
+          </div>
         </div>
+      </div>
     </div>
-    <!-- log End -->
+  </section>
+  <!-- Achievement End -->
 
-    <hr>
 
-    <!-- chat box Start -->
-    <div class="container-fluid py-3 px-5">
-        <div class="row g-0">
-            <div class="col-lg-6 py-5 px-5">
-                <h1 class="display-5 mb-4">Chat box</h1>
-                <p class="mb-4">If you have something to say about our service, you can post your opinion through the
-                    chatbox that appears below</p>
-                <form>
-                    <div class="row gx-3">
-                        <div class="col-6">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" id="form-floating-1" placeholder="John Doe">
-                                <label for="form-floating-1">Full Name</label>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-floating mb-3">
-                                <input type="email" class="form-control" id="form-floating-2"
-                                    placeholder="name@example.com">
-                                <label for="form-floating-2">Email address</label>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-floating">
-                                <select class="form-select" id="floatingSelect">
-                                    <option selected>Open this select menu</option>
-                                    <option value="1">Student</option>
-                                    <option value="2">Teacher</option>
-                                </select>
-                                <label for="floatingSelect">Who you are</label>
-                            </div>
-                        </div>
-                        <div class="col-12 mt-3">
-                            <div class="form-floating mb-3">
-                                <textarea class="form-control" placeholder="Leave a Message here"
-                                    id="floatingTextarea"></textarea>
-                                <label for="floatingTextarea">Message</label>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <button class="btn btn-primary w-100 h-100" type="submit">Submit</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="col-lg-6" style="min-height: 400px;">
-                <div class="position-relative h-100">
-                    <img class="position-absolute w-100 h-100" src="/img/quote.jpg" style="object-fit: cover;">
-                </div>
-            </div>
+  <!-- Login Button Start -->
+  <!-- <section class="section courses" data-section="section4">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="section-heading">
+            <h2>Choose Your Course</h2>
+          </div>
         </div>
+      </div>
     </div>
-    <!-- chat box End -->
+  </section> -->
+  <!-- Login Button End -->
 
 
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-secondary p-5">
-        <div class="row g-1">
-            <div class="col-lg-3 col-md-6">
-                <h3 class="text-white mb-4">Follow Us</h3>
-                <div class="d-flex">
-                    <a class="btn btn-lg btn-primary btn-lg-square rounded-circle me-2" href="#"><i
-                            class="fab fa-twitter fw-normal"></i></a>
-                    <a class="btn btn-lg btn-primary btn-lg-square rounded-circle me-2" href="#"><i
-                            class="fab fa-facebook-f fw-normal"></i></a>
-                    <a class="btn btn-lg btn-primary btn-lg-square rounded-circle me-2" href="#"><i
-                            class="fab fa-linkedin-in fw-normal"></i></a>
-                    <a class="btn btn-lg btn-primary btn-lg-square rounded-circle" href="#"><i
-                            class="fab fa-youtube fw-normal"></i></a>
-                </div>
-            </div>
+  <!-- Contact Start -->
+  <section class="section contact" id="section6" data-section="section6">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="section-heading">
+            <h2>Let’s Keep In Touch</h2>
+          </div>
         </div>
+        <div class="col-md-6">
+          <form id="contact" action="" method="post">
+            <div class="row">
+              <div class="col-md-6">
+                <fieldset>
+                  <input name="name" type="text" class="form-control" id="name" placeholder="Your Name" required="">
+                </fieldset>
+              </div>
+              <div class="col-md-6">
+                <fieldset>
+                  <input name="email" type="text" class="form-control" id="email" placeholder="Your Email" required="">
+                </fieldset>
+              </div>
+              <div class="col-md-12">
+                <fieldset>
+                  <textarea name="message" rows="6" class="form-control" id="message" placeholder="Your message..."
+                    required=""></textarea>
+                </fieldset>
+              </div>
+              <div class="col-md-12">
+                <fieldset>
+                  <button type="submit" id="form-submit" class="button">Send Message Now</button>
+                </fieldset>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-6">
+          <div class="contact-image">
+            <img src="/img/home_images/why-us.jpeg " width="100%" height="422px" frameborder="0"
+              style="border-radius: 10px;" allowfullscreen>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="container-fluid bg-dark text-secondary text-center border-top py-4 px-5"
-        style="border-color: rgba(256, 256, 256, .1) !important;">
-        <p class="m-0">&copy; <a class="text-secondary">Copyright 2022 EverSoft IT Solution</a> | All Rights
-            Reserved.</a></p>
+  </section>
+  <!-- Contact End -->
+
+
+  <!-- Footer Start -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <p><i class="fa fa-copyright"></i> Copyright 2023 by School Management System
+            | Design: <a href="#" rel="sponsored" target="_parent">#</a></p>
+        </div>
+      </div>
     </div>
-    <!-- Footer End -->
+  </footer>
+  <!-- Footer End -->
 
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i
-            class="bi bi-arrow-up"></i></a>
+  <!-- Scripts -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="/js/home/jquery.min.js"></script>
+  <script src="/js/home/bootstrap.min.js"></script>
+  <script src="/js/home/lightbox.js"></script>
+  <script src="/js/home/isotope.min.js"></script>
+  <script src="/js/home/owl-carousel.js"></script>
+  <!-- <script src="assets/js/lightbox.js"></script> -->
+  <script src="/js/home/tabs.js"></script>
+  <script src="/js/home/video.js"></script>
+  <script src="/js/home/slick-slider.js"></script>
+  <script src="/js/home/custom.js"></script>
 
+  <script>
+    //according to loftblog tut
+    $('.nav li:first').addClass('active');
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/lib/easing/easing.min.js"></script>
-    <script src="/lib/waypoints/waypoints.min.js"></script>
-    <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+    var showSection = function showSection(section, isAnimate) {
+      var
+        direction = section.replace(/#/, ''),
+        reqSection = $('.section').filter('[data-section="' + direction + '"]'),
+        reqSectionPos = reqSection.offset().top - 0;
 
-    <!-- Template Javascript -->
-    <script src="/js/home.js"></script>
-    </body>
+      if (isAnimate) {
+        $('body, html').animate({
+          scrollTop: reqSectionPos
+        },
+          800);
+      } else {
+        $('body, html').scrollTop(reqSectionPos);
+      }
 
+    };
+
+    var checkSection = function checkSection() {
+      $('.section').each(function () {
+        var
+          $this = $(this),
+          topEdge = $this.offset().top - 80,
+          bottomEdge = topEdge + $this.height(),
+          wScroll = $(window).scrollTop();
+        if (topEdge < wScroll && bottomEdge > wScroll) {
+          var
+            currentId = $this.data('section'),
+            reqLink = $('a').filter('[href*=\\#' + currentId + ']');
+          reqLink.closest('li').addClass('active').
+            siblings().removeClass('active');
+        }
+      });
+    };
+
+    $(window).scroll(function () {
+      checkSection();
+    });
+  </script>
+</body>
 </html>

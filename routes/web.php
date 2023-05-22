@@ -35,29 +35,17 @@ use App\Mail\StudentAssignment;
 
 // home Routes
 Route::get('home', function() {
-    return view('home2.index');
+    return view('home.index');
 })->name('home.index');
 Route::get('/', function () {
     return redirect(route('home.index'));
 });
 
 // Login Routes
+Route::get('manage/login', function() {
+    return view('login.index');
+})->name('login.index');
 
-Route::get('student/login', function() {
-    return view('login.student');
-})->name('student.login');
-Route::get('admin/login', function() {
-    return view('login.admin');
-})->name('admin.login');
-Route::get('teacher/login', function() {
-    return view('login.teacher');
-})->name('teacher.login');
-Route::get('library/login', function() {
-    return view('login.library');
-})->name('library.login');
-Route::get('coach/login', function () {
-    return view('login.sport');
-})->name('sport.login');
 
 // Student Routes
 Route::prefix('student')->middleware(['auth', 'IsStudent'])->group(function () {
