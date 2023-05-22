@@ -41,7 +41,7 @@
 
             <!-- all student start  -->
 
-            <div class="row mt-2" id="allStudentUi">
+            <div class="row mt-2 d-none" id="allStudentUi">
               <h5 class="text-dark mt-3">
                 Send Message For All Students In Your Class
               </h5>
@@ -420,6 +420,9 @@
   <!-- Template Javascript -->
   
   <script>
+
+    hamburger("message");
+
     function sendMessageToAll() {
       const msgType = document.getElementById("messageType");
 

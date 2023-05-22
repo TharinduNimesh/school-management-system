@@ -120,7 +120,8 @@
     @include('public_components.js')
 
     <script>
-        hamburger("summary")
+        hamburger("accessories");
+        
         function updateAccessories() {
             let deskCount = document.getElementById("deskCount").value
             let chairCount = document.getElementById("ChairsCount").value

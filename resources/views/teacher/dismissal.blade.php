@@ -128,6 +128,8 @@
     <!-- Template Javascript -->
    
     <script>
+        hamburger("dismissal");
+
         function searchLeave() {
             const index = document.getElementById("studentIndex");
             const table = document.getElementById("leavesTable");

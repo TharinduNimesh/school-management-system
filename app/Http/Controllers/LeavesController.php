@@ -152,9 +152,14 @@ class LeavesController extends Controller
             ->where('status', 'accepted')->get();
 
         $remaining_leaves = 0;
+
         // get remaining sick leaves count
-        foreach ($teacher->leaves as $leave) {
-            $remaining_leaves += $leave['remaining'];
+        if($teacher->leaves != null) {
+            foreach ($teacher->leaves as $leave) {
+                $remaining_leaves += $leave['remaining'];
+            }
+        } else {
+            $remaining_leaves = 20;
         }
 
         return view('teacher.leaves', [

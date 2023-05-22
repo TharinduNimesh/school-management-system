@@ -164,7 +164,7 @@
 
                         <div class="table-responsive">
                             <table class="table table-bordered">
-                                <thead>
+                                <thead class="table-dark">
                                     <tr>
                                         <th scope="col">No</th>
                                         <th scope="col">Class</th>
@@ -215,6 +215,7 @@
     @include('public_components.js')
     <!-- Template Javascript -->
     <script>
+        hamburger("feedback");
         // create function to show report modal
         function reportModal() {
             // pass values to the dataset of the onclick button to modal button
