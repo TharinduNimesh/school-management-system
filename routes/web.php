@@ -35,7 +35,7 @@ use App\Mail\StudentAssignment;
 
 // home Routes
 Route::get('home', function() {
-    return view('home.index');
+    return view('home2.index');
 })->name('home.index');
 Route::get('/', function () {
     return redirect(route('home.index'));
