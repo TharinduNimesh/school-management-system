@@ -542,7 +542,6 @@
                                             <th>Description</th>
                                             <th>Date</th>
                                             <th>The Giver</th>
-                                            <th>Class</th>
                                         </tr>
                                     </thead>
                                     <tbody id="mistakeBody">
@@ -564,11 +563,10 @@
                                         <tr>
                                             <th>Year</th>
                                             <th>Class</th>
-                                            <th>Teacher</th>
                                             <th>Payment</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="tbody">
+                                    <tbody id="paymentBody">
                                         <tr>
                                             <th colspan="4" style="background: orange; color: red;">
                                                 Search A Student To Show Data
@@ -577,6 +575,30 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <div class="row pt-4 pb-3">
+                                <h3 class="text-dark">Extra Curricular Activities Report</h3>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Activity</th>
+                                            <th>Date of Start</th>
+                                            <th>Date of End</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="sportBody">
+                                        <tr>
+                                            <th colspan="5" style="background: orange; color: red;">
+                                                Search A Student To Show Data
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
                     </div>
 
@@ -786,8 +808,13 @@
 
 
     function searchStudent() {
+        document.getElementById("spinner").classList.add("show")
         const index = document.getElementById("searchIndex");
         const name = document.getElementById("typing");
+        document.getElementById("mistakeBody").innerHTML = '';
+        document.getElementById("paymentBody").innerHTML = '';
+        document.getElementById("sportBody").innerHTML = '';
+
         if(index.value == '' && name.value == ''){
             Swal.fire({
                 icon: 'warning',
@@ -813,6 +840,150 @@
             if(xhr.status == 200) {
                 var response = JSON.parse(xhr.responseText);
                 console.log(response);
+                var houseName;
+                var houseColor;
+                if(indexNumber % 4 == 0) {
+                    houseName = "{{ env('HOUSE_01_NAME') }}";
+                    houseColor = "{{ env('HOUSE_01_COLOR') }}";
+                }else if(indexNumber % 4 == 1){
+                    houseName = "{{ env('HOUSE_02_NAME') }}";
+                    houseColor = "{{ env('HOUSE_02_COLOR') }}";
+                }else if(indexNumber % 4 == 2){
+                    houseName = "{{ env('HOUSE_03_NAME') }}";
+                    houseColor = "{{ env('HOUSE_03_COLOR') }}";
+                }else if(indexNumber % 4 == 3){
+                    houseName = "{{ env('HOUSE_04_NAME') }}";
+                    houseColor = "{{ env('HOUSE_04_COLOR') }}";
+                }
+
+
+                document.getElementById("fullName").value=response.student.full_name;   
+                document.getElementById("initialName").value=response.student.initial_name;
+                document.getElementById("dob").value=response.student.date_of_birth;
+                document.getElementById("Gender").value=response.student.gender;
+                document.getElementById("address").value=response.student.address;
+                document.getElementById("studentIndexNumber").value=response.student.index_number;
+                document.getElementById("scholarship").value=response.student.scholarship;
+                document.getElementById("startYear").value=response.student.enroll_year;
+                document.getElementById("startClass").value=response.student.enroll_class;
+                document.getElementById("pSchool").value=response.student.previous_school;
+                document.getElementById("nationality").value=response.student.nationality;
+                document.getElementById("religion").value=response.student.religion;
+                document.getElementById("houseName").value=houseName;
+                document.getElementById("houseColor").style.background=houseColor;
+                document.getElementById("disToSchool").value=response.student.distance;
+
+                document.getElementById("MotherName").value=response.student.mother_name;
+                document.getElementById("MotherNIC").value=response.student.mother_nic;
+                document.getElementById("MotherEmail").value=response.student.mother_email;
+                document.getElementById("MotherJob").value=response.student.mother_job;
+                document.getElementById("MotherJobAddress").value=response.student.mother_job_address;
+                document.getElementById("MotherNumber").value=response.student.mother_mobile;
+
+                document.getElementById("FatherName").value=response.student.father_name;
+                document.getElementById("FatherNIC").value=response.student.father_nic;
+                document.getElementById("FatherEmail").value=response.student.father_email;
+                document.getElementById("FatherJob").value=response.student.father_job;
+                document.getElementById("FatherJobAddress").value=response.student.father_job_address;
+                document.getElementById("FatherNumber").value=response.student.father_mobile;
+
+                document.getElementById("GuardianName").value=response.student.guardian_name;
+                document.getElementById("GuardianNIC").value=response.student.guardian_nic;
+                document.getElementById("GuardianEmail").value=response.student.guardian_email;
+                document.getElementById("GuardianJob").value=response.student.guardian_job;
+                document.getElementById("GuardianJobAddress").value=response.student.guardian_job_address;
+                document.getElementById("GuardianNumber").value=response.student.guardian_mobile;
+
+                document.getElementById("motherEmail").value=response.student.mother_email;
+                document.getElementById("motherNumber").value=response.student.mother_mobile;
+                document.getElementById("fatherEmail").value=response.student.father_email;
+                document.getElementById("fatherNumber").value=response.student.father_mobile;
+                document.getElementById("studentAddress").value=response.student.address;
+                document.getElementById("emNumber").value=response.student.emergency_number;
+                document.getElementById("emEmail").value=response.student.emergency_email;
+                try {
+                    response.student.discipline_details.forEach((record, index)=> {
+                        var row = document.createElement("tr");
+                        var no = document.createElement("td")
+                        var description = document.createElement("td");
+                        var date = document.createElement("td");
+                        var giver = document.createElement("td");
+
+                        no.innerHTML= index +1;
+                        description.innerHTML = record.reason;
+                        date.innerHTML = record.date;
+                        giver.innerHTML = record.teacher_name;
+
+                        row.appendChild(no);
+                        row.appendChild(description);
+                        row.appendChild(date);
+                        row.appendChild(giver);
+
+                        document.getElementById("mistakeBody").appendChild(row);
+                    });
+                } catch(error){
+                    console.log("No Discipline activites");
+                }
+
+                try{
+                    response.student.enrollments.forEach((record,index)=> {
+                        var row = document.createElement("tr");
+                        var year = document.createElement("td");
+                        var cls = document.createElement("td");
+                        var payment = document.createElement("td");
+
+                        year.innerHTML=record.year;
+                        cls.innerHTML=record.grade+"-"+record.class;
+                        payment.innerHTML=record.isPayment;
+
+                        row.appendChild(year);
+                        row.appendChild(cls);
+                        row.appendChild(payment);
+
+                        document.getElementById("paymentBody").appendChild(row);
+                    });
+                }catch(error){
+                    console.log("null");
+                }
+
+                try {
+                    response.student.sports.forEach((record,index) => {
+                        var row = document.createElement("tr");
+                        var no = document.createElement("td");
+                        var activity = document.createElement("td");
+                        var startDate = document.createElement("td");
+                        var endDate = document.createElement("td");
+                        var action = document.createElement("td");
+                        var button = document.createElement("button");
+
+
+
+                        no.innerHTML= index +1;
+                        activity.innerHTML= record.name;
+                        startDate.innerHTML= record.start_date;
+                        endDate.innerHTML= record.end_date == null?"Present" : record.end_date;
+                        button.classList= "btn btn-success";
+                        button.innerHTML="More";
+
+                        
+
+                        row.appendChild(no);
+                        row.appendChild(activity);
+                        row.appendChild(startDate);
+                        row.appendChild(endDate);
+                        row.appendChild(action);
+
+                        action.appendChild(button);
+
+                        document.getElementById("sportBody").appendChild(row);
+                        
+                    });
+
+
+                } catch (error) {
+                    console.log(error);
+                }
+                document.getElementById("spinner").classList.remove("show");
             }
         }
 
