@@ -15,7 +15,9 @@
   <link href="/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Additional CSS Files -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="/css/home/lightbox.css">
   <link rel="stylesheet" href="/css/home/main.css">
   <link rel="stylesheet" href="/css/home/owl.css">
@@ -33,9 +35,8 @@
     <nav id="menu" class="main-nav" role="navigation">
       <ul class="main-menu">
         <li><a href="#section1">Home</a></li>
-        <li><a href="#section4">Courses</a></li>
-        <!-- <li><a href="#section5">Video</a></li> -->
-        <li><a href="#section6">Contact</a></li>
+        <li><a href="#section4">Login</a></li>
+        <li><a href="#">Contact</a></li>
       </ul>
     </nav>
   </header>
@@ -182,7 +183,7 @@
 
 
   <!-- Login Button Start -->
-  <section class="section courses" data-section="section4">
+  <!-- <section class="section courses" data-section="section4">
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
@@ -190,54 +191,54 @@
             <h2>Choose Your Course</h2>
           </div>
         </div>
-        <div class="col-lg-6">
-          <div class="row">
-            <div class="col-12">
-              <div class="count-area-content percentage">
-                <div class="count-digit">94</div>
-                <div class="count-title">Succesed Students</div>
-              </div>
-            </div>
-            <div class="col-12">
-              <div class="count-area-content">
-                <div class="count-digit">126</div>
-                <div class="count-title">Current Teachers</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="row">
-            <div class="col-12">
-              <div class="count-area-content new-students">
-                <div class="count-digit">2345</div>
-                <div class="count-title">New Students</div>
-              </div>
-            </div>
-            <div class="col-12">
-              <div class="count-area-content">
-                <div class="count-digit">32</div>
-                <div class="count-title">Awards</div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
-  </section>
+  </section> -->
   <!-- Login Button End -->
 
 
   <!-- Contact Start -->
-  <section class="section contact-us" id="contact" data-section="section6">
+  <section class="section contact" data-section="section6">
     <div class="container">
       <div class="row">
         <div class="col-md-12">
           <div class="section-heading">
-            <h2>Choose Your Course</h2>
+            <h2>Let’s Keep In Touch</h2>
           </div>
         </div>
-        
+        <div class="col-md-6">
+          <form id="contact" action="" method="post">
+            <div class="row">
+              <div class="col-md-6">
+                <fieldset>
+                  <input name="name" type="text" class="form-control" id="name" placeholder="Your Name" required="">
+                </fieldset>
+              </div>
+              <div class="col-md-6">
+                <fieldset>
+                  <input name="email" type="text" class="form-control" id="email" placeholder="Your Email" required="">
+                </fieldset>
+              </div>
+              <div class="col-md-12">
+                <fieldset>
+                  <textarea name="message" rows="6" class="form-control" id="message" placeholder="Your message..."
+                    required=""></textarea>
+                </fieldset>
+              </div>
+              <div class="col-md-12">
+                <fieldset>
+                  <button type="submit" id="form-submit" class="button">Send Message Now</button>
+                </fieldset>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-6">
+          <div class="contact-image">
+            <img src="/img/home_images/why-us.jpeg " width="100%" height="422px" frameborder="0"
+              style="border-radius: 10px;" allowfullscreen>
+          </div>
+        </div>
       </div>
     </div>
   </section>

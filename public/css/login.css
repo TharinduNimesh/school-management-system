@@ -27,7 +27,7 @@ body {
   object-fit: cover;
 }
 .login-card .card-body {
-  padding: 85px 60px 60px;
+  padding: 20px 60px 20px;
 }
 @media (max-width: 422px) {
   .login-card .card-body {

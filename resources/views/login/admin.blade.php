@@ -1,10 +1,11 @@
 @auth
-    @if (auth()->user()->role == 'admin')
-        <script> window.location = "{{ route('admin.dashboard') }}"</script>
-    @endif
+@if (auth()->user()->role == 'admin')
+<script> window.location = "{{ route('admin.dashboard') }}"</script>
+@endif
 @endauth
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     @include('login.components.head')
 </head>
@@ -34,8 +35,17 @@
                             <p class="login-card-description">School Management System</p>
                             <form action="#!">
                                 <p id="invalid-feedback" class="text-danger text-center invalid-login d-none">
-                                  Invalid NIC Number Or Password
+                                    Invalid NIC Number Or Password
                                 </p>
+                                <div class="form-group mb-4">
+                                    <label for="roll" class="">Select Your Roll</label>
+                                    <select id="" type="" class="form-control" name="roll">
+                                        <option selected>Open this select menu</option>
+                                        <option value="1">Student</option>
+                                        <option value="2">Teacher</option>
+                                        <option value="3">Admin</option>
+                                    </select>
+                                </div>
                                 <div class="form-group">
                                     <label for="NIC" class="">NIC Number</label>
                                     <input type="text" name="NIC" id="nic" class="form-control"
@@ -81,7 +91,7 @@
             form.append('role', 'admin');
 
             var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
+            xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     var response = xhr.responseText;
                     if (response == 'success') {
@@ -98,4 +108,5 @@
         }
     </script>
 </body>
+
 </html>
