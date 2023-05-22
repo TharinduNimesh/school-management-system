@@ -28,7 +28,7 @@
                         <h3 class="font-weight-bold text-dark">Submit Assignments</h3>
                         <div class="col-12 table-responsive">
                             <table class="table table-hover table-bordered">
-                                <thead>
+                                <thead class="table-dark">
                                     <tr>
                                         <th scope="col">No</th>
                                         <th scope="col" class="space">Subject Name</th>

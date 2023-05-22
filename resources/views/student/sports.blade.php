@@ -117,7 +117,8 @@
     <!-- Template Javascript -->
     
     <script>
-
+        hamburger("sport");
+        
         function sportSelected() {
             const sport = document.getElementById("selectedSport");
 

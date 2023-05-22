@@ -234,6 +234,8 @@
     <!-- Template Javascript -->
 
     <script>
+        hamburger("feedback");
+
         var starClicked = false;
         var selected = 0;
 
