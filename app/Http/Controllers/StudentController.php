@@ -12,6 +12,7 @@ use App\Models\LearningRecord;
 use App\Models\User;
 use App\Models\Sport;
 use App\Models\BorrowedBook;
+use App\Models\RequestedChanges;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
@@ -293,6 +294,67 @@ class StudentController extends Controller
             }
 
             return $response;
+        }
+    }
+
+    public function requestProfileChanges() {
+        $class = StudentController::getClass(auth()->user()->index, Date("Y"));
+        $request = new RequestedChanges();
+        $request->index_number = auth()->user()->index;
+        $request->name = auth()->user()->name;
+        $request->class = $class["grade"] . " - " . $class["class"];
+        $request->subject = request()->subject;
+        $request->description = request()->description;
+        $request->category = "text"; // profile text base changes and image base changes is known as category
+
+        $saved = $request->save();
+
+        if($saved) {
+            return 'success';
+        } else {
+            return 'error';
+        }
+    }
+
+    public function resignation($index) {
+        $student = Student::where('index_number', $index)->first();
+        if($student != null) {
+            $student->resigned_at = Date("Y-m-d");
+            $sports = [];
+            foreach ($student->sports as $sport) {
+                $sport["end_date"] = Date("Y-m-d");
+                array_push($sports, $sport);
+            }
+            $student->sports = $sports;
+
+            $student->save();
+            return 'success';
+        } else {
+            return 'invalid';
+        }
+    }
+
+    public function updateDetails() {
+        $student = Student::where('index_number', request()->index)->first();
+
+        if($student != null) {
+            $student->full_name = request()->full_name;
+            $student->initial_name = request()->initial_name;
+            $student->date_of_birth = request()->date_of_birth;
+            $student->address = request()->address;
+            $student->distance = request()->distance;
+            $student->mother_email = request()->mother_email;
+            $student->father_email = request()->father_email;
+            $student->guardian_email = request()->guardian_email;
+            $student->mother_mobile = request()->mother_mobile;
+            $student->father_mobile = request()->father_mobile;
+            $student->guardian_mobile = request()->guardian_mobile;
+            $student->emergency_email = request()->emergency_email;
+            $student->emergency_number = request()->emergency_number;
+
+            $student->save();
+
+            return 'success';
         }
     }
 

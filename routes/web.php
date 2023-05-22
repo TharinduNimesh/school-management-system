@@ -249,10 +249,13 @@ Route::get('reject/request/al/{id}', [SubjectController::class, 'rejectALRequest
 Route::get('accept/request/al{id}', [SubjectController::class, 'acceptALRequest'])->name('accept.al.request');
 Route::post('feedbacks', [LearningController::class, 'getFeedbacks'])->name('get.feedbacks');
 Route::get('resign/teacher/{id}', [TeacherController::class, 'resign'])->name('resign.teacher');
+Route::get('resign/student/{id}', [StudentController::class, 'resign'])->name('resign.student');
 
 // admin manage student subject routes
 Route::post('activate/request', [SubjectController::class, 'activate'])->name('request.activate');
 Route::post("get/subjects/marks", [MarksController::class, 'getMarksForSubject'])->name('get.marks.for.subject');
+
+Route::post('update/student/details', [StudentController::class, 'updateDetails'])->name('update.student.details');
 
 // Teacher functions
 Route::post("request/leaves", [LeavesController::class, 'request'])->name('request.leaves');
@@ -285,6 +288,7 @@ Route::post('request/subject/al', [SubjectController::class, 'requestAlSubject']
 Route::post("send/feedback", [LearningController::class, 'sendFeedback'])->name('send.feedback');
 Route::get('search/sport/{name}', [SportController::class, 'search'])->name('search.sport');
 Route::get('request/sport/{name}', [SportController::class, 'request'])->name('request.sport');
+Route::post('request/profile/changes', [StudentController::class, 'requestProfileChanges'])->name('request.profile.changes');
 
 // librarian function routes
 Route::post('add/book', [BookController::class, 'add'])->name('add.book');
