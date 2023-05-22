@@ -41,8 +41,7 @@
                 Subjects</a>
             <a name="ham-item" id="discipline" href="{{ route('admin.discipline') }}" class="nav-item nav-link"><i class="bi bi-speedometer me-2"></i>
                 Discipline</a>
-            <a name="ham-item" id="timetable" href="adminTimeTable.php" class="nav-item nav-link"><i class="bi bi-table me-2"></i>Time
-                Table</a>
+            <a name="ham-item" id="record" href="{{ route('admin.class.report') }}" class="nav-item nav-link"><i class="bi bi-table me-2"></i>Class Record</a>
             <a name="ham-item" id="addNews" href="{{ route('admin.news') }}" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Add News</a>
         </div>
     </nav>

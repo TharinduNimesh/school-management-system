@@ -146,6 +146,7 @@
     <!-- Template Javascript -->
 
     <script>
+        hamburger("record");
         function searchRecord() {
             document.getElementById("spinner").classList.add("show"); 
             var grade = document.getElementById("grade").value;
