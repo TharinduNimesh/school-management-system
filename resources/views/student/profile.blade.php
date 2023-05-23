@@ -56,6 +56,7 @@
             <!-- Sale & Revenue Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row">
+                    @if(isset($class["isPayment"]))
                     @if ($class["isPayment"] == "no")
                     <div class="col-12 mt-md-0 col-md-4">
                         <div data-bs-toggle="modal" data-bs-target="#newModal" class="rounded d-flex align-items-center justify-content-between p-4" style="background: #ff2c2c; color: white; cursor: pointer;" id="paymentViewer">
@@ -77,7 +78,17 @@
                         </div>
                     </div>
                     @endif
-
+                    @else
+                    <div class="col-12 mt-md-0 col-md-4">
+                        <div data-bs-toggle="modal" data-bs-target="#newModal" class="rounded d-flex align-items-center justify-content-between p-4" style="background: #50ca2b; color: white;" id="paymentViewer">
+                            <i class="bi bi-cash fa-2x text-primary"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Facility charges</p>
+                                <h6 class="mb-0 text-dark"> {{ env("SCHOOL_FEE") }} </h6>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
 
                     <div class="col-12 mt-md-0 mt-3 col-md-4">
                         <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
@@ -89,6 +100,7 @@
                         </div>
                     </div>
 
+                    @if(isset($class["grade"]))
                     <div class="col-12 mt-md-0 mt-3 col-md-4">
                         <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
                             <i class="bi bi-book-half fa-2x text-dark"></i>
@@ -98,6 +110,17 @@
                             </div>
                         </div>
                     </div>
+                    @else
+                    <div class="col-12 mt-md-0 mt-3 col-md-4">
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                            <i class="bi bi-book-half fa-2x text-dark"></i>
+                            <div class="ms-3">
+                                <p class="mb-2">Class</p>
+                                <h6 class="mb-0 text-dark" id="currentClass">Not Set</h6>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
 
                     <div class="col-12 mt-3 col-md-6">
                         <div data-bs-target="#reModal" data-bs-toggle="modal" class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">

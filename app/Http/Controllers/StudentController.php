@@ -362,11 +362,14 @@ class StudentController extends Controller
         $attendace_data = StudentAttendance::select('attendance')->where('index_number', $index)->where('year', $year)->first();
         $dateCount = AttendanceController::getSchoolHoldDateCount(Date("Y"));
         $present_count = 0;
-        foreach ($attendace_data->attendance as $item) {
-            if($item["status"] == "present") {
-                $present_count++;
+        if($attendace_data != null) {
+            foreach ($attendace_data->attendance as $item) {
+                if($item["status"] == "present") {
+                    $present_count++;
+                }
             }
         }
+
         return round(($present_count / $dateCount) * 100, 3);
     }
 
