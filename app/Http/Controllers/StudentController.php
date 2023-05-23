@@ -120,6 +120,12 @@ class StudentController extends Controller
     }
 
     public function search($id) {
+        $hasPermission = TeacherController::hasPermission(auth()->user()->index, $id);
+
+        if(!$hasPermission) {
+            return ["status" => "permission_denied"];
+        }
+        
         $student = $this->show($id);
         if($student != 'invalid') {
             $book = BorrowedBook::where('holder_id', $id)
@@ -130,7 +136,8 @@ class StudentController extends Controller
                 "status" => "success",
                 "student" => $student,
                 "class" => $class,
-                "book" => $book
+                "book" => $book,
+                "attendance" => self::getAttendancePrecentage($id, Date("Y")),
             ];
             return $response;
         }

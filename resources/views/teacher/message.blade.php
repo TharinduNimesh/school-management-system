@@ -887,10 +887,11 @@
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
           if (xhr.readyState == 4 && xhr.status == 200) {
-            var response = JSON.parse(xhr.responseText);
-            if (response.status == "error") {
+            var response = xhr.responseText;
+            if (response == "invalid") {
               invalid.classList.remove("d-none");
             } else {
+              response = JSON.parse(response);
               invalid.classList.add("d-none");
               if (studentList.includes(index.value)) {
                 alreadyExist.classList.remove("d-none");
@@ -904,7 +905,7 @@
                 var btn = document.createElement("button");
                 btn.dataset.cid = listIndex;
                 btn.dataset.index = index.value;
-                btn.dataset.email = response.student["emergency_email"];
+                btn.dataset.email = response.emergency_email;
                 var icon = document.createElement("i");
 
                 btn.onclick = function () {
@@ -916,7 +917,7 @@
                 cardBody.classList.add("card-body");
                 cardBody.classList.add("text-dark");
                 cardBody.classList.add("d-flex");
-                col10.innerHTML = response.student["initial_name"];
+                col10.innerHTML = response.initial_name;
                 col10.classList.add("col-10");
                 col2.classList.add("col-2");
                 btn.classList.add("btn");
@@ -932,7 +933,7 @@
                 list.appendChild(card);
 
                 studentList[listIndex] = index.value;
-                emailList[listIndex] = response.student["emergency_email"];
+                emailList[listIndex] = response.emergency_email;
                 listIndex = listIndex + 1;
                 index.value = "";
               }
@@ -942,7 +943,7 @@
 
         xhr.open(
           "GET",
-          "process/searchStudent.php?index=" + index.value + "",
+          "{{ route('search.student', ':id') }}".replace(":id", index.value),
           true
         );
         xhr.send();

@@ -1,6 +1,6 @@
 <div
 id="spinner"
-class="show position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center" style="background-color: #0E111F !important;"
+class="show position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center" style="background-color: #1B1B1B !important;"
 >
 <!-- <div
     class="spinner-border"
