@@ -46,6 +46,7 @@
                                         <option>Admin</option>
                                         <option>Librarian</option>
                                         <option>Coach</option>
+                                        <option>Developer</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -133,6 +134,8 @@
                 img.src = "/img/Lib.jpg";
             } else if (role == 'Coach') {
                 img.src = "/img/Sport.jpg";
+            } else if (role == 'Developer') {
+                img.src = "/img/Developer.jpg";
             }
         }
 

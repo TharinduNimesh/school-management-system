@@ -18,9 +18,9 @@ use App\Http\Controllers\MarksController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\AccessoryController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\DeveloperController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\TeamController;
-use App\Mail\StudentAssignment;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +46,15 @@ Route::get('manage/login', function() {
     return view('login.index');
 })->name('login.index');
 
+Route::prefix('developer')->middleware(["auth", "IsDeveloper"])->group(function() {
+    Route::get("dashboard", function() {
+        return view('developer.schools');
+    })->name('developer.dashboard');
+    Route::get('register/schools', function() {
+        return view('developer.schools');
+    })->name('developer.schools');
+    Route::get('manage/users', [DeveloperController::class, 'navigateToUsers'])->name('developer.users');
+});
 
 // Student Routes
 Route::prefix('student')->middleware(['auth', 'IsStudent'])->group(function () {
@@ -150,7 +159,7 @@ Route::prefix('library')->middleware(['auth', 'IsLibrarian'])->group(function() 
 });
 
 // Sport Routes
-Route::prefix('sport')->group(function() {
+Route::prefix('sport')->middleware(['auth', 'IsCoach'])->group(function() {
     Route::get('dashboard', function() {
         return view('sport.dashboard');
     })->name('sport.dashboard');
@@ -298,17 +307,11 @@ Route::get('remove/player/{sport}/{team}/{index}', [TeamController::class, 'remo
 Route::post('change/position', [TeamController::class, 'changePosition'])->name('change.position');
 Route::post('sport/request/action', [SportController::class, 'requestAction'])->name('sport.request.action');
 
-// email routes
-Route::get('email/assignment', function() {
-    $data = [
-        "student_name" => "Tharindu Nimesh",
-        'start_date' => "2023-12-02",
-        "end_date" => "2023-12-07",
-        "url" => "https://google.com"
-    ];
-    return new StudentAssignment($data);
+// developer function routes
+Route::middleware(['auth', 'IsDeveloper'])->group(function () {
+    Route::post('add/school', [DeveloperController::class, 'add_school'])->name('add.school');
+    Route::post('add/users', [DeveloperController::class, 'add_users'])->name('add.users');
 });
-
 
 Route::fallback(function() {
     return view("404");

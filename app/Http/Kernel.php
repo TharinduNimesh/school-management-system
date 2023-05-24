@@ -67,5 +67,7 @@ class Kernel extends HttpKernel
         'IsLibrarian' => Middleware\IsLibrarian::class,
         'IsTeacher' => Middleware\IsTeacher::class,
         'IsAdmin' => Middleware\IsAdmin::class,
+        'IsCoach' => Middleware\IsCoach::class,
+        'IsDeveloper' => Middleware\IsDeveloper::class,
     ];
 }

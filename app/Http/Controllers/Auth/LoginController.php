@@ -65,6 +65,8 @@ class LoginController extends Controller
                 $path = route('library.dashboard');
             } else if (auth()->user()->role == "coach") {
                 $path = route('sport.dashboard');
+            } else if (auth()->user()->role == "developer") {
+                $path = route('developer.dashboard');
             }
             return [
                 'status' => 'success',
