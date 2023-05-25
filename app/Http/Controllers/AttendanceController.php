@@ -25,8 +25,11 @@ class AttendanceController extends Controller
 
         if($validate == null) {
             foreach($present as $item) {
-                $student = Student::where('index_number', $item)->first();
+                $student = Student::where('index_number', $item)
+                ->where('school', auth()->user()->school)
+                ->first();
                 $attendance = StudentAttendance::where('index_number', $item)
+                                ->where('school', auth()->user()->school)
                                 ->where('year', $year)->first();
                 if($attendance == null) {
                     $attendance_data = new StudentAttendance();
@@ -34,6 +37,7 @@ class AttendanceController extends Controller
                     $attendance_data->name = $student->initial_name;
                     $attendance_data->class_teacher = $nic;
                     $attendance_data->year = $year;
+                    $attendance_data->school = auth()->user()->school;
                     $attendance_data->attendance = [
                         [
                             'date' => $date,
@@ -62,8 +66,11 @@ class AttendanceController extends Controller
             }
 
             foreach($data->absent as $item) {
-                $student = Student::where('index_number', $item)->first();
+                $student = Student::where('index_number', $item)
+                ->where('school', auth()->user()->school)
+                ->first();
                 $attendance = StudentAttendance::where('index_number', $item)
+                                ->where('school', auth()->user()->school)
                                 ->where('year', $year)->first();
                 if($attendance == null) {
                     $attendance_data = new StudentAttendance();
@@ -71,6 +78,7 @@ class AttendanceController extends Controller
                     $attendance_data->name = $student->initial_name;
                     $attendance_data->class_teacher = $nic;
                     $attendance_data->year = $year;
+                    $attendance_data->school = auth()->user()->school;
                     $attendance_data->attendance = [
                         [
                             'date' => $date,
@@ -107,7 +115,9 @@ class AttendanceController extends Controller
     public function search(Request $request) {
         $nic = auth()->user()->index;
         $students = StudentAttendance::where('class_teacher', $nic)
-                                            ->where('attendance.date', $request->date)->get();
+                                            ->where('attendance.date', $request->date)
+                                            ->where('school', auth()->user()->school)
+                                            ->get();
 
         $response = [];
         if(empty($student)) {
@@ -140,6 +150,7 @@ class AttendanceController extends Controller
 
         $attendance = StudentAttendance::where('index_number', $request->index)
                                     ->where('attendance.date', $request->date)
+                                    ->where('school', auth()->user()->school)
                                     ->first();
 
         // Update the value in the object in the array
@@ -166,15 +177,19 @@ class AttendanceController extends Controller
         if($year == null) {
             $year = Date("Y");
         }
-        $attendance = self::gatherStudentAttendance($index, $year);
+        $attendance = self::gatherStudentAttendance($index, $year, auth()->user()->school);
 
         return view('student.attendance', [
             "attendance" => $attendance
         ]);
     }
 
-    public static function gatherStudentAttendance($index, $year) {
-        $attendance = StudentAttendance::select('attendance')->where("index_number", $index)->where("year", $year)->first();
+    public static function gatherStudentAttendance($index, $year, $school) {
+        $attendance = StudentAttendance::select('attendance')
+        ->where("index_number", $index)
+        ->where("school", $school)
+        ->where("year", $year)
+        ->first();
 
         if($attendance != null) {
             return $attendance->attendance;

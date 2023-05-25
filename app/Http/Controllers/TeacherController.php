@@ -10,6 +10,7 @@ use App\Models\Teacher;
 use App\Models\User;
 use App\Models\Leaves;
 use App\Models\ShortLeaves;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -182,7 +183,15 @@ class TeacherController extends Controller
 
     public static function hasPermission($nic, $index) {
         if(auth()->user()->role == "admin") {
-            return true;
+            $student = Student::where('index_number', $index)
+            ->where('school', auth()->user()->school)
+            ->first();
+
+            if($student != null) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         $student_class = StudentController::getClass($index, Date("Y"));
@@ -243,7 +252,7 @@ class TeacherController extends Controller
     }
 
     public function teacherSearchMarks(Request $request) {
-        $students = ClassController::getStudentList($request->grade, $request->class, $request->year);
+        $students = ClassController::getStudentList($request->grade, $request->class, $request->year, auth()->user()->school);
         $marks = [];
         $subjects = ClassController::getSubjects($request->grade);
         
@@ -358,7 +367,7 @@ class TeacherController extends Controller
 
     public function navigateToSummary() {
         $teacherDetails = self::getClass(auth()->user()->index, Date("Y"));
-        $students = ClassController::getStudentList($teacherDetails->grade, $teacherDetails->class, Date("Y"));
+        $students = ClassController::getStudentList($teacherDetails->grade, $teacherDetails->class, Date("Y"), auth()->user()->user);
         $array = [];
         foreach ($students as $student) {
             $obj = new \stdClass();
@@ -382,7 +391,7 @@ class TeacherController extends Controller
 
     public function navigateToMarks() {
         $teacher = self::getClass(auth()->user()->index, Date("Y"));
-        $students = ClassController::getStudentList($teacher->grade, $teacher->class, Date("Y"));
+        $students = ClassController::getStudentList($teacher->grade, $teacher->class, Date("Y"), auth()->user()->school);
         $subjects = ClassController::getSubjects($teacher->grade);
         return view('teacher.marks', [
             "subjects" => $subjects,

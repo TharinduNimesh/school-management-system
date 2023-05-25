@@ -41,7 +41,7 @@ class DeveloperController extends Controller
         $user->index = request()->nic;
         $user->name = request()->name;
         $user->role = strtolower(request()->role);
-        $user->school = request()->school;
+        $user->school = request()->school_id;
         $user->email = request()->email;
         $user->password = Hash::make(request()->password);
 
@@ -59,6 +59,13 @@ class DeveloperController extends Controller
         }
 
         return $response;
+    }
+
+    public static function generateIndex($index, $school) {
+        $school = School::find($school);
+        $index = "$school->unique_id-$index";
+
+        return $index;
     }
 
     public function navigateToUsers() {

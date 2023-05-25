@@ -14,13 +14,7 @@ class ClassController extends Controller
     {
 
         // get student data from student collection for given grade, year and class
-        $students = Student::select(['index_number', 'initial_name'])
-            ->where('enrollments', 'elemMatch', [
-                'year' => $request->year,
-                'grade' => $request->grade,
-                'class' => $request->class
-            ])
-            ->get();
+        $students = self::getStudentList($request->grade, $request->year, $request->class, auth()->user()->school);
 
         // get class teacher details for given grade and class
         $teacher = Teacher::select(["full_name"])->where("classes", "elemMatch", [
@@ -60,6 +54,7 @@ class ClassController extends Controller
         // search student have a class in given year
         $student = Student::where('index_number', $request->indexNumber)
             ->where('enrollments.year', $request->year)
+            ->where('school', auth()->user()->school)
             ->first();
 
         // check student have a class or not
@@ -156,20 +151,23 @@ class ClassController extends Controller
         $current_year = Date("Y");
         $details = TeacherController::getClass(auth()->user()->index, $current_year);
 
-        $students = self::getStudentList($details->grade, $details->class, $current_year);
+        $students = self::getStudentList($details->grade, $details->class, $current_year, auth()->user()->school);
 
         return view('teacher.attendance', [
             "students" => $students
         ]);
     }
 
-    public static function getStudentList($grade, $class, $year) {
+    public static function getStudentList($grade, $class, $year, $school) {
         $students = Student::select(["index_number", "initial_name"])
         ->where('enrollments', 'elemMatch', [
             'year' => $year,
             'grade' => $grade,
             'class' => $class
-        ])->get();
+        ])
+        ->where('school', $school)
+        ->where('resigned_at', null)
+        ->get();
 
         return $students;
     }

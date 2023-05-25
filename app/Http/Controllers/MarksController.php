@@ -37,13 +37,14 @@ class MarksController extends Controller
                 $total = $total + $data->{$subject};
             }
             $marks->total = $total;
+            $marks->school = auth()->user()->school;
             $marks->save();
         }
     }
 
     public function getUnmarkedStudents(Request $request) {
         $teacher = TeacherController::getClass(auth()->user()->index, $request->year);
-        $students = ClassController::getStudentList($teacher->grade, $teacher->class, $request->year);
+        $students = ClassController::getStudentList($teacher->grade, $teacher->class, $request->year, auth()->user()->school);
         $subjects = ClassController::getSubjects($teacher->grade);
 
         $response = [];
@@ -51,6 +52,7 @@ class MarksController extends Controller
             $validate = Marks::where('index_number', $student["index_number"])
             ->where('year', $request->year)
             ->where('term', $request->term)
+            ->where('school', auth()->user()->school)
             ->first();
 
             if($validate == null) {
@@ -95,6 +97,7 @@ class MarksController extends Controller
             $item = Marks::where("index_number", $request->index)
             ->where("grade", "9")
             ->where("term", $term)
+            ->where("school", auth()->user()->school)
             ->first();
             if($item == null) {
                 $item = new \stdClass();
@@ -122,6 +125,7 @@ class MarksController extends Controller
         ->where('term', $term)
         ->where('grade', $grade)
         ->where('class', $class)
+        ->where('school', auth()->user()->school)
         ->get()
         ->toArray();
 

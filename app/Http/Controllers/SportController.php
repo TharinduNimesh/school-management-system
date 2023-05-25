@@ -116,7 +116,9 @@ class SportController extends Controller
     }
 
     public function addStudent(Request $request) {
-        $student = Student::where('index_number', $request->index)->first();
+        $student = Student::where('index_number', $request->index)
+        ->where('school', $request->school)
+        ->first();
         $sports = $student->sports;
         $isValid = false;
         if($sports == null) {
@@ -179,7 +181,9 @@ class SportController extends Controller
         }
 
         if(in_array($request->date, $dates)) {
-            $student = Student::where('index_number', $request->index)->first();
+            $student = Student::where('index_number', $request->index)
+            ->where("school", auth()->user()->school)
+            ->first();
             $sports = $student->sports;
     
             foreach ($sports as &$sport) {
@@ -347,7 +351,9 @@ class SportController extends Controller
     }
 
     public static function getStudentList($sport) {
-        $students = Student::where('sports', '!=', null)->get();
+        $students = Student::where('sports', '!=', null)
+        ->where('school', auth()->user()->school)
+        ->get();
         $studentList = [];
         foreach ($students as $student) {
             $sports = $student->sports;

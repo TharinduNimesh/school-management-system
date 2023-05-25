@@ -21,15 +21,20 @@ use Illuminate\Support\Facades\Mail;
 class StudentController extends Controller
 {
     public function add(Request $request) {
-        $student = Student::where('index_number', '=', strval($request->studentIndexNumber))->first();
+        $student = Student::where('index_number', strval($request->studentIndexNumber))
+        ->where('school', auth()->user()->school)
+        ->first();
 
         if($student == null) {
+
             $user = new User();
             $user->name = $request->studentInitialName;
             $user->index = $request->studentIndexNumber;
             $user->email = $request->emergrencyEmail;
+            $user->login = DeveloperController::generateIndex($request->studentIndexNumber, auth()->user()->school);
             $user->password = Hash::make($request->studentPassword);
             $user->role = "student";
+            $user->school = auth()->user()->school;
 
             // this return true if user added
             $userAdded = $user->save();
@@ -83,6 +88,9 @@ class StudentController extends Controller
             // add discipline marks
             $student->discipline_marks = 100;
 
+            // add school
+            $student->school = auth()->user()->school;
+
             // this return true if Student Added
             $studentAdded = $student->save();
 
@@ -90,10 +98,9 @@ class StudentController extends Controller
             if($studentAdded && $userAdded) {
                 $data = [
                     'student_name' => $request->studentInitialName,
-                    'login' => $request->studentIndexNumber,
+                    'login' => DeveloperController::generateIndex($request->studentIndexNumber, auth()->user()->school),
                     'password' => $request->studentPassword,
                 ];
-                // $this->sendWelcomeMail($data, $request->emergrencyEmail);
                 Mail::to($request->emergrencyEmail)->send(new WelcomeMail($data));
                 return 'success';
             } else {
@@ -107,7 +114,9 @@ class StudentController extends Controller
 
     public function show($id) {
         // search student by given index number
-        $student = Student::where('index_number', $id)->first();
+        $student = Student::where('index_number', $id)
+        ->where('school', auth()->user()->school)
+        ->first();
 
         // check previous query return a value or not
         if($student != null){
@@ -381,7 +390,10 @@ class StudentController extends Controller
     }
 
     public static function getClass($index, $year) {
-        $student = Student::where('index_number', $index)->where('enrollments.year', $year)->first();
+        $student = Student::where('index_number', $index)
+        ->where('enrollments.year', $year)
+        ->where('school', auth()->user()->school)
+        ->first();
         if($student != null) {
             foreach ($student->enrollments as $class) {
                 if($class["year"] == $year) {
