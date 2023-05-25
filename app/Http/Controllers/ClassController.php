@@ -14,20 +14,10 @@ class ClassController extends Controller
     {
 
         // get student data from student collection for given grade, year and class
-        $students = Student::select(['index_number', 'initial_name'])
-            ->where('enrollments', 'elemMatch', [
-                'year' => $request->year,
-                'grade' => $request->grade,
-                'class' => $request->class
-            ])
-            ->get();
+        $students = self::getStudentList($request->grade, $request->class, $request->year);
 
         // get class teacher details for given grade and class
-        $teacher = Teacher::select(["full_name"])->where("classes", "elemMatch", [
-            "grade" => $request->grade,
-            "class" => $request->class,
-            "end_year" => null
-        ])->first();
+        $teacher = self::getCurrentTeacher($request->grade, $request->class);
 
         // create response object
         $response = new \stdClass();
@@ -91,7 +81,7 @@ class ClassController extends Controller
     public function add_teacher(Request $request)
     {
         // get Teacher details for given nic
-        $teacher = Teacher::where('nic', $request->nic)->first();
+        $teacher = TeacherController::getTeacher($request->nic, auth()->user()->school);
 
         // create object for return response
         $response = new \stdClass();
@@ -110,8 +100,8 @@ class ClassController extends Controller
                     "end_year" => null
                 ];
                 // update teacher's classes details
-                Teacher::where('nic', $request->nic)
-                    ->push('classes', $record);
+                TeacherController::getTeacher($request->nic, auth()->user()->school)
+                ->push('classes', $record);
 
                 $response->status = 'success';
                 $response->teacher = $teacher->full_name;
@@ -169,7 +159,9 @@ class ClassController extends Controller
             'year' => $year,
             'grade' => $grade,
             'class' => $class
-        ])->get();
+        ])
+        ->where('school', auth()->user()->school)
+        ->get();
 
         return $students;
     }
@@ -179,7 +171,9 @@ class ClassController extends Controller
             "end_year" => null,
             "grade" => $grade,
             "class" => $class
-        ])->first();
+        ])
+        ->where("school", auth()->user()->school)
+        ->first();
 
         return $teacher;
     }

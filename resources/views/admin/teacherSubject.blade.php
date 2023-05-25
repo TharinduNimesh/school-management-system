@@ -250,7 +250,15 @@
                                 title: 'Success',
                                 text: 'Subjects attached successfully!',
                             })
-                        } else {
+                        } 
+                        else if (response == "resigned") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'This teacher has resigned!',
+                            })
+                        }
+                        else {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',

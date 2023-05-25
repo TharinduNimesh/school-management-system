@@ -17,7 +17,7 @@ class LeavesController extends Controller
     public function request(Request $request)
     {
         // get teacher's details that request the leave
-        $teacher = Teacher::where('nic', $request->nic)->first();
+        $teacher = TeacherController::getTeacher($request->nic, auth()->user()->school);
 
         $validate = Leaves::where('nic', $request->nic)->where('date', Date("Y-m-d"))->first();
 
@@ -132,7 +132,7 @@ class LeavesController extends Controller
     public function navigateToTeacherLeaves()
     {
         $nic = auth()->user()->index;
-        $teacher = Teacher::where('nic', $nic)->first();
+        $teacher = TeacherController::getTeacher($nic, auth()->user()->school);
 
         // get leaves data
         $leavesData = Leaves::where('nic', $nic)->get();
@@ -212,7 +212,7 @@ class LeavesController extends Controller
                 ]);
             
             $details = Leaves::find($request->id);
-            $teacher = Teacher::where('nic', $details->nic)->first();
+            $teacher = TeacherController::getTeacher($details->nic, auth()->user()->school);
 
             $data = [
                 "teacher_name" => $teacher->full_name,
@@ -239,7 +239,7 @@ class LeavesController extends Controller
             ]);
 
         $details = Leaves::find($request->id);
-        $teacher = Teacher::where('nic', $details->nic)->first();
+        $teacher = TeacherController::getTeacher($details->nic, auth()->user()->school);
 
         $data = [
             "teacher_name" => $teacher->full_name,
@@ -275,7 +275,7 @@ class LeavesController extends Controller
             // if validation pass this will run
         else {
             // get all details for given teacher
-            $teacher = Teacher::where('nic', $request->nic)->first();
+            $teacher = TeacherController::getTeacher($request->nic, auth()->user()->school);
 
             // check teacher exist or not
             if($teacher != null) {
@@ -331,7 +331,7 @@ class LeavesController extends Controller
             // if validation pass this will run
         else {
             // get details for given teacher
-            $teacher = Teacher::where('nic', $request->nic)->first();
+            $teacher = TeacherController::getTeacher($request->nic, auth()->user()->school);
             $errorBag = $validator->getMessageBag();
 
             // check teacher exist or not

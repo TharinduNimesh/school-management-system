@@ -18,16 +18,18 @@ use App\Models\Accessory;
 class TeacherController extends Controller
 {
     public function add(Request $request) {
-        $teacher = Teacher::where('nic', '=', $request->teacherNIC)->whereNull('deleted_at')->first();
+        $teacher = self::getTeacher($request->teacherNIC, auth()->user()->school);
 
         if($teacher == null) {
             // make user object and store teacher's login details on it
             $user = new User();
             $user->name = "$request->teacherFirstName $request->teacherLastName";
+            $user->login = DeveloperController::generateLogin($request->teacherNIC, auth()->user()->school);
             $user->password = Hash::make($request->teacherPassword);
             $user->role = "teacher";
             $user->email = $request->teacherEmail;
             $user->index = $request->teacherNIC;
+            $user->school = auth()->user()->school;
 
             // save teacher login details on User collection
             $userAdded = $user->save();
@@ -50,8 +52,11 @@ class TeacherController extends Controller
             $teacher->email = $request->teacherEmail;
             $teacher->address = $request->address;
 
+            // teacher's school information
+            $teacher->school = auth()->user()->school;
+
             // teacher resignation assign to null
-            $teacher->deleted_at = null;
+            $teacher->resigned_at = null;
 
             // save teacher's information
             $teacherAdded = $teacher->save();
@@ -60,12 +65,30 @@ class TeacherController extends Controller
             if($teacherAdded && $userAdded) {
                 $data = [
                     'teacher_name' => $request->teacherFullName,
-                    'login' => $request->teacherNIC,
+                    'login' => DeveloperController::generateLogin($request->teacherNIC, auth()->user()->school),
                     'password' => $request->teacherPassword
                 ];
                 Mail::to($request->teacherEmail)->send(new TeacherWelcome($data));
                 return 'success';
             } else {
+                if($teacher->resigned_at != null) {
+                    $teacher->resigned_at = null;
+                    $teacher->save();
+
+                    // make user object and store teacher's login details on it
+                    $user = new User();
+                    $user->name = "$request->teacherFirstName $request->teacherLastName";
+                    $user->login = DeveloperController::generateLogin($request->teacherNIC, auth()->user()->school);
+                    $user->password = Hash::make($request->teacherPassword);
+                    $user->role = "teacher";
+                    $user->email = $request->teacherEmail;
+                    $user->index = $request->teacherNIC;
+
+                    // save teacher login details on User collection
+                    $user->save();
+                    
+                    return 'success';
+                }
                 return 'error';
             }
             // already a teacher exist with given nic number
@@ -75,7 +98,7 @@ class TeacherController extends Controller
     }
 
     public function show(Request $request) {
-        $teacher = Teacher::where('nic', $request->nic)->first();
+        $teacher = self::getTeacher($request->nic, auth()->user()->school);
         if($teacher == null) {
             return "Invalid";
         } else {
@@ -84,7 +107,7 @@ class TeacherController extends Controller
     }
 
     public function search($nic) {
-        $teacher = Teacher::where('nic', $nic)->first();
+        $teacher = self::getTeacher($nic, auth()->user()->school);
         if($teacher != null) {
             $leaves = Leaves::where('nic', $nic)
             ->where("status", "accepted")
@@ -105,7 +128,9 @@ class TeacherController extends Controller
     }
 
     public function live($name) {
-        $teachers = Teacher::where('full_name', 'like', "%$name%")->get();
+        $teachers = Teacher::where('full_name', 'like', "%$name%")
+        ->where('school', auth()->user()->school)
+        ->get();
         return $teachers;
     }
 
@@ -127,7 +152,7 @@ class TeacherController extends Controller
 
                 $sectionHead = $newSectionHead;
             }
-            $teacher = Teacher::where('nic', $request->nic)->first();
+            $teacher = self::getTeacher($request->nic, auth()->user()->school);
             $sectionHead->name = $teacher->full_name;
             $sectionHead->nic = $teacher->nic;
             $sectionHead->mobile = $teacher->mobile;
@@ -149,13 +174,13 @@ class TeacherController extends Controller
     }
 
     public function resign($nic) {
-        $teacher = Teacher::where('nic', $nic)->first();
+        $teacher = self::getTeacher($nic, auth()->user()->school);
         $teacher->resigned_at = Date("Y-m-d");
         $teacher->save();
 
         $teacher_class = TeacherController::getClass($nic, Date("Y"));
         if($teacher_class != null) {
-            Teacher::where('nic', $nic)
+            $teacher
             ->where('classes.end_year', null)
             ->update(
                 [
@@ -171,6 +196,7 @@ class TeacherController extends Controller
 
         $user = User::where('index', $nic)
         ->where('role', 'teacher')
+        ->where('school', auth()->user()->school)
         ->first();
 
         if($user != null) {
@@ -178,6 +204,13 @@ class TeacherController extends Controller
         }
 
         return Date("Y-m-d");
+    }
+
+    public static function getTeacher($nic, $school) {
+        $teacher = Teacher::where('nic', $nic)
+        ->where('school', $school)
+        ->first();
+        return $teacher;
     }
 
     public static function hasPermission($nic, $index) {
@@ -210,7 +243,7 @@ class TeacherController extends Controller
     }
 
     public static function getClass($nic, $year) {
-        $teacher = Teacher::where('nic', $nic)->first();
+        $teacher = self::getTeacher($nic, auth()->user()->school);
         if($teacher != null) {
             foreach ($teacher->classes as $class) {
                 if(intval($class["start_year"]) <= intval($year) && intval($class["end_year"] > intval($year)) || 
@@ -281,7 +314,11 @@ class TeacherController extends Controller
     }
 
     public function addSubject(Request $request) {
-        $teacher = Teacher::where('nic', $request->nic)->first();
+        $teacher = self::getTeacher($request->nic, auth()->user()->school);
+        if($teacher->resigned_at != null) {
+            return 'resigned';
+        }
+        
         $subjects = $teacher->subjects;
         if($subjects == null) {
             $subjects = array();
@@ -323,6 +360,7 @@ class TeacherController extends Controller
         ->where('nic', $request->nic)
         ->first();
 
+
         return $subjects;
     }
 
@@ -333,7 +371,7 @@ class TeacherController extends Controller
     }
 
     public function removeSubjectFromAll(Request $request) {
-        $teacher = Teacher::where('nic', $request->nic)->first();
+        $teacher = self::getTeacher($request->nic, auth()->user()->school);
         foreach ($teacher->subjects as $subject) {
             if($subject["subject"] == $request->subject) {
                 self::removeSubject($request->nic, $request->subject, $subject["grade"]);
@@ -344,7 +382,7 @@ class TeacherController extends Controller
     }
 
     public static function removeSubject($nic, $subject, $grade) {
-        $teacher = Teacher::where('nic', $nic)->first();
+        $teacher = self::getTeacher($nic, auth()->user()->school);
         $subjects = $teacher->subjects;
         $newSubjects = [];
         foreach ($subjects as $item) {

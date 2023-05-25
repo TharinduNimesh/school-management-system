@@ -36,7 +36,7 @@ class BookController extends Controller
         if($request->role == "student") {
             $person = Student::where("index_number", $request->index)->first();
         } else if($request->role == "teacher") {
-            $person = Teacher::where("nic", $request->index)->first();
+            $person = TeacherController::getTeacher($request->index, auth()->user()->school);
         } else if($request->role == "nonacademic") {
             $person = Staff::where("nic", $request->index)->first();
         }
@@ -103,7 +103,7 @@ class BookController extends Controller
                 if($getHolder->role == "student") {
                     $holder = Student::where("index_number", $getHolder->holder_id)->first();
                 } else if($getHolder->role == "teacher") {
-                    $holder = Teacher::where("nic", $getHolder->holder_id)->first();
+                    $holder = TeacherController::getTeacher($getHolder->holder_id, auth()->user()->school);
                 } else if($getHolder->role == "nonacademic") {
                     $holder = Staff::where("nic", $getHolder->holder_id)->first();
                 }
@@ -244,7 +244,7 @@ class BookController extends Controller
                 $person = Student::where("index_number", $late->holder_id)->first();
                 $array = $students;
             } else if($late->role == "teacher") {
-                $person = Teacher::where("nic", $late->holder_id)->first();
+                $person = TeacherController::getTeacher($late->holder_id, auth()->user()->school);
                 $array = $teachers;
 
             } else if($late->role == "staff") {
