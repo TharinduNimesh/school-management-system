@@ -9,9 +9,7 @@ class PaymentController extends Controller
 {
     public function navigateToStudentPayment() {
         $index = auth()->user()->index;
-        $student = Student::where('index_number', $index)
-        ->where('school', auth()->user()->school)
-        ->first();
+        $student = Student::where('index_number', $index)->first();
 
 
         return view('student.payment', [
@@ -20,10 +18,7 @@ class PaymentController extends Controller
     }
 
     public static function hasPaidFee($index, $year) {
-        $student = Student::where('index_number', $index)
-        ->where('enrollments.year', $year)
-        ->where('school', auth()->user()->school)
-        ->first();
+        $student = Student::where('index_number', $index)->where('enrollments.year', $year)->first();
 
         if($student != null) {
             foreach ($student->enrollments as $item) {

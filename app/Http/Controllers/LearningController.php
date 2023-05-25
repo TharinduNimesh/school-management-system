@@ -63,9 +63,7 @@ class LearningController extends Controller
             ->first();
 
         if ($validate == null) {
-            $student = Student::where("index_number", $request->index)
-            ->where("school", auth()->user()->school)
-            ->first();
+            $student = Student::where("index_number", $request->index)->first();
             $class = StudentController::getClass($student->index_number, Date("Y"));
             $report = new ReportFeedback();
             $report->record_id = $request->id;
@@ -101,7 +99,7 @@ class LearningController extends Controller
         $week_dates = array();
 
         // Loop through the days of the week and add each date to the array
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 7; $i++) {
             $date = clone $monday;
             $date->modify("+$i days");
             $week_dates[] = $date->format('Y-m-d');
