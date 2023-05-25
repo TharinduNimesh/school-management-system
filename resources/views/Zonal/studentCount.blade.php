@@ -27,14 +27,14 @@
             <!-- Table Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                <h3 class="mb-4">Students Count</h3>
+                <h3 class="mb-4 text-dark">Students Count</h3>
                     <div class="col-sm-12 col-xl-12">
                         <div class="bg-secondary rounded h-100 p-4">
-                            <h6 class="mb-4">School Search</h6>
+                            <h6 class="mb-4 text-dark">School Search</h6>
                             <div class="row g-2">
                                 <div class="col-md-8 col-12">
                                     <div class="form-floating">
-                                        <input class="form-control" id="floatingSelectGrid" type="text"
+                                        <input class="form-control text-dark bg-secondary" id="schoolName" type="text"
                                             placeholder="Index Number">
                                         <label for="floatingSelectGrid">School Name</label>
                                         <div class="mt-3">
@@ -49,7 +49,7 @@
                     </div>
                     <div class="col-sm-12 col-xl-12">
                         <div class="bg-secondary rounded h-100 p-4">
-                            <h6 class="mb-4">Student Count</h6>
+                            <h6 class="mb-4 text-dark">Student Count</h6>
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead class="table-dark">
