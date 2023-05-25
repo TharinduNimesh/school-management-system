@@ -71,28 +71,29 @@ class TeacherController extends Controller
                 Mail::to($request->teacherEmail)->send(new TeacherWelcome($data));
                 return 'success';
             } else {
-                if($teacher->resigned_at != null) {
-                    $teacher->resigned_at = null;
-                    $teacher->save();
-
-                    // make user object and store teacher's login details on it
-                    $user = new User();
-                    $user->name = "$request->teacherFirstName $request->teacherLastName";
-                    $user->login = DeveloperController::generateLogin($request->teacherNIC, auth()->user()->school);
-                    $user->password = Hash::make($request->teacherPassword);
-                    $user->role = "teacher";
-                    $user->email = $request->teacherEmail;
-                    $user->index = $request->teacherNIC;
-
-                    // save teacher login details on User collection
-                    $user->save();
-                    
-                    return 'success';
-                }
                 return 'error';
             }
             // already a teacher exist with given nic number
         } else {
+            if($teacher->resigned_at != null) {
+                $teacher->resigned_at = null;
+                $teacher->save();
+
+                // make user object and store teacher's login details on it
+                $user = new User();
+                $user->name = "$request->teacherFirstName $request->teacherLastName";
+                $user->login = DeveloperController::generateLogin($request->teacherNIC, auth()->user()->school);
+                $user->password = Hash::make($request->teacherPassword);
+                $user->role = "teacher";
+                $user->email = $request->teacherEmail;
+                $user->index = $request->teacherNIC;
+                $user->school = auth()->user()->school;
+
+                // save teacher login details on User collection
+                $user->save();
+                
+                return 'success';
+            }
             return 'exist';
         }
     }
@@ -396,7 +397,12 @@ class TeacherController extends Controller
 
     public function navigateToSummary() {
         $teacherDetails = self::getClass(auth()->user()->index, Date("Y"));
-        $students = ClassController::getStudentList($teacherDetails->grade, $teacherDetails->class, Date("Y"));
+        $students = [];
+        $status = "not_a_class_teacher";
+        if($teacherDetails != null) {
+            $status = "class_teacher";
+            $students = ClassController::getStudentList($teacherDetails->grade, $teacherDetails->class, Date("Y"));
+        }
         $array = [];
         foreach ($students as $student) {
             $obj = new \stdClass();
@@ -407,7 +413,10 @@ class TeacherController extends Controller
             array_push($array, $obj);
         }
 
-        return view('teacher.summary', ['data' => $array]);
+        return view('teacher.summary', [
+            'data' => $array,
+            'status' => $status
+        ]);
     }
 
     public function navigateToSectionHead() {
@@ -420,11 +429,20 @@ class TeacherController extends Controller
 
     public function navigateToMarks() {
         $teacher = self::getClass(auth()->user()->index, Date("Y"));
-        $students = ClassController::getStudentList($teacher->grade, $teacher->class, Date("Y"));
-        $subjects = ClassController::getSubjects($teacher->grade);
+
+        $students = [];
+        $subjects = [];
+        $status = "not_a_class_teacher";
+        if($teacher != null) {
+            $status = "class_teacher";
+            $students = ClassController::getStudentList($teacher->grade, $teacher->class, Date("Y"));
+            $subjects = ClassController::getSubjects($teacher->grade);
+        }
+
         return view('teacher.marks', [
             "subjects" => $subjects,
-            "students" => $students
+            "students" => $students,
+            "status" => $status
         ]);
     }
 
@@ -475,9 +493,19 @@ class TeacherController extends Controller
 
     public function navigateToAccessories() {
         $teacher = self::getClass(auth()->user()->index, Date("Y"));
-        $accessories = Accessory::where("grade", $teacher->grade)
-        ->where("class", $teacher->class)
-        ->first();
+
+        $accessories = null;
+        if($teacher != null) {
+            $accessories = Accessory::where("grade", $teacher->grade)
+            ->where("class", $teacher->class)
+            ->first();
+        } else {
+            return view('teacher.accessories', [
+                "desks" => "Not In A Class",
+                "chairs" => "Not In A Class",
+                "status" => "not_a_class_teacher"
+            ]);
+        }
 
         if($accessories == null) {
             return view('teacher.accessories', [

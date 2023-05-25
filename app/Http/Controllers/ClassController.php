@@ -146,10 +146,16 @@ class ClassController extends Controller
         $current_year = Date("Y");
         $details = TeacherController::getClass(auth()->user()->index, $current_year);
 
-        $students = self::getStudentList($details->grade, $details->class, $current_year);
+        $students = [];
+        $status = "not_a_class_teacher";
+        if($details != null) {
+            $status = "class_teacher";
+            $students = self::getStudentList($details->grade, $details->class, $current_year);
+        }
 
         return view('teacher.attendance', [
-            "students" => $students
+            "students" => $students,
+            "status" => $status,
         ]);
     }
 

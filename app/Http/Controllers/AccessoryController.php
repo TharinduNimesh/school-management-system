@@ -20,6 +20,7 @@ class AccessoryController extends Controller
                 $accessories = new Accessory;
                 $accessories->grade = $teacher->grade;
                 $accessories->class = $teacher->class;
+                $accessories->school = auth()->user()->school;
             }
             $accessories->tables = $request->deskCount;
             $accessories->chairs = $request->chairCount;
@@ -46,6 +47,7 @@ class AccessoryController extends Controller
             $accessoryRequest->grade = $teacher->grade;
             $accessoryRequest->class = $teacher->class;
             $accessoryRequest->date = Date("Y-m-d");
+            $accessoryRequest->school = auth()->user()->school;
 
             $save = $accessoryRequest->save();
             if($save) {
@@ -60,6 +62,7 @@ class AccessoryController extends Controller
     public function show($grade, $class) {
         $accessories = Accessory::where('grade', $grade)
         ->where('class', $class)
+        ->where('school', auth()->user()->school)
         ->first();
 
         $studentList = ClassController::getStudentList($grade, $class, Date("Y"));
@@ -86,10 +89,10 @@ class AccessoryController extends Controller
     }
 
     public function adminNavigateToAccessories() {
-        $requests = RequestedAccessory::all();
+        $requests = RequestedAccessory::where('school', auth()->user()->school)->get();
         $totalDesk = 0;
         $totalChair = 0;
-        $accessories = Accessory::all();
+        $accessories = Accessory::where('school', auth()->user()->school)->get();
         foreach ($accessories as $item) {
             $totalChair += $item->chairs;
             $totalDesk += $item->tables;
