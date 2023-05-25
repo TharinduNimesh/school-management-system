@@ -45,11 +45,7 @@ class AssignmentController extends Controller
 
             // check data saved successfully in database
             if($assignmentAdded) {
-                $students = Student::where('enrollments', 'elemMatch', [
-                    "grade" => $request->grade,
-                    "class" => $request->clss,
-                    "year" => Date("Y")
-                ])->get();
+                $students = ClassController::getStudent($request->grade, $request->class, Date("Y"));
 
                 $url = Storage::url($path);
 

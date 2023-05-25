@@ -28,7 +28,7 @@ class SubjectController extends Controller
 
     public function studentActionAesthetics(Request $request) {
         if($request->status == "accept") {
-            $student = Student::where("index_number", $request->index)->first();
+            $student = StudentController::getStudent($request->index, auth()->user()->school);
             if($student != null) {
                 if($request->category == "aesthetics") {
                     $subjects = null;
@@ -54,7 +54,7 @@ class SubjectController extends Controller
     public function studentActionOL(Request $request) {
         $response = new \stdClass();
         if($request->type == "accept") {
-            $student = Student::where("index_number", $request->index)->first();
+            $student = StudentController::getStudent($request->index, auth()->user()->school);
             $subjects = $student->subjects;
             if($subjects == null) {
                 $object = new \stdClass();
@@ -97,7 +97,7 @@ class SubjectController extends Controller
     public function requestAestheticSubject(Request $request) {
         $subject = RequestedSubject::where('index_number', auth()->user()->index)->where('category', 'aesthetics')->first();
         if($subject == null) {
-            $student = Student::where('index_number', auth()->user()->index)->first();
+            $student = StudentController::getStudent(auth()->user()->index, auth()->user()->school);
             $requestSubject = new RequestedSubject();
             $requestSubject->index_number = $student->index_number;
             $requestSubject->name = $student->initial_name;
@@ -148,7 +148,7 @@ class SubjectController extends Controller
     }
 
     public static function addAlSubjectRequestRecord($index, $scheme, $subjects, $medium) {
-        $student = Student::where("index_number", $index)->first();
+        $student = StudentController::getStudent($index, auth()->user()->school);
         $request = new RequestedSubject();
         $request->index_number = $index;
         $request->scheme = $scheme;
@@ -161,7 +161,7 @@ class SubjectController extends Controller
     }
 
     public static function addOlSubjectRequestRecord($index, $subjects, $medium) {
-        $student = Student::where("index_number", $index)->first();
+        $student = StudentController::getStudent($index, auth()->user()->school);
         $request = new RequestedSubject();
         $request->index_number = $index;
         $request->name = $student->initial_name;
@@ -174,7 +174,7 @@ class SubjectController extends Controller
 
     public function acceptALRequest($id) {
         $request = RequestedSubject::find($id);
-        $student = Student::where('index_number', $request->index_number)->first();
+        $student = StudentController::getStudent($request->index_number, auth()->user()->school);
         $subjects = $student->subjects;
         if($subjects == null) {
             $object = new \stdClass();

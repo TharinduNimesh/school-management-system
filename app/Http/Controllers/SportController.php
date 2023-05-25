@@ -116,7 +116,7 @@ class SportController extends Controller
     }
 
     public function addStudent(Request $request) {
-        $student = Student::where('index_number', $request->index)->first();
+        $student = StudentController::getStudent($request->index, auth()->user()->school);
         $sports = $student->sports;
         $isValid = false;
         if($sports == null) {
@@ -179,7 +179,7 @@ class SportController extends Controller
         }
 
         if(in_array($request->date, $dates)) {
-            $student = Student::where('index_number', $request->index)->first();
+            $student = StudentController::getStudent($request->index, auth()->user()->school);
             $sports = $student->sports;
     
             foreach ($sports as &$sport) {
@@ -257,7 +257,7 @@ class SportController extends Controller
         }
 
         if($isValid) {
-            $student = Student::where('index_number', auth()->user()->index)->first();
+            $student = StudentController::getStudent(auth()->user()->index, auth()->user()->school);
             $sports = $student->sports;
             if($sports == null) {
                 $isValid = true;
@@ -328,7 +328,7 @@ class SportController extends Controller
     }
 
     public static function getAwards($index, $sport) {
-        $student = Student::where('index_number', $index)->first();
+        $student = StudentController::getStudent($index, auth()->user()->school);
         $sports = $student->sports;
         $awards = null;
         foreach ($sports as $sport_object) {
@@ -347,7 +347,9 @@ class SportController extends Controller
     }
 
     public static function getStudentList($sport) {
-        $students = Student::where('sports', '!=', null)->get();
+        $students = Student::where('sports', '!=', null)
+        ->where('school', auth()->user()->school)
+        ->get();
         $studentList = [];
         foreach ($students as $student) {
             $sports = $student->sports;

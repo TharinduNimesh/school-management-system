@@ -10,6 +10,7 @@ class TeamController extends Controller
 {
     public function addStudent(Request $request) {
         $student = Student::where('index_number', $request->index)
+            ->where('school', auth()->user()->school)
             ->where('sports.name', $request->sport)
             ->where('sports.end_date', null)
             ->first();
@@ -133,8 +134,7 @@ class TeamController extends Controller
     
         $save1 = $team->save();
     
-        $student = Student::where('index_number', $index)
-            ->first();
+        $student = StudentController::getStudent($index, auth()->user()->school);
 
         $otherPositions = [];
         $position = null;
@@ -189,8 +189,7 @@ class TeamController extends Controller
         $players[] = $player;
         $team->players = $players;
 
-        $student = Student::where('index_number', request()->index)
-            ->first();
+        $student = StudentController::getStudent(request()->index, auth()->user()->school);
 
         $otherPositions = [];
         $position = null;

@@ -34,7 +34,7 @@ class BookController extends Controller
         $book = book::where("book_id", $request->bookId)->first();
         $person = null;
         if($request->role == "student") {
-            $person = Student::where("index_number", $request->index)->first();
+            $person = StudentController::getStudent($request->index, auth()->user()->school);
         } else if($request->role == "teacher") {
             $person = TeacherController::getTeacher($request->index, auth()->user()->school);
         } else if($request->role == "nonacademic") {
@@ -101,7 +101,7 @@ class BookController extends Controller
                 $response->role = $getHolder->role;
 
                 if($getHolder->role == "student") {
-                    $holder = Student::where("index_number", $getHolder->holder_id)->first();
+                    $holder = StudentController::getStudent($getHolder->holder_id, auth()->user()->school);
                 } else if($getHolder->role == "teacher") {
                     $holder = TeacherController::getTeacher($getHolder->holder_id, auth()->user()->school);
                 } else if($getHolder->role == "nonacademic") {
@@ -241,7 +241,7 @@ class BookController extends Controller
             $book = Book::where("book_id", $late->book_id)->first();
             $person = null;
             if($late->role == "student") {
-                $person = Student::where("index_number", $late->holder_id)->first();
+                $person = StudentController::getStudent($late->holder_id, auth()->user()->school);
                 $array = $students;
             } else if($late->role == "teacher") {
                 $person = TeacherController::getTeacher($late->holder_id, auth()->user()->school);

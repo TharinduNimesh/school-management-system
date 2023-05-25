@@ -21,9 +21,7 @@ use Illuminate\Support\Facades\Mail;
 class StudentController extends Controller
 {
     public function add(Request $request) {
-        $student = Student::where('index_number', strval($request->studentIndexNumber))
-        ->where('school', auth()->user()->school)
-        ->first();
+        $student = self::getStudent($request->studentIndexNumber, auth()->user()->school);
 
         if($student == null) {
             $user = new User();
@@ -113,9 +111,7 @@ class StudentController extends Controller
 
     public function show($id) {
         // search student by given index number
-        $student = Student::where('index_number', $id)
-        ->where('school', auth()->user()->school)
-        ->first();
+        $student = self::getStudent($id, auth()->user()->school);
 
         // check previous query return a value or not
         if($student != null){
@@ -176,7 +172,7 @@ class StudentController extends Controller
     }
 
     public function updateDiscipline(Request $request) {
-        $student = Student::where('index_number', $request->index)->first();
+        $student = self::getStudent($request->index, auth()->user()->school);
         if($student != null) {
             if($student->discipline_marks == null) {
                 $student->discipline_marks = 100;
@@ -251,7 +247,7 @@ class StudentController extends Controller
         $response = null;
         $hasPermission = TeacherController::hasPermission(auth()->user()->index, request()->index);
         if($hasPermission) {
-            $student = Student::where('index_number', request()->index)->first();
+            $student = self::getStudent(request()->index, auth()->user()->school);
             if($student != null) {
                 $NICs = [];
                 array_push($NICs, $student->father_nic);
@@ -292,7 +288,7 @@ class StudentController extends Controller
     }
 
     public function searchDismiss($index) {
-        $student = Student::where('index_number', $index)->first();
+        $student = self::getStudent($index, auth()->user()->school);
         if($student->dismissals == null) {
             return 'noData';
         } else {
@@ -335,7 +331,7 @@ class StudentController extends Controller
     }
 
     public function resignation($index) {
-        $student = Student::where('index_number', $index)->first();
+        $student = self::getStudent($index, auth()->user()->school);
         if($student != null) {
             $student->resigned_at = Date("Y-m-d");
             $sports = [];
@@ -353,7 +349,7 @@ class StudentController extends Controller
     }
 
     public function updateDetails() {
-        $student = Student::where('index_number', request()->index)->first();
+        $student = self::getStudent(auth()->user()->index, auth()->user()->school);
 
         if($student != null) {
             $student->full_name = request()->full_name;
@@ -392,7 +388,7 @@ class StudentController extends Controller
     }
 
     public static function getClass($index, $year) {
-        $student = Student::where('index_number', $index)->where('enrollments.year', $year)->first();
+        $student = self::getStudent($index, auth()->user()->school)->where('enrollments.year', $year)->first();
         if($student != null) {
             foreach ($student->enrollments as $class) {
                 if($class["year"] == $year) {
@@ -400,6 +396,13 @@ class StudentController extends Controller
                 }
             }
         }
+    }
+
+    public static function getStudent($index, $school) {
+        $student = Student::where('index_number', $index)
+        ->where('school', $school)
+        ->first();
+        return $student;
     }
 
     public function navigateToMarks() {
@@ -484,8 +487,7 @@ class StudentController extends Controller
                 ->where('deadline', '>=', Date("Y-m-d"))
                 ->first();
                 if($validateIsRequest == null && $isActivate != null) {
-                    $subjects = Student::where("index_number", auth()->user()->index)
-                    ->first();;
+                    $subjects = self::getStudent(auth()->user()->index, auth()->user()->school);
                     if(!isset($subjects->subjects[$sampleSubject])) {
                         $$category = "active";
                     }

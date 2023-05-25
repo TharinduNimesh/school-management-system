@@ -63,7 +63,7 @@ class LearningController extends Controller
             ->first();
 
         if ($validate == null) {
-            $student = Student::where("index_number", $request->index)->first();
+            $student = StudentController::getStudent($request->index, auth()->user()->school);
             $class = StudentController::getClass($student->index_number, Date("Y"));
             $report = new ReportFeedback();
             $report->record_id = $request->id;

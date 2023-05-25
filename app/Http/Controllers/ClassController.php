@@ -48,7 +48,7 @@ class ClassController extends Controller
     public function add_student(Request $request)
     {
         // search student have a class in given year
-        $student = Student::where('index_number', $request->indexNumber)
+        $student = StudentController::getStudent($request->indexNumber, auth()->user()->school)
             ->where('enrollments.year', $request->year)
             ->first();
 
@@ -63,7 +63,7 @@ class ClassController extends Controller
             ];
 
             // add given data for the student
-            Student::where('index_number', $request->indexNumber)
+            StudentController::getStudent($request->indexNumber, auth()->user()->school)
                 ->push('enrollments', $enrollment);
             return 'success';
         }

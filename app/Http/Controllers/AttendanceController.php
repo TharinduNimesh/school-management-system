@@ -25,7 +25,7 @@ class AttendanceController extends Controller
 
         if($validate == null) {
             foreach($present as $item) {
-                $student = Student::where('index_number', $item)->first();
+                $student = StudentController::getStudent($item, auth()->user()->school);
                 $attendance = StudentAttendance::where('index_number', $item)
                                 ->where('year', $year)->first();
                 if($attendance == null) {
@@ -62,7 +62,7 @@ class AttendanceController extends Controller
             }
 
             foreach($data->absent as $item) {
-                $student = Student::where('index_number', $item)->first();
+                $student = StudentController::getStudent($item, auth()->user()->school);
                 $attendance = StudentAttendance::where('index_number', $item)
                                 ->where('year', $year)->first();
                 if($attendance == null) {
