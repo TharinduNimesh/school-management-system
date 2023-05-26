@@ -375,8 +375,16 @@ class StudentController extends Controller
     }
 
     public static function getAttendancePrecentage($index, $year) {
-        $attendace_data = StudentAttendance::select('attendance')->where('index_number', $index)->where('year', $year)->first();
-        $dateCount = AttendanceController::getSchoolHoldDateCount(Date("Y"));
+        $attendace_data = StudentAttendance::select('attendance')
+        ->where('index_number', $index)
+        ->where('school', auth()->user()->school)
+        ->where('year', $year)
+        ->first();
+        $student = self::getClass($index, $year);
+        $dateCount = 0;
+        if($student != null) {
+            $dateCount = AttendanceController::getSchoolHoldDateCount(Date("Y"), $student["grade"]);
+        }
         $present_count = 0;
         if($attendace_data != null) {
             foreach ($attendace_data->attendance as $item) {
@@ -386,6 +394,9 @@ class StudentController extends Controller
             }
         }
 
+        if($dateCount == 0) {
+            return 0;
+        }
         return round(($present_count / $dateCount) * 100, 3);
     }
 
