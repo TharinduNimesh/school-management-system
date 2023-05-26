@@ -30,6 +30,7 @@ class TeamController extends Controller
 
             if ($request->category == "new") {
                 $validate = SportTeam::where('name', $request->team)
+                    ->where('school', auth()->user()->school)
                     ->where('sport', $request->sport)
                     ->first();
                 
@@ -40,6 +41,7 @@ class TeamController extends Controller
                 $newTeam = new SportTeam();
                 $newTeam->name = $request->team;
                 $newTeam->sport = $request->sport;
+                $newTeam->school = auth()->user()->school;
                 $newTeam->start_date = date("Y-m-d");
                 $newTeam->end_date = null;
                 $newTeam->players = [];
@@ -47,6 +49,7 @@ class TeamController extends Controller
                 $team = $newTeam;
             } else {
                 $team = SportTeam::where('name', $request->team)
+                    ->where('school', auth()->user()->school)
                     ->where('sport', $request->sport)
                     ->first();
                 foreach ($team->players as $player) {
@@ -115,6 +118,7 @@ class TeamController extends Controller
 
     public function removePlayer($sportName, $teamName, $index) {
         $team = SportTeam::where('sport', $sportName)
+            ->where('school', auth()->user()->school)
             ->where('name', $teamName)
             ->where('end_date', null)
             ->first();
@@ -172,6 +176,7 @@ class TeamController extends Controller
 
     public function changePosition() {
         $team = SportTeam::where('sport', request()->sport)
+            ->where('school', auth()->user()->school)
             ->where('name', request()->team)
             ->where('end_date', null)
             ->first();
@@ -224,6 +229,7 @@ class TeamController extends Controller
 
     public static function getPlayersList($sport, $team) {
         $teams = SportTeam::where('sport', $sport)
+        ->where('school', auth()->user()->school)
         ->where('name', $team)
         ->where('end_date', null)
         ->first();
@@ -242,12 +248,14 @@ class TeamController extends Controller
     }
 
     public static function getTeamList($sport) {
-        $teams = SportTeam::where('sport', $sport)->get();
+        $teams = SportTeam::where('sport', $sport)
+        ->where('school', auth()->user()->school)
+        ->get();
         return $teams;
     }
 
     public function navigateToTeams() {
-        $sports = SportController::getSportList("200515403527");
+        $sports = SportController::getSportList(auth()->user()->index);
         $teams = [];
 
         foreach ($sports as $sport) {

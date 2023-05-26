@@ -31,12 +31,15 @@ class SportController extends Controller
         else {
             $errorBag = $validator->getMessageBag();
             // check does sport exist with given name
-            $sports = Sport::where('name', $request->name)->first();
+            $sports = Sport::where('name', $request->name)
+            ->where('school', auth()->user()->school)
+            ->first();
             if($sports == null) {
                 $sport = new Sport();
                 $sport->name = $request->name;
                 $sport->category = $request->category;
                 $sport->description = $request->description;
+                $sport->school = auth()->user()->school;
                 $sportAdded = $sport->save();
 
                 if($sportAdded) {
@@ -84,7 +87,9 @@ class SportController extends Controller
             }
 
             // get current coaches details
-            $coaches = Coach::where('nic', $request->nic)->first();
+            $coaches = Coach::where('nic', $request->nic)
+            ->where('school', auth()->user()->school)
+            ->first();
             // check already caoch exist with given nic
             if($coaches == null) {
                 // add details to coach table
@@ -93,6 +98,7 @@ class SportController extends Controller
                 $coach->nic = $request->nic;
                 $coach->mobile = $request->mobile;
                 $coach->sports = $request->sports;
+                $coach->school = auth()->user()->school;
                 $coach->save();
 
                 // add details to user table
@@ -100,8 +106,10 @@ class SportController extends Controller
                 $user->name = $request->name;
                 $user->index = $request->nic;
                 $user->email = $request->email;
+                $user->login = DeveloperController::generateLogin($request->nic, auth()->user()->school);
                 $user->password = Hash::make($request->password);
                 $user->role = "coach";
+                $user->school = auth()->user()->school;
                 $user->save();
 
                 $messageBag->add("success", "Coach Added successfully");
@@ -221,8 +229,10 @@ class SportController extends Controller
     }
 
     public function search($name) {
-        $sport = Sport::where('name', $name)->first();
-        $coaches = Coach::all();
+        $sport = Sport::where('name', $name)
+        ->where('school', auth()->user()->school)
+        ->first();
+        $coaches = Coach::where('school', auth()->user()->school)->get();
 
         $response = [
             "sport" => $sport,
@@ -241,7 +251,7 @@ class SportController extends Controller
     }
 
     public function request($name) {
-        $coach = Coach::all();
+        $coach = Coach::where('school', auth()->user()->school)->get();
         $isValid = false;
 
         foreach ($coach as $coach_object) {
@@ -273,6 +283,7 @@ class SportController extends Controller
         if($isValid) {
             $requests = RequestedSport::where('index_number', auth()->user()->index)
             ->where('sport', $name)
+            ->where('school', auth()->user()->school)
             ->first();
     
             if($requests != null) {
@@ -288,6 +299,7 @@ class SportController extends Controller
                 $request->sport = $name;
                 $request->index_number = auth()->user()->index;
                 $request->class = strval($class['grade']) . '-' . $class['class'];
+                $request->school = auth()->user()->school;
         
                 $request->save();
         
@@ -313,15 +325,16 @@ class SportController extends Controller
     }
 
     public function navigateToRequests() {
-        $sports = self::getSportList("200515403527");
+        $sports = self::getSportList(auth()->user()->index);
 
         $requests = [];
         foreach ($sports as $sport) {
-            $request = RequestedSport::where('sport', $sport)->get();
+            $request = RequestedSport::where('sport', $sport)
+            ->where('school', auth()->user()->school)
+            ->get();
             array_push($requests, $request);
         }
 
-        $requests = RequestedSport::all();
         return view('sport.requests', [
             'requests' => $requests
         ]);
@@ -342,7 +355,9 @@ class SportController extends Controller
     }
 
     public static function getSportList($nic) {
-        $coach = Coach::where('nic', $nic)->first();
+        $coach = Coach::where('nic', $nic)
+        ->where('school', auth()->user()->school)
+        ->first();
         return $coach->sports;
     }
 
@@ -375,7 +390,7 @@ class SportController extends Controller
     }
 
     public function navigateToAdminSport($errors = null, $success = null) {
-        $sports = Sport::all();
+        $sports = Sport::where('school', auth()->user()->school)->get();
 
         return view('admin.sport', [
             "sports" => $sports,
@@ -384,7 +399,7 @@ class SportController extends Controller
     }
 
     public function navigateToAddStudent() {
-        $sports = self::getSportList("200515403527");
+        $sports = self::getSportList(auth()->user()->index);
 
         return view("sport.addStudent", [
             "sports" => $sports
@@ -392,7 +407,7 @@ class SportController extends Controller
     }
 
     public function naivgateToAddAwards() {
-        $sports = self::getSportList("200515403527");
+        $sports = self::getSportList(auth()->user()->index);
 
         return view("sport.awards", [
             "sports" => $sports
@@ -400,7 +415,7 @@ class SportController extends Controller
     }
 
     public function navigateToStudentList() {
-        $sports = self::getSportList("200515403527");
+        $sports = self::getSportList(auth()->user()->index);
 
         $players = [];
         foreach ($sports as $sport) {
@@ -416,7 +431,7 @@ class SportController extends Controller
     }
 
     public function navigateToTimeTable() {
-        $sports = self::getSportList("200515403527");
+        $sports = self::getSportList(auth()->user()->index);
 
         return view('sport.timetable', [
             "sports" => $sports

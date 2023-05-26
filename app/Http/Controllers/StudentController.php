@@ -316,7 +316,9 @@ class StudentController extends Controller
         $request = new RequestedChanges();
         $request->index_number = auth()->user()->index;
         $request->name = auth()->user()->name;
-        $request->class = $class["grade"] . " - " . $class["class"];
+        $request->grade = $class["grade"];
+        $request->class = $class["class"];
+        $request->school = auth()->user()->school;
         $request->subject = request()->subject;
         $request->description = request()->description;
         $request->category = "text"; // profile text base changes and image base changes is known as category
@@ -538,7 +540,7 @@ class StudentController extends Controller
     }
 
     public function navigateToSports() {
-        $all = Sport::all();
+        $all = Sport::where('school', auth()->user()->school)->get();
         $sports = [];
         foreach ($all as $sport) {
             if(!in_array($sport->name, $sports)) {
