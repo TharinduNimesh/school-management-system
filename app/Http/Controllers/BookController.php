@@ -12,12 +12,15 @@ use App\Models\Staff;
 class BookController extends Controller
 {
     public function add(Request $request) {
-        $book = Book::where("book_id", $request->id)->first();
+        $book = Book::where("book_id", $request->id)
+        ->where("school", auth()->user()->school)
+        ->first();
         if($book == null) {
             $book = new Book();
             $book->book_id = $request->id;
             $book->title = $request->title;
             $book->author = $request->author;
+            $book->school = auth()->user()->school;
             $saved = $book->save();
 
             if($saved) {
@@ -31,7 +34,9 @@ class BookController extends Controller
     }
 
     public function borrow(Request $request) {
-        $book = book::where("book_id", $request->bookId)->first();
+        $book = book::where("book_id", $request->bookId)
+        ->where("school", auth()->user()->school)
+        ->first();
         $person = null;
         if($request->role == "student") {
             $person = StudentController::getStudent($request->index, auth()->user()->school);
@@ -44,6 +49,7 @@ class BookController extends Controller
             if($book != null) {
                 if(self::isAvailable($request->bookId)) {
                     $holder = BorrowedBook::where("holder_id", $request->index)
+                    ->where("school", auth()->user()->school)
                     ->where("returned", false)
                     ->first();
                     if($holder == null) {
@@ -54,6 +60,7 @@ class BookController extends Controller
                         $holder->borrowed_date = $request->date;
                         $holder->need_to_return = Date("Y-m-d", strtotime($request->date . "+ 7 days"));
                         $holder->role = $request->role;
+                        $holder->school = auth()->user()->school;
                         $holder->returned = false;
                         $saved = $holder->save();
     
@@ -75,11 +82,15 @@ class BookController extends Controller
 
     public function search($id) {
         $response = new \stdClass();
-        $book = Book::where("book_id", $id)->first();
+        $book = Book::where("book_id", $id)
+        ->where("school", auth()->user()->school)
+        ->first();
         if($book != null) {
             $borrowedBook = BorrowedBook::where("title", $book->title)
+            ->where("school", auth()->user()->school)
             ->get();
             $copies = Book::where("title", $book->title)
+            ->where("school", auth()->user()->school)
             ->count();
     
             $response->id = $book->book_id;
@@ -93,6 +104,7 @@ class BookController extends Controller
             } else {
                 $response->available = false;
                 $getHolder = BorrowedBook::where("book_id", $id)
+                ->where("school", auth()->user()->school)
                 ->where("returned", false)
                 ->first();
                 $holder = null;
@@ -137,6 +149,7 @@ class BookController extends Controller
 
     public function searchByAuthor($author) {
         $books = Book::where("author", $author)
+        ->where("school", auth()->user()->school)
         ->get();
 
         $list = [];
@@ -150,6 +163,7 @@ class BookController extends Controller
         }
 
         $count = Book::where("author", $author)
+        ->where("school", auth()->user()->school)
         ->distinct("title")
         ->get();
 
@@ -162,6 +176,7 @@ class BookController extends Controller
 
     public function searchByTitle($title) {
         $books = Book::where("title", $title)
+        ->where("school", auth()->user()->school)
         ->get();
 
         $list = [];
@@ -175,6 +190,7 @@ class BookController extends Controller
         }
 
         $count = Book::where("title", $title)
+        ->where("school", auth()->user()->school)
         ->get();
 
         $response = new \stdClass();
@@ -185,9 +201,12 @@ class BookController extends Controller
     }
 
     public static function isAvailable($id) {
-        $book = Book::where("book_id", $id)->first();
+        $book = Book::where("book_id", $id)
+        ->where("school", auth()->user()->school)
+        ->first();
         if($book != null) {
             $borrowedBook = BorrowedBook::where("book_id", $id)
+            ->where("school", auth()->user()->school)
             ->where("returned", false)
             ->first();
             if($borrowedBook == null) {
@@ -198,7 +217,7 @@ class BookController extends Controller
     }
 
     public static function listAuthorsAndTitles() {
-        $allBooks = Book::all();
+        $allBooks = Book::where("school", auth()->user()->school)->get();
 
         $titles = array();
         $authors = array();
@@ -229,6 +248,7 @@ class BookController extends Controller
 
     public function navigateToLateList() {
         $lateList = BorrowedBook::where("returned", false)
+        ->where("school", auth()->user()->school)
         ->where("need_to_return", "<", Date("Y-m-d"))
         ->get();
 
@@ -238,7 +258,9 @@ class BookController extends Controller
 
         foreach($lateList as $late) {
             $lateData = new \stdClass();
-            $book = Book::where("book_id", $late->book_id)->first();
+            $book = Book::where("book_id", $late->book_id)
+            ->where("school", auth()->user()->school)
+            ->first();
             $person = null;
             if($late->role == "student") {
                 $person = StudentController::getStudent($late->holder_id, auth()->user()->school);
@@ -252,7 +274,9 @@ class BookController extends Controller
                 $array = $staff;
             }
 
-            $book = Book::where("book_id", $late->book_id)->first();
+            $book = Book::where("book_id", $late->book_id)
+            ->where("school", auth()->user()->school)
+            ->first();
             $lateData->book_name = $book->title;
             $lateData->name = $person->full_name;
             $lateData->book_id = $late->book_id;
@@ -275,8 +299,10 @@ class BookController extends Controller
     }
 
     public function navigateToDashboard() {
-        $allBooks = Book::all();
-        $unavailable = BorrowedBook::where("returned", false)->get();
+        $allBooks = Book::where("school", auth()->user()->school)->get();
+        $unavailable = BorrowedBook::where("returned", false)
+        ->where("school", auth()->user()->school)
+        ->get();
         $available = count($allBooks) - count($unavailable);
         $titles = self::listAuthorsAndTitles()->titles;
 
@@ -288,7 +314,7 @@ class BookController extends Controller
             $authors[$title] = $author->author;
         }
 
-        $borrowed = BorrowedBook::all();
+        $borrowed = BorrowedBook::where("school", auth()->user()->school)->get();
 
         foreach ($borrowed as $book) {
             if(count($count) >= 10) {

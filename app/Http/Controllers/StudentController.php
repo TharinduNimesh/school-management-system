@@ -133,6 +133,7 @@ class StudentController extends Controller
         $student = $this->show($id);
         if($student != 'invalid') {
             $book = BorrowedBook::where('holder_id', $id)
+            ->where('school', auth()->user()->school)
             ->where('returned', false)
             ->first();
             $class = self::getClass($id, Date("Y"));
