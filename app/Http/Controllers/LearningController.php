@@ -12,8 +12,8 @@ class LearningController extends Controller
 {
     public function addTask(Request $request)
     {
-        $validate = LearningRecord::where("nic", auth()->user()->index)
-            ->where('date', Date("Y-m-d"))
+        $validate = LearningRecord::where('date', Date("Y-m-d"))
+            ->where('school', auth()->user()->school)
             ->where("period_no", $request->periodNo)
             ->first();
 
@@ -25,6 +25,7 @@ class LearningController extends Controller
             $record->date = Date("Y-m-d");
             $record->grade = $request->grade;
             $record->class = $request->class;
+            $record->school = auth()->user()->school;
             $record->period_no = $request->periodNo;
             $record->subject = $request->subject;
             $record->description = $request->description;
@@ -71,6 +72,7 @@ class LearningController extends Controller
             $report->name = $student->initial_name;
             $report->grade = $class["grade"];
             $report->class = $class["class"];
+            $report->school = auth()->user()->school;
             $report->message = $request->message;
             $report->reason = $request->reasonForReport;
 
@@ -110,6 +112,7 @@ class LearningController extends Controller
             // create variable record and get data from LearningRecord model
             $record = LearningRecord::where("grade", $request->grade)
                 ->where("class", strtoupper($request->class))
+                ->where("school", auth()->user()->school)
                 ->where("date", $date)
                 ->get();
 
@@ -120,6 +123,7 @@ class LearningController extends Controller
         // get count of subjects group by subjects between first and last date of the week
         $count = LearningRecord::where("grade", $request->grade)
             ->where("class", strtoupper($request->class))
+            ->where("school", auth()->user()->school)
             ->whereBetween("date", ["$week_dates[0]", $week_dates[count($week_dates) - 1]])
             ->get(['subject', 'date'])
             ->groupBy("subject")
@@ -150,5 +154,37 @@ class LearningController extends Controller
         }
 
         return $response;
+    }
+
+    public function removeFeedback() {
+        $report = ReportFeedback::find(request()->report_id);
+        $report->delete();
+
+        return redirect()->back();
+    }
+
+    public function navigateToClassRecords() {
+        $reports = ReportFeedback::where("school", auth()->user()->school)
+            ->get();
+        $feedbacks = [];
+        foreach ($reports as $report) {
+            $task = LearningRecord::find($report->record_id);
+            $feedback = [
+                "subject" => $task->subject,
+                "date" => $task->date,
+                "teacher" => $task->name,
+                "grade" => $task->grade,
+                "class" => $task->class,
+                "student" => $report->name,
+                "message" => $report->message,
+                "reason" => $report->reason,
+                "report_id" => $report->_id,
+                "feedback_id" => $task->_id,
+            ];
+            array_push($feedbacks, $feedback);
+        }
+        return view("admin.subject", [
+            "reports" => $feedbacks
+        ]);
     }
 }

@@ -139,9 +139,7 @@ Route::prefix('admin')->middleware(['auth', 'IsAdmin'])->group(function() {
     })->name('admin.discipline');
     Route::get('add/teacher/subject', [SubjectController::class, 'navigateToTeacherSubject'])->name('admin.teacher.subject');
     Route::get('manage/accessories', [AccessoryController::class, 'adminNavigateToAccessories'])->name('admin.accessories');
-    Route::get("manage/class/record", function() {
-        return view("admin.subject");
-    })->name('admin.class.report');
+    Route::get("manage/class/record", [LearningController::class, 'navigateToClassRecords'])->name('admin.class.report');
     Route::get('add/student/subject', [SubjectController::class, 'navigateToStudentSubject'])->name('admin.student.subject');
     Route::get('manage/leaves', [LeavesController::class, 'navigateToadminApproveLeaves'])->name('admin.leaves');
     Route::get('manage/sports', [SportController::class, "navigateToAdminSport"])->name('admin.sports');
@@ -247,6 +245,7 @@ Route::get('accept/request/al{id}', [SubjectController::class, 'acceptALRequest'
 Route::post('feedbacks', [LearningController::class, 'getFeedbacks'])->name('get.feedbacks');
 Route::get('resign/teacher/{id}', [TeacherController::class, 'resign'])->name('resign.teacher');
 Route::get('resign/student/{id}', [StudentController::class, 'resign'])->name('resign.student');
+Route::delete('remove/feedback', [LearningController::class, 'removeFeedback'])->name('remove.feedback');
 
 // admin manage student subject routes
 Route::post('activate/request', [SubjectController::class, 'activate'])->name('request.activate');

@@ -512,6 +512,7 @@ class StudentController extends Controller
         
         $learningRecords = LearningRecord::where('class', $student["class"])
         ->where('grade', $student["grade"])
+        ->where('school', auth()->user()->school)
         ->where('date', Date("Y-m-d"))
         ->get();
 

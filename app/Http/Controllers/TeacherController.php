@@ -415,6 +415,19 @@ class TeacherController extends Controller
         $teacher->save();
     }
 
+    public static function getTeacherSubjects($nic, $school) {
+        $teacher = self::getTeacher($nic, $school);
+        $subjects = [];
+        if($teacher != null) {
+            foreach ($teacher->subjects as $subject) {
+                if(!in_array($subject["subject"], $subjects)) {
+                    array_push($subjects, $subject["subject"]);
+                }
+            }
+        }
+        return $subjects;
+    }
+
     public function navigateToSummary() {
         $teacherDetails = self::getClass(auth()->user()->index, Date("Y"));
         $students = [];
@@ -485,6 +498,7 @@ class TeacherController extends Controller
         $year = date("Y");
         $records = LearningRecord::where("nic", auth()->user()->index)
         ->where("date", "like", "$year%")
+        ->where("school", auth()->user()->school)
         ->orderBy("date", "desc")
         ->get();
 
@@ -508,7 +522,8 @@ class TeacherController extends Controller
         }
         
         return view('teacher.feedback', [
-            "records" => $response
+            "records" => $response,
+            "subjects" => self::getTeacherSubjects(auth()->user()->index, auth()->user()->school)
         ]);
     }
 
