@@ -11,10 +11,13 @@ use stdClass;
 class SubjectController extends Controller
 {
     public function activate(Request $request) {
-        $permission = StudentsSubject::where('category', $request->category)->first();
+        $permission = StudentsSubject::where('category', $request->category)
+        ->where('school', auth()->user()->school)
+        ->first();
         if($permission == null) {
             $newPermission = new StudentsSubject();
             $newPermission->category = $request->category;
+            $newPermission->school = auth()->user()->school;
             $newPermission->save();
 
             $permission = $newPermission;
@@ -69,6 +72,7 @@ class SubjectController extends Controller
             $isUpdated = $student->save();
             if($isUpdated) {
                 $requests = RequestedSubject::where("index_number", $request->index)
+                ->where('school', auth()->user()->school)
                 ->where("category", "ol")
                 ->get();
 
@@ -95,7 +99,10 @@ class SubjectController extends Controller
     }
 
     public function requestAestheticSubject(Request $request) {
-        $subject = RequestedSubject::where('index_number', auth()->user()->index)->where('category', 'aesthetics')->first();
+        $subject = RequestedSubject::where('index_number', auth()->user()->index)
+        ->where('school', auth()->user()->school)
+        ->where('category', 'aesthetics')
+        ->first();
         if($subject == null) {
             $student = StudentController::getStudent(auth()->user()->index, auth()->user()->school);
             $requestSubject = new RequestedSubject();
@@ -104,6 +111,7 @@ class SubjectController extends Controller
             $requestSubject->category = 'aesthetics';
             $requestSubject->subject = $request->subject;
             $requestSubject->medium = $request->medium;
+            $requestSubject->school = auth()->user()->school;
 
             $requestSubject->save();
         }
@@ -113,6 +121,7 @@ class SubjectController extends Controller
         $request = json_decode($request->data);
         $index = auth()->user()->index ;
         $validate = RequestedSubject::where("index_number", $index)
+        ->where('school', auth()->user()->school)
         ->where("category", "ol")
         ->first();
         if($validate == null) {
@@ -132,6 +141,7 @@ class SubjectController extends Controller
     public function requestAlSubject() {
         $request = json_decode(request()->data);
         $validate = RequestedSubject::where("index_number", auth()->user()->index)
+        ->where('school', auth()->user()->school)
         ->where('category', 'al')
         ->first();
         if($validate == null) {
@@ -156,6 +166,7 @@ class SubjectController extends Controller
         $request->category = 'al';
         $request->subjects = $subjects;
         $request->medium = $medium;
+        $requestSubject->school = auth()->user()->school;
 
         $request->save();
     }
@@ -168,6 +179,7 @@ class SubjectController extends Controller
         $request->category = 'ol';
         $request->subjects = $subjects;
         $request->medium = $medium;
+        $requestSubject->school = auth()->user()->school;
 
         $request->save();
     }
@@ -190,6 +202,7 @@ class SubjectController extends Controller
         $isUpdated = $student->save();
         if($isUpdated) {
             $requests = RequestedSubject::where("index_number", $request->index_number)
+            ->where('school', auth()->user()->school)
             ->where("category", "al")
             ->get();
 
@@ -212,13 +225,28 @@ class SubjectController extends Controller
     }
 
     public function navigateToStudentSubject() {
-        $aesthetic = StudentsSubject::where('category', 'aesthetics')->where('deadline', '>=', Date("Y-m-d"))->first();
-        $ol = StudentsSubject::where('category', 'ol')->where('deadline', '>=', Date("Y-m-d"))->first();
-        $al = StudentsSubject::where('category', 'al')->where('deadline', '>=', Date("Y-m-d"))->first();
+        $aesthetic = StudentsSubject::where('category', 'aesthetic')
+        ->where('school', auth()->user()->school)
+        ->where('deadline', '>=', Date("Y-m-d"))
+        ->first();
+        $ol = StudentsSubject::where('category', 'ol')
+        ->where('school', auth()->user()->school)
+        ->where('deadline', '>=', Date("Y-m-d"))
+        ->first();
+        $al = StudentsSubject::where('category', 'al')
+        ->where('school', auth()->user()->school)
+        ->where('deadline', '>=', Date("Y-m-d"))
+        ->first();
 
-        $aestheticRequests = RequestedSubject::where("category", "aesthetics")->get();
-        $olRequests = RequestedSubject::where("category", "ol")->get();
-        $alRequests = RequestedSubject::where("category", "al")->get();
+        $aestheticRequests = RequestedSubject::where("category", "aesthetics")
+        ->where('school', auth()->user()->school)
+        ->get();
+        $olRequests = RequestedSubject::where("category", "ol")
+        ->where('school', auth()->user()->school)
+        ->get();
+        $alRequests = RequestedSubject::where("category", "al")
+        ->where('school', auth()->user()->school)
+        ->get();
 
         $olSubjects = self::getBucketSubjects("ol");
 
@@ -246,6 +274,8 @@ class SubjectController extends Controller
             "alRequests" => $alRequests,
             "schemes" => self::getSchemes()
         ]);
+
+        return $aesthetic;
     }
 
     public function navigateToTeacherSubject() {

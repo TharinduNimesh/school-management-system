@@ -500,8 +500,11 @@ class StudentController extends Controller
 
             if($sampleSubject != null && $category != null) {
                 $validateIsRequest = RequestedSubject::where("index_number", auth()->user()->index)
-                ->where("category", $category)->first();
+                ->where("school", auth()->user()->school)
+                ->where("category", $category)
+                ->first();
                 $isActivate = StudentsSubject::where('category', $category)
+                ->where('school', auth()->user()->school)
                 ->where('deadline', '>=', Date("Y-m-d"))
                 ->first();
                 if($validateIsRequest == null && $isActivate != null) {
