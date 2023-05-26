@@ -8,7 +8,7 @@
 <body>
     <div class="container-fluid position-relative d-flex p-0">
         <!-- Spinner Start -->
-        @include('public_components.spinner')
+        {{-- @include('public_components.spinner') --}}
         <!-- Spinner End -->
 
 
