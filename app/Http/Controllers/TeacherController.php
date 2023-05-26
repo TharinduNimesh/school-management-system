@@ -136,8 +136,16 @@ class TeacherController extends Controller
     }
 
     public function makeAsSectionHead(Request $request) {
-        $section = SectionHead::where('section', $request->section)->whereNull('end_date')->first();
-        $head = SectionHead::where('nic', $request->nic)->whereNull('end_date')->first();
+        $teacher = self::getTeacher($request->nic, auth()->user()->school);
+        if($teacher->resigned_at != null) {
+            return 'resigned';
+        }
+        $section = SectionHead::where('school', auth()->user()->school)
+        ->where('section', $request->section)
+        ->whereNull('end_date')->first();
+        $head = SectionHead::where('school', auth()->user()->school)
+        ->where('nic', $request->nic)
+        ->whereNull('end_date')->first();
         if($section != null) {
             if($section->end_date == null) {
                 return 'sectionHasAHead';
@@ -145,15 +153,16 @@ class TeacherController extends Controller
         } else if($head != null){
             return 'alreadyASectionHead';
         } else {
-            $sectionHead = SectionHead::where('section', $request->grade)->first();
+            $sectionHead = SectionHead::where('school', auth()->user()->school)
+            ->where('section', $request->grade)->first();
             if($sectionHead == null) {
                 $newSectionHead = new SectionHead();
+                $newSectionHead->school = auth()->user()->school;
                 $newSectionHead->section = $request->section;
                 $newSectionHead->save();
 
                 $sectionHead = $newSectionHead;
             }
-            $teacher = self::getTeacher($request->nic, auth()->user()->school);
             $sectionHead->name = $teacher->full_name;
             $sectionHead->nic = $teacher->nic;
             $sectionHead->mobile = $teacher->mobile;
@@ -195,6 +204,16 @@ class TeacherController extends Controller
             );
         }
 
+        $sectionHead = SectionHead::where('nic', $nic)
+        ->where('school', auth()->user()->school)
+        ->whereNull('end_date')
+        ->first();
+
+        if($sectionHead != null) {
+            $sectionHead->end_date = Date("Y-m-d");
+            $sectionHead->save();
+        }
+
         $user = User::where('index', $nic)
         ->where('role', 'teacher')
         ->where('school', auth()->user()->school)
@@ -221,6 +240,7 @@ class TeacherController extends Controller
 
         $student_class = StudentController::getClass($index, Date("Y"));
         $isSectionHead = SectionHead::where('nic', $nic)
+        ->where('school', auth()->user()->school)
         ->whereNull('end_date')
         ->first();
 
@@ -420,7 +440,8 @@ class TeacherController extends Controller
     }
 
     public function navigateToSectionHead() {
-        $sectionHeads = SectionHead::whereNull('end_date')->get();
+        $sectionHeads = SectionHead::where('school', auth()->user()->school)
+        ->whereNull('end_date')->get();
 
         return view('admin.sectionHead', [
             "sectionHeads" => $sectionHeads

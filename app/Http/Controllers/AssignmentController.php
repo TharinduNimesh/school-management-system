@@ -33,6 +33,7 @@ class AssignmentController extends Controller
             $assignment->subject = $request->subject;
             $assignment->grade = $request->grade;
             $assignment->class = $request->class;
+            $assignment->school = auth()->user()->school;
             $assignment->start_date = $request->startDate;
             $assignment->end_date = $request->endDate;
             $assignment->description = $request->description;
@@ -45,7 +46,7 @@ class AssignmentController extends Controller
 
             // check data saved successfully in database
             if($assignmentAdded) {
-                $students = ClassController::getStudent($request->grade, $request->class, Date("Y"));
+                $students = ClassController::getStudentList($request->grade, $request->class, Date("Y"));
 
                 $url = Storage::url($path);
 
@@ -88,6 +89,7 @@ class AssignmentController extends Controller
             $submission->index_number = auth()->user()->index;
             $submission->grade = $student["grade"];
             $submission->class = $student["class"];
+            $submission->school = auth()->user()->school;
             $submission->date = Date("Y-m-d");
             $submission->time = Date("H:i:s");
             $submission->assignment_id = $request->id;
@@ -104,9 +106,10 @@ class AssignmentController extends Controller
             $date = Date("Y");
             // get submissions for given class for this year
             $submissions = Submission::where('grade', $request->grade)
-                                    ->where("class", $request->class)
-                                    ->where('date', 'like', "$date%")
-                                    ->get();
+            ->where("class", $request->class)
+            ->where("school", auth()->user()->school)
+            ->where('date', 'like', "$date%")
+            ->get();
             
             $response = [];
             foreach ($submissions as $submission) {
@@ -158,6 +161,7 @@ class AssignmentController extends Controller
             // get all assignment for student class and year
             $assignments = Assignment::where('grade', $student["grade"])
             ->where('class', $student["class"])
+            ->where('school', auth()->user()->school)
             ->where('start_date', 'like', "$year%")
             ->orderBy('start_date', 'desc')
             ->get();

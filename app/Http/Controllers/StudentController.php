@@ -388,7 +388,10 @@ class StudentController extends Controller
     }
 
     public static function getClass($index, $year) {
-        $student = self::getStudent($index, auth()->user()->school)->where('enrollments.year', $year)->first();
+        $student = Student::where('index_number', $index)
+        ->where('school', auth()->user()->school)
+        ->where('enrollments.year', $year)
+        ->first();
         if($student != null) {
             foreach ($student->enrollments as $class) {
                 if($class["year"] == $year) {
