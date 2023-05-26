@@ -14,7 +14,9 @@ class MarksController extends Controller
         $student = Student::find($data->id);
         $validate = Marks::where('year', $data->year)
         ->where('term', $data->term)
-        ->where('index_number', $student->index_number)->first();
+        ->where('index_number', $student->index_number)
+        ->where('school', auth()->user()->school)
+        ->first();
 
         if($validate == null) {
             $getClass = StudentController::getClass($student->index_number, $data->year);
@@ -25,6 +27,7 @@ class MarksController extends Controller
             $marks->index_number = $student->index_number;
             $marks->grade = $getClass["grade"];
             $marks->class = $getClass["class"];
+            $marks->school = auth()->user()->school;
             $marks->details = [];
     
             $total = 0;
@@ -51,6 +54,7 @@ class MarksController extends Controller
             $validate = Marks::where('index_number', $student["index_number"])
             ->where('year', $request->year)
             ->where('term', $request->term)
+            ->where('school', auth()->user()->school)
             ->first();
 
             if($validate == null) {
@@ -94,6 +98,7 @@ class MarksController extends Controller
         foreach ($terms as $term) {
             $item = Marks::where("index_number", $request->index)
             ->where("grade", "9")
+            ->where("school", auth()->user()->school)
             ->where("term", $term)
             ->first();
             if($item == null) {
@@ -110,6 +115,7 @@ class MarksController extends Controller
 
     public static function show($index, $year, $term) {
         $marks = Marks::where('index_number', $index)
+        ->where("school", auth()->user()->school)
         ->where('year', $year)
         ->where('term', $term)
         ->first();
@@ -119,6 +125,7 @@ class MarksController extends Controller
 
     public static function getPlace($grade, $class, $year, $term, $index) {
         $all = Marks::where('year', $year)
+        ->where('school', auth()->user()->school)
         ->where('term', $term)
         ->where('grade', $grade)
         ->where('class', $class)

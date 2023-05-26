@@ -422,7 +422,9 @@ class StudentController extends Controller
     }
 
     public function navigateToMarks() {
-        $all = Marks::where('index_number', auth()->user()->index)->get();
+        $all = Marks::where('index_number', auth()->user()->index)
+        ->where('school', auth()->user()->school)
+        ->get();
         $years = [];
 
         if($all != null) {

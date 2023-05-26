@@ -481,7 +481,7 @@ class TeacherController extends Controller
     }
 
     public function navigateToResultSheet() {
-        $all = Marks::all();
+        $all = Marks::where('school', auth()->user()->school)->get();
         $years = [];
         foreach ($all as $item) {
             if(!in_array($item["year"], $years)) {
