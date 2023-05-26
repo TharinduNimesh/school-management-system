@@ -111,10 +111,13 @@ class TeacherController extends Controller
         $teacher = self::getTeacher($nic, auth()->user()->school);
         if($teacher != null) {
             $leaves = Leaves::where('nic', $nic)
+            ->where('school', auth()->user()->school)
             ->where("status", "accepted")
             ->get();
 
-            $shortLeaves = ShortLeaves::where('nic', $nic)->get();
+            $shortLeaves = ShortLeaves::where('nic', $nic)
+            ->where('school', auth()->user()->school)
+            ->get();
 
             $response = new \stdClass();
             $response->teacher = $teacher;
@@ -236,6 +239,11 @@ class TeacherController extends Controller
     public static function hasPermission($nic, $index) {
         if(auth()->user()->role == "admin") {
             return true;
+        }
+
+        $student = StudentController::getStudent($index, auth()->user()->school);
+        if($student->resigned_at != null) {
+            return false;
         }
 
         $student_class = StudentController::getClass($index, Date("Y"));

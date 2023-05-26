@@ -19,7 +19,10 @@ class LeavesController extends Controller
         // get teacher's details that request the leave
         $teacher = TeacherController::getTeacher($request->nic, auth()->user()->school);
 
-        $validate = Leaves::where('nic', $request->nic)->where('date', Date("Y-m-d"))->first();
+        $validate = Leaves::where('nic', $request->nic)
+        ->where('school', auth()->user()->school)
+        ->where('date', Date("Y-m-d"))
+        ->first();
 
         // create new Leaves object
         $leavesData = new Leaves;
@@ -56,6 +59,7 @@ class LeavesController extends Controller
                         $leavesData->mobile = $teacher->mobile;
                         $leavesData->date = $date;
                         $leavesData->reason = "Sick";
+                        $leavesData->school = auth()->user()->school;
                         $leavesData->status = "accepted";
                         $leavesData->save();
 
@@ -72,6 +76,7 @@ class LeavesController extends Controller
                         $leavesData->mobile = $teacher->mobile;
                         $leavesData->date = $date;
                         $leavesData->reason = "Sick";
+                        $leavesData->school = auth()->user()->school;
                         $leavesData->status = "accepted";
                         $leavesData->save();
                         return 'success';
@@ -97,13 +102,16 @@ class LeavesController extends Controller
 
             // check requested teacher has already request earlier in that day
             $check = Leaves::where('nic', $request->nic)
-                ->where('date', $request->date)->first();
+            ->where('school', auth()->user()->school)
+            ->where('date', $request->date)
+            ->first();
 
             // if teacher doen't request leave for that day
             if ($check == null) {
                 $year = Date("Y");
                 // get all casual vocation record for requested teacher in this year
                 $getCount = Leaves::where('nic', $request->nic)
+                    ->where('school', auth()->user()->school)
                     ->where('reason', '<>', 'Sick')
                     ->where('date', 'like', "$year%")
                     ->where('status', 'accepted')->get();
@@ -114,6 +122,7 @@ class LeavesController extends Controller
                     $leavesData->mobile = $teacher->mobile;
                     $leavesData->date = $request->date;
                     $leavesData->reason = $request->reason;
+                    $leavesData->school = auth()->user()->school;
                     $leavesData->status = "pending";
                     $leavesData->save();
 
@@ -135,7 +144,9 @@ class LeavesController extends Controller
         $teacher = TeacherController::getTeacher($nic, auth()->user()->school);
 
         // get leaves data
-        $leavesData = Leaves::where('nic', $nic)->get();
+        $leavesData = Leaves::where('nic', $nic)
+        ->where('school', auth()->user()->school)
+        ->get();
 
         // store leaves data on array
         $leavesArray = array();
@@ -147,6 +158,7 @@ class LeavesController extends Controller
 
         $year = Date("Y");
         $getCount = Leaves::where('nic', $nic)
+            ->where('school', auth()->user()->school)
             ->where('reason', '<>', 'Sick')
             ->where('date', 'like', "$year%")
             ->where('status', 'accepted')->get();
@@ -173,15 +185,18 @@ class LeavesController extends Controller
     {
         // get all sick leaves for today
         $sickLeaves = Leaves::where('reason', 'Sick')
+            ->where('school', auth()->user()->school)
             ->where('date', Date("Y-m-d"))
             ->get();
 
         // get casual Leaves for later today
         $casualLeaves = Leaves::where('reason', '<>', 'Sick')
+            ->where('school', auth()->user()->school)
             ->where('date', '>=', Date("Y-m-d"))
             ->get();
 
         $todayCasualLeaves = Leaves::where('reason', '<>', 'Sick')
+            ->where('school', auth()->user()->school)
             ->where('date', Date('Y-m-d'))
             ->get();
 
@@ -200,6 +215,7 @@ class LeavesController extends Controller
 
         // get accepted leaves count for requested day
         $getCount = Leaves::where('date', $details->date)
+            ->where('school', auth()->user()->school)
             ->where('status', 'accepted')
             ->get();
 
@@ -283,8 +299,9 @@ class LeavesController extends Controller
 
                 // check teacher got previous short leaves atthis month
                 $check = ShortLeaves::where('nic', $request->nic)
-                                    ->where('date', 'like', "$month%")
-                                    ->get();
+                ->where('school', auth()->user()->school)
+                ->where('date', 'like', "$month%")
+                ->get();
 
                 // check got short leaves exceed maximum leaves or not
                 if(count($check) < 2) {
@@ -294,6 +311,7 @@ class LeavesController extends Controller
                     $leave->reason = $request->reason;
                     $leave->date = Date("Y-m-d");
                     $leave->time = Date("H:i:s");
+                    $leave->school = auth()->user()->school;
                     $leave->save();
 
                     return redirect()->route("admin.teacherShortLeaves");
@@ -342,12 +360,14 @@ class LeavesController extends Controller
                                 ->with('search_errors', $errorBag);
             } else {
                 // return short leaves list and name for given teacher
-                $leaves = ShortLeaves::where('nic', $request->nic)->get();
+                $leaves = ShortLeaves::where('nic', $request->nic)
+                ->where('school', auth()->user()->school)
+                ->get();
                 return view('admin.teacherShortLeave')
-                                ->with([
-                                    'name' => $teacher->full_name,
-                                    'list' => $leaves
-                                ]);
+                ->with([
+                    'name' => $teacher->full_name,
+                    'list' => $leaves
+                ]);
             }
         }
     }
