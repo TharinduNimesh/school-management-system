@@ -274,13 +274,15 @@ class TeacherController extends Controller
     public static function getClass($nic, $year) {
         $teacher = self::getTeacher($nic, auth()->user()->school);
         if($teacher != null) {
-            foreach ($teacher->classes as $class) {
-                if(intval($class["start_year"]) <= intval($year) && intval($class["end_year"] > intval($year)) || 
-                intval($class["start_year"]) <= intval($year) && $class["end_year"] == null) {
-                    $response = new \stdClass();
-                    $response->grade = $class["grade"];
-                    $response->class = $class["class"];
-                    return $response;
+            if($teacher->class != null) {
+                foreach ($teacher->classes as $class) {
+                    if(intval($class["start_year"]) <= intval($year) && intval($class["end_year"] > intval($year)) || 
+                    intval($class["start_year"]) <= intval($year) && $class["end_year"] == null) {
+                        $response = new \stdClass();
+                        $response->grade = $class["grade"];
+                        $response->class = $class["class"];
+                        return $response;
+                    }
                 }
             }
         }
