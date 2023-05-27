@@ -274,7 +274,7 @@ class TeacherController extends Controller
     public static function getClass($nic, $year) {
         $teacher = self::getTeacher($nic, auth()->user()->school);
         if($teacher != null) {
-            if($teacher->class != null) {
+            if($teacher->classes != null) {
                 foreach ($teacher->classes as $class) {
                     if(intval($class["start_year"]) <= intval($year) && intval($class["end_year"] > intval($year)) || 
                     intval($class["start_year"]) <= intval($year) && $class["end_year"] == null) {
@@ -429,9 +429,11 @@ class TeacherController extends Controller
         $teacher = self::getTeacher($nic, $school);
         $subjects = [];
         if($teacher != null) {
-            foreach ($teacher->subjects as $subject) {
-                if(!in_array($subject["subject"], $subjects)) {
-                    array_push($subjects, $subject["subject"]);
+            if($teacher->subjects != null) {
+                foreach ($teacher->subjects as $subject) {
+                    if(!in_array($subject["subject"], $subjects)) {
+                        array_push($subjects, $subject["subject"]);
+                    }
                 }
             }
         }
@@ -484,9 +486,9 @@ class TeacherController extends Controller
         }
 
         return view('teacher.marks', [
-            "subjects" => $subjects,
-            "students" => $students,
-            "status" => $status
+            'students' => $students,
+            'subjects' => $subjects,
+            'status' => $status
         ]);
     }
 

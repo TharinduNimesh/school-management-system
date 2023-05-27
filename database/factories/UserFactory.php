@@ -28,7 +28,7 @@ class UserFactory extends Factory
             'role' => 'student',
             'login' => 'GC-' . $index,
             'index' => $index,
-            'school' => '64722d5685545314500a9243'                  
+            'school' => '646dd6d0511b7e8166014913'                  
         ];
     }
 

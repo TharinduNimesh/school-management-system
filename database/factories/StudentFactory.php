@@ -20,7 +20,7 @@ class StudentFactory extends Factory
      */
     public function definition()
     {
-        $user = User::where('school', '64722d5685545314500a9243')
+        $user = User::where('school', '646dd6d0511b7e8166014913')
         ->take(1)
         ->skip(rand(0, 55))
         ->first();
@@ -33,7 +33,7 @@ class StudentFactory extends Factory
         return [
             "full_name" => $this->faker->name(),
             "initial_name" => $user->name,
-            "date_of_birth" => $this->faker->date(),
+            "date_of_birth" => "2008-03-04",
             "index_number" => $user->index,
             "enroll_year" => $this->faker->year(),
             'enroll_class' => $this->faker->randomDigit(),

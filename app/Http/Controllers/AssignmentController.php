@@ -50,14 +50,16 @@ class AssignmentController extends Controller
 
                 $url = Storage::url($path);
 
-                foreach ($students as $student) {
-                    $data = [
-                        "student_name" => $student["full_name"],
-                        "start_date" => $request->startDate,
-                        "end_date" => $request->endDate,
-                        "url" => $url
-                    ];
-                    Mail::to($student->emergency_email)->send(new StudentAssignment($data));
+                if($students != null) {
+                    foreach ($students as $student) {
+                        $data = [
+                            "student_name" => $student["full_name"],
+                            "start_date" => $request->startDate,
+                            "end_date" => $request->endDate,
+                            "url" => $url
+                        ];
+                        Mail::to($student->emergency_email)->send(new StudentAssignment($data));
+                    }
                 }
                 return 'success';
             } else {
