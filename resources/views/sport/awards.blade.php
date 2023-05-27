@@ -36,21 +36,21 @@
                                             placeholder="name@example.com">
                                         <label for="floatingInput" class="px-3">Student Registration Number</label>
                                     </div>
-
                                     <div class="form-floating col-md-6">
                                         <select class="form-select bg-secondary text-dark" id="sport"
                                             aria-label="Floating label select example">
                                             <option selected value="0">Open this select menu</option>
                                             @foreach ($sports as $sport)
-                                                <option>{{ $sport }}</option>
+                                            <option>{{ $sport }}</option>
                                             @endforeach
                                         </select>
                                         <label for="floatingSelect">Select A Sport</label>
                                     </div>
-
-                                    <div class="d-grid gap-2 col-6 mx-auto">
-                                        <button class="btn btn-primary" type="button"
-                                            onclick="searchStudent();">Search</button>
+                                    <div>
+                                        <div class="d-grid gap-2 col-6 mx-auto mt-3">
+                                            <button type="submit" class="btn btn-primary col-sm-12 col-xl-12">Search<i
+                                                    class="bi bi-search ms-2"></i></button>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- /Account search end -->
@@ -61,7 +61,6 @@
                                 <!-- search result start-->
                                 <div class="card-body">
                                     <div class="row">
-
                                         <div class="mb-3 col-md-6">
                                             <label for="Namewithinitials" class="form-label ">Student Name</label>
                                             <input class="form-control bg-secondary text-dark " disabled type="text"
@@ -72,8 +71,7 @@
                                             <input class="form-control bg-secondary text-dark " disabled type="text"
                                                 name="Namewithinitials" value=" example-: 6-F" id="teamResult" />
                                         </div>
-
-                                        <div>
+                                        <div class="table-responsive">
                                             <table class="table table-bordered table-hover caption-top">
                                                 <caption>Achievements so far</caption>
                                                 <thead class="table-dark">
@@ -93,7 +91,8 @@
                                                         <td>Otto</td>
                                                         <td>Champion</td>
                                                         <td>2023-12-12</td>
-                                                        <td class="space">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                                        <td class="space">Lorem ipsum dolor sit amet consectetur
+                                                            adipisicing elit.
                                                             Laboriosam, cum!</td>
                                                     </tr>
 
@@ -112,9 +111,20 @@
                                 <hr class="my-0" />
                                 <div class="card-body">
                                     <div class="alert alert-danger col-md-10 offset-md-1">
-                                        <strong>ATTENTION :</strong> Please add an award to a student's record within one week of the award being won.
+                                        <strong>ATTENTION :</strong> Please add an award to a student's record within
+                                        one week of the award being won.
                                     </div>
                                     <div class="row">
+                                        <div class="form-floating mb-3 col-md-6">
+                                            <select class="form-select bg-secondary text-dark" id="team"
+                                                aria-label="Floating label select example">
+                                                <option selected>Open this select menu</option>
+                                                <option value="1">One</option>
+                                                <option value="2">Two</option>
+                                                <option value="3">Three</option>
+                                            </select>
+                                            <label class="px-3" for="floatingSelectGrid">Teams</label>
+                                        </div>
                                         <div class="form-floating mb-3 col-md-6">
                                             <input type="text" class="form-control bg-secondary text-dark"
                                                 id="competition" placeholder="name@example.com">
@@ -122,25 +132,26 @@
                                         </div>
 
                                         <div class="form-floating mb-3 col-md-6">
-                                            <input type="text" class="form-control bg-secondary text-dark"
-                                                id="category" placeholder="name@example.com">
+                                            <input type="text" class="form-control bg-secondary text-dark" id="category"
+                                                placeholder="name@example.com">
                                             <label class="px-3" for="floatingInput">Category</label>
                                         </div>
 
                                         <div class="form-floating mb-3 col-md-6">
-                                            <input type="text" class="form-control bg-secondary text-dark"
-                                                id="place" placeholder="name@example.com">
+                                            <input type="text" class="form-control bg-secondary text-dark" id="place"
+                                                placeholder="name@example.com">
                                             <label class="px-3" for="floatingInput">Place</label>
                                         </div>
 
                                         <div class="form-floating mb-3 col-md-6">
-                                            <input type="date" class="form-control bg-secondary text-dark"
-                                                id="date" placeholder="name@example.com">
+                                            <input type="date" class="form-control bg-secondary text-dark" id="date"
+                                                placeholder="name@example.com">
                                             <label class="px-3" for="floatingInput">Date</label>
                                         </div>
 
-                                        <div class="form-floating">
-                                            <textarea class="form-control bg-secondary text-dark" placeholder="Leave a comment here" id="Description"></textarea>
+                                        <div class="form-floating mb-3 col-md-6">
+                                            <textarea class="form-control bg-secondary text-dark"
+                                                placeholder="Leave a comment here" id="Description"></textarea>
                                             <label class="px-3" for="floatingTextarea">Description</label>
                                         </div>
                                     </div>
@@ -165,8 +176,7 @@
 
 
             <!-- Back to Top -->
-            <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i
-                    class="bi bi-arrow-up"></i></a>
+            <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
         </div>
 
         @include('public_components.js')
@@ -204,7 +214,7 @@
                     xhr.send(JSON.stringify({
                         index: index.value
                     }));
-                    xhr.onload = function() {
+                    xhr.onload = function () {
                         if (xhr.status == 200) {
                             var response = xhr.responseText;
                             if (response == "not_found") {
@@ -270,8 +280,8 @@
                 const place = document.getElementById("place");
                 const date = document.getElementById("date");
                 const description = document.getElementById("Description");
-                
-                if(indexNumber == '' || sportName == ''){
+
+                if (indexNumber == '' || sportName == '') {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -301,7 +311,7 @@
                         index: indexNumber,
                         sport: sportName
                     }));
-                    xhr.onload = function() {
+                    xhr.onload = function () {
                         if (xhr.status == 200) {
                             var response = xhr.responseText;
                             if (response == "success") {
@@ -317,7 +327,7 @@
                                 // document.getElementById("Description").value = "";
 
                                 searchStudent();
-                            } else if(response == 'invalid_date') {
+                            } else if (response == 'invalid_date') {
                                 Swal.fire({
                                     icon: 'warning',
                                     title: 'Oops...',
@@ -340,7 +350,7 @@
                     }
                 }
             }
-           
+
         </script>
 
 
