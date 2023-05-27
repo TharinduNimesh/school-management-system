@@ -244,7 +244,7 @@ class ClassController extends Controller
         }else if(count($target_students) < request()->count) {
             $response->status = "not_enough";
         }
-        $count = 0;
+        $count = $alreadyStudents;
         foreach ($target_students as $student) {
             if($count == request()->count) {
                 break;

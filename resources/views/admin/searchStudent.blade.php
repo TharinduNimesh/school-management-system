@@ -55,19 +55,22 @@
             <div class="container-fluid pt-4 px-4" style="min-height: 80vh;">
                 <div class="row g-4">
 
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">Warning</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     Are you sure to save changes ?
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn" onclick="updateStudentData();" data-bs-dismiss="modal" style="background: #006ee5; color: white;">Save
+                                    <button type="button" class="btn" onclick="updateStudentData();"
+                                        data-bs-dismiss="modal" style="background: #006ee5; color: white;">Save
                                         changes</button>
                                 </div>
                             </div>
@@ -80,16 +83,20 @@
                             <div class="row">
                                 <div class="col-md-6 col-12 mb-3">
                                     <div class="form-floating">
-                                        <input class="form-control bg-secondary text-dark" id="searchIndex" type="text" placeholder="Index Number">
+                                        <input class="form-control bg-secondary text-dark" id="searchIndex"
+                                            type="text" placeholder="Index Number">
                                         <label for="floatingSelectGrid">Search by index number</label>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6 col-12 mb-3">
                                     <div class="form-floating">
-                                        <input class="form-control bg-secondary text-dark" id="typing" type="text" placeholder="Index Number" data-index="" onkeyup="studentLiveSearch();">
+                                        <input class="form-control bg-secondary text-dark" id="typing" type="text"
+                                            placeholder="Index Number" data-index="" onkeyup="studentLiveSearch();">
                                         <label for="floatingSelectGrid">Search by name</label>
-                                        <div class="list-group" style="position: absolute; width: 100%; z-index: 100000;" id="item-container">
+                                        <div class="list-group"
+                                            style="position: absolute; width: 100%; z-index: 100000;"
+                                            id="item-container">
                                             <!-- suggestions append to here -->
 
                                         </div>
@@ -107,7 +114,9 @@
                         <div class="container-fluid pt-4 px-4" id="studentData">
                             <div class="row mb-3">
                                 <div class="col-12 mt-md-0 col-md-4">
-                                    <div data-bs-toggle="modal" data-bs-target="#newModal" class="rounded d-flex align-items-center justify-content-between p-4" style="background: #ff2c2c; color: white; cursor: pointer;" id="paymentViewer">
+                                    <div data-bs-toggle="modal" data-bs-target="#newModal"
+                                        class="rounded d-flex align-items-center justify-content-between p-4"
+                                        style="background: #ff2c2c; color: white; cursor: pointer;" id="paymentViewer">
                                         <i class="bi bi-cash fa-2x text-primary"></i>
                                         <div class="ms-3">
                                             <p class="mb-2">Facility charges</p>
@@ -116,7 +125,8 @@
                                     </div>
                                 </div>
                                 <div class="col-12 mt-md-0 mt-3 col-md-4">
-                                    <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                                    <div
+                                        class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
                                         <i class="bi bi-percent fa-2x text-dark"></i>
                                         <div class="ms-3">
                                             <p class="mb-2">Attendance</p>
@@ -125,7 +135,8 @@
                                     </div>
                                 </div>
                                 <div class="col-12 mt-md-0 mt-3 col-md-4">
-                                    <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                                    <div
+                                        class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
                                         <i class="bi bi-book-half fa-2x text-dark"></i>
                                         <div class="ms-3">
                                             <p class="mb-2">Class</p>
@@ -134,7 +145,8 @@
                                     </div>
                                 </div>
                                 <div class="col-12 mt-3 col-md-6">
-                                    <div data-bs-target="#reModal" data-bs-toggle="modal" style="cursor: pointer;" class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                                    <div data-bs-target="#reModal" data-bs-toggle="modal" style="cursor: pointer;"
+                                        class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
                                         <i class="bi bi-calendar-week-fill fa-2x text-dark"></i>
                                         <div class="ms-3">
                                             <p class="mb-2">Date Of Resignation</p>
@@ -143,7 +155,8 @@
                                     </div>
                                 </div>
                                 <div class="col-12 mt-3 col-md-6">
-                                    <div style="background-color: #00FF00; color: white;" id="scoreBox" class="rounded d-flex align-items-center justify-content-between p-4">
+                                    <div style="background-color: #00FF00; color: white;" id="scoreBox"
+                                        class="rounded d-flex align-items-center justify-content-between p-4">
                                         <i class="bi bi-capslock-fill fa-2x text-dark"></i>
                                         <div class="ms-3">
                                             <p class="mb-2">Discipline Score</p>
@@ -158,8 +171,11 @@
                                 <div class="row d-flex align-items-center">
                                     <div class="col-8 col-md-5 col-lg-4">
                                         <div class="p-3">
-                                            <div class="img d-flex justify-content-center align-items-center" id="imgBox" onclick="viewImage();" data-img="profileImg/default.png">
-                                                <img style="border-radius: 50%; width: 90%;" src="profileImg/default.png" id="profilePic">
+                                            <div class="img d-flex justify-content-center align-items-center"
+                                                id="imgBox" onclick="viewImage();"
+                                                data-img="profileImg/default.png">
+                                                <img style="border-radius: 50%; width: 90%;"
+                                                    src="profileImg/default.png" id="profilePic">
                                             </div>
                                         </div>
                                     </div>
@@ -167,20 +183,23 @@
                                         <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
                                             <span class="d-none d-sm-block ">Update Profile Picture</span>
                                             <i class="bi bi-upload"></i>
-                                            <input type="file" id="upload" class="account-file-input " hidden accept="image/png, image/jpeg" />
+                                            <input type="file" id="upload" class="account-file-input " hidden
+                                                accept="image/png, image/jpeg" />
                                         </label>
                                     </div>
 
                                     <!-- image modal start  -->
 
-                                    <div class="modal fade " id="imgModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal fade " id="imgModal" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">Crop
                                                         Your
                                                         Image</h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <canvas id="imageCanvas">
@@ -188,8 +207,11 @@
                                                     </canvas>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn" style="background: #367beb; color: white;" id="uploadButton">Crop</button>
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn"
+                                                        style="background: #367beb; color: white;"
+                                                        id="uploadButton">Crop</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -201,82 +223,123 @@
                                 <div class="accordion" id="accordionExample">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingOne">
-                                            <button class="accordion-button btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            <button class="accordion-button btn btn-primary" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                                                aria-expanded="true" aria-controls="collapseOne">
                                                 Student Information
                                             </button>
                                         </h2>
-                                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                        <div id="collapseOne" class="accordion-collapse collapse show"
+                                            aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                             <div class="accordion-body bg-secondary">
                                                 <div class="row">
                                                     <div class="mb-3 col-md-6">
                                                         <label for="FullName" class="form-label">Full Name</label>
-                                                        <input class="form-control bg-secondary text-dark" type="text" id="fullName" name="fullName" value="Ex: Sahan Perera" autofocus />
+                                                        <input class="form-control bg-secondary text-dark"
+                                                            type="text" id="fullName" name="fullName"
+                                                            value="Ex: Sahan Perera" autofocus />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label for="Namewithinitials" class="form-label">Name with
                                                             initials</label>
-                                                        <input class="form-control bg-secondary text-dark" type="text" name="initialName" id="initialName" value="Ex: A.B.C. Perera" />
+                                                        <input class="form-control bg-secondary text-dark"
+                                                            type="text" name="initialName" id="initialName"
+                                                            value="Ex: A.B.C. Perera" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
-                                                        <label for="Dateofbirth" class="form-label">Date of birth</label>
-                                                        <input class="form-control bg-secondary text-dark" type="text" id="dob" name="Dateofbirth" value="Ex: 2000/01/01" />
+                                                        <label for="Dateofbirth" class="form-label">Date of
+                                                            birth</label>
+                                                        <input class="form-control bg-secondary text-dark"
+                                                            type="text" id="dob" name="Dateofbirth"
+                                                            value="Ex: 2000/01/01" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label for="Gender" class="form-label">Gender</label>
-                                                        <input type="text" disabled class="form-control bg-secondary text-dark" id="Gender" name="Gender" value="Ex: Male" />
+                                                        <input type="text" disabled
+                                                            class="form-control bg-secondary text-dark" id="Gender"
+                                                            name="Gender" value="Ex: Male" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label for="address" class="form-label">Address</label>
-                                                        <input type="text" class="form-control bg-secondary text-dark" id="address" name="address" value="Ex: 432/1 A, Waragoda, Kelaniya" />
+                                                        <input type="text"
+                                                            class="form-control bg-secondary text-dark" id="address"
+                                                            name="address" value="Ex: 432/1 A, Waragoda, Kelaniya" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
-                                                        <label for="Indexnumber" class="form-label">Index number</label>
-                                                        <input class="text-dark form-control bg-secondary" disabled type="text" id="studentIndexNumber" name="Indexnumber" value="Ex: 12345" maxlength="6" />
+                                                        <label for="Indexnumber" class="form-label">Index
+                                                            number</label>
+                                                        <input class="text-dark form-control bg-secondary" disabled
+                                                            type="text" id="studentIndexNumber" name="Indexnumber"
+                                                            value="Ex: 12345" maxlength="6" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
-                                                        <label for="Scholarship" class="form-label">Scholarship</label>
-                                                        <input type="text" class="text-dark form-control bg-secondary" id="scholarship" name="Scholarship" value="Ex: Yes" disabled />
+                                                        <label for="Scholarship"
+                                                            class="form-label">Scholarship</label>
+                                                        <input type="text"
+                                                            class="text-dark form-control bg-secondary"
+                                                            id="scholarship" name="Scholarship" value="Ex: Yes"
+                                                            disabled />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label for="Nerollyear" class="form-label">Enroll year</label>
-                                                        <input id="startYear" class="text-dark bg-secondary form-control" disabled name="enrollyear" value="Ex: 2005" />
+                                                        <input id="startYear"
+                                                            class="text-dark bg-secondary form-control" disabled
+                                                            name="enrollyear" value="Ex: 2005" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
-                                                        <label for="Encrollclass" class="form-label">Enroll class</label>
-                                                        <input id="startClass" class="text-dark bg-secondary form-control" disabled name="enrollclass" value="Ex: 01" />
+                                                        <label for="Encrollclass" class="form-label">Enroll
+                                                            class</label>
+                                                        <input id="startClass"
+                                                            class="text-dark bg-secondary form-control" disabled
+                                                            name="enrollclass" value="Ex: 01" />
 
                                                     </div>
                                                     <div class="mb-3 col-md-6">
-                                                        <label for="address" class="form-label">Previous School</label>
-                                                        <input disabled type="text" class="form-control bg-secondary text-dark" id="pSchool" name="pSchool" value="Ex: none" />
+                                                        <label for="address" class="form-label">Previous
+                                                            School</label>
+                                                        <input disabled type="text"
+                                                            class="form-control bg-secondary text-dark" id="pSchool"
+                                                            name="pSchool" value="Ex: none" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
-                                                        <label for="Nationality" class="form-label">Nationality</label>
-                                                        <input disabled id="nationality" class="text-dark bg-secondary form-control" name="nationality" value="Ex: Sinhalese" />
+                                                        <label for="Nationality"
+                                                            class="form-label">Nationality</label>
+                                                        <input disabled id="nationality"
+                                                            class="text-dark bg-secondary form-control"
+                                                            name="nationality" value="Ex: Sinhalese" />
 
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label for="Religion" class="form-label">Religion</label>
-                                                        <input disabled id="religion" class="text-dark bg-secondary form-control" name="religion" value="Ex: Buddhism" />
+                                                        <input disabled id="religion"
+                                                            class="text-dark bg-secondary form-control"
+                                                            name="religion" value="Ex: Buddhism" />
                                                     </div>
 
                                                     <div class="mb-3 col-md-6">
                                                         <label class="form-label" for="phoneNumber">House</label>
                                                         <div class="input-group input-group-merge">
-                                                            <span class="input-group-text" id="houseColor" style="background: green"></span>
-                                                            <input type="text" id="houseName" disabled name="phoneNumber" class="form-control text-dark bg-secondary" value="Ex: Welusumana" />
+                                                            <span class="input-group-text" id="houseColor"
+                                                                style="background: green"></span>
+                                                            <input type="text" id="houseName" disabled
+                                                                name="phoneNumber"
+                                                                class="form-control text-dark bg-secondary"
+                                                                value="Ex: Welusumana" />
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label class="form-label" for="distance">Distance to
                                                             School</label>
                                                         <div class="input-group input-group-merge">
-                                                            <input type="text" id="disToSchool" name="disToSchool" class="form-control text-dark bg-secondary" value="Ex: 10" />
+                                                            <input type="text" id="disToSchool" name="disToSchool"
+                                                                class="form-control text-dark bg-secondary"
+                                                                value="Ex: 10" />
                                                             <span class="input-group-text">KM</span>
                                                         </div>
                                                     </div>
                                                     <div class="mt-2">
-                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                        <button type="button" class="btn btn-primary"
+                                                            data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                             Update
                                                         </button>
                                                     </div>
@@ -286,92 +349,141 @@
                                     </div>
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingTwo">
-                                            <button class="accordion-button btn btn-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            <button class="accordion-button btn btn-primary collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                                aria-expanded="false" aria-controls="collapseTwo">
                                                 Parent' s Information </button>
                                         </h2>
-                                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                        <div id="collapseTwo" class="accordion-collapse collapse"
+                                            aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                                             <div class="accordion-body bg-secondary">
                                                 <div class="row">
                                                     <div class="mb-3 col-md-6">
                                                         <label for="MotherName" class="form-label">Mother Name</label>
-                                                        <input disabled class="form-control bg-secondary text-dark" type="text" id="MotherName" name="MotherName" value="Ex: Diane White" autofocus />
+                                                        <input disabled class="form-control bg-secondary text-dark"
+                                                            type="text" id="MotherName" name="MotherName"
+                                                            value="Ex: Diane White" autofocus />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label for="MotherNIC" class="form-label">Mother NIC</label>
-                                                        <input disabled class="form-control bg-secondary text-dark" type="text" name="MotherNIC" id="MotherNIC" value="Ex: 78123456v" />
+                                                        <input disabled class="form-control bg-secondary text-dark"
+                                                            type="text" name="MotherNIC" id="MotherNIC"
+                                                            value="Ex: 78123456v" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
-                                                        <label for="Mother Email" class="form-label">Mother Email</label>
-                                                        <input disabled class="form-control bg-secondary text-dark" type="text" id="MotherEmail" name="Mother Email" value="Ex: abc@gmail.com" />
+                                                        <label for="Mother Email" class="form-label">Mother
+                                                            Email</label>
+                                                        <input disabled class="form-control bg-secondary text-dark"
+                                                            type="text" id="MotherEmail" name="Mother Email"
+                                                            value="Ex: abc@gmail.com" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label for="MotherJob" class="form-label">Mother Job</label>
-                                                        <input disabled type="text" class="form-control bg-secondary text-dark" id="MotherJob" name="MotherJob" value="Ex: Nursing" />
+                                                        <input disabled type="text"
+                                                            class="form-control bg-secondary text-dark" id="MotherJob"
+                                                            name="MotherJob" value="Ex: Nursing" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label for="MotherJobaddress" class="form-label">Mother Job
                                                             Address</label>
-                                                        <input disabled type="text" class="form-control bg-secondary text-dark" id="MotherJobAddress" name="MotherJobaddress" value="Ex: Nawaloka Hospital Colombo" />
+                                                        <input disabled type="text"
+                                                            class="form-control bg-secondary text-dark"
+                                                            id="MotherJobAddress" name="MotherJobaddress"
+                                                            value="Ex: Nawaloka Hospital Colombo" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label class="form-label" for="MotherNumber">Mother Phone
                                                             Number</label>
                                                         <div class="input-group input-group-merge">
                                                             <span class="input-group-text">LK (+94)</span>
-                                                            <input disabled type="text" id="MotherNumber" name="MotherNumber" class="form-control bg-secondary text-dark" value="Ex: 70 123 4567" />
+                                                            <input disabled type="text" id="MotherNumber"
+                                                                name="MotherNumber"
+                                                                class="form-control bg-secondary text-dark"
+                                                                value="Ex: 70 123 4567" />
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label for="FatherName" class="form-label">Father Name</label>
-                                                        <input disabled class="form-control bg-secondary text-dark" type="text" id="FatherName" name="FatherName" value="Ex: John Doe" />
+                                                        <input disabled class="form-control bg-secondary text-dark"
+                                                            type="text" id="FatherName" name="FatherName"
+                                                            value="Ex: John Doe" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label for="FatherNIC" class="form-label">Father NIC</label>
-                                                        <input disabled type="text" class="form-control bg-secondary text-dark" id="FatherNIC" name="FatherNIC" value="Ex: 703123234v" />
+                                                        <input disabled type="text"
+                                                            class="form-control bg-secondary text-dark" id="FatherNIC"
+                                                            name="FatherNIC" value="Ex: 703123234v" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
-                                                        <label for="FatherNumber" class="form-label">Father Number</label>
-                                                        <input type="text" class="form-control bg-secondary text-dark" disabled value="Ex: 701113332" id="FatherNumber" />
+                                                        <label for="FatherNumber" class="form-label">Father
+                                                            Number</label>
+                                                        <input type="text"
+                                                            class="form-control bg-secondary text-dark" disabled
+                                                            value="Ex: 701113332" id="FatherNumber" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label for="FatherJob" class="form-label">Father Job</label>
-                                                        <input disabled id="FatherJob" class="form-control bg-secondary text-dark" name="FatherJob" value="Ex: Software Engineer" />
+                                                        <input disabled id="FatherJob"
+                                                            class="form-control bg-secondary text-dark"
+                                                            name="FatherJob" value="Ex: Software Engineer" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label for="FatherJobAddress" class="form-label">Father Job
                                                             Address</label>
-                                                        <input disabled id="FatherJobAddress" class="form-control bg-secondary text-dark" name="FatherJobAddress" value="Ex: ABC Company Nugegoda" />
+                                                        <input disabled id="FatherJobAddress"
+                                                            class="form-control bg-secondary text-dark"
+                                                            name="FatherJobAddress"
+                                                            value="Ex: ABC Company Nugegoda" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
-                                                        <label for="GuardianName" class="form-label">Father Email</label>
-                                                        <input disabled id="FatherEmail" class="form-control bg-secondary text-dark" name="GuardianName" value="Ex: abc@outlook.com" />
+                                                        <label for="GuardianName" class="form-label">Father
+                                                            Email</label>
+                                                        <input disabled id="FatherEmail"
+                                                            class="form-control bg-secondary text-dark"
+                                                            name="GuardianName" value="Ex: abc@outlook.com" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
-                                                        <label for="GuardianName" class="form-label">Guardian Name</label>
-                                                        <input disabled id="GuardianName" class="form-control bg-secondary text-dark" name="GuardianName" value="" />
+                                                        <label for="GuardianName" class="form-label">Guardian
+                                                            Name</label>
+                                                        <input disabled id="GuardianName"
+                                                            class="form-control bg-secondary text-dark"
+                                                            name="GuardianName" value="" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
-                                                        <label for="GuardianNIC" class="form-label">Guardian NIC</label>
-                                                        <input disabled id="GuardianNIC" class="form-control bg-secondary text-dark" name="GuardianNIC" value="" />
+                                                        <label for="GuardianNIC" class="form-label">Guardian
+                                                            NIC</label>
+                                                        <input disabled id="GuardianNIC"
+                                                            class="form-control bg-secondary text-dark"
+                                                            name="GuardianNIC" value="" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label for="GuardianNumber" class="form-label">Guardian
                                                             Number</label>
-                                                        <input disabled id="GuardianNumber" class="form-control bg-secondary text-dark" name="GuardianNumber" value="" />
+                                                        <input disabled id="GuardianNumber"
+                                                            class="form-control bg-secondary text-dark"
+                                                            name="GuardianNumber" value="" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
-                                                        <label for="GuardianJob" class="form-label">Guardian Job</label>
-                                                        <input disabled id="GuardianJob" class="form-control bg-secondary text-dark" name="GuardianJob" value="" />
+                                                        <label for="GuardianJob" class="form-label">Guardian
+                                                            Job</label>
+                                                        <input disabled id="GuardianJob"
+                                                            class="form-control bg-secondary text-dark"
+                                                            name="GuardianJob" value="" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
-                                                        <label for="GuardianJobAddress" class="form-label">Guardian Job
+                                                        <label for="GuardianJobAddress" class="form-label">Guardian
+                                                            Job
                                                             Address</label>
-                                                        <input disabled id="GuardianJobAddress" class="form-control bg-secondary text-dark" name="GuardianJobAddress" value="" />
+                                                        <input disabled id="GuardianJobAddress"
+                                                            class="form-control bg-secondary text-dark"
+                                                            name="GuardianJobAddress" value="" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label for="GuardianEmail" class="form-label">Guardian
                                                             Email</label>
-                                                        <input disabled id="GuardianEmail" class="form-control bg-secondary text-dark" name="GuardianEmail" value="" />
+                                                        <input disabled id="GuardianEmail"
+                                                            class="form-control bg-secondary text-dark"
+                                                            name="GuardianEmail" value="" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -379,53 +491,78 @@
                                     </div>
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingThree">
-                                            <button class="accordion-button btn btn-primary collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                            <button class="accordion-button btn btn-primary collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                                                aria-expanded="false" aria-controls="collapseThree">
                                                 Contact Information
                                             </button>
                                         </h2>
-                                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                        <div id="collapseThree" class="accordion-collapse collapse"
+                                            aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                                             <div class="accordion-body bg-secondary">
                                                 <div class="row">
                                                     <div class="mb-3 col-md-6">
-                                                        <label for="MotherEmail" class="form-label">Mother Email</label>
-                                                        <input class="form-control  bg-secondary text-dark" type="text" id="motherEmail" name="motherEmail" value="Ex: abc@gmail.com" autofocus />
+                                                        <label for="MotherEmail" class="form-label">Mother
+                                                            Email</label>
+                                                        <input class="form-control  bg-secondary text-dark"
+                                                            type="text" id="motherEmail" name="motherEmail"
+                                                            value="Ex: abc@gmail.com" autofocus />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
-                                                        <label class="form-label" for="phoneNumber">Mother Number</label>
+                                                        <label class="form-label" for="phoneNumber">Mother
+                                                            Number</label>
                                                         <div class="input-group input-group-merge">
                                                             <span class="input-group-text">LK (+94)</span>
-                                                            <input type="text" id="motherNumber" name="phoneNumber" class="form-control bg-secondary text-dark" value="Ex: 701112223" />
+                                                            <input type="text" id="motherNumber"
+                                                                name="phoneNumber"
+                                                                class="form-control bg-secondary text-dark"
+                                                                value="Ex: 701112223" />
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 col-md-6">
-                                                        <label for="FatherEmail" class="form-label">Father Email</label>
-                                                        <input class="form-control bg-secondary text-dark" type="text" id="fatherEmail" name="fatherEmail" value="Ex: abc@outlook.com" />
+                                                        <label for="FatherEmail" class="form-label">Father
+                                                            Email</label>
+                                                        <input class="form-control bg-secondary text-dark"
+                                                            type="text" id="fatherEmail" name="fatherEmail"
+                                                            value="Ex: abc@outlook.com" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
-                                                        <label class="form-label" for="phoneNumber">Father Number</label>
+                                                        <label class="form-label" for="phoneNumber">Father
+                                                            Number</label>
                                                         <div class="input-group input-group-merge">
                                                             <span class="input-group-text">LK (+94)</span>
-                                                            <input type="text" id="fatherNumber" name="phoneNumber" class="form-control bg-secondary text-dark" value="Ex: 701212123" />
+                                                            <input type="text" id="fatherNumber"
+                                                                name="phoneNumber"
+                                                                class="form-control bg-secondary text-dark"
+                                                                value="Ex: 701212123" />
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label for="address" class="form-label">Home Address</label>
-                                                        <input type="text" class="form-control bg-secondary text-dark" id="studentAddress" name="address" value="Ex: 432/1 B, Ganemulla, Kadawatha." />
+                                                        <input type="text"
+                                                            class="form-control bg-secondary text-dark"
+                                                            id="studentAddress" name="address"
+                                                            value="Ex: 432/1 B, Ganemulla, Kadawatha." />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label class="form-label" for="phoneNumber">Emergency
                                                             Number</label>
                                                         <div class="input-group input-group-merge">
                                                             <span class="input-group-text">LK (+94)</span>
-                                                            <input type="text" id="emNumber" name="emNumber" class="form-control  bg-secondary text-dark" value="Ex: 701231234" />
+                                                            <input type="text" id="emNumber" name="emNumber"
+                                                                class="form-control  bg-secondary text-dark"
+                                                                value="Ex: 701231234" />
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label class="form-label" for="phoneNumber">Emergency
                                                             Email</label>
-                                                        <input type="text" id="emEmail" name="emEmail" class="form-control  bg-secondary text-dark" value="Ex: abc@yahoo.com" />
+                                                        <input type="text" id="emEmail" name="emEmail"
+                                                            class="form-control  bg-secondary text-dark"
+                                                            value="Ex: abc@yahoo.com" />
                                                     </div>
-                                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#contactModal">Update</button>
+                                                    <button class="btn btn-primary" data-bs-toggle="modal"
+                                                        data-bs-target="#contactModal">Update</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -505,19 +642,23 @@
                     </div>
 
 
-                    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">Warning</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     Are you sure to save changes ?
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn" data-bs-dismiss="modal" onclick="updateContact();" style="background: #006ee5; color: white;">Save
+                                    <button type="button" class="btn btn-light"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn" data-bs-dismiss="modal"
+                                        onclick="updateContact(this);" style="background: #006ee5; color: white;">Save
                                         changes</button>
                                 </div>
                             </div>
@@ -527,20 +668,25 @@
 
                     <!-- resignation modal -->
 
-                    <div class="modal fade" id="reModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                    <div class="modal fade" id="reModal" aria-hidden="true"
+                        aria-labelledby="exampleModalToggleLabel" tabindex="-1">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h1 class="modal-title fs-5 text-dark" id="exampleModalToggleLabel">
                                         Warning</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     Enter date of Resignation:
-                                    <input class="form-control bg-secondary text-dark pt-2" id="date" type="date" />
+                                    <input class="form-control bg-secondary text-dark pt-2" id="date"
+                                        type="date" />
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn" style="background: #026df7; color: white;" onclick="updateResignation(this);" data-index="" id="resignationBtn" data-bs-dismiss="modal" aria-label="Close">Update</button>
+                                    <button class="btn" style="background: #026df7; color: white;"
+                                        onclick="updateResignation();" data-index="" id="resignationBtn"
+                                        data-bs-dismiss="modal" aria-label="Close">Update</button>
                                 </div>
                             </div>
                         </div>
@@ -551,31 +697,37 @@
 
                 <!--modal Start-->
 
-                <div class="modal fade" id="newModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="newModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">Warning</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 Do you want change this ?
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn" data-bs-dismiss="modal" onclick="changePayment(event);" style="background: #006ee5;color: white;" data-class="" data-grade="" data-index="" id="paymentBtn">Yes</button>
+                                <button type="button" class="btn" data-bs-dismiss="modal"
+                                    onclick="changePayment(event);" style="background: #006ee5;color: white;"
+                                    data-class="" data-grade="" data-index="" id="paymentBtn">Yes</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!--modal end-->
 
-                <div class="modal fade" id="awardsModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="awardsModel" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">Student Awards</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="table-responsive">
@@ -618,10 +770,12 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title text-dark">Gallary View</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="container d-flex justify-content-center align-items-center" style="background-size: contain;">
+                            <div class="container d-flex justify-content-center align-items-center"
+                                style="background-size: contain;">
                                 <img src="" id="fullScreen" style="width: 100%;">
                             </div>
                         </div>
@@ -729,12 +883,15 @@
         }
     });
 
-
+    var publicIndex = 0;
 
     function searchStudent() {
         document.getElementById("spinner").classList.add("show")
         const index = document.getElementById("searchIndex");
         const name = document.getElementById("typing");
+
+        publicIndex = 0;
+        document.getElementById("paymentBtn").dataset.index = '';
 
         document.getElementById("mistakeBody").innerHTML = '';
         document.getElementById("paymentBody").innerHTML = '';
@@ -768,7 +925,11 @@
             if (xhr.status == 200) {
                 var response = JSON.parse(xhr.responseText);
                 if (response.status == "success") {
-                    console.log(response);
+                    publicIndex = response.student.index_number;
+                    document.getElementById("paymentBtn").dataset.index = response.student.index_number;
+                    document.getElementById("paymentBtn").dataset.class = response.class.class;
+                    document.getElementById("paymentBtn").dataset.grade = response.class.grade;
+
                     var houseName;
                     var houseColor;
                     if (indexNumber % 4 == 0) {
@@ -842,8 +1003,10 @@
                     }
 
                     document.getElementById("attendance").innerHTML = response.attendance + "%";
-                    document.getElementById("currentClass").innerHTML = response.class == null ? "Not Assigned" : response.class.grade + "-" + response.class.class;
-                    document.getElementById("resignation").innerHTML = response.student.resigned_at == null ? "Not Resigned" : response.student.resigned_at;
+                    document.getElementById("currentClass").innerHTML = response.class == null ? "Not Assigned" :
+                        response.class.grade + "-" + response.class.class;
+                    document.getElementById("resignation").innerHTML = response.student.resigned_at == null ?
+                        "Not Resigned" : response.student.resigned_at;
                     var colorStops = [{
                             score: 0,
                             color: "#ff2c2c"
@@ -1114,19 +1277,17 @@
         }
     }
 
-
-    function changePayment(event) {
-        var button = event.target;
-        if (button.dataset.index == '') {
+    function changePayment() {
+        if (event.target.dataset.index == '') {
             Swal.fire({
                 icon: 'warning',
                 title: 'WARNING',
                 text: "Search a Student First"
             });
         } else {
-            var index = button.dataset.index;
-            var clz = button.dataset.class;
-            var grade = button.dataset.grade;
+            var index = event.target.dataset.index;
+            var clz = event.target.dataset.class;
+            var grade = event.target.dataset.grade;
 
             var form = new FormData();
             form.append("index", index);
@@ -1134,16 +1295,69 @@
             form.append("grade", grade);
 
             var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4) {
+            xhr.onload = function() {
+                if (xhr.status == 200) {
+                    var response = xhr.responseText;
+                    var box = document.getElementById('paymentViewer');
+                    if(response == 'not_enrolled') {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'WARNING',
+                            text: "This Student Not Enrolled For A Class Yet"
+                        });
+                    }
+                    else if (response == "no") {
+                        box.style.background = '#ff2c2c';
+                    } else if(response == 'yes'){
+                        box.style.background = '#2cae6b';
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: "Something Went Wrong"
+                        });
+                    }
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: "Internel Server Error",
+                        footer: "<a href='http://wa.me/94701189971'>Contact Developers Here</a>"
+                    });
+                }
+            }
+
+            xhr.open("POST", "{{ route('change.payment') }}", true);
+            xhr.setRequestHeader("X-CSRF-TOKEN", document.querySelector('meta[name="csrf-token"]').content);
+            xhr.send(form);
+        }
+    }
+
+    function updateResignation() {
+        var index = publicIndex
+        if (index == 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'WARNING',
+                text: "Search a Student First"
+            });
+        } else {
+            var date = document.getElementById("date").value;
+            if (date == '') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'WARNING',
+                    text: "Please Enter A Date"
+                });
+            } else {
+                var form = new FormData();
+                form.append("date", date);
+                form.append("index", index);
+
+                var xhr = new XMLHttpRequest();
+                xhr.onload = function() {
                     if (xhr.status == 200) {
-                        var response = xhr.responseText;
-                        var box = document.getElementById('paymentViewer');
-                        if (response == "no") {
-                            box.style.background = '#ff2c2c';
-                        } else {
-                            box.style.background = '#2cae6b';
-                        }
+                        document.getElementById("resignation").innerHTML = date;
                     } else {
                         Swal.fire({
                             icon: 'error',
@@ -1152,52 +1366,10 @@
                             footer: "<a href='http://wa.me/94701189971'>Contact Developers Here</a>"
                         });
                     }
-                }
-            }
-
-            xhr.open("POST", "process/changePayment.php", true);
-            xhr.send(form);
-        }
-    }
-
-    function updateResignation(getIndex) {
-        if (getIndex.dataset.index == '') {
-            Swal.fire({
-                icon: 'warning',
-                title: 'WARNING',
-                text: "Search a Student First"
-            });
-        } else {
-            var date = document.getElementById("date").value;
-            var index = getIndex.dataset.index;
-            if (date == '') {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'WARNING',
-                    text: "Please Enter A Date First"
-                });
-            } else {
-                var form = new FormData();
-                form.append("date", date);
-                form.append("index", index);
-
-                var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState == 4) {
-                        if (xhr.status == 200) {
-                            document.getElementById("resignation").innerHTML = date;
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: "Internel Server Error",
-                                footer: "<a href='http://wa.me/94701189971'>Contact Developers Here</a>"
-                            });
-                        }
-                    }
                 };
 
-                xhr.open("POST", "process/updateResignation.php", true);
+                xhr.open("POST", "{{ route('resign.student') }}");
+                xhr.setRequestHeader("X-CSRF-TOKEN", document.querySelector('meta[name="csrf-token"]').content);
                 xhr.send(form);
             }
         }

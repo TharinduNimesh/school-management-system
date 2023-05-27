@@ -46,7 +46,7 @@ class DeveloperController extends Controller
         $user->password = Hash::make(request()->password);
 
         if(request()->role == "Developer" || request()->role == "Zonal Officer") {
-            $user->login = request()->index;
+            $user->login = request()->nic;
         } else {
             $user->login = self::generateLogin(request()->nic, request()->school_id);
         }

@@ -334,17 +334,18 @@ class StudentController extends Controller
         }
     }
 
-    public function resignation($index) {
-        $student = self::getStudent($index, auth()->user()->school);
+    public function resign() {
+        $student = self::getStudent(request()->index, auth()->user()->school);
         if($student != null) {
-            $student->resigned_at = Date("Y-m-d");
-            $sports = [];
-            foreach ($student->sports as $sport) {
-                $sport["end_date"] = Date("Y-m-d");
-                array_push($sports, $sport);
+            $student->resigned_at = request()->date;
+            if($student->sports != null) {
+                $sports = [];
+                foreach ($student->sports as $sport) {
+                    $sport["end_date"] = Date("Y-m-d");
+                    array_push($sports, $sport);
+                }
+                $student->sports = $sports;
             }
-            $student->sports = $sports;
-
             $student->save();
             return 'success';
         } else {

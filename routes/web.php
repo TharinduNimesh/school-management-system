@@ -244,7 +244,7 @@ Route::get('reject/request/al/{id}', [SubjectController::class, 'rejectALRequest
 Route::get('accept/request/al{id}', [SubjectController::class, 'acceptALRequest'])->name('accept.al.request');
 Route::post('feedbacks', [LearningController::class, 'getFeedbacks'])->name('get.feedbacks');
 Route::get('resign/teacher/{id}', [TeacherController::class, 'resign'])->name('resign.teacher');
-Route::get('resign/student/{id}', [StudentController::class, 'resign'])->name('resign.student');
+Route::post('resign/student', [StudentController::class, 'resign'])->name('resign.student');
 Route::delete('remove/feedback', [LearningController::class, 'removeFeedback'])->name('remove.feedback');
 
 // admin manage student subject routes
@@ -252,6 +252,7 @@ Route::post('activate/request', [SubjectController::class, 'activate'])->name('r
 Route::post("get/subjects/marks", [MarksController::class, 'getMarksForSubject'])->name('get.marks.for.subject');
 Route::post('generate/register', [ClassController::class, 'generateRegister'])->name('generate.register');
 
+Route::post('change/payment', [PaymentController::class, 'changePayment'])->name('change.payment');
 Route::post('update/student/details', [StudentController::class, 'updateDetails'])->name('update.student.details');
 
 // Teacher functions
