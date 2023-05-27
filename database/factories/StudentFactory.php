@@ -20,7 +20,10 @@ class StudentFactory extends Factory
      */
     public function definition()
     {
-        $user = User::take(1)->skip(rand(0, 55))->first();
+        $user = User::where('school', '64722d5685545314500a9243')
+        ->take(1)
+        ->skip(rand(0, 55))
+        ->first();
         $student = Student::where('index_number', $user->index)
         ->where('school', $user->school)
         ->first();

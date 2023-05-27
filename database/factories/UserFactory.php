@@ -26,9 +26,9 @@ class UserFactory extends Factory
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
             'role' => 'student',
-            'login' => 'DAMLO-' . $index,
+            'login' => 'GC-' . $index,
             'index' => $index,
-            'school' => '646dd6d0511b7e8166014913'                      
+            'school' => '64722d5685545314500a9243'                  
         ];
     }
 

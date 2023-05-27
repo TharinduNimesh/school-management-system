@@ -925,10 +925,12 @@
             if (xhr.status == 200) {
                 var response = JSON.parse(xhr.responseText);
                 if (response.status == "success") {
-                    publicIndex = response.student.index_number;
-                    document.getElementById("paymentBtn").dataset.index = response.student.index_number;
-                    document.getElementById("paymentBtn").dataset.class = response.class.class;
-                    document.getElementById("paymentBtn").dataset.grade = response.class.grade;
+                    if(response.class != null) {
+                        publicIndex = response.student.index_number;
+                        document.getElementById("paymentBtn").dataset.index = response.student.index_number;
+                        document.getElementById("paymentBtn").dataset.class = response.class.class;
+                        document.getElementById("paymentBtn").dataset.grade = response.class.grade;
+                    }
 
                     var houseName;
                     var houseColor;
