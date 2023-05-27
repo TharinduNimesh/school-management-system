@@ -209,6 +209,7 @@ class StudentController extends Controller
     public function live(Request $request) {
         $students = Student::where("full_name", "like", "%$request->name%")
         ->where("school", auth()->user()->school)
+        ->limit(10)
         ->get();
 
         $response = array();

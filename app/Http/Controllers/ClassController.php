@@ -29,7 +29,12 @@ class ClassController extends Controller
         }
         // if no any values for given data this will return
         else {
-            $response->classStatus = 'newClass';
+            if($teacher != null) {
+                $response->teacher = $teacher;
+                $response->students = [];
+            } else {
+                $response->classStatus = 'newClass';
+            }
         }
         return json_encode($response);
     }
@@ -59,7 +64,7 @@ class ClassController extends Controller
             $enrollment = [
                 'year' => $request->year,
                 'grade' => $request->grade,
-                'class' => $request->class,
+                'class' => strtoupper($request->class),
                 'isPayment' => 'no'
             ];
 
@@ -96,7 +101,7 @@ class ClassController extends Controller
                 // create array to update teacher's classes details
                 $record = [
                     "grade" => $request->grade,
-                    "class" => $request->class,
+                    "class" => strtoupper($request->class),
                     "start_year" => $request->year,
                     "end_year" => null
                 ];
@@ -160,12 +165,128 @@ class ClassController extends Controller
         ]);
     }
 
+    public function generateRegister() {
+        $alreadyStudents = count(self::getStudentList(request()->grade, request()->class, request()->year));
+        $class_teacher = self::getCurrentTeacher(request()->grade, request()->class);
+        $point = 5;
+        if(request()->grade > 11) {
+            $point = 6;
+        }
+        $birthYear = request()->year - request()->grade - $point;
+        $students = Student::where('date_of_birth', 'like', "$birthYear%")
+        ->orWhere('date_of_birth', 'like', ($birthYear + 1) . "-01-%")
+        ->where('school', auth()->user()->school)
+        ->whereNull('resigned_at')
+        ->get();
+
+        $target_subject = null;
+        $target_medium = null;
+        if(request()->grade > 5 && request()->grade < 11) {
+            $target_subject = 'aesthetics_subject';
+            $target_medium = 'medium';
+        } else if (request()->grade > 10 && request()->grade < 12) {
+            $target_subject = 'ol_subject_1';
+            $target_medium = 'ol_medium';
+        } else if (request()->grade > 11) {
+            $target_subject = 'al_scheme';
+            $target_medium = 'al_medium';
+        }
+
+        $target_students = [];
+        foreach ($students as $student) {
+            $isValid = true;
+            if($student->enrollments != null) {
+                foreach ($student->enrollments as $enrollment) {
+                    if($enrollment['year'] == request()->year) {
+                        $isValid = false;
+                    }
+                }
+            }
+            if(request()->subject != "any") {
+                if($student->subjects == null) {
+                    $isValid = false;
+                } else {
+                    if(request()->subject == "Languages") {
+                        $subjects = [
+                            "Second Language (Sinhala)",
+                            "Second Language (Tamil)",
+                            "Pali",
+                            "Sanskrit",
+                            "French",
+                            "German",
+                            "Hindi",
+                            "Japanese",
+                            "Arabic",
+                            "Korean",
+                            "Chinese",
+                            "Russian"
+                        ];
+                        if(!in_array($student->subjects[$target_subject], $subjects)) {
+                            $isValid = false;
+                        }
+                    } else {
+                        $student->subjects[$target_subject] == request()->subject ? null : $isValid = false;
+                    }
+                }
+            }
+            if(request()->medium != "any") {
+                $student->subjects[$target_medium] == request()->medium ? null : $isValid = false;
+            }
+            if($isValid) {
+                array_push($target_students, $student);
+            }
+        }
+        $response = new \stdClass();
+
+        if(count($target_students) == 0) {
+            $response->status = "no_students";
+            return $response;
+        }else if(count($target_students) < request()->count) {
+            $response->status = "not_enough";
+        }
+        $count = 0;
+        foreach ($target_students as $student) {
+            if($count == request()->count) {
+                break;
+            }
+            $request = new Request([
+                "indexNumber" => $student->index_number,
+                "grade" => request()->grade,
+                "class" => request()->class,
+                "year" => request()->year,
+            ]);
+            $this->add_student($request);
+            $count++;
+        }
+
+        if($class_teacher == null) {
+            $teacher = Teacher::where('school', auth()->user()->school)
+            ->where('classes.end_year', '!=', null)
+            ->get();
+            if(count($teacher) > 0) {
+                $randomTeacher = $teacher->random(1)->first();;
+                $record = new Request([
+                    "nic" => $randomTeacher->nic,
+                    "grade" => request()->grade,
+                    "class" => request()->class,
+                    "year" => request()->year
+                ]);
+                $this->add_teacher($record);
+            }
+        }
+        if(!isset($response->status)) {
+            $response->status = "success";
+        }
+
+        return $response;
+    }
+
     public static function getStudentList($grade, $class, $year) {
         $students = Student::select(["index_number", "initial_name"])
         ->where('enrollments', 'elemMatch', [
             'year' => $year,
             'grade' => $grade,
-            'class' => $class
+            'class' => strtoupper($class)
         ])
         ->where('school', auth()->user()->school)
         ->get();

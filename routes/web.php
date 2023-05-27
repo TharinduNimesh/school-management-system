@@ -250,6 +250,7 @@ Route::delete('remove/feedback', [LearningController::class, 'removeFeedback'])-
 // admin manage student subject routes
 Route::post('activate/request', [SubjectController::class, 'activate'])->name('request.activate');
 Route::post("get/subjects/marks", [MarksController::class, 'getMarksForSubject'])->name('get.marks.for.subject');
+Route::post('generate/register', [ClassController::class, 'generateRegister'])->name('generate.register');
 
 Route::post('update/student/details', [StudentController::class, 'updateDetails'])->name('update.student.details');
 
