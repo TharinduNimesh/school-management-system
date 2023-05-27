@@ -46,8 +46,21 @@ class MarksController extends Controller
 
     public function getUnmarkedStudents(Request $request) {
         $teacher = TeacherController::getClass(auth()->user()->index, $request->year);
-        $students = ClassController::getStudentList($teacher->grade, $teacher->class, $request->year);
-        $subjects = ClassController::getSubjects($teacher->grade);
+        $students = [];
+        $subjects = [];
+        if($teacher != null) {
+            try {
+                if($teacher->classes == null) {
+                    return [
+                        "students" => $students,
+                        "subjects" => $subjects
+                    ];
+                }
+            } catch (\Throwable $th) {
+                $students = ClassController::getStudentList($teacher->grade, $teacher->class, $request->year);
+                $subjects = ClassController::getSubjects($teacher->grade);
+            }
+        }
 
         $response = [];
         foreach ($students as $student) {

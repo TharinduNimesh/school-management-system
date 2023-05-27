@@ -217,6 +217,12 @@
                                         marks.style.backgroundColor = "red";
                                         marks.style.color = "white";
                                         marks.style.fontWeight = "bold";
+                                    } 
+                                    if(points.marks == "00") {
+                                        marks.style.backgroundColor = "orange";
+                                        marks.style.color = "black";
+                                        marks.style.fontWeight = "bold";
+                                        marks.innerHTML = "AB";
                                     }
 
                                     newRow.appendChild(marks);
@@ -233,7 +239,6 @@
                                 tableBody.appendChild(newRow);
                             }
                         }
-
                         spinner.classList.remove("show");
                     }
                 };
