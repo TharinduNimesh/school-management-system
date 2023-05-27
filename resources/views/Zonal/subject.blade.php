@@ -73,12 +73,12 @@
                                     <tbody>
                                         <tr>
                                             <th scope="row">Total ClassRooms</th>
-                                            <td>Total Teachers</td>
-                                            <td>Approved Count</td>
-                                            <td>Lack of teachers</td>
+                                            <th>Total Teachers</th>
+                                            <th>Approved Count</th>
+                                            <th>Lack of teachers</th>
                                         </tr>
                                         <tr>
-                                            <th scope="row">20</th>
+                                            <td scope="row">20</td>
                                             <td>14</td>
                                             <td>14</td>
                                             <td>0</td>
@@ -101,12 +101,12 @@
                                     <tbody>
                                         <tr>
                                             <th scope="row">3rd, 4th, 5th grade total ClassRooms</th>
-                                            <td>Total Teachers</td>
-                                            <td>Approved Count</td>
-                                            <td>Lack of teachers</td>
+                                            <th>Total Teachers</th>
+                                            <th>Approved Count</th>
+                                            <th>Lack of teachers</th>
                                         </tr>
                                         <tr>
-                                            <th scope="row">20</th>
+                                            <td scope="row">20</td>
                                             <td>14</td>
                                             <td>14</td>
                                             <td>0</td>
@@ -136,43 +136,43 @@
                                         <tr>
                                             <th scope="col">Subjects</th>
                                             <th scope="col">Total Teachers</th>
-                                            <td>Approved Count</td>
-                                            <td>Lack of teachers</td>
+                                            <th>Approved Count</th>
+                                            <th>Lack of teachers</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <th scope="row">Science</th>
+                                            <td scope="row">Science</td>
                                             <td>5</td>
                                             <td>4</td>
                                             <td>2</td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">Mathematics</th>
+                                            <td scope="row">Mathematics</td>
                                             <td>5</td>
                                             <td>4</td>
                                             <td>2</td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">Sinhala</th>
+                                            <td scope="row">Sinhala</td>
                                             <td>5</td>
                                             <td>4</td>
                                             <td>2</td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">English</th>
+                                            <td scope="row">English</td>
                                             <td>5</td>
                                             <td>4</td>
                                             <td>2</td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">Buddhism</th>
+                                            <td scope="row">Buddhism</td>
                                             <td>5</td>
                                             <td>4</td>
                                             <td>2</td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">History</th>
+                                            <td scope="row">History</td>
                                             <td>5</td>
                                             <td>4</td>
                                             <td>2</td>
@@ -191,13 +191,13 @@
                                         <tr>
                                             <th scope="row">All the subjects of the first subject group and the content
                                                 thereof Number of teachers for the subject concerned for Grades 6-9</th>
-                                            <td>Total Teachers</td>
-                                            <td>Lack of teachers</td>
+                                            <th>Total Teachers</th>
+                                            <th>Lack of teachers</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <th scope="row">20</th>
+                                            <td scope="row">20</td>
                                             <td>14</td>
                                             <td>0</td>
                                         </tr>
@@ -215,13 +215,13 @@
                                         <tr>
                                             <th scope="row">Number of teachers for all subjects in the second
                                                 subject group</th>
-                                            <td>Total Teachers</td>
-                                            <td>Lack of teachers</td>
+                                            <th>Total Teachers</th>
+                                            <th>Lack of teachers</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <th scope="row">20</th>
+                                            <td scope="row">20</td>
                                             <td>14</td>
                                             <td>0</td>
                                         </tr>
@@ -239,13 +239,13 @@
                                         <tr>
                                             <th scope="row">For all subjects of third subject category
                                                 Number of teachers</th>
-                                            <td>Total Teachers</td>
-                                            <td>Lack of teachers</td>
+                                            <th>Total Teachers</th>
+                                            <th>Lack of teachers</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <th scope="row">20</th>
+                                            <td scope="row">20</td>
                                             <td>14</td>
                                             <td>0</td>
                                         </tr>
@@ -279,13 +279,13 @@
                                             <th>More than one subject stream in each division
                                                 Number of prescribed teachers, if any (Principal
                                                  for Subject 04)</th>
-                                            <td>Total Teachers</td>
-                                            <td>Lack of teachers</td>
+                                            <th>Total Teachers</th>
+                                            <th>Lack of teachers</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <th scope="row">20</th>
+                                            <td scope="row">20</td>
                                             <td>14</td>
                                             <td>14</td>
                                             <td>0</td>
@@ -306,16 +306,16 @@
                                         <tr>
                                             <th scope="row">Number of students studying that subject in grades 12-13
                                             </th>
-                                            <td>Total Teachers</td>
+                                            <th>Total Teachers</th>
                                             <th>Approved Count</th>
-                                            <td>Lack of teachers</td>
+                                            <th>Lack of teachers</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <th scope="row">20-135</th>
+                                            <td scope="row">20-135</td>
                                             <td>14</td>
-                                            <th>5</th>
+                                            <td>5</td>
                                             <td>0</td>
                                         </tr>
                                     </tbody>
@@ -334,13 +334,13 @@
                                     <thead>
                                         <tr>
                                             <th scope="row">General English (Approved Count)</th>
-                                            <td>Total Teachers</td>
-                                            <td>Lack of teachers</td>
+                                            <th>Total Teachers</th>
+                                            <th>Lack of teachers</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <th scope="row">20</th>
+                                            <td scope="row">20</td>
                                             <td>14</td>
                                             <td>0</td>
                                         </tr>
@@ -357,13 +357,13 @@
                                     <thead>
                                         <tr>
                                             <th scope="row">GIT (Approved Count)</th>
-                                            <td>Total Teachers</td>
-                                            <td>Lack of teachers</td>
+                                            <th>Total Teachers</th>
+                                            <th>Lack of teachers</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <th scope="row">20</th>
+                                            <td scope="row">20</td>
                                             <td>14</td>
                                             <td>0</td>
                                         </tr>
