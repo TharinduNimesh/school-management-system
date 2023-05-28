@@ -173,9 +173,9 @@
                                         <div class="p-3">
                                             <div class="img d-flex justify-content-center align-items-center"
                                                 id="imgBox" onclick="viewImage();"
-                                                data-img="profileImg/default.png">
+                                                data-img="/img/default.png">
                                                 <img style="border-radius: 50%; width: 90%;"
-                                                    src="profileImg/default.png" id="profilePic">
+                                                    src="/img/default.png" id="profilePic">
                                             </div>
                                         </div>
                                     </div>
@@ -233,23 +233,23 @@
                                             aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                             <div class="accordion-body bg-secondary">
                                                 <div class="row">
-                                                    <div class="mb-3 col-md-6">
+                                                    <div class="mb-3">
                                                         <label for="FullName" class="form-label">Full Name</label>
-                                                        <input class="form-control bg-secondary text-dark"
+                                                        <input disabled class="form-control bg-secondary text-dark"
                                                             type="text" id="fullName" name="fullName"
                                                             value="Ex: Sahan Perera" autofocus />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label for="Namewithinitials" class="form-label">Name with
                                                             initials</label>
-                                                        <input class="form-control bg-secondary text-dark"
+                                                        <input disabled class="form-control bg-secondary text-dark"
                                                             type="text" name="initialName" id="initialName"
                                                             value="Ex: A.B.C. Perera" />
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label for="Dateofbirth" class="form-label">Date of
                                                             birth</label>
-                                                        <input class="form-control bg-secondary text-dark"
+                                                        <input disabled class="form-control bg-secondary text-dark"
                                                             type="text" id="dob" name="Dateofbirth"
                                                             value="Ex: 2000/01/01" />
                                                     </div>
@@ -261,7 +261,7 @@
                                                     </div>
                                                     <div class="mb-3 col-md-6">
                                                         <label for="address" class="form-label">Address</label>
-                                                        <input type="text"
+                                                        <input disabled type="text"
                                                             class="form-control bg-secondary text-dark" id="address"
                                                             name="address" value="Ex: 432/1 A, Waragoda, Kelaniya" />
                                                     </div>
@@ -316,7 +316,7 @@
                                                             name="religion" value="Ex: Buddhism" />
                                                     </div>
 
-                                                    <div class="mb-3 col-md-6">
+                                                    <div class="mb-3 col-md-6 d-none">
                                                         <label class="form-label" for="phoneNumber">House</label>
                                                         <div class="input-group input-group-merge">
                                                             <span class="input-group-text" id="houseColor"
@@ -328,20 +328,14 @@
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 col-md-6">
-                                                        <label class="form-label" for="distance">Distance to
+                                                        <label  class="form-label" for="distance">Distance to
                                                             School</label>
                                                         <div class="input-group input-group-merge">
-                                                            <input type="text" id="disToSchool" name="disToSchool"
+                                                            <input disabled type="text" id="disToSchool" name="disToSchool"
                                                                 class="form-control text-dark bg-secondary"
                                                                 value="Ex: 10" />
                                                             <span class="input-group-text">KM</span>
                                                         </div>
-                                                    </div>
-                                                    <div class="mt-2">
-                                                        <button type="button" class="btn btn-primary"
-                                                            data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                                            Update
-                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -504,7 +498,7 @@
                                                     <div class="mb-3 col-md-6">
                                                         <label for="MotherEmail" class="form-label">Mother
                                                             Email</label>
-                                                        <input class="form-control  bg-secondary text-dark"
+                                                        <input disabled class="form-control  bg-secondary text-dark"
                                                             type="text" id="motherEmail" name="motherEmail"
                                                             value="Ex: abc@gmail.com" autofocus />
                                                     </div>
@@ -513,7 +507,7 @@
                                                             Number</label>
                                                         <div class="input-group input-group-merge">
                                                             <span class="input-group-text">LK (+94)</span>
-                                                            <input type="text" id="motherNumber"
+                                                            <input disabled type="text" id="motherNumber"
                                                                 name="phoneNumber"
                                                                 class="form-control bg-secondary text-dark"
                                                                 value="Ex: 701112223" />
@@ -522,7 +516,7 @@
                                                     <div class="mb-3 col-md-6">
                                                         <label for="FatherEmail" class="form-label">Father
                                                             Email</label>
-                                                        <input class="form-control bg-secondary text-dark"
+                                                        <input disabled class="form-control bg-secondary text-dark"
                                                             type="text" id="fatherEmail" name="fatherEmail"
                                                             value="Ex: abc@outlook.com" />
                                                     </div>
@@ -531,25 +525,18 @@
                                                             Number</label>
                                                         <div class="input-group input-group-merge">
                                                             <span class="input-group-text">LK (+94)</span>
-                                                            <input type="text" id="fatherNumber"
+                                                            <input disabled type="text" id="fatherNumber"
                                                                 name="phoneNumber"
                                                                 class="form-control bg-secondary text-dark"
                                                                 value="Ex: 701212123" />
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 col-md-6">
-                                                        <label for="address" class="form-label">Home Address</label>
-                                                        <input type="text"
-                                                            class="form-control bg-secondary text-dark"
-                                                            id="studentAddress" name="address"
-                                                            value="Ex: 432/1 B, Ganemulla, Kadawatha." />
-                                                    </div>
-                                                    <div class="mb-3 col-md-6">
                                                         <label class="form-label" for="phoneNumber">Emergency
                                                             Number</label>
                                                         <div class="input-group input-group-merge">
                                                             <span class="input-group-text">LK (+94)</span>
-                                                            <input type="text" id="emNumber" name="emNumber"
+                                                            <input disabled type="text" id="emNumber" name="emNumber"
                                                                 class="form-control  bg-secondary text-dark"
                                                                 value="Ex: 701231234" />
                                                         </div>
@@ -557,12 +544,17 @@
                                                     <div class="mb-3 col-md-6">
                                                         <label class="form-label" for="phoneNumber">Emergency
                                                             Email</label>
-                                                        <input type="text" id="emEmail" name="emEmail"
+                                                        <input disabled type="text" id="emEmail" name="emEmail"
                                                             class="form-control  bg-secondary text-dark"
                                                             value="Ex: abc@yahoo.com" />
                                                     </div>
-                                                    <button class="btn btn-primary" data-bs-toggle="modal"
-                                                        data-bs-target="#contactModal">Update</button>
+                                                    <div class="mb-3">
+                                                        <label for="address" class="form-label">Home Address</label>
+                                                        <input disabled type="text"
+                                                            class="form-control bg-secondary text-dark"
+                                                            id="studentAddress" name="address"
+                                                            value="Ex: 432/1 B, Ganemulla, Kadawatha." />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -866,7 +858,8 @@
                             }
                         }
 
-                        xhr.open("POST", "process/uploadUserImage.php", true);
+                        xhr.open("POST", "{{ route('update.student.profile.picture') }}", true);
+                        xhr.setRequestHeader('X-CSRF-Token', '{{ csrf_token() }}');
                         xhr.send(form);
                     });
 
@@ -906,6 +899,7 @@
                 title: 'WARNING',
                 text: 'Please Enter A Student Index Number Or Name'
             });
+            document.getElementById("spinner").classList.remove("show")
             return;
         }
         if (index.value != '' && name.value != '') {
@@ -914,6 +908,7 @@
                 title: 'WARNING',
                 text: 'Please Enter A Student Index Number Or Name'
             });
+            document.getElementById("spinner").classList.remove("show")
             return;
         }
         var indexNumber = index.value;
@@ -931,6 +926,8 @@
                         document.getElementById("paymentBtn").dataset.class = response.class.class;
                         document.getElementById("paymentBtn").dataset.grade = response.class.grade;
                     }
+                    document.getElementById("profilePic").src = response.student.profile_picture == null ? "/img/default.png" : "{{ Storage::url('profile/:image') }}".replace(':image', response.student.profile_picture);
+                    document.getElementById("imgBox").dataset.img = response.student.profile_picture == null ? "/img/default.png" : "{{ Storage::url('profile/:image') }}".replace(':image', response.student.profile_picture);
 
                     var houseName;
                     var houseColor;
@@ -1209,6 +1206,11 @@
                         description.innerHTML = award.description;
 
                         row.appendChild(competition);
+                        row.appendChild(category);
+                        row.appendChild(place);
+                        row.appendChild(date);
+                        row.appendChild(description);
+
                         document.getElementById("awardBody").appendChild(row);
                     });
                 } else {

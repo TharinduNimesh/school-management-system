@@ -238,39 +238,40 @@ class TeacherController extends Controller
     }
 
     public static function hasPermission($nic, $index) {
-        if(auth()->user()->role == "admin") {
+        $userRole = auth()->user()->role;
+        if ($userRole == "admin" || $userRole == "coach") {
             return true;
         }
-
+    
         $student = StudentController::getStudent($index, auth()->user()->school);
-        if($student->resigned_at != null) {
+        if ($student->resigned_at != null) {
             return false;
         }
-
+    
         $student_class = StudentController::getClass($index, Date("Y"));
-        $isSectionHead = SectionHead::where('nic', $nic)
-        ->where('school', auth()->user()->school)
-        ->whereNull('end_date')
-        ->first();
-
-        if($isSectionHead != null) {
-            if($isSectionHead->section == $student_class["grade"]) {
-                return true;
-            }
-        } else {
-            $teacher_class = TeacherController::getClass($nic, Date("Y"));
-
-            if($teacher_class != null) {
-                if($teacher_class->grade == $student_class["grade"] && $teacher_class->class == $student_class["class"]) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
+        if ($student_class == null) {
+            return false;
         }
+    
+        $isSectionHead = SectionHead::where('nic', $nic)
+            ->where('school', auth()->user()->school)
+            ->where('section', $student_class["grade"])
+            ->whereNull('end_date')
+            ->exists();
+    
+        if ($isSectionHead) {
+            return true;
+        }
+    
+        $teacher_class = TeacherController::getClass($nic, Date("Y"));
+    
+        if ($teacher_class && $teacher_class->grade == $student_class["grade"] && $teacher_class->class == $student_class["class"]) {
+            return true;
+        }
+    
+        return false;
     }
+    
 
     public static function getClass($nic, $year) {
         $teacher = self::getTeacher($nic, auth()->user()->school);

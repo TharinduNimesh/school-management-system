@@ -110,7 +110,7 @@
 
     @include('public_components.js')
     <script>
-        hamburger('attendance');
+        hamburger('marksAttendance');
 
         function gatherAttendanceData() {
             const spinner = document.getElementById("spinner");

@@ -256,7 +256,7 @@ Route::post('generate/register', [ClassController::class, 'generateRegister'])->
 Route::get('generate/timetable', [TimeTableController::class, 'generate'])->name('generate.time.table');
 
 Route::post('change/payment', [PaymentController::class, 'changePayment'])->name('change.payment');
-Route::post('update/student/details', [StudentController::class, 'updateDetails'])->name('update.student.details');
+Route::post('update/student/profile/picture', [StudentController::class, 'updateProfilePicture'])->name('update.student.profile.picture');
 
 // Teacher functions
 Route::post("request/leaves", [LeavesController::class, 'request'])->name('request.leaves');

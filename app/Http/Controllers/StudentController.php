@@ -13,10 +13,12 @@ use App\Models\User;
 use App\Models\Sport;
 use App\Models\BorrowedBook;
 use App\Models\RequestedChanges;
+use App\Models\SectionHead;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
@@ -212,19 +214,23 @@ class StudentController extends Controller
         ->limit(10)
         ->get();
 
+
         $response = array();
         foreach ($students as $student) {
-            $class = self::getClass($student->index_number, Date("Y"));
-            $obj = new \stdClass();
-            $obj->index = $student->index_number;
-            $obj->name = $student->initial_name;
-            try {
-                $obj->class = $class["grade"] . " - " . $class["class"];
-            } catch (\Throwable $th) {
-                $obj->class = "Not Enrolled";
+            $hasPermission = TeacherController::hasPermission(auth()->user()->index, $student->index_number);
+            if($hasPermission) {
+                $class = self::getClass($student->index_number, Date("Y"));
+                $obj = new \stdClass();
+                $obj->index = $student->index_number;
+                $obj->name = $student->initial_name;
+                try {
+                    $obj->class = $class["grade"] . " - " . $class["class"];
+                } catch (\Throwable $th) {
+                    $obj->class = "Not Enrolled";
+                }
+        
+                array_push($response, $obj);
             }
-
-            array_push($response, $obj);
         }
         return $response;
     }
@@ -366,6 +372,21 @@ class StudentController extends Controller
         $request->delete();
 
         return redirect()->back();
+    }
+
+    public function updateProfilePicture(Request $request) {
+        $student = self::getStudent($request->index, auth()->user()->school);
+        $base64 = explode(',', $request->base64);
+        $image = base64_decode($base64[1]);
+        $image_name = $student->index_number . '.png';
+
+        if(Storage::put('public/profile/' . $image_name, $image)) {
+            $student->profile_picture = $image_name;
+            $student->save();
+            return 'success';
+        } else {
+            return 'error';
+        }
     }
 
     public static function getAttendancePrecentage($index, $year) {

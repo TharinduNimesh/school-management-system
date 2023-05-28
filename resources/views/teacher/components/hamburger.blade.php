@@ -13,7 +13,7 @@
         <div class="navbar-nav w-100">
             <a name="ham-item" id="dashboard" href="{{ route('teacher.dashboard') }}" class="nav-item nav-link active"><i
                 class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-            <a name="ham-item" id="attendance" href="{{ route('teacher.attendance') }}" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Attendance <span
+            <a name="ham-item" id="marksAttendance" href="{{ route('teacher.attendance') }}" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Attendance <span
                 class="badge bg-danger ms-3">
                     0
             </span></a>

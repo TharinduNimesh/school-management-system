@@ -289,6 +289,7 @@ class ClassController extends Controller
             'class' => strtoupper($class)
         ])
         ->where('school', auth()->user()->school)
+        ->where('resigned_at', null)
         ->get();
 
         return $students;
