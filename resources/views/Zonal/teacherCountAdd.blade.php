@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    @include('zonal.components.head')
+  @include('zonal.components.head')
 </head>
 
 <body>
@@ -62,7 +62,6 @@
           <div class="row g-4">
 
             <div class="col-sm-12 col-xl-12" id="AlFirstOption">
-              <h5 class="mb-4 text-dark">Total ClassRooms-</h5>
               <div class="table-responsive">
                 <table class="table table-bordered text-center">
                   <thead>
@@ -106,7 +105,7 @@
   <!-- Template Javascript -->
 
   <script>
-    
+
     create a function to generate the table using buttons
     function generateTable() {
       var row = document.getElementById("row").value;
@@ -131,7 +130,7 @@
       var tableBody = document.getElementById("tableBody");
       table.removeChild(tableBody);
     }
-    
+
   </script>
 </body>
 
