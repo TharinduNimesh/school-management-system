@@ -10,6 +10,7 @@ use App\Models\Teacher;
 use App\Models\User;
 use App\Models\Leaves;
 use App\Models\ShortLeaves;
+use App\Models\RequestedChanges;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -565,6 +566,18 @@ class TeacherController extends Controller
         return view('teacher.accessories', [
             "desks" => $accessories["tables"],
             "chairs" => $accessories["chairs"],
+        ]);
+    }
+
+    public function navigateToStudentRequest() {
+        $teacher = self::getClass(auth()->user()->index, Date("Y"));
+        $requests = RequestedChanges::where("school", auth()->user()->school)
+        ->where('grade', $teacher->grade)
+        ->where('class', $teacher->class)
+        ->get();
+
+        return view('teacher.request', [
+            "requests" => $requests
         ]);
     }
 }

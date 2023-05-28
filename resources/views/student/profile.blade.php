@@ -94,7 +94,7 @@
                         <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
                             <i class="bi bi-percent fa-2x text-dark"></i>
                             <div class="ms-3">
-                                <p class="mb-2">student attendance</p>
+                                <p class="mb-2">attendance</p>
                                 <h6 class="mb-0 text-dark" id="attendance"> {{ $attendance }}% </h6>
                             </div>
                         </div>
@@ -126,7 +126,7 @@
                         <div data-bs-target="#reModal" data-bs-toggle="modal" class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
                             <i class="bi bi-calendar-week-fill fa-2x text-dark"></i>
                             <div class="ms-3">
-                                <p class="mb-2">Date Of Resignation</p>
+                                <p class="mb-2">Resignation</p>
                                 <h6 class="mb-0 text-dark" id="resignation">
                                     @if ($student["resignation_date"] == null)
                                     Not Resigned
@@ -496,12 +496,25 @@
                         </div>
                         <div class="modal-body">
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control bg-secondary text-dark" id="requestSubject" placeholder="name@example.com">
-                                <label for="floatingInput">Subject</label>
-                            </div>
+                                <select class="form-select bg-secondary text-dark" id="category" aria-label="Floating label select example">
+                                    <option selected value="">Open this select menu</option>
+                                    <option value="full_name" data-category="Full Name">Full Name</option>
+                                    <option value="initial_name" data-category="Name With Initial">Name With Initial</option>
+                                    <option value="date_of_birth" data-category="Date Of Birth">Date Of Birth</option>
+                                    <option value="distance" data-category="Distance To School">Distance To School</option>
+                                    <option value="mother_email" data-category="Mother Email">Mother Email</option>
+                                    <option value="father_email" data-category="Father Email">Father Email</option>
+                                    <option value="mother_number" data-category="Mother Mobile Number">Mother Mobile Number</option>
+                                    <option value="father_number" data-category="Father Mobile Number">Father Mobile Number</option>
+                                    <option value="address" data-category="Address">Address</option>
+                                    <option value="emergency_number" data-category="Emergency Mobile Number">Emergency Mobile Number</option>
+                                    <option value="emergency_email" data-category="Emergency Email Address">Emergency Email Address</option>
+                                </select>
+                                <label for="floatingSelect">What's Need To Be Change</label>
+                              </div>
                             <div class="form-floating">
                                 <input type="text" class="form-control bg-secondary text-dark" id="requestDescription" placeholder="Password">
-                                <label for="floatingPassword">Description</label>
+                                <label for="floatingPassword">How It Should Change</label>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -527,12 +540,24 @@
     <!-- Template Javascript -->
     <script>
         function sendRequest() {
-            var subject = document.getElementById("requestSubject").value;
+            var subject = document.getElementById("category");
             var description = document.getElementById("requestDescription").value;
 
+            if(subject == "" || description == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please fill all the fields!',
+                })
+                return;
+            }
+            const selectedOption = subject.options[subject.selectedIndex];
+            const category = selectedOption.dataset.category;
+
             var request = {
-                subject: subject,
-                description: description,
+                row: subject.value,
+                new: description,
+                category: category,
             };
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "{{ route('request.profile.changes') }}", true);
@@ -548,7 +573,7 @@
                             title: 'Success',
                             text: 'Request sent successfully!',
                         })
-                        document.getElementById("requestSubject").value = "";
+                        document.getElementById("category").value = "";
                         document.getElementById("requestDescription").value = "";
                         $('#requestModal').modal('hide');
                     } else {
@@ -558,7 +583,6 @@
                             text: 'Something went wrong!',
                         })
                     }
-                    $('#requestModal').modal('hide');
                 } else {
                     Swal.fire({
                         icon: 'error',

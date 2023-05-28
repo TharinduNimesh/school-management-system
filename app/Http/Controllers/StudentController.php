@@ -314,6 +314,7 @@ class StudentController extends Controller
     }
 
     public function requestProfileChanges() {
+        $student = self::getStudent(auth()->user()->index, auth()->user()->school);
         $class = StudentController::getClass(auth()->user()->index, Date("Y"));
         $request = new RequestedChanges();
         $request->index_number = auth()->user()->index;
@@ -321,9 +322,11 @@ class StudentController extends Controller
         $request->grade = $class["grade"];
         $request->class = $class["class"];
         $request->school = auth()->user()->school;
-        $request->subject = request()->subject;
-        $request->description = request()->description;
-        $request->category = "text"; // profile text base changes and image base changes is known as category
+        $request->row = request()->row;
+        $request->category = request()->category;
+        $request->new = request()->new;
+        $request->old = $student->{request()->row};
+        $request->type = "text"; // profile text base changes and image base changes is known as category
 
         $saved = $request->save();
 
@@ -353,28 +356,16 @@ class StudentController extends Controller
         }
     }
 
-    public function updateDetails() {
-        $student = self::getStudent(auth()->user()->index, auth()->user()->school);
-
-        if($student != null) {
-            $student->full_name = request()->full_name;
-            $student->initial_name = request()->initial_name;
-            $student->date_of_birth = request()->date_of_birth;
-            $student->address = request()->address;
-            $student->distance = request()->distance;
-            $student->mother_email = request()->mother_email;
-            $student->father_email = request()->father_email;
-            $student->guardian_email = request()->guardian_email;
-            $student->mother_mobile = request()->mother_mobile;
-            $student->father_mobile = request()->father_mobile;
-            $student->guardian_mobile = request()->guardian_mobile;
-            $student->emergency_email = request()->emergency_email;
-            $student->emergency_number = request()->emergency_number;
-
+    public function changesAction() {
+        $request = RequestedChanges::find(request()->id);
+        if(request()->type == "approve") {
+            $student = self::getStudent($request->index_number, auth()->user()->school);
+            $student->{$request->row} = $request->new;
             $student->save();
-
-            return 'success';
         }
+        $request->delete();
+
+        return redirect()->back();
     }
 
     public static function getAttendancePrecentage($index, $year) {
