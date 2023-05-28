@@ -34,13 +34,13 @@
   }
 
   .already-given {
-      color: rgb(255, 0, 0) !important;
+      color: #f64c72 !important;
   }
 
   :root {
       --light: rgb(255, 255, 255) !important;
       --primary: rgb(255, 255, 255);
-      --secondary: rgb(0, 0, 0) !important;
+      --secondary: #03074e !important;
       --dark: linear-gradient(to right, rgb(252, 124, 92), rgb(255, 31, 31));
   }
 
@@ -61,11 +61,11 @@
   }
 
   .body {
-      background-color: rgb(19, 18, 18) !important;
+      background-color: #080a28 !important;
   }
   
   .form-control {
-      background-color: #000000;
+      background-color: #3f3f5c;
       border-color: var(--light) !important;
   }
 
@@ -76,6 +76,11 @@
 
   .input-group-text {
     background-color: #eee !important;
-    color: #000;
+    color: #000000;
   }
+
+  .form-select {
+    background-color: #3f3f5c !important;
+  }
+  
 </style>
