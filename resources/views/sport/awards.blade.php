@@ -41,14 +41,15 @@
                                             aria-label="Floating label select example">
                                             <option selected value="0">Open this select menu</option>
                                             @foreach ($sports as $sport)
-                                            <option>{{ $sport }}</option>
+                                                <option>{{ $sport }}</option>
                                             @endforeach
                                         </select>
                                         <label for="floatingSelect">Select A Sport</label>
                                     </div>
                                     <div>
                                         <div class="d-grid gap-2 col-6 mx-auto mt-3">
-                                            <button type="submit" class="btn btn-primary col-sm-12 col-xl-12">Search<i
+                                            <button type="button" onclick="searchStudent();"
+                                                class="btn btn-primary col-sm-12 col-xl-12">Search<i
                                                     class="bi bi-search ms-2"></i></button>
                                         </div>
                                     </div>
@@ -88,16 +89,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody id="awardsBody">
-                                                        <tr>
-                                                            <th scope="row">1</th>
-                                                            <td>Mark</td>
-                                                            <td>Otto</td>
-                                                            <td>Champion</td>
-                                                            <td>2023-12-12</td>
-                                                            <td class="space">Lorem ipsum dolor sit amet consectetur
-                                                                adipisicing elit.
-                                                                Laboriosam, cum!</td>
-                                                        </tr>
+
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -119,42 +111,31 @@
                                     </div>
                                     <div class="row">
                                         <div class="form-floating mb-3 col-md-6">
-                                            <select class="form-select bg-secondary text-dark" id="team"
-                                                aria-label="Floating label select example">
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                            </select>
-                                            <label class="px-3" for="floatingSelectGrid">Teams</label>
-                                        </div>
-                                        <div class="form-floating mb-3 col-md-6">
                                             <input type="text" class="form-control bg-secondary text-dark"
                                                 id="competition" placeholder="name@example.com">
                                             <label class="px-3" for="floatingInput">Competition</label>
                                         </div>
 
                                         <div class="form-floating mb-3 col-md-6">
-                                            <input type="text" class="form-control bg-secondary text-dark" id="category"
-                                                placeholder="name@example.com">
+                                            <input type="text" class="form-control bg-secondary text-dark"
+                                                id="category" placeholder="name@example.com">
                                             <label class="px-3" for="floatingInput">Category</label>
                                         </div>
 
                                         <div class="form-floating mb-3 col-md-6">
-                                            <input type="text" class="form-control bg-secondary text-dark" id="place"
-                                                placeholder="name@example.com">
+                                            <input type="text" class="form-control bg-secondary text-dark"
+                                                id="place" placeholder="name@example.com">
                                             <label class="px-3" for="floatingInput">Place</label>
                                         </div>
 
                                         <div class="form-floating mb-3 col-md-6">
-                                            <input type="date" class="form-control bg-secondary text-dark" id="date"
-                                                placeholder="name@example.com">
+                                            <input type="date" class="form-control bg-secondary text-dark"
+                                                id="date" placeholder="name@example.com">
                                             <label class="px-3" for="floatingInput">Date</label>
                                         </div>
 
-                                        <div class="form-floating mb-3 col-md-6">
-                                            <textarea class="form-control bg-secondary text-dark"
-                                                placeholder="Leave a comment here" id="Description"></textarea>
+                                        <div class="form-floating mb-3">
+                                            <textarea class="form-control bg-secondary text-dark" placeholder="Leave a comment here" id="Description"></textarea>
                                             <label class="px-3" for="floatingTextarea">Description</label>
                                         </div>
                                     </div>
@@ -168,6 +149,63 @@
                             </div>
 
                         </div>
+
+                        <div class="card mb-4">
+                            <h5 class="card-header text-dark">Add A Award For A Team</h5>
+                            <!-- Add award start-->
+                            <hr class="my-0" />
+                            <div class="card-body">
+                                <form id="teamForm">
+                                    <div class="row">
+                                        <div class="form-floating mb-3">
+                                            <select class="form-select bg-secondary text-dark" name="team"
+                                                aria-label="Floating label select example">
+                                                <option selected value="">Open this select menu</option>
+                                                @foreach ($teams as $key => $team)
+                                                    <option value="{{ $key }}">{{ $team }}</option>
+                                                @endforeach
+                                            </select>
+                                            <label for="floatingSelect">Select a team</label>
+                                        </div>
+                                        <div class="form-floating mb-3 col-md-6">
+                                            <input type="text" class="form-control bg-secondary text-dark"
+                                                name="competition" placeholder="name@example.com">
+                                            <label class="px-3" for="floatingInput">Competition</label>
+                                        </div>
+
+                                        <div class="form-floating mb-3 col-md-6">
+                                            <input type="text" class="form-control bg-secondary text-dark"
+                                                name="category" placeholder="name@example.com">
+                                            <label class="px-3" for="floatingInput">Category</label>
+                                        </div>
+
+                                        <div class="form-floating mb-3 col-md-6">
+                                            <input type="text" class="form-control bg-secondary text-dark"
+                                                name="place" placeholder="name@example.com">
+                                            <label class="px-3" for="floatingInput">Place</label>
+                                        </div>
+
+                                        <div class="form-floating mb-3 col-md-6">
+                                            <input type="date" class="form-control bg-secondary text-dark"
+                                                name="date" placeholder="name@example.com">
+                                            <label class="px-3" for="floatingInput">Date</label>
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <textarea class="form-control bg-secondary text-dark" placeholder="Leave a comment here" name="description"></textarea>
+                                            <label class="px-3" for="floatingTextarea">Description</label>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2">
+                                        <button type="button" class="btn btn-primary" onclick="addAwardsToTeam();">
+                                            Add Award
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /Add award end -->
+                        </div>
+
                     </div>
                 </div>
                 <!-- Profile End -->
@@ -179,13 +217,62 @@
 
 
             <!-- Back to Top -->
-            <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+            <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i
+                    class="bi bi-arrow-up"></i></a>
         </div>
 
         @include('public_components.js')
 
         <script>
             hamburger("awards")
+
+            function addAwardsToTeam() {
+                const form = document.getElementById('teamForm');
+                const inputs = form.querySelectorAll('input, select, textarea');
+                var isValide = true;
+                inputs.forEach(input => {
+                    if (input.value == "") {
+                        input.classList.add('is-invalid');
+                        isValide = false;
+                    } else {
+                        input.classList.remove('is-invalid');
+                    }
+                });
+                if(!isValide){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please Fill All Fields!',
+                    })
+                    return;
+                }
+                document.getElementById('spinner').classList.add('show');
+                const xhr = new XMLHttpRequest();
+                var formData = new FormData(form);
+                xhr.open("POST", "{{ route('add.award.team') }}");
+                const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                xhr.onload = function() {
+                    if (this.status == 200) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Award Added Successfully!',
+                        })
+                        document.getElementById('spinner').classList.remove('show');
+                        document.getElementById('teamForm').reset();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something Went Wrong!',
+                        })
+                        document.getElementById('spinner').classList.remove('show');
+                    }
+                }
+                xhr.setRequestHeader("X-CSRF-Token", token);
+                xhr.send(formData);
+            }
+
             var indexNumber = '';
             var sportName = '';
 
@@ -217,7 +304,7 @@
                     xhr.send(JSON.stringify({
                         index: index.value
                     }));
-                    xhr.onload = function () {
+                    xhr.onload = function() {
                         if (xhr.status == 200) {
                             var response = xhr.responseText;
                             if (response == "not_found") {
@@ -315,7 +402,7 @@
                         index: indexNumber,
                         sport: sportName
                     }));
-                    xhr.onload = function () {
+                    xhr.onload = function() {
                         if (xhr.status == 200) {
                             var response = xhr.responseText;
                             if (response == "success") {
@@ -355,7 +442,6 @@
                 }
             }
         </script>
-
 
 </body>
 

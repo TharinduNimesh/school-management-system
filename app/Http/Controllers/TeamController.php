@@ -227,6 +227,25 @@ class TeamController extends Controller
         }
     }
 
+    public function addAward() {
+        $team = SportTeam::find(request()->team);
+        $players = self::getPlayersList($team->sport, $team->name);
+
+        foreach ($players as $player) {
+            $award_object = [
+                "competition" => request()->competition,
+                "category" => request()->category,
+                "place" => request()->place,
+                "date" => Date("Y-m-d"),
+                "description" => request()->description
+            ];
+            $student = Student::where('index_number', $player["index_number"])
+            ->where('school', auth()->user()->school)
+            ->where('sports.name', $team->sport)
+            ->push('sports.$.awards', $award_object);
+        }
+    }
+
     public static function getPlayersList($sport, $team) {
         $teams = SportTeam::where('sport', $sport)
         ->where('school', auth()->user()->school)

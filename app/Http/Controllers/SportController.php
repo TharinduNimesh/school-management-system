@@ -408,8 +408,17 @@ class SportController extends Controller
 
     public function naivgateToAddAwards() {
         $sports = self::getSportList(auth()->user()->index);
+        $teams = [];
+
+        foreach ($sports as $sport) {
+            $team = TeamController::getTeamList($sport);
+            foreach ($team as $team_object) {
+                $teams[$team_object["_id"]] = "$team_object->name - $sport";
+            }
+        }
 
         return view("sport.awards", [
+            "teams" => $teams,
             "sports" => $sports
         ]);
     }

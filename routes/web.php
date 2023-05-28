@@ -309,6 +309,7 @@ Route::get('search/team/{sport}/{team}', [TeamController::class, 'searchTeam'])-
 Route::get('remove/player/{sport}/{team}/{index}', [TeamController::class, 'removePlayer'])->name('remove.player');
 Route::post('change/position', [TeamController::class, 'changePosition'])->name('change.position');
 Route::post('sport/request/action', [SportController::class, 'requestAction'])->name('sport.request.action');
+Route::post('add/award/team', [TeamController::class, 'addAward'])->name('add.award.team');
 
 // developer function routes
 Route::middleware(['auth', 'IsDeveloper'])->group(function () {
