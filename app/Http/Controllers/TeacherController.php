@@ -244,6 +244,10 @@ class TeacherController extends Controller
         }
     
         $student = StudentController::getStudent($index, auth()->user()->school);
+        if($student == null) {
+            return true;
+        }
+        
         if ($student->resigned_at != null) {
             return false;
         }
@@ -548,6 +552,7 @@ class TeacherController extends Controller
         if($teacher != null) {
             $accessories = Accessory::where("grade", $teacher->grade)
             ->where("class", $teacher->class)
+            ->where("school", auth()->user()->school)
             ->first();
         } else {
             return view('teacher.accessories', [

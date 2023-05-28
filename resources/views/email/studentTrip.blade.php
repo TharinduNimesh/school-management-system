@@ -1,7 +1,7 @@
 <x-mail::message>
-Dear {{$data["teacher"]}},
+Dear {{$data["student"]}},
 
-We are excited to announce an upcoming excursion to " . {{ $data["firstPlace"] }}[0] . " that will take place {{ $data["duration"] }} from {{ $data["date"] }}. The trip will depart from {{ $data["place"] }} at {{ $data["time"] }}. We will be visiting {{ $data["viewpoints"] }} during our {{ $data["duration"] }} stay.
+We are excited to announce an upcoming excursion to {{ $data["firstPlace"] }} that will take place {{ $data["duration"] }} from {{ $data["date"] }}. The trip will depart from {{ $data["place"] }} at {{ $data["time"] }}. We will be visiting {{ $data["viewpoints"] }} during our {{ $data["duration"] }} stay.
     
 To ensure that you have a safe and enjoyable trip, please make sure to bring the following items with you: {{ $data["things"] }}, and any other personal items you may need.
     
@@ -14,5 +14,4 @@ We look forward to sharing this exciting experience with you and making lasting 
 Sincerely,
 
 {{$data["teacher"]}},
-{{ env('SCHOOL_NAME') }}
 </x-mail::message>

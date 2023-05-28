@@ -1,7 +1,7 @@
 <x-mail::message>
 Dear {{ $data["student"]}},
 
-We would like to invite you to a general meeting that will take place on {{$data["date"]}}at {{$data["time"]}}. The meeting will be held in {{$data["place"]}}, and the purpose of the meeting is to {{ $data["subject"] }}.
+We would like to invite you to a general meeting that will take place on {{$data["date"]}} at {{$data["time"]}}. The meeting will be held in {{$data["place"]}}, and the purpose of the meeting is to {{ $data["subject"] }}.
     
 During this meeting. The meeting will last approximately least 2 hours.
 
@@ -12,5 +12,4 @@ We look forward to seeing you at the meeting and working together to achieve our
 Sincerely,
     
 {{$data["teacher"]}},
-{{ env('SCHOOL_NAME') }}
 </x-mail::message>

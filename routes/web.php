@@ -281,6 +281,12 @@ Route::post('dismissal/student', [StudentController::class, 'dismiss'])->name('d
 Route::get('dismissal/student/{id}', [StudentController::class, 'searchDismiss'])->name('search.dismiss.student');
 Route::post('change/action', [StudentController::class, 'changesAction'])->name('action.changes');
 
+Route::prefix('send/mail')->group(function() {
+    Route::post('manual', [MailController::class, 'manual'])->name('send.mail.manual');
+    Route::post('meeting/general', [MailController::class, 'general_meeting'])->name('send.mail.general.meeting');
+    Route::post('school/trip', [MailController::class, 'school_trip'])->name('send.mail.school.trip');
+});
+
 // Student Function Routes
 Route::post('submit/assignment', [AssignmentController::class, 'submit'])->name('submit.assignment');
 Route::post('student/search/marks', [StudentController::class, 'searchMarks'])->name('student.search.marks');

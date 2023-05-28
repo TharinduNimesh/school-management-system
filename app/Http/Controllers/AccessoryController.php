@@ -15,6 +15,7 @@ class AccessoryController extends Controller
         if($teacher != null) {
             $accessories = Accessory::where('grade', $teacher->grade)
             ->where('class', $teacher->class)
+            ->where('school', auth()->user()->school)
             ->first();
             if($accessories == null) {
                 $accessories = new Accessory;

@@ -12,15 +12,15 @@ use Illuminate\Queue\SerializesModels;
 class GeneralMeeting extends Mailable
 {
     use Queueable, SerializesModels;
-
+    public $data;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($data)
     {
-        //
+        $this->data = $data;
     }
 
     /**
@@ -31,7 +31,7 @@ class GeneralMeeting extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'General Meeting',
+            subject: 'Inform About General Meeting',
         );
     }
 

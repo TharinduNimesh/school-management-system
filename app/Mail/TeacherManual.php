@@ -9,10 +9,11 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class StudentTrip extends Mailable
+class TeacherManual extends Mailable
 {
     use Queueable, SerializesModels;
     public $data;
+
     /**
      * Create a new message instance.
      *
@@ -31,7 +32,7 @@ class StudentTrip extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Student Trip',
+            subject: 'Teacher Manual',
         );
     }
 
@@ -43,7 +44,7 @@ class StudentTrip extends Mailable
     public function content()
     {
         return new Content(
-            markdown: 'email.studentTrip',
+            markdown: 'email.TeacherManual',
         );
     }
 

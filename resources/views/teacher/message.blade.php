@@ -425,12 +425,12 @@
 
     function sendMessageToAll() {
       const msgType = document.getElementById("messageType");
+      const spinner = document.getElementById("spinner");
 
       if (msgType.value == "1") {
         const date = document.getElementById("parentsMeetingDate");
         const time = document.getElementById("parentsMeetingTime");
         const place = document.getElementById("parentsMeetingPlace");
-
         var count = 0;
 
         if (date.value == "") {
@@ -455,6 +455,7 @@
         }
 
         if (count == 3) {
+          spinner.classList.add("show");
           var form = new FormData();
           form.append("date", date.value);
           form.append("time", time.value);
@@ -462,8 +463,8 @@
           form.append("type", "1");
 
           var xhr = new XMLHttpRequest();
-          xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
+          xhr.onload = function () {
+            if (xhr.status == 200) {
               // handle reponse
               var response = xhr.responseText;
               Swal.fire({
@@ -473,6 +474,14 @@
                 showConfirmButton: false,
                 timer: 1500,
               });
+              spinner.classList.remove("show");
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong!",
+              });
+              spinner.classList.remove("show");
             }
           };
 
@@ -493,6 +502,7 @@
         }
 
         if (isValid) {
+          spinner.classList.add("show");
           const date = document.getElementById("generalDate");
           const time = document.getElementById("generalTime");
           const subject = document.getElementById("generalSubject");
@@ -506,8 +516,8 @@
           form.append("type", "2");
 
           var xhr = new XMLHttpRequest();
-          xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
+          xhr.onload = function () {
+            if (xhr.status == 200) {
               // handle reponse
               var response = xhr.responseText;
               Swal.fire({
@@ -517,10 +527,19 @@
                 showConfirmButton: false,
                 timer: 1500,
               });
+              spinner.classList.remove("show");
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong!",
+              });
+              spinner.classList.remove("show");
             }
           };
 
-          xhr.open("POST", "process/teacherSendMessage.php", true);
+          xhr.open("POST", "{{ route('send.mail.general.meeting') }}", true);
+          xhr.setRequestHeader("X-CSRF-TOKEN", "{{ csrf_token() }}");
           xhr.send(form);
         }
       } else if (msgType.value == "3") {
@@ -537,6 +556,7 @@
         }
 
         if (isValid) {
+          spinner.classList.add("show");
           const date = document.getElementById("tripDate");
           const time = document.getElementById("tripTime");
           const amount = document.getElementById("tripAmount");
@@ -558,8 +578,8 @@
           form.append("type", "3");
 
           var xhr = new XMLHttpRequest();
-          xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
+          xhr.onload = function () {
+            if (xhr.status == 200) {
               // handle reponse
               var response = xhr.responseText;
               // console.log(response);
@@ -570,10 +590,19 @@
                 showConfirmButton: false,
                 timer: 1500,
               });
+              spinner.classList.remove("show");
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong!",
+              });
+              spinner.classList.remove("show");
             }
           };
 
-          xhr.open("POST", "process/teacherSendMessage.php", true);
+          xhr.open("POST", "{{ route('send.mail.school.trip') }}");
+          xhr.setRequestHeader("X-CSRF-TOKEN", "{{ csrf_token() }}");
           xhr.send(form);
         }
       } else if (msgType.value == "4") {
@@ -879,6 +908,9 @@
       const list = document.getElementById("listContainer");
       const alreadyExist = document.getElementById("alreadyAdded");
 
+      invalid.classList.add("d-none");
+      invalid.innerHTML = "Invalid Registration Number";
+
       if (index.value.trim() == "") {
         index.classList.add("is-invalid");
         invalid.classList.add("d-none");
@@ -890,7 +922,12 @@
             var response = xhr.responseText;
             if (response == "invalid") {
               invalid.classList.remove("d-none");
-            } else {
+            } 
+            else if (response == "permission_denied") {
+              invalid.innerHTML = "Permission Denied";
+              invalid.classList.remove("d-none");
+            }
+            else {
               response = JSON.parse(response);
               invalid.classList.add("d-none");
               if (studentList.includes(index.value)) {
@@ -1001,7 +1038,8 @@
             }
           };
 
-          xhr.open("POST", "process/sendSpecificMessage.php", true);
+          xhr.open("POST", "{{ route('send.mail.manual') }}", true);
+          xhr.setRequestHeader("X-CSRF-TOKEN", "{{ csrf_token() }}");
           xhr.send(form);
         }
       }

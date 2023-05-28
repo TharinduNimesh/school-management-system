@@ -112,17 +112,24 @@ class StudentController extends Controller
     }
 
     public function show($id) {
-        // search student by given index number
-        $student = self::getStudent($id, auth()->user()->school);
+        $hasPermission = TeacherController::hasPermission(auth()->user()->index, $id);
 
-        // check previous query return a value or not
-        if($student != null){
-            return $student;
+        if($hasPermission) {
+            // search student by given index number
+            $student = self::getStudent($id, auth()->user()->school);
+
+            // check previous query return a value or not
+            if($student != null){
+                return $student;
+            }
+            // if query didn't recieve a value output return as invalid
+            else {
+                return 'invalid';
+            }
+        } else {
+            return 'permission_denied';
         }
-        // if query didn't recieve a value output return as invalid
-        else {
-            return 'invalid';
-        }
+
     }
 
     public function search($id) {
