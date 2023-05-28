@@ -9,7 +9,9 @@ class StaffController extends Controller
 {
     public function add(Request $request) {
         // search staff by given nic
-        $validate = Staff::where('nic', $request->nic)->first();
+        $validate = Staff::where('nic', $request->nic)
+        ->where('school', auth()->user()->school)
+        ->first();
 
         // check staff already exist with given nic
         if($validate == null) {
@@ -20,6 +22,7 @@ class StaffController extends Controller
             $staff->date_of_birth = $request->date;
             $staff->mobile = $request->mobile;
             $staff->role = $request->role;
+            $staff->school = auth()->user()->school;
             $staff->start_date = strval(Date("Y-m-d"));
             $staff->end_date = null;
 
@@ -41,12 +44,17 @@ class StaffController extends Controller
 
     public function live(Request $request) {
         // return name and nic list for name like that user searching
-        return Staff::select(['full_name', 'nic'])->where('full_name', 'like', "%$request->name%")->get();
+        return Staff::select(['full_name', 'nic'])
+        ->where('full_name', 'like', "%$request->name%")
+        ->where('school', auth()->user()->school)
+        ->get();
     }
 
     public function show(Request $request) {
         // search staff information for given nic
-        $staff = Staff::where('nic', $request->nic)->first();
+        $staff = Staff::where('nic', $request->nic)
+        ->where('school', auth()->user()->school)
+        ->first();
 
         // create response object for send object
         $response = new \stdClass();

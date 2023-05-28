@@ -14,20 +14,10 @@ class ClassController extends Controller
     {
 
         // get student data from student collection for given grade, year and class
-        $students = Student::select(['index_number', 'initial_name'])
-            ->where('enrollments', 'elemMatch', [
-                'year' => $request->year,
-                'grade' => $request->grade,
-                'class' => $request->class
-            ])
-            ->get();
+        $students = self::getStudentList($request->grade, $request->class, $request->year);
 
         // get class teacher details for given grade and class
-        $teacher = Teacher::select(["full_name"])->where("classes", "elemMatch", [
-            "grade" => $request->grade,
-            "class" => $request->class,
-            "end_year" => null
-        ])->first();
+        $teacher = self::getCurrentTeacher($request->grade, $request->class);
 
         // create response object
         $response = new \stdClass();
@@ -39,7 +29,12 @@ class ClassController extends Controller
         }
         // if no any values for given data this will return
         else {
-            $response->classStatus = 'newClass';
+            if($teacher != null) {
+                $response->teacher = $teacher;
+                $response->students = [];
+            } else {
+                $response->classStatus = 'newClass';
+            }
         }
         return json_encode($response);
     }
@@ -59,8 +54,9 @@ class ClassController extends Controller
     {
         // search student have a class in given year
         $student = Student::where('index_number', $request->indexNumber)
-            ->where('enrollments.year', $request->year)
-            ->first();
+        ->where('school', auth()->user()->school)
+        ->where('enrollments.year', $request->year)
+        ->first();
 
         // check student have a class or not
         if ($student == null) {
@@ -68,12 +64,12 @@ class ClassController extends Controller
             $enrollment = [
                 'year' => $request->year,
                 'grade' => $request->grade,
-                'class' => $request->class,
+                'class' => strtoupper($request->class),
                 'isPayment' => 'no'
             ];
 
             // add given data for the student
-            Student::where('index_number', $request->indexNumber)
+            StudentController::getStudent($request->indexNumber, auth()->user()->school)
                 ->push('enrollments', $enrollment);
             return 'success';
         }
@@ -91,7 +87,7 @@ class ClassController extends Controller
     public function add_teacher(Request $request)
     {
         // get Teacher details for given nic
-        $teacher = Teacher::where('nic', $request->nic)->first();
+        $teacher = TeacherController::getTeacher($request->nic, auth()->user()->school);
 
         // create object for return response
         $response = new \stdClass();
@@ -105,13 +101,13 @@ class ClassController extends Controller
                 // create array to update teacher's classes details
                 $record = [
                     "grade" => $request->grade,
-                    "class" => $request->class,
+                    "class" => strtoupper($request->class),
                     "start_year" => $request->year,
                     "end_year" => null
                 ];
                 // update teacher's classes details
-                Teacher::where('nic', $request->nic)
-                    ->push('classes', $record);
+                TeacherController::getTeacher($request->nic, auth()->user()->school)
+                ->push('classes', $record);
 
                 $response->status = 'success';
                 $response->teacher = $teacher->full_name;
@@ -156,11 +152,133 @@ class ClassController extends Controller
         $current_year = Date("Y");
         $details = TeacherController::getClass(auth()->user()->index, $current_year);
 
-        $students = self::getStudentList($details->grade, $details->class, $current_year);
+        $students = [];
+        $status = "not_a_class_teacher";
+        if($details != null) {
+            $status = "class_teacher";
+            $students = self::getStudentList($details->grade, $details->class, $current_year);
+        }
 
         return view('teacher.attendance', [
-            "students" => $students
+            "students" => $students,
+            "status" => $status,
         ]);
+    }
+
+    public function generateRegister() {
+        $alreadyStudents = count(self::getStudentList(request()->grade, request()->class, request()->year));
+        $class_teacher = self::getCurrentTeacher(request()->grade, request()->class);
+        $point = 5;
+        if(request()->grade > 11) {
+            $point = 6;
+        }
+        $birthYear = request()->year - request()->grade - $point;
+        $students = Student::where('date_of_birth', 'like', "$birthYear%")
+        ->orWhere('date_of_birth', 'like', ($birthYear + 1) . "-01-%")
+        ->where('school', auth()->user()->school)
+        ->whereNull('resigned_at')
+        ->get();
+
+        $target_subject = null;
+        $target_medium = null;
+        if(request()->grade > 5 && request()->grade < 11) {
+            $target_subject = 'aesthetics_subject';
+            $target_medium = 'medium';
+        } else if (request()->grade > 10 && request()->grade < 12) {
+            $target_subject = 'ol_subject_1';
+            $target_medium = 'ol_medium';
+        } else if (request()->grade > 11) {
+            $target_subject = 'al_scheme';
+            $target_medium = 'al_medium';
+        }
+
+        $target_students = [];
+        foreach ($students as $student) {
+            $isValid = true;
+            if($student->enrollments != null) {
+                foreach ($student->enrollments as $enrollment) {
+                    if($enrollment['year'] == request()->year) {
+                        $isValid = false;
+                    }
+                }
+            }
+            if(request()->subject != "any") {
+                if($student->subjects == null) {
+                    $isValid = false;
+                } else {
+                    if(request()->subject == "Languages") {
+                        $subjects = [
+                            "Second Language (Sinhala)",
+                            "Second Language (Tamil)",
+                            "Pali",
+                            "Sanskrit",
+                            "French",
+                            "German",
+                            "Hindi",
+                            "Japanese",
+                            "Arabic",
+                            "Korean",
+                            "Chinese",
+                            "Russian"
+                        ];
+                        if(!in_array($student->subjects[$target_subject], $subjects)) {
+                            $isValid = false;
+                        }
+                    } else {
+                        $student->subjects[$target_subject] == request()->subject ? null : $isValid = false;
+                    }
+                }
+            }
+            if(request()->medium != "any") {
+                $student->subjects[$target_medium] == request()->medium ? null : $isValid = false;
+            }
+            if($isValid) {
+                array_push($target_students, $student);
+            }
+        }
+        $response = new \stdClass();
+
+        if(count($target_students) == 0) {
+            $response->status = "no_students";
+            return $response;
+        }else if(count($target_students) < request()->count) {
+            $response->status = "not_enough";
+        }
+        $count = $alreadyStudents;
+        foreach ($target_students as $student) {
+            if($count == request()->count) {
+                break;
+            }
+            $request = new Request([
+                "indexNumber" => $student->index_number,
+                "grade" => request()->grade,
+                "class" => request()->class,
+                "year" => request()->year,
+            ]);
+            $this->add_student($request);
+            $count++;
+        }
+
+        if($class_teacher == null) {
+            $teacher = Teacher::where('school', auth()->user()->school)
+            ->where('classes.end_year', '!=', null)
+            ->get();
+            if(count($teacher) > 0) {
+                $randomTeacher = $teacher->random(1)->first();;
+                $record = new Request([
+                    "nic" => $randomTeacher->nic,
+                    "grade" => request()->grade,
+                    "class" => request()->class,
+                    "year" => request()->year
+                ]);
+                $this->add_teacher($record);
+            }
+        }
+        if(!isset($response->status)) {
+            $response->status = "success";
+        }
+
+        return $response;
     }
 
     public static function getStudentList($grade, $class, $year) {
@@ -168,8 +286,10 @@ class ClassController extends Controller
         ->where('enrollments', 'elemMatch', [
             'year' => $year,
             'grade' => $grade,
-            'class' => $class
-        ])->get();
+            'class' => strtoupper($class)
+        ])
+        ->where('school', auth()->user()->school)
+        ->get();
 
         return $students;
     }
@@ -179,7 +299,9 @@ class ClassController extends Controller
             "end_year" => null,
             "grade" => $grade,
             "class" => $class
-        ])->first();
+        ])
+        ->where("school", auth()->user()->school)
+        ->first();
 
         return $teacher;
     }

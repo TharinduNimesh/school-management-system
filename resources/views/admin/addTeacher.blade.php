@@ -17,7 +17,6 @@
         @include('admin.components.sidebar')
         <!-- Sidebar End -->
 
-
         <!-- Content Start -->
         <div class="content">
             <!-- Navbar Start -->

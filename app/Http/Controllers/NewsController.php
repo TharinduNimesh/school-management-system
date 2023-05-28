@@ -32,6 +32,7 @@ class NewsController extends Controller
             $news->description = $request->newsDescription;
             $news->image_path = $file_name;
             $news->grades = $request->grades;
+            $news->school = auth()->user()->school;
             $newsAdded = $news->save();
 
             // check news details save in database or not
@@ -51,7 +52,7 @@ class NewsController extends Controller
     }
     
     public function navigateToNews() {
-        return view('admin.news', ["news" => News::all()]);
+        return view('admin.news', ["news" => News::where('school', auth()->user()->school)->get()]);
     }
     
     public function remove(Request $request) {
@@ -60,7 +61,7 @@ class NewsController extends Controller
         
         // if no any record for given details, redirect to admin.news view
         if($news == null) {
-            return redirect()->route('admin.news', [ "news" => News::all()]);
+            return redirect()->back();
         } else {
             // delete image from files
             Storage::delete("public/news/$news->image_path");
@@ -69,7 +70,7 @@ class NewsController extends Controller
             $news->delete();
 
             // return news view with all news data
-            return view('admin.news', ["news" => News::all()]);
+            return redirect()->back();
         }
     }
 }

@@ -145,10 +145,6 @@
   <script>
     hamburger("addNews");
 
-    window.onbeforeunload = function() {
-      windows.location = "{{ route('admin.news') }}";
-    };
-
     var cropperImage = '';
 
     const SelectedImage = document.getElementById("newsImage");

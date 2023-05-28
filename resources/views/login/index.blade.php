@@ -99,7 +99,7 @@
             }
 
             var form = new FormData();
-            form.append('index', index);
+            form.append('login', index);
             form.append('password', password);
             form.append('role', role.toLowerCase());
 

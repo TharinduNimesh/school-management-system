@@ -34,12 +34,13 @@
             @include('teacher.components.navbar')
 
             <!-- marks Start -->
-            <div class="container-fluid pt-4 px-4">
+            <div class="container-fluid pt-4 px-4" style="min-height: 80vh;">
                 <div class="row">
                     <div class="col-12">
                         <div class="bg-secondary rounded p-4">
                             <h3 class="mb-4 text-dark">ADD MARKS</h3>
 
+                            @if($status == "class_teacher")
                             <div class="row">
                                 <div class="col-12 col-md-6 mt-1 mb-3">
                                     <div class="input-group">
@@ -97,8 +98,14 @@
                                     </tbody>
                                 </table>
                             </div>
+                            @else 
+                            <div class="alert alert-danger">
+                                <strong>WARNING : </strong> You Haven't Permission To Access Marks Details, Because You Are Not A Class Teacher
+                            </div>
                         </div>
+                        @endif
 
+                        @if ($status == "class_teacher")                            
                         <div class="bg-secondary rounded p-4 mt-3">
                             <div class="col-12">
                                 <div class="row">
@@ -167,6 +174,7 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </div>
             </div>

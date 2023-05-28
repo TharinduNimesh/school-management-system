@@ -41,9 +41,15 @@ class DeveloperController extends Controller
         $user->index = request()->nic;
         $user->name = request()->name;
         $user->role = strtolower(request()->role);
-        $user->school = request()->school;
+        $user->school = request()->school_id;
         $user->email = request()->email;
         $user->password = Hash::make(request()->password);
+
+        if(request()->role == "Developer" || request()->role == "Zonal Officer") {
+            $user->login = request()->nic;
+        } else {
+            $user->login = self::generateLogin(request()->nic, request()->school_id);
+        }
 
         $user->save();
 
@@ -60,6 +66,14 @@ class DeveloperController extends Controller
 
         return $response;
     }
+
+    public static function generateLogin($index, $school) {
+        $unique_id = School::find($school)->unique_id;
+        $login = "$unique_id-$index";
+
+        return $login;
+    }
+
 
     public function navigateToUsers() {
         $schools = self::getSchools();

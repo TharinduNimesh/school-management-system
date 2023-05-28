@@ -78,8 +78,6 @@
                                     Open this select menu
                                 </option>
                                 <!-- create option list with common sample subjects -->
-                                @php( $subjects = ["Maths", "Science", "English", "History", "Geography"])
-
                                 @foreach($subjects as $subject)
                                 <option>{{ $subject }}</option>
                                 @endforeach

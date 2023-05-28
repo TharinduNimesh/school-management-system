@@ -15,6 +15,7 @@
         <div class="content">
             @include('admin.components.navbar')
 
+            <div style="min-height: 80vh;">
             <!-- Other Elements Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
@@ -23,7 +24,7 @@
                             <h3 class="mb-4 text-dark">Section heads</h3>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-hover">
-                                    <thead>
+                                    <thead class="table-dark">
                                         <tr>
                                             <th scope="col">Grade</th>
                                             <th scope="col">Section Chief</th>
@@ -139,7 +140,7 @@ Ex: Bsc Hons In Software Enginnering</textarea>
                 </div>
             </div>
             <!-- Add Head end -->
-
+        </div>
             @include('public_components.footer')
         </div>
         <!-- Content End -->
@@ -240,6 +241,13 @@ Ex: Bsc Hons In Software Enginnering</textarea>
                                 icon: "warning",
                                 title: "WARNING",
                                 text: "This Teacher Is Already A Section Head",
+                            });
+                        }
+                        else if(response == "resigned") {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "WARNING",
+                                text: "This Teacher Has Resigned",
                             });
                         }
                         else if(response == "success"){

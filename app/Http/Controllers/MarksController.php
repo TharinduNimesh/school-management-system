@@ -14,7 +14,9 @@ class MarksController extends Controller
         $student = Student::find($data->id);
         $validate = Marks::where('year', $data->year)
         ->where('term', $data->term)
-        ->where('index_number', $student->index_number)->first();
+        ->where('index_number', $student->index_number)
+        ->where('school', auth()->user()->school)
+        ->first();
 
         if($validate == null) {
             $getClass = StudentController::getClass($student->index_number, $data->year);
@@ -25,6 +27,7 @@ class MarksController extends Controller
             $marks->index_number = $student->index_number;
             $marks->grade = $getClass["grade"];
             $marks->class = $getClass["class"];
+            $marks->school = auth()->user()->school;
             $marks->details = [];
     
             $total = 0;
@@ -43,14 +46,28 @@ class MarksController extends Controller
 
     public function getUnmarkedStudents(Request $request) {
         $teacher = TeacherController::getClass(auth()->user()->index, $request->year);
-        $students = ClassController::getStudentList($teacher->grade, $teacher->class, $request->year);
-        $subjects = ClassController::getSubjects($teacher->grade);
+        $students = [];
+        $subjects = [];
+        if($teacher != null) {
+            try {
+                if($teacher->classes == null) {
+                    return [
+                        "students" => $students,
+                        "subjects" => $subjects
+                    ];
+                }
+            } catch (\Throwable $th) {
+                $students = ClassController::getStudentList($teacher->grade, $teacher->class, $request->year);
+                $subjects = ClassController::getSubjects($teacher->grade);
+            }
+        }
 
         $response = [];
         foreach ($students as $student) {
             $validate = Marks::where('index_number', $student["index_number"])
             ->where('year', $request->year)
             ->where('term', $request->term)
+            ->where('school', auth()->user()->school)
             ->first();
 
             if($validate == null) {
@@ -94,6 +111,7 @@ class MarksController extends Controller
         foreach ($terms as $term) {
             $item = Marks::where("index_number", $request->index)
             ->where("grade", "9")
+            ->where("school", auth()->user()->school)
             ->where("term", $term)
             ->first();
             if($item == null) {
@@ -110,6 +128,7 @@ class MarksController extends Controller
 
     public static function show($index, $year, $term) {
         $marks = Marks::where('index_number', $index)
+        ->where("school", auth()->user()->school)
         ->where('year', $year)
         ->where('term', $term)
         ->first();
@@ -119,6 +138,7 @@ class MarksController extends Controller
 
     public static function getPlace($grade, $class, $year, $term, $index) {
         $all = Marks::where('year', $year)
+        ->where('school', auth()->user()->school)
         ->where('term', $term)
         ->where('grade', $grade)
         ->where('class', $class)

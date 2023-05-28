@@ -71,33 +71,36 @@
                                             <input class="form-control bg-secondary text-dark " disabled type="text"
                                                 name="Namewithinitials" value=" example-: 6-F" id="teamResult" />
                                         </div>
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered table-hover caption-top">
-                                                <caption>Achievements so far</caption>
-                                                <thead class="table-dark">
-                                                    <tr>
-                                                        <th scope="col">No</th>
-                                                        <th scope="col">Competition</th>
-                                                        <th scope="col">Category</th>
-                                                        <th scope="col">Place</th>
-                                                        <th scope="col">Date</th>
-                                                        <th scope="col">Description</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="awardsBody">
-                                                    <tr>
-                                                        <th scope="row">1</th>
-                                                        <td>Mark</td>
-                                                        <td>Otto</td>
-                                                        <td>Champion</td>
-                                                        <td>2023-12-12</td>
-                                                        <td class="space">Lorem ipsum dolor sit amet consectetur
-                                                            adipisicing elit.
-                                                            Laboriosam, cum!</td>
-                                                    </tr>
 
-                                                </tbody>
-                                            </table>
+
+                                        <div>
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-hover caption-top">
+                                                    <caption>Achievements so far</caption>
+                                                    <thead class="table-dark">
+                                                        <tr>
+                                                            <th scope="col">No</th>
+                                                            <th scope="col">Competition</th>
+                                                            <th scope="col">Category</th>
+                                                            <th scope="col">Place</th>
+                                                            <th scope="col">Date</th>
+                                                            <th scope="col">Description</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="awardsBody">
+                                                        <tr>
+                                                            <th scope="row">1</th>
+                                                            <td>Mark</td>
+                                                            <td>Otto</td>
+                                                            <td>Champion</td>
+                                                            <td>2023-12-12</td>
+                                                            <td class="space">Lorem ipsum dolor sit amet consectetur
+                                                                adipisicing elit.
+                                                                Laboriosam, cum!</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -290,7 +293,8 @@
                     return;
                 }
 
-                if (competition.value == "" || category.value == "" || place.value == "" || date.value == "" || description.value == "") {
+                if (competition.value == "" || category.value == "" || place.value == "" || date.value == "" || description
+                    .value == "") {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -350,7 +354,6 @@
                     }
                 }
             }
-
         </script>
 
 
