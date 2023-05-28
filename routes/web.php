@@ -21,6 +21,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\DeveloperController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\TimeTableController;
 
 /*
 |--------------------------------------------------------------------------
@@ -251,6 +252,7 @@ Route::delete('remove/feedback', [LearningController::class, 'removeFeedback'])-
 Route::post('activate/request', [SubjectController::class, 'activate'])->name('request.activate');
 Route::post("get/subjects/marks", [MarksController::class, 'getMarksForSubject'])->name('get.marks.for.subject');
 Route::post('generate/register', [ClassController::class, 'generateRegister'])->name('generate.register');
+Route::get('generate/timetable', [TimeTableController::class, 'generate'])->name('generate.time.table');
 
 Route::post('change/payment', [PaymentController::class, 'changePayment'])->name('change.payment');
 Route::post('update/student/details', [StudentController::class, 'updateDetails'])->name('update.student.details');
