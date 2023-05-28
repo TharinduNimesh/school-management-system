@@ -41,6 +41,9 @@ class TeacherLeaves extends Command
         // check teacher by teacher
         foreach ($teachers as $teacher) {
             $leaves = $teacher->leaves;
+            if($leaves == null) {
+                $leaves = [];
+            }
             
             // check teachers leaves data
             foreach ($leaves as $key => $leave) {

@@ -74,31 +74,33 @@
                                         </div>
 
                                         <div>
-                                            <table class="table table-bordered table-hover caption-top">
-                                                <caption>Achievements so far</caption>
-                                                <thead class="table-dark">
-                                                    <tr>
-                                                        <th scope="col">No</th>
-                                                        <th scope="col">Competition</th>
-                                                        <th scope="col">Category</th>
-                                                        <th scope="col">Place</th>
-                                                        <th scope="col">Date</th>
-                                                        <th scope="col">Description</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="awardsBody">
-                                                    <tr>
-                                                        <th scope="row">1</th>
-                                                        <td>Mark</td>
-                                                        <td>Otto</td>
-                                                        <td>Champion</td>
-                                                        <td>2023-12-12</td>
-                                                        <td class="space">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                                            Laboriosam, cum!</td>
-                                                    </tr>
-
-                                                </tbody>
-                                            </table>
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-hover caption-top">
+                                                    <caption>Achievements so far</caption>
+                                                    <thead class="table-dark">
+                                                        <tr>
+                                                            <th scope="col">No</th>
+                                                            <th scope="col">Competition</th>
+                                                            <th scope="col">Category</th>
+                                                            <th scope="col">Place</th>
+                                                            <th scope="col">Date</th>
+                                                            <th scope="col">Description</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="awardsBody">
+                                                        <tr>
+                                                            <th scope="row">1</th>
+                                                            <td>Mark</td>
+                                                            <td>Otto</td>
+                                                            <td>Champion</td>
+                                                            <td>2023-12-12</td>
+                                                            <td class="space">Lorem ipsum dolor sit amet consectetur
+                                                                adipisicing elit.
+                                                                Laboriosam, cum!</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -112,7 +114,8 @@
                                 <hr class="my-0" />
                                 <div class="card-body">
                                     <div class="alert alert-danger col-md-10 offset-md-1">
-                                        <strong>ATTENTION :</strong> Please add an award to a student's record within one week of the award being won.
+                                        <strong>ATTENTION :</strong> Please add an award to a student's record within
+                                        one week of the award being won.
                                     </div>
                                     <div class="row">
                                         <div class="form-floating mb-3 col-md-6">
@@ -270,8 +273,8 @@
                 const place = document.getElementById("place");
                 const date = document.getElementById("date");
                 const description = document.getElementById("Description");
-                
-                if(indexNumber == '' || sportName == ''){
+
+                if (indexNumber == '' || sportName == '') {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -280,7 +283,8 @@
                     return;
                 }
 
-                if (competition.value == "" || category.value == "" || place.value == "" || date.value == "" || description.value == "") {
+                if (competition.value == "" || category.value == "" || place.value == "" || date.value == "" || description
+                    .value == "") {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -317,7 +321,7 @@
                                 // document.getElementById("Description").value = "";
 
                                 searchStudent();
-                            } else if(response == 'invalid_date') {
+                            } else if (response == 'invalid_date') {
                                 Swal.fire({
                                     icon: 'warning',
                                     title: 'Oops...',
@@ -340,7 +344,6 @@
                     }
                 }
             }
-           
         </script>
 
 

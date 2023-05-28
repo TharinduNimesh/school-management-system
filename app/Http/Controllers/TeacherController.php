@@ -18,16 +18,18 @@ use App\Models\Accessory;
 class TeacherController extends Controller
 {
     public function add(Request $request) {
-        $teacher = Teacher::where('nic', '=', $request->teacherNIC)->whereNull('deleted_at')->first();
+        $teacher = self::getTeacher($request->teacherNIC, auth()->user()->school);
 
         if($teacher == null) {
             // make user object and store teacher's login details on it
             $user = new User();
             $user->name = "$request->teacherFirstName $request->teacherLastName";
+            $user->login = DeveloperController::generateLogin($request->teacherNIC, auth()->user()->school);
             $user->password = Hash::make($request->teacherPassword);
             $user->role = "teacher";
             $user->email = $request->teacherEmail;
             $user->index = $request->teacherNIC;
+            $user->school = auth()->user()->school;
 
             // save teacher login details on User collection
             $userAdded = $user->save();
@@ -50,8 +52,11 @@ class TeacherController extends Controller
             $teacher->email = $request->teacherEmail;
             $teacher->address = $request->address;
 
+            // teacher's school information
+            $teacher->school = auth()->user()->school;
+
             // teacher resignation assign to null
-            $teacher->deleted_at = null;
+            $teacher->resigned_at = null;
 
             // save teacher's information
             $teacherAdded = $teacher->save();
@@ -60,7 +65,7 @@ class TeacherController extends Controller
             if($teacherAdded && $userAdded) {
                 $data = [
                     'teacher_name' => $request->teacherFullName,
-                    'login' => $request->teacherNIC,
+                    'login' => DeveloperController::generateLogin($request->teacherNIC, auth()->user()->school),
                     'password' => $request->teacherPassword
                 ];
                 Mail::to($request->teacherEmail)->send(new TeacherWelcome($data));
@@ -70,12 +75,31 @@ class TeacherController extends Controller
             }
             // already a teacher exist with given nic number
         } else {
+            if($teacher->resigned_at != null) {
+                $teacher->resigned_at = null;
+                $teacher->save();
+
+                // make user object and store teacher's login details on it
+                $user = new User();
+                $user->name = "$request->teacherFirstName $request->teacherLastName";
+                $user->login = DeveloperController::generateLogin($request->teacherNIC, auth()->user()->school);
+                $user->password = Hash::make($request->teacherPassword);
+                $user->role = "teacher";
+                $user->email = $request->teacherEmail;
+                $user->index = $request->teacherNIC;
+                $user->school = auth()->user()->school;
+
+                // save teacher login details on User collection
+                $user->save();
+                
+                return 'success';
+            }
             return 'exist';
         }
     }
 
     public function show(Request $request) {
-        $teacher = Teacher::where('nic', $request->nic)->first();
+        $teacher = self::getTeacher($request->nic, auth()->user()->school);
         if($teacher == null) {
             return "Invalid";
         } else {
@@ -84,13 +108,16 @@ class TeacherController extends Controller
     }
 
     public function search($nic) {
-        $teacher = Teacher::where('nic', $nic)->first();
+        $teacher = self::getTeacher($nic, auth()->user()->school);
         if($teacher != null) {
             $leaves = Leaves::where('nic', $nic)
+            ->where('school', auth()->user()->school)
             ->where("status", "accepted")
             ->get();
 
-            $shortLeaves = ShortLeaves::where('nic', $nic)->get();
+            $shortLeaves = ShortLeaves::where('nic', $nic)
+            ->where('school', auth()->user()->school)
+            ->get();
 
             $response = new \stdClass();
             $response->teacher = $teacher;
@@ -105,13 +132,23 @@ class TeacherController extends Controller
     }
 
     public function live($name) {
-        $teachers = Teacher::where('full_name', 'like', "%$name%")->get();
+        $teachers = Teacher::where('full_name', 'like', "%$name%")
+        ->where('school', auth()->user()->school)
+        ->get();
         return $teachers;
     }
 
     public function makeAsSectionHead(Request $request) {
-        $section = SectionHead::where('section', $request->section)->whereNull('end_date')->first();
-        $head = SectionHead::where('nic', $request->nic)->whereNull('end_date')->first();
+        $teacher = self::getTeacher($request->nic, auth()->user()->school);
+        if($teacher->resigned_at != null) {
+            return 'resigned';
+        }
+        $section = SectionHead::where('school', auth()->user()->school)
+        ->where('section', $request->section)
+        ->whereNull('end_date')->first();
+        $head = SectionHead::where('school', auth()->user()->school)
+        ->where('nic', $request->nic)
+        ->whereNull('end_date')->first();
         if($section != null) {
             if($section->end_date == null) {
                 return 'sectionHasAHead';
@@ -119,15 +156,16 @@ class TeacherController extends Controller
         } else if($head != null){
             return 'alreadyASectionHead';
         } else {
-            $sectionHead = SectionHead::where('section', $request->grade)->first();
+            $sectionHead = SectionHead::where('school', auth()->user()->school)
+            ->where('section', $request->grade)->first();
             if($sectionHead == null) {
                 $newSectionHead = new SectionHead();
+                $newSectionHead->school = auth()->user()->school;
                 $newSectionHead->section = $request->section;
                 $newSectionHead->save();
 
                 $sectionHead = $newSectionHead;
             }
-            $teacher = Teacher::where('nic', $request->nic)->first();
             $sectionHead->name = $teacher->full_name;
             $sectionHead->nic = $teacher->nic;
             $sectionHead->mobile = $teacher->mobile;
@@ -149,13 +187,13 @@ class TeacherController extends Controller
     }
 
     public function resign($nic) {
-        $teacher = Teacher::where('nic', $nic)->first();
+        $teacher = self::getTeacher($nic, auth()->user()->school);
         $teacher->resigned_at = Date("Y-m-d");
         $teacher->save();
 
         $teacher_class = TeacherController::getClass($nic, Date("Y"));
         if($teacher_class != null) {
-            Teacher::where('nic', $nic)
+            $teacher
             ->where('classes.end_year', null)
             ->update(
                 [
@@ -169,8 +207,19 @@ class TeacherController extends Controller
             );
         }
 
+        $sectionHead = SectionHead::where('nic', $nic)
+        ->where('school', auth()->user()->school)
+        ->whereNull('end_date')
+        ->first();
+
+        if($sectionHead != null) {
+            $sectionHead->end_date = Date("Y-m-d");
+            $sectionHead->save();
+        }
+
         $user = User::where('index', $nic)
         ->where('role', 'teacher')
+        ->where('school', auth()->user()->school)
         ->first();
 
         if($user != null) {
@@ -180,13 +229,26 @@ class TeacherController extends Controller
         return Date("Y-m-d");
     }
 
+    public static function getTeacher($nic, $school) {
+        $teacher = Teacher::where('nic', $nic)
+        ->where('school', $school)
+        ->first();
+        return $teacher;
+    }
+
     public static function hasPermission($nic, $index) {
         if(auth()->user()->role == "admin") {
             return true;
         }
 
+        $student = StudentController::getStudent($index, auth()->user()->school);
+        if($student->resigned_at != null) {
+            return false;
+        }
+
         $student_class = StudentController::getClass($index, Date("Y"));
         $isSectionHead = SectionHead::where('nic', $nic)
+        ->where('school', auth()->user()->school)
         ->whereNull('end_date')
         ->first();
 
@@ -210,15 +272,17 @@ class TeacherController extends Controller
     }
 
     public static function getClass($nic, $year) {
-        $teacher = Teacher::where('nic', $nic)->first();
+        $teacher = self::getTeacher($nic, auth()->user()->school);
         if($teacher != null) {
-            foreach ($teacher->classes as $class) {
-                if(intval($class["start_year"]) <= intval($year) && intval($class["end_year"] > intval($year)) || 
-                intval($class["start_year"]) <= intval($year) && $class["end_year"] == null) {
-                    $response = new \stdClass();
-                    $response->grade = $class["grade"];
-                    $response->class = $class["class"];
-                    return $response;
+            if($teacher->classes != null) {
+                foreach ($teacher->classes as $class) {
+                    if(intval($class["start_year"]) <= intval($year) && intval($class["end_year"] > intval($year)) || 
+                    intval($class["start_year"]) <= intval($year) && $class["end_year"] == null) {
+                        $response = new \stdClass();
+                        $response->grade = $class["grade"];
+                        $response->class = $class["class"];
+                        return $response;
+                    }
                 }
             }
         }
@@ -281,7 +345,11 @@ class TeacherController extends Controller
     }
 
     public function addSubject(Request $request) {
-        $teacher = Teacher::where('nic', $request->nic)->first();
+        $teacher = self::getTeacher($request->nic, auth()->user()->school);
+        if($teacher->resigned_at != null) {
+            return 'resigned';
+        }
+        
         $subjects = $teacher->subjects;
         if($subjects == null) {
             $subjects = array();
@@ -323,6 +391,7 @@ class TeacherController extends Controller
         ->where('nic', $request->nic)
         ->first();
 
+
         return $subjects;
     }
 
@@ -333,7 +402,7 @@ class TeacherController extends Controller
     }
 
     public function removeSubjectFromAll(Request $request) {
-        $teacher = Teacher::where('nic', $request->nic)->first();
+        $teacher = self::getTeacher($request->nic, auth()->user()->school);
         foreach ($teacher->subjects as $subject) {
             if($subject["subject"] == $request->subject) {
                 self::removeSubject($request->nic, $request->subject, $subject["grade"]);
@@ -344,7 +413,7 @@ class TeacherController extends Controller
     }
 
     public static function removeSubject($nic, $subject, $grade) {
-        $teacher = Teacher::where('nic', $nic)->first();
+        $teacher = self::getTeacher($nic, auth()->user()->school);
         $subjects = $teacher->subjects;
         $newSubjects = [];
         foreach ($subjects as $item) {
@@ -356,9 +425,29 @@ class TeacherController extends Controller
         $teacher->save();
     }
 
+    public static function getTeacherSubjects($nic, $school) {
+        $teacher = self::getTeacher($nic, $school);
+        $subjects = [];
+        if($teacher != null) {
+            if($teacher->subjects != null) {
+                foreach ($teacher->subjects as $subject) {
+                    if(!in_array($subject["subject"], $subjects)) {
+                        array_push($subjects, $subject["subject"]);
+                    }
+                }
+            }
+        }
+        return $subjects;
+    }
+
     public function navigateToSummary() {
         $teacherDetails = self::getClass(auth()->user()->index, Date("Y"));
-        $students = ClassController::getStudentList($teacherDetails->grade, $teacherDetails->class, Date("Y"));
+        $students = [];
+        $status = "not_a_class_teacher";
+        if($teacherDetails != null) {
+            $status = "class_teacher";
+            $students = ClassController::getStudentList($teacherDetails->grade, $teacherDetails->class, Date("Y"));
+        }
         $array = [];
         foreach ($students as $student) {
             $obj = new \stdClass();
@@ -369,11 +458,15 @@ class TeacherController extends Controller
             array_push($array, $obj);
         }
 
-        return view('teacher.summary', ['data' => $array]);
+        return view('teacher.summary', [
+            'data' => $array,
+            'status' => $status
+        ]);
     }
 
     public function navigateToSectionHead() {
-        $sectionHeads = SectionHead::whereNull('end_date')->get();
+        $sectionHeads = SectionHead::where('school', auth()->user()->school)
+        ->whereNull('end_date')->get();
 
         return view('admin.sectionHead', [
             "sectionHeads" => $sectionHeads
@@ -382,16 +475,25 @@ class TeacherController extends Controller
 
     public function navigateToMarks() {
         $teacher = self::getClass(auth()->user()->index, Date("Y"));
-        $students = ClassController::getStudentList($teacher->grade, $teacher->class, Date("Y"));
-        $subjects = ClassController::getSubjects($teacher->grade);
+
+        $students = [];
+        $subjects = [];
+        $status = "not_a_class_teacher";
+        if($teacher != null) {
+            $status = "class_teacher";
+            $students = ClassController::getStudentList($teacher->grade, $teacher->class, Date("Y"));
+            $subjects = ClassController::getSubjects($teacher->grade);
+        }
+
         return view('teacher.marks', [
-            "subjects" => $subjects,
-            "students" => $students
+            'students' => $students,
+            'subjects' => $subjects,
+            'status' => $status
         ]);
     }
 
     public function navigateToResultSheet() {
-        $all = Marks::all();
+        $all = Marks::where('school', auth()->user()->school)->get();
         $years = [];
         foreach ($all as $item) {
             if(!in_array($item["year"], $years)) {
@@ -408,6 +510,7 @@ class TeacherController extends Controller
         $year = date("Y");
         $records = LearningRecord::where("nic", auth()->user()->index)
         ->where("date", "like", "$year%")
+        ->where("school", auth()->user()->school)
         ->orderBy("date", "desc")
         ->get();
 
@@ -431,15 +534,26 @@ class TeacherController extends Controller
         }
         
         return view('teacher.feedback', [
-            "records" => $response
+            "records" => $response,
+            "subjects" => self::getTeacherSubjects(auth()->user()->index, auth()->user()->school)
         ]);
     }
 
     public function navigateToAccessories() {
         $teacher = self::getClass(auth()->user()->index, Date("Y"));
-        $accessories = Accessory::where("grade", $teacher->grade)
-        ->where("class", $teacher->class)
-        ->first();
+
+        $accessories = null;
+        if($teacher != null) {
+            $accessories = Accessory::where("grade", $teacher->grade)
+            ->where("class", $teacher->class)
+            ->first();
+        } else {
+            return view('teacher.accessories', [
+                "desks" => "Not In A Class",
+                "chairs" => "Not In A Class",
+                "status" => "not_a_class_teacher"
+            ]);
+        }
 
         if($accessories == null) {
             return view('teacher.accessories', [

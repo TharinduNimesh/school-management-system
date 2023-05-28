@@ -29,10 +29,11 @@
         <div class="content">
             @include('teacher.components.navbar')
 
-            <div class="container-fluid pt-4 px-4">
+            <div class="container-fluid pt-4 px-4" style="min-height: 80vh">
                 <div class="row">
                     <div class="col-12 bg-secondary rounded p-4">
                         <h3 class="text-dark" id="attendanceHeading">Mark Attendance</h3>
+                        @if($status == "class_teacher") 
                         <div class="row mt-2">
                             <div class="col-12">
                                 <input type="date" class="form-control bg-secondary text-dark" id="attendanceDate" />
@@ -86,6 +87,11 @@
                                 </table>
                             </div>
                         </div>
+                        @else 
+                        <div class="alert alert-danger">
+                            <strong>WARNING : </strong> You Haven't Permission To Mark Attendance,Because you are not a class teacher
+                        </div>
+                        @endif
                     </div>
 
                 </div>

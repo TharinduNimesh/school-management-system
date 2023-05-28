@@ -18,95 +18,104 @@
             <!-- Accessories Start -->
 
             <!--Accessories details-->
-
-            <h3 class="text-dark mt-4 ms-4">Accessories Details</h3>
-            <div class="container-fluid pt-4 px-4">
-                <div class="row g-4">
-                    <div class="col-sm-6 col-xl-6">
-                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="bi bi-inboxes-fill text-dark fa-3x"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">
-                                    Number of chairs
-                                </p>
-                                <h6 class="mb-0 text-dark">
-                                   {{ $chairs }}
-                                </h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xl-6">
-                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                        <i class="bi bi-inboxes-fill text-dark fa-3x"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">Number of Desks</p>
-                                <h6 class="mb-0 text-dark">
-                                    {{ $desks }}
-                                </h6>
-                            </div>
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-            <!--Accessories details-->
-
-            <!--add Accessories details-->
-            <div class="container-fluid pt-4 px-4">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="bg-secondary rounded h-100 p-4">
-                            <h3 class="mb-4 text-dark">Add Accessories Details</h3>
-                            <div class="row">
-                                <div class="form-floating mb-3 mt-3 col-md-6">
-                                    <input type="text" class="form-control bg-secondary text-dark" id="deskCount"
-                                         placeholder="name@example.com">
-                                    <label class="mx-2" for="floatingInput">Add Total Desks</label>
-                                </div>
-                                <div class="form-floating mb-3 mt-3 col-md-6">
-                                    <input type="text" class="form-control bg-secondary text-dark" id="ChairsCount"
-                                         placeholder="name@example.com">
-                                    <label class="mx-2" for="floatingInput">Add Total Chairs</label>
+            <div style="min-height: 80vh;">
+                <div class="container-fluid pt-4 px-4">
+                    <div class="row g-4">
+                        <div class="col-sm-6 col-xl-6">
+                            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                                <i class="bi bi-inboxes-fill text-dark fa-3x"></i>
+                                <div class="ms-3">
+                                    <p class="mb-2">
+                                        Number of chairs
+                                    </p>
+                                    <h6 class="mb-0 text-dark">
+                                        {{ $chairs }}
+                                    </h6>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-primary" onclick="updateAccessories();" id="updateBtn">Update</button>
+                        </div>
+                        <div class="col-sm-6 col-xl-6">
+                            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                                <i class="bi bi-inboxes-fill text-dark fa-3x"></i>
+                                <div class="ms-3">
+                                    <p class="mb-2">Number of Desks</p>
+                                    <h6 class="mb-0 text-dark">
+                                        {{ $desks }}
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!--Accessories details-->
+
+                <!--add Accessories details-->
+                <div class="container-fluid pt-4 px-4">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="bg-secondary rounded h-100 p-4">
+                                <h3 class="mb-4 text-dark">Add Accessories Details</h3>
+                                @if (!isset($status))
+                                    <div class="row">
+                                        <div class="form-floating mb-3 mt-3 col-md-6">
+                                            <input type="text" class="form-control bg-secondary text-dark"
+                                                id="deskCount" placeholder="name@example.com">
+                                            <label class="mx-2" for="floatingInput">Add Total Desks</label>
+                                        </div>
+                                        <div class="form-floating mb-3 mt-3 col-md-6">
+                                            <input type="text" class="form-control bg-secondary text-dark"
+                                                id="ChairsCount" placeholder="name@example.com">
+                                            <label class="mx-2" for="floatingInput">Add Total Chairs</label>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <button type="button" class="btn btn-primary" onclick="updateAccessories();"
+                                            id="updateBtn">Update</button>
+                                    </div>
+                                @else
+                                    <div class="alert alert-danger">
+                                        <strong>WARNING : </strong> You Can't Update Accessories Details, Because You
+                                        Are Not A Class Teacher
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <!--add Accessories details end-->
 
-            <!--add Accessories details end-->
-            <!--Request Accessories-->
-            <div class="container-fluid pt-4 px-4">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="bg-secondary rounded h-100 p-4">
-                            <h3 class="mb-4 text-dark">Request Accessories</h3>
-                            <div class="alert alert-success">
-                                Please use the form below to request any needed accessories
+                <!--Request Accessories-->
+                @if (!isset($status))
+                    <div class="container-fluid pt-4 px-4">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="bg-secondary rounded h-100 p-4">
+                                    <h3 class="mb-4 text-dark">Request Accessories</h3>
+                                    <div class="alert alert-success">
+                                        Please use the form below to request any needed accessories
+                                    </div>
+                                    <div class="form-floating mb-3 mt-3">
+                                        <input type="text" class="form-control bg-secondary text-dark" id="subject"
+                                            placeholder="name@example.com">
+                                        <label for="floatingInput">Subject</label>
+                                    </div>
+                                    <div class="form-floating mb-3 mt-3">
+                                        <textarea class="form-control bg-secondary text-dark" placeholder="Leave a comment here" id="description"
+                                            style="height: 100px"></textarea>
+                                        <label for="floatingTextarea2">Description</label>
+                                    </div>
+
+                                    <button type="button" class="btn btn-primary btn-lg"
+                                        onclick="sendRequest();">Request</button>
+                                </div>
                             </div>
-                            <div class="form-floating mb-3 mt-3">
-                                <input type="text" class="form-control bg-secondary text-dark" id="subject"
-                                     placeholder="name@example.com">
-                                <label for="floatingInput">Subject</label>
-                            </div>
-                            <div class="form-floating mb-3 mt-3">
-                                <textarea class="form-control bg-secondary text-dark" placeholder="Leave a comment here" id="description" style="height: 100px"></textarea>
-                                <label for="floatingTextarea2">Description</label>
-                            </div>
-                        
-                            <button type="button" class="btn btn-primary btn-lg" onclick="sendRequest();">Request</button>
-                            
-                            
                         </div>
                     </div>
-                </div>
+                @endif
             </div>
-
             <!--Request Accessories end-->
-            
+
             <!-- Accessories End -->
 
 
@@ -121,7 +130,7 @@
 
     <script>
         hamburger("accessories");
-        
+
         function updateAccessories() {
             let deskCount = document.getElementById("deskCount").value
             let chairCount = document.getElementById("ChairsCount").value
@@ -204,7 +213,7 @@
                         })
                         document.getElementById("subject").value = ""
                         document.getElementById("description").value = ""
-                    } else if(xhr.response == "not allowed"){
+                    } else if (xhr.response == "not allowed") {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',

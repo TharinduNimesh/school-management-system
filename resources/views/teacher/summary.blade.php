@@ -19,8 +19,9 @@
             <div class="container-fluid pt-4 px-4" style="min-height: 80vh;">
                 <div class="bg-secondary text-center rounded p-4">
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h3 class="mb-0 text-dark">My Time Table</h3>
+                        <h3 class="mb-0 text-dark">Summary Of Your Class</h3>
                     </div>
+                    @if ($status == "class_teacher")
                     <div class="table-responsive">
                         <table class="table text-start align-middle table-bordered table-hover mb-0">
                             <thead>
@@ -50,6 +51,11 @@
                             </tbody>
                         </table>
                     </div>
+                    @else
+                    <div class="alert alert-danger">
+                        <strong>WARNING : </strong> There Is No Data To Summarize, Because You Are Not A Class Teacher.
+                    </div>
+                    @endif
                 </div>
             </div>
             <!-- Table End -->

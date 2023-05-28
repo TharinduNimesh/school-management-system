@@ -81,7 +81,7 @@
                                                     <th scope="row">{{ $key + 1 }}</th>
                                                     <th scope="row">{{ $accessory->grade }}</th>
                                                     <td>{{ $accessory->class }}</td>
-                                                    <td>{{ $accessory->teacher_name }}</td>
+                                                    <td class="space">{{ $accessory->teacher_name }}</td>
                                                     <td>{{ $accessory->date }}</td>
                                                     <td class="space">{{ $accessory->subject }}</td>
                                                     <td class="space">{{ $accessory->description }}</td>

@@ -41,14 +41,13 @@ class LoginController extends Controller
     {
         // $this->middleware('guest')->except('logout');
         if(Auth::check()) {
-            $path = null;
             Auth::logout();
         }
     }
 
     public function login(Request $request) {
         $validate = $request->validate([
-            'index' => ['required', 'max:20', 'min:5'],
+            'login' => ['required', 'max:20', 'min:5'],
             'password' => ['required'],
             'role' => ['required']
         ]);

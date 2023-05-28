@@ -21,15 +21,17 @@ use Illuminate\Support\Facades\Mail;
 class StudentController extends Controller
 {
     public function add(Request $request) {
-        $student = Student::where('index_number', '=', strval($request->studentIndexNumber))->first();
+        $student = self::getStudent($request->studentIndexNumber, auth()->user()->school);
 
         if($student == null) {
             $user = new User();
             $user->name = $request->studentInitialName;
             $user->index = $request->studentIndexNumber;
             $user->email = $request->emergrencyEmail;
+            $user->login = DeveloperController::generateLogin($request->studentIndexNumber, auth()->user()->school);
             $user->password = Hash::make($request->studentPassword);
             $user->role = "student";
+            $user->school = auth()->user()->school;
 
             // this return true if user added
             $userAdded = $user->save();
@@ -83,6 +85,9 @@ class StudentController extends Controller
             // add discipline marks
             $student->discipline_marks = 100;
 
+            // add school to details
+            $student->school = auth()->user()->school;
+
             // this return true if Student Added
             $studentAdded = $student->save();
 
@@ -90,10 +95,9 @@ class StudentController extends Controller
             if($studentAdded && $userAdded) {
                 $data = [
                     'student_name' => $request->studentInitialName,
-                    'login' => $request->studentIndexNumber,
+                    'login' => DeveloperController::generateLogin($request->studentIndexNumber, auth()->user()->school),
                     'password' => $request->studentPassword,
                 ];
-                // $this->sendWelcomeMail($data, $request->emergrencyEmail);
                 Mail::to($request->emergrencyEmail)->send(new WelcomeMail($data));
                 return 'success';
             } else {
@@ -107,7 +111,7 @@ class StudentController extends Controller
 
     public function show($id) {
         // search student by given index number
-        $student = Student::where('index_number', $id)->first();
+        $student = self::getStudent($id, auth()->user()->school);
 
         // check previous query return a value or not
         if($student != null){
@@ -129,6 +133,7 @@ class StudentController extends Controller
         $student = $this->show($id);
         if($student != 'invalid') {
             $book = BorrowedBook::where('holder_id', $id)
+            ->where('school', auth()->user()->school)
             ->where('returned', false)
             ->first();
             $class = self::getClass($id, Date("Y"));
@@ -168,7 +173,7 @@ class StudentController extends Controller
     }
 
     public function updateDiscipline(Request $request) {
-        $student = Student::where('index_number', $request->index)->first();
+        $student = self::getStudent($request->index, auth()->user()->school);
         if($student != null) {
             if($student->discipline_marks == null) {
                 $student->discipline_marks = 100;
@@ -202,7 +207,11 @@ class StudentController extends Controller
     }
 
     public function live(Request $request) {
-        $students = Student::where("full_name", "like", "%$request->name%")->get();
+        $students = Student::where("full_name", "like", "%$request->name%")
+        ->where("school", auth()->user()->school)
+        ->limit(10)
+        ->get();
+
         $response = array();
         foreach ($students as $student) {
             $class = self::getClass($student->index_number, Date("Y"));
@@ -240,7 +249,7 @@ class StudentController extends Controller
         $response = null;
         $hasPermission = TeacherController::hasPermission(auth()->user()->index, request()->index);
         if($hasPermission) {
-            $student = Student::where('index_number', request()->index)->first();
+            $student = self::getStudent(request()->index, auth()->user()->school);
             if($student != null) {
                 $NICs = [];
                 array_push($NICs, $student->father_nic);
@@ -281,7 +290,7 @@ class StudentController extends Controller
     }
 
     public function searchDismiss($index) {
-        $student = Student::where('index_number', $index)->first();
+        $student = self::getStudent($index, auth()->user()->school);
         if($student->dismissals == null) {
             return 'noData';
         } else {
@@ -309,7 +318,9 @@ class StudentController extends Controller
         $request = new RequestedChanges();
         $request->index_number = auth()->user()->index;
         $request->name = auth()->user()->name;
-        $request->class = $class["grade"] . " - " . $class["class"];
+        $request->grade = $class["grade"];
+        $request->class = $class["class"];
+        $request->school = auth()->user()->school;
         $request->subject = request()->subject;
         $request->description = request()->description;
         $request->category = "text"; // profile text base changes and image base changes is known as category
@@ -323,17 +334,18 @@ class StudentController extends Controller
         }
     }
 
-    public function resignation($index) {
-        $student = Student::where('index_number', $index)->first();
+    public function resign() {
+        $student = self::getStudent(request()->index, auth()->user()->school);
         if($student != null) {
-            $student->resigned_at = Date("Y-m-d");
-            $sports = [];
-            foreach ($student->sports as $sport) {
-                $sport["end_date"] = Date("Y-m-d");
-                array_push($sports, $sport);
+            $student->resigned_at = request()->date;
+            if($student->sports != null) {
+                $sports = [];
+                foreach ($student->sports as $sport) {
+                    $sport["end_date"] = Date("Y-m-d");
+                    array_push($sports, $sport);
+                }
+                $student->sports = $sports;
             }
-            $student->sports = $sports;
-
             $student->save();
             return 'success';
         } else {
@@ -342,7 +354,7 @@ class StudentController extends Controller
     }
 
     public function updateDetails() {
-        $student = Student::where('index_number', request()->index)->first();
+        $student = self::getStudent(auth()->user()->index, auth()->user()->school);
 
         if($student != null) {
             $student->full_name = request()->full_name;
@@ -366,8 +378,16 @@ class StudentController extends Controller
     }
 
     public static function getAttendancePrecentage($index, $year) {
-        $attendace_data = StudentAttendance::select('attendance')->where('index_number', $index)->where('year', $year)->first();
-        $dateCount = AttendanceController::getSchoolHoldDateCount(Date("Y"));
+        $attendace_data = StudentAttendance::select('attendance')
+        ->where('index_number', $index)
+        ->where('school', auth()->user()->school)
+        ->where('year', $year)
+        ->first();
+        $student = self::getClass($index, $year);
+        $dateCount = 0;
+        if($student != null) {
+            $dateCount = AttendanceController::getSchoolHoldDateCount(Date("Y"), $student["grade"]);
+        }
         $present_count = 0;
         if($attendace_data != null) {
             foreach ($attendace_data->attendance as $item) {
@@ -377,11 +397,17 @@ class StudentController extends Controller
             }
         }
 
+        if($dateCount == 0) {
+            return 0;
+        }
         return round(($present_count / $dateCount) * 100, 3);
     }
 
     public static function getClass($index, $year) {
-        $student = Student::where('index_number', $index)->where('enrollments.year', $year)->first();
+        $student = Student::where('index_number', $index)
+        ->where('school', auth()->user()->school)
+        ->where('enrollments.year', $year)
+        ->first();
         if($student != null) {
             foreach ($student->enrollments as $class) {
                 if($class["year"] == $year) {
@@ -391,8 +417,17 @@ class StudentController extends Controller
         }
     }
 
+    public static function getStudent($index, $school) {
+        $student = Student::where('index_number', $index)
+        ->where('school', $school)
+        ->first();
+        return $student;
+    }
+
     public function navigateToMarks() {
-        $all = Marks::where('index_number', auth()->user()->index)->get();
+        $all = Marks::where('index_number', auth()->user()->index)
+        ->where('school', auth()->user()->school)
+        ->get();
         $years = [];
 
         if($all != null) {
@@ -468,13 +503,15 @@ class StudentController extends Controller
 
             if($sampleSubject != null && $category != null) {
                 $validateIsRequest = RequestedSubject::where("index_number", auth()->user()->index)
-                ->where("category", $category)->first();
+                ->where("school", auth()->user()->school)
+                ->where("category", $category)
+                ->first();
                 $isActivate = StudentsSubject::where('category', $category)
+                ->where('school', auth()->user()->school)
                 ->where('deadline', '>=', Date("Y-m-d"))
                 ->first();
                 if($validateIsRequest == null && $isActivate != null) {
-                    $subjects = Student::where("index_number", auth()->user()->index)
-                    ->first();;
+                    $subjects = self::getStudent(auth()->user()->index, auth()->user()->school);
                     if(!isset($subjects->subjects[$sampleSubject])) {
                         $$category = "active";
                     }
@@ -496,6 +533,7 @@ class StudentController extends Controller
         
         $learningRecords = LearningRecord::where('class', $student["class"])
         ->where('grade', $student["grade"])
+        ->where('school', auth()->user()->school)
         ->where('date', Date("Y-m-d"))
         ->get();
 
@@ -521,7 +559,7 @@ class StudentController extends Controller
     }
 
     public function navigateToSports() {
-        $all = Sport::all();
+        $all = Sport::where('school', auth()->user()->school)->get();
         $sports = [];
         foreach ($all as $sport) {
             if(!in_array($sport->name, $sports)) {

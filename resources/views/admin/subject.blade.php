@@ -3,6 +3,11 @@
 
 <head>
     @include('admin.components.head')
+    <style>
+        .space {
+            white-space: nowrap;
+        }
+    </style>
 </head>
 
 <body>
@@ -94,6 +99,48 @@
                 </div>
             </div>
             <!-- Table End -->
+
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary rounded p-4">
+                    <div class="row g-2">
+                        <h3 class="text-dark">Reported Students' Feedbacks</h3>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th scope="col">Subject</th>
+                                        <th scope="col">Class</th>
+                                        <th scope="col">Student</th>
+                                        <th scope="col">Feedback</th>
+                                        <th scope="col">Teacher</th>
+                                        <th scope="col" class="space">Reported Reason</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($reports as $feedback)
+                                        <th class="space">{{ $feedback["subject"] }}</th>
+                                        <th class="space">{{ $feedback["grade"] }}-{{ $feedback["class"] }}</th>
+                                        <th class="space">{{ $feedback["student"] }}</th>
+                                        <th class="space">{{ $feedback["message"] }}</th>
+                                        <th class="space">{{ $feedback["teacher"] }}</th>
+                                        <th class="space">{{ $feedback["reason"] }}</th>
+                                        <th class="space">
+                                            <form action="{{ route('remove.feedback') }}" method="POST">
+                                                @csrf
+                                                @method("DELETE")
+                                                <input type="hidden" name="feedback_id" value="{{ $feedback['feedback_id'] }}">
+                                                <input type="hidden" name="report_id" value="{{ $feedback['report_id'] }}">
+                                                <button class="btn btn-danger">Remove</button>
+                                            </form>
+                                        </th>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
             <!-- Footer Start -->
