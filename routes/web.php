@@ -171,6 +171,27 @@ Route::prefix('sport')->middleware(['auth', 'IsCoach'])->group(function() {
     Route::get('list/requests', [SportController::class, 'navigateToRequests'])->name('sport.requests');
 });
 
+Route::prefix('zonal')->group(function() {
+    Route::get('dashboard', function() {
+        return view('zonal.dashboard');
+    })->name('zonal.dashboard');
+    Route::get('manage/students', function() {
+        return view('zonal.students');
+    })->name('zonal.students');
+    Route::get('manage/teachers', function() {
+        return view('zonal.teachers');
+    })->name('zonal.teachers');
+    Route::get('accessories', function() {
+        return view('zonal.accessories');
+    })->name('zonal.accessories');
+    Route::get('search/marks', function() {
+        return view('zonal.marks');
+    })->name('zonal.marks');
+    Route::get('manage/subjects', function() {
+        return view('zonal.subjects');
+    })->name('zonal.subjects');
+});
+
 // login functions
 Route::post('login', [LoginController::class, 'login'])->name('login');
 Auth::routes();
