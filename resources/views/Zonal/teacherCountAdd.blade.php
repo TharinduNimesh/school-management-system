@@ -43,10 +43,10 @@
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
-                <button type="submit" class="btn btn-primary col-12">Generate</i></button>
+                <button type="submit" class="btn btn-primary col-12">Generate</button>
               </div>
               <div class="col-sm-12 col-md-6">
-                <button type="submit" class="btn btn-primary col-12">Clear</i></button>
+                <button type="submit" class="btn btn-primary col-12">Clear</button>
               </div>
             </div>
           </div>
