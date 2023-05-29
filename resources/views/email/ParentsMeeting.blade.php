@@ -1,5 +1,5 @@
 <x-mail::message>
-Dear Parents,
+{{ $data["parent_name"] }},
 
 We would like to invite you to a parent-teacher meeting to discuss your child's progress and academic performance at our school. This meeting will be held on {{$data["date"]}} at {{$data["time"]}} in {{$data["place"]}}.
     
@@ -11,7 +11,6 @@ Thank you for your continued support of our school and we look forward to meetin
     
 Sincerely,
     
-{{$data["teacher"]}},
-{{ env('SCHOOL_NAME') }}
+{{$data["teacher_name"]}},
 </x-mail::message>
 

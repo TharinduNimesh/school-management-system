@@ -252,8 +252,8 @@
                             <option selected value="0">
                               Open this select menu
                             </option>
-                            <option value="1">Monthly Test</option>
-                            <option value="2">Term Test</option>
+                            <option>Monthly Test</option>
+                            <option>Term Test</option>
                           </select>
                           <label for="floatingSelect">Select Exam Category</label>
                         </div>
@@ -485,7 +485,8 @@
             }
           };
 
-          xhr.open("POST", "process/teacherSendMessage.php", true);
+          xhr.open("POST", "{{ route('send.mail.parent.meeting') }}", true);
+          xhr.setRequestHeader("X-CSRF-TOKEN", document.querySelector('meta[name="csrf-token"]').content);
           xhr.send(form);
         }
       } else if (msgType.value == "2") {
@@ -629,6 +630,7 @@
           }
 
           if (isValid) {
+            spinner.classList.add("show");
             var subjects = [];
             var dates = [];
             var startTime = [];
@@ -651,12 +653,12 @@
             };
 
             form.append("obj", JSON.stringify(obj));
-            form.append("exam", examType.innerHTML);
+            form.append("exam", examType.value);
             form.append("type", "4");
 
             var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-              if (xhr.readyState == 4 && xhr.status == 200) {
+            xhr.onload = function () {
+              if (xhr.status == 200) {
                 Swal.fire({
                   position: "top-end",
                   icon: "success",
@@ -664,10 +666,19 @@
                   showConfirmButton: false,
                   timer: 1500,
                 });
+                spinner.classList.remove("show");
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Something went wrong!",
+                });
+                spinner.classList.remove("show");
               }
             };
 
-            xhr.open("POST", "process/teacherSendMessage.php", true);
+            xhr.open("POST", "{{ route('send.mail.exam.details') }}", true);
+            xhr.setRequestHeader("X-CSRF-TOKEN", "{{ csrf_token() }}");
             xhr.send(form);
           }
         }
@@ -696,7 +707,8 @@
             }
           }
 
-          xhr.open("POST", "process/teacherSendMessage.php", true);
+          xhr.open("POST", "{{ route('send.mail.manual.all') }}", true);
+          xhr.setRequestHeader("X-CSRF-TOKEN", "{{ csrf_token() }}");
           xhr.send(form);
         }
       }

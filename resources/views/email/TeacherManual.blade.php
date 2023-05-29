@@ -1,5 +1,6 @@
 <x-mail::message>
-Dear Student, <br>
+# {{ $data['subject'] }}
+Dear {{ $data["student_name"] }}, <br>
 
 {{ $data["message"] }}
 

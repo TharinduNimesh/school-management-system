@@ -285,6 +285,9 @@ Route::prefix('send/mail')->group(function() {
     Route::post('manual', [MailController::class, 'manual'])->name('send.mail.manual');
     Route::post('meeting/general', [MailController::class, 'general_meeting'])->name('send.mail.general.meeting');
     Route::post('school/trip', [MailController::class, 'school_trip'])->name('send.mail.school.trip');
+    Route::post('exam/details', [MailController::class, 'exam_details'])->name('send.mail.exam.details');
+    Route::post('parent/meeting', [MailController::class, 'parent_meeting'])->name('send.mail.parent.meeting');
+    Route::post('manual/all', [MailController::class, 'manual_all'])->name('send.mail.manual.all');
 });
 
 // Student Function Routes
