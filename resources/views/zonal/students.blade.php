@@ -8,7 +8,7 @@
 <body>
     <div class="container-fluid position-relative d-flex p-0">
         <!-- Spinner Start -->
-        {{-- @include('public_components.spinner') --}}
+        @include('public_components.spinner')
         <!-- Spinner End -->
 
 
@@ -23,11 +23,11 @@
             @include('zonal.components.navbar')
             <!-- Navbar End -->
 
-            <!--//--Student Count start--//-->
+
             <!-- Table Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                <h3 class="mb-4 text-dark">Students Count</h3>
+                    <h3 class="mb-4 text-dark">Students Count</h3>
                     <div class="col-sm-12 col-xl-12">
                         <div class="bg-secondary rounded h-100 p-4">
                             <h6 class="mb-4 text-dark">School Search</h6>
@@ -38,12 +38,11 @@
                                             placeholder="Index Number">
                                         <label for="floatingSelectGrid">School Name</label>
                                         <div class="mt-3">
-                                            <button type="button" class="btn btn-primary btn-lg">Search<i class="bi bi-search ms-2"></i></button>
+                                            <button type="button" class="btn btn-primary btn-lg">Search<i
+                                                    class="bi bi-search ms-2"></i></button>
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
@@ -70,10 +69,10 @@
                                             <td>5</td>
                                         </tr>
                                         <tr>
-                                            
+
                                         </tr>
                                         <tr>
-                                            
+
                                         </tr>
                                     </tbody>
                                 </table>
@@ -83,11 +82,23 @@
                 </div>
             </div>
             <!-- Table End -->
-       <!-- //--Student Count end--//-->
 
+
+            <!-- Footer Start -->
+            @include('public_components.footer')
+            <!-- Footer End -->
         </div>
-    </div>
-</body>
+        <!-- Content End -->
 
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+
+    @include('public_components.js')
+    <script>
+        hamburger("studentCount");
+    </script>    
+</body>
 
 </html>

@@ -391,6 +391,9 @@
     <!-- JavaScript Libraries -->
     @include('public_components.js')
     <!-- Template Javascript -->
+    <script>
+        hamburger('subject')
+    </script>
 </body>
 
 </html>

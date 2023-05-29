@@ -136,6 +136,9 @@
     <!-- JavaScript Libraries -->
     @include('public_components.js')
     <!-- Template Javascript -->
+    <script>
+        hamburger('accessories')
+    </script>
 </body>
 
 </html>

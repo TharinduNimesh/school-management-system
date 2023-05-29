@@ -127,7 +127,7 @@
 
     @include('public_components.js')
     <script>
-        hamburger("result");
+        hamburger("resultsheet");
         function searchResult() {
             var year = document.getElementById("year");
             var term = document.getElementById("term");

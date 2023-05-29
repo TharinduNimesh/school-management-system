@@ -28,17 +28,17 @@
       <div class="container-fluid pt-4 px-4">
         <div class="col-sm-12 col-xl-12">
           <div class="bg-secondary rounded h-100 p-4">
-            <h3 class="mb-4 text-dark">School Search</h3>
+            <h3 class="mb-4 text-dark">Create a Table</h3>
             <div class="row g-2">
               <div class="col-sm-12 col-md-6">
                 <div class="form-floating">
-                  <input type="number" class="form-control" id="row" placeholder="row">
+                  <input type="number" class="form-control bg-secondary text-dark" id="row" placeholder="row">
                   <label for="floatingPassword">Row</label>
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
                 <div class="form-floating">
-                  <input type="number" class="form-control" id="column" placeholder="Column">
+                  <input type="number" class="form-control bg-secondary text-dark" id="column" placeholder="Column">
                   <label for="floatingPassword">Column</label>
                 </div>
               </div>
@@ -106,6 +106,7 @@
 
   <script>
 
+    hamburger('teacherCountAdd')
     create a function to generate the table using buttons
     function generateTable() {
       var row = document.getElementById("row").value;
