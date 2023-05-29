@@ -90,6 +90,9 @@
     <!-- JavaScript Libraries -->
     @include('public_components.js')
     <!-- Template Javascript -->
+    <script>
+        hamburger('request');
+    </script>
 
 </body>
 

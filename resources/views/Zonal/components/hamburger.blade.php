@@ -15,14 +15,18 @@
             </div>
         </div>
         <div class="navbar-nav w-100">
-            <a name="ham-item" id="dashboard" href="{{ route('library.dashboard') }}" class="nav-item nav-link active"><i
+            <a name="ham-item" id="dashboard" href="{{ route('Zonal.dashboard') }}" class="nav-item nav-link active"><i
                     class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-            <a name="ham-item" id="addBook" href="{{ route('library.addbooks') }}" class="nav-item nav-link"><i class="bi bi-book-half me-2"></i>Add Books</a>
-            <a name="ham-item" id="search" href="{{ route('library.search') }}" class="nav-item nav-link"><i class="bi bi-gear-wide-connected me-2"></i>Manage
-                Books</a>
-            <a name="ham-item" id="manage" href="{{ route('library.manage') }}" class="nav-item nav-link"><i class="bi bi-collection me-2"></i>Borrow Books</a>
-            <a name="ham-item" id="lateList" href="{{ route('library.lateList') }}" class="nav-item nav-link"><i class="bi bi-card-list me-2"></i>Late List</a>
-
+            <a name="ham-item" id="studentCount" href="{{ route('Zonal.studentCount') }}" class="nav-item nav-link"><i
+                    class="bi bi-book-half me-2"></i>Student Details</a>
+            <a name="ham-item" id="subject" href="{{ route('Zonal.subject') }}" class="nav-item nav-link"><i
+                    class="bi bi-gear-wide-connected me-2"></i>Subject</a>
+            <a name="ham-item" id="resultsheet" href="{{ route('Zonal.Allresultsheet') }}" class="nav-item nav-link"><i
+                    class="bi bi-collection me-2"></i>Result Sheet</a>
+            <a name="ham-item" id="accessories" href="{{ route('Zonal.accessories') }}" class="nav-item nav-link"><i
+                    class="bi bi-card-list me-2"></i>Accessories</a>
+            <a name="ham-item" id="teacherCountAdd" href="{{ route('Zonal.teacherCountAdd') }}" class="nav-item nav-link"><i
+                    class="bi bi-card-list me-2"></i>Teacher Count for Subject</a>
         </div>
     </nav>
 </div>
