@@ -128,10 +128,10 @@
                             <div class="ms-3">
                                 <p class="mb-2">Resignation</p>
                                 <h6 class="mb-0 text-dark" id="resignation">
-                                    @if ($student["resignation_date"] == null)
+                                    @if (!isset($student["resign_at"]))
                                     Not Resigned
                                     @else
-                                    {{ $student["resignation_date"] }}
+                                    {{ $student["resign_at"] }}
                                     @endif
                                 </h6>
                             </div>
@@ -161,7 +161,7 @@
                             <div class="col-8 col-md-5 col-lg-4">
                                 <div class="p-3">
                                     <div class="img d-flex justify-content-center align-items-center" id="imgBox" onclick="viewImage();" data-img="profileImg/default.png">
-                                        <img style="border-radius: 50%; width: 90%;" src="profileImg/default.png" id="profilePic">
+                                        <img style="border-radius: 50%; width: 90%;" src="/img/default.png" id="profilePic">
                                     </div>
                                 </div>
                             </div>

@@ -88,9 +88,7 @@ Route::prefix('teacher')->middleware(['auth', 'IsTeacher'])->group(function() {
     Route::get('timetable', function() {
         return view('teacher.timetable');
     })->name('teacher.timetable');
-    Route::get('assignments', function() {
-        return view('teacher.assignment');
-    })->name('teacher.assignments');
+    Route::get('assignments', [TeacherController::class, 'navigateToAssignments'])->name('teacher.assignments');
     Route::get('search/student', function() {
         return view('teacher.search');
     })->name('teacher.search');
@@ -171,6 +169,7 @@ Route::prefix('sport')->middleware(['auth', 'IsCoach'])->group(function() {
     Route::get('list/requests', [SportController::class, 'navigateToRequests'])->name('sport.requests');
 });
 
+// Zonal Routes
 Route::prefix('zonal')->group(function() {
     Route::get('dashboard', function() {
         return view('zonal.dashboard');

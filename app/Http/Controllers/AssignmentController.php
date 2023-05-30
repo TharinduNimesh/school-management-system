@@ -52,13 +52,14 @@ class AssignmentController extends Controller
 
                 if($students != null) {
                     foreach ($students as $student) {
+                        $s = StudentController::getStudent($student["index_number"], auth()->user()->school);
                         $data = [
                             "student_name" => $student["full_name"],
                             "start_date" => $request->startDate,
                             "end_date" => $request->endDate,
                             "url" => $url
                         ];
-                        Mail::to($student->emergency_email)->send(new StudentAssignment($data));
+                        Mail::to($s->emergency_email)->send(new StudentAssignment($data));
                     }
                 }
                 return 'success';

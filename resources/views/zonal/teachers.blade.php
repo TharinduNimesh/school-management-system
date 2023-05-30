@@ -106,8 +106,8 @@
 
   <script>
 
-    hamburger('teacherCountAdd')
-    create a function to generate the table using buttons
+    hamburger("teacherCountAdd")
+    // create a function to generate the table using buttons
     function generateTable() {
       var row = document.getElementById("row").value;
       var column = document.getElementById("column").value;

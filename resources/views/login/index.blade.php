@@ -46,6 +46,7 @@
                                         <option>Admin</option>
                                         <option>Librarian</option>
                                         <option>Coach</option>
+                                        <option>Zonal Officer</option>
                                         <option>Developer</option>
                                     </select>
                                 </div>
@@ -96,6 +97,10 @@
                     text: 'Please Select Your Role!',
                 })
                 return;
+            }
+
+            if(role == "Zonal Officer") {
+                window.location = "{{ route('zonal.dashboard') }}"
             }
 
             var form = new FormData();

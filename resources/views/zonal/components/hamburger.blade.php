@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="navbar-nav w-100">
-            <a name="ham-item" id="dashboard" href="" class="nav-item nav-link active"><i
+            <a name="ham-item" id="dashboard" href="{{ route('zonal.dashboard') }}" class="nav-item nav-link active"><i
                     class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
             <a name="ham-item" id="studentCount" href="{{ route('zonal.students') }}" class="nav-item nav-link"><i
                     class="bi bi-book-half me-2"></i>Student Details</a>

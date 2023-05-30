@@ -463,7 +463,7 @@ class StudentController extends Controller
     }
 
     public function navigateToProfile() {
-        $student = $this->show(auth()->user()->index);
+        $student = self::getStudent(auth()->user()->index, auth()->user()->school);
         $attendance = $this->getAttendancePrecentage(auth()->user()->index, Date("Y"));
         $class = self::getClass(auth()->user()->index, Date("Y"));
 
@@ -481,7 +481,6 @@ class StudentController extends Controller
             $house->name = env("HOUSE_04_NAME");
             $house->color = env("HOUSE_04_COLOR");
         }
-
         return view('student.profile', [
             "student" => $student,
             "house" => $house,
@@ -514,9 +513,11 @@ class StudentController extends Controller
                 $bucket_3 = $subjectList->bucket_3;
             } else {
                 $student = self::getClass(auth()->user()->index, Date("Y", strtotime('-1 year')));
-                if($student["grade"] == 11) {
-                    $category = "al";
-                    $sampleSubject = "al_subject_1";
+                if($student != null) {
+                    if($student["grade"] == 11) {
+                        $category = "al";
+                        $sampleSubject = "al_subject_1";
+                    }
                 }
             }
 

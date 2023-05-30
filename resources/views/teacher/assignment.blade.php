@@ -57,9 +57,9 @@
                                         <option value="0" selected>
                                             Open this select menu
                                         </option>
-                                        <option>English</option>
-                                        <option>Sinhala</option>
-                                        <option>Science</option>
+                                        @foreach ($subjects as $subject)
+                                            <option>{{ $subject }}</option>
+                                        @endforeach
                                     </select>
                                     <label class="px-3" for="floatingSelect">Select A Subject</label>
                                 </div>

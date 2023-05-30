@@ -586,4 +586,12 @@ class TeacherController extends Controller
             "requests" => $requests
         ]);
     }
+
+    public function navigateToAssignments() {
+        $subjects = self::getTeacherSubjects(auth()->user()->index, auth()->user()->school);
+
+        return view('teacher.assignment', [
+            "subjects" => $subjects
+        ]);
+    }
 }
