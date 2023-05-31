@@ -22,6 +22,8 @@
                 Student</a>
             <a name="ham-item" id="addTeacher" href="{{ route('admin.addTeacher') }}" class="nav-item nav-link"><i class="bi bi-person-plus-fill me-2"></i>Add
                 teacher</a>
+            <a name="ham-item" id="timetable" href="{{ route('admin.') }}" class="nav-item nav-link"><i class="bi bi-person-badge-fill me-2"></i>
+                Add Time Table</a>    
             <a name="ham-item" id="nonAcademic" href="{{ route('admin.nonAcademic') }}" class="nav-item nav-link"><i class="bi bi-person-badge-fill me-2"></i>
                 Non-Academic</a>
             <a name="ham-item" id="teacherShortLeave" href="{{ route('admin.teacherShortLeaves') }}" class="nav-item nav-link"><i class="bi bi-calendar-range-fill me-2"></i>Short Leaves</a>
@@ -43,6 +45,7 @@
                 Discipline</a>
             <a name="ham-item" id="record" href="{{ route('admin.class.report') }}" class="nav-item nav-link"><i class="bi bi-table me-2"></i>Class Record</a>
             <a name="ham-item" id="addNews" href="{{ route('admin.news') }}" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Add News</a>
+
         </div>
     </nav>
 </div>
