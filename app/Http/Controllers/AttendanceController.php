@@ -17,12 +17,13 @@ class AttendanceController extends Controller
     public function mark(Request $request) {
         $data = json_decode($request->data);
         $present = $data->present;
+        $absent = $data->absent;
         $date = $request->date;
         $year = \Carbon\Carbon::parse($date)->format('Y');
         $nic = auth()->user()->index;
         $validate = StudentAttendance::where('class_teacher', $nic)
                     ->where('attendance.date', $date)->first();
-
+        $mailable = [];
         if($validate == null) {
             foreach($present as $item) {
                 $student = StudentController::getStudent($item, auth()->user()->school);
@@ -58,13 +59,15 @@ class AttendanceController extends Controller
                 $data = [
                     "guardian_name" => $student->mother_name,
                     "date" => $date,
-                    "student_name" => $student->full_name
+                    "student_name" => $student->full_name,
+                    "email" => $student->emergency_email,
+                    "status" => 'present'
                 ];
 
-                Mail::to($student->emergency_email)->send(new PresentStudent($data));
+                array_push($mailable, $data);
             }
 
-            foreach($data->absent as $item) {
+            foreach($absent as $item) {
                 $student = StudentController::getStudent($item, auth()->user()->school);
                 $attendance = StudentAttendance::where('index_number', $item)
                 ->where('school', auth()->user()->school)
@@ -76,6 +79,7 @@ class AttendanceController extends Controller
                     $attendance_data->name = $student->initial_name;
                     $attendance_data->class_teacher = $nic;
                     $attendance_data->year = $year;
+                    $attendance_data->school = auth()->user()->school;
                     $attendance_data->attendance = [
                         [
                             'date' => $date,
@@ -97,10 +101,12 @@ class AttendanceController extends Controller
                 $data = [
                     "guardian_name" => $student->mother_name,
                     "date" => $date,
-                    "student_name" => $student->full_name
+                    "student_name" => $student->full_name,
+                    "email" => $student->emergency_email,
+                    "status" => 'absent'
                 ];
 
-                Mail::to($student->emergency_email)->send(new AbsentStudent($data));
+                array_push($mailable, $data);
             }
 
             return 'success';
@@ -115,7 +121,6 @@ class AttendanceController extends Controller
         ->where('school', auth()->user()->school)
         ->where('attendance.date', $request->date)
         ->get();
-
         $response = [];
         if(empty($student)) {
             foreach ($students as $student) {

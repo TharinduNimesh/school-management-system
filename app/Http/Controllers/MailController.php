@@ -8,6 +8,7 @@ use App\Mail\GeneralMeeting;
 use App\Mail\StudentTrip;
 use App\Mail\UpcomingExam;
 use App\Mail\ParentsMeeting;
+use App\Mail\AbsentStudent;
 
 use Illuminate\Http\Request;
 
@@ -157,6 +158,16 @@ class MailController extends Controller
                 "message" => request()->content,
             ];
             Mail::to($student->emergency_email)->send(new TeacherManual($data));
+        }
+    }
+
+    public static function send_attendance_data($data) {
+        foreach ($data as $item) {
+            if($item["status"] == "absent"){
+                Mail::to($item["email"])->send(new AbsentStudent($item));
+            } else {
+                Mail::to($item["email"])->send(new PresentStudent($item));
+            }
         }
     }
 }

@@ -159,22 +159,23 @@
             // Get the attendance data
             var attendanceData = gatherAttendanceData();
             if (attendanceData != null) {
+                document.getElementById("spinner").classList.add("show");
                 var form = new FormData();
                 form.append("data", JSON.stringify(attendanceData));
                 form.append("date", document.getElementById("attendanceDate").value);
 
                 var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
+                xhr.onload = function() {
+                    if (xhr.status == 200) {
                         // handle response
                         var response = xhr.responseText;
-                        if (response.status == "already") {
+                        if (response == "already") {
                             Swal.fire(
                                 "ERROR",
                                 "You have already marked attendance for that day",
                                 "error"
                             );
-                        } else if (response.status == "success") {
+                        } else if (response == "success") {
                             Swal.fire({
                                 position: "top-end",
                                 icon: "success",
@@ -182,8 +183,22 @@
                                 showConfirmButton: false,
                                 timer: 1500,
                             });
+                        } else {
+                            Swal.fire(
+                                "ERROR",
+                                "Something Went Wrong, Please Try Again",
+                                "error"
+                            );
                         }
+                        document.getElementById("spinner").classList.remove("show");
+                    } else {
+                        Swal.fire(
+                            "ERROR",
+                            "Something Went Wrong, Please Try Again",
+                            "error"
+                        );
                     }
+                    document.getElementById("spinner").classList.remove("show");
                 };
 
                 xhr.open("POST", "{{ route('mark.attendance') }}");
@@ -204,12 +219,12 @@
                     'warning'
                 );
             } else {
+                document.getElementById("spinner").classList.add("show");
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         // handle response
                         var response = JSON.parse(xhr.responseText);
-                        console.log(response);
                         if (response.length == 0) {
                             document.getElementById("tableDefault").innerHTML = 'No Data Exist On The Database';
                         } else {
@@ -276,6 +291,7 @@
                                 document.getElementById("tableBody").appendChild(row);
                             }
                         }
+                        document.getElementById("spinner").classList.remove("show");
                     }
                 }
                 var searchForm = new FormData();
