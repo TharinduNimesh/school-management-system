@@ -22,7 +22,7 @@
                 Student</a>
             <a name="ham-item" id="addTeacher" href="{{ route('admin.addTeacher') }}" class="nav-item nav-link"><i class="bi bi-person-plus-fill me-2"></i>Add
                 teacher</a>
-            <a name="ham-item" id="timetable" href="{{ route('admin.') }}" class="nav-item nav-link"><i class="bi bi-person-badge-fill me-2"></i>
+            <a name="ham-item" id="timetable" href="{{ route('admin.timetable') }}" class="nav-item nav-link"><i class="bi bi-person-badge-fill me-2"></i>
                 Add Time Table</a>    
             <a name="ham-item" id="nonAcademic" href="{{ route('admin.nonAcademic') }}" class="nav-item nav-link"><i class="bi bi-person-badge-fill me-2"></i>
                 Non-Academic</a>

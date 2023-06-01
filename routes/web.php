@@ -34,31 +34,33 @@ use App\Http\Controllers\TimeTableController;
 |
 */
 
-// home Routes
-Route::get('home', function() {
-    return view('home.index');
-})->name('home.index');
-Route::get('/', function () {
-    return redirect(route('home.index'));
+// Login Routes
+Route::domain('guest.' . env('APP_DOMAIN'))->group(function() {
+    Route::get('home', function() {
+        return view('home.index');
+    })->name('home.index');
+    Route::get('/', function () {
+        return redirect(route('home.index'));
+    });
+    Route::get('manage/login', function() {
+        return view('login.index');
+    })->name('login.index');
 });
 
-// Login Routes
-Route::get('manage/login', function() {
-    return view('login.index');
-})->name('login.index');
-
-Route::prefix('developer')->middleware(["auth", "IsDeveloper"])->group(function() {
-    Route::get("dashboard", function() {
-        return view('developer.schools');
-    })->name('developer.dashboard');
-    Route::get('register/schools', function() {
-        return view('developer.schools');
-    })->name('developer.schools');
-    Route::get('manage/users', [DeveloperController::class, 'navigateToUsers'])->name('developer.users');
+Route::domain('developer.' . env('APP_DOMAIN'))->group(function() {
+    Route::middleware(["auth", "IsDeveloper"])->group(function() {
+        Route::get("dashboard", function() {
+            return view('developer.schools');
+        })->name('developer.dashboard');
+        Route::get('register/schools', function() {
+            return view('developer.schools');
+        })->name('developer.schools');
+        Route::get('manage/users', [DeveloperController::class, 'navigateToUsers'])->name('developer.users');
+    });
 });
 
 // Student Routes
-Route::prefix('student')->middleware(['auth', 'IsStudent'])->group(function () {
+Route::domain('student.' . env('APP_DOMAIN'))->middleware(['auth', 'IsStudent'])->group(function () {
     Route::get('/', function() {
         return redirect('student\dashboard');
     });
@@ -79,7 +81,7 @@ Route::prefix('student')->middleware(['auth', 'IsStudent'])->group(function () {
 });
 
 // Teahcer Routes
-Route::prefix('teacher')->middleware(['auth', 'IsTeacher'])->group(function() {
+Route::domain('teacher.' . env('APP_DOMAIN'))->middleware(['auth', 'IsTeacher'])->group(function() {
     Route::get('dashboard', function() {
         return view('teacher.dashboard');
     })->name('teacher.dashboard');
@@ -107,7 +109,7 @@ Route::prefix('teacher')->middleware(['auth', 'IsTeacher'])->group(function() {
 });
 
 // Admin Routes
-Route::prefix('admin')->middleware(['auth', 'IsAdmin'])->group(function() {
+Route::domain('admin.' . env('APP_DOMAIN'))->middleware(['auth', 'IsAdmin'])->group(function() {
     Route::get('dashboard', function() {
         return view('admin.dashboard');
     })->name('admin.dashboard');
@@ -137,6 +139,9 @@ Route::prefix('admin')->middleware(['auth', 'IsAdmin'])->group(function() {
     Route::get('manage/discipline', function() {
         return view('admin.discipline');
     })->name('admin.discipline');
+    Route::get('manage/timetable', function() {
+        return view('admin.timetable');
+    })->name('admin.timetable');
     Route::get('add/teacher/subject', [SubjectController::class, 'navigateToTeacherSubject'])->name('admin.teacher.subject');
     Route::get('manage/accessories', [AccessoryController::class, 'adminNavigateToAccessories'])->name('admin.accessories');
     Route::get("manage/class/record", [LearningController::class, 'navigateToClassRecords'])->name('admin.class.report');
@@ -146,7 +151,7 @@ Route::prefix('admin')->middleware(['auth', 'IsAdmin'])->group(function() {
 });
 
 // Library Routes
-Route::prefix('library')->middleware(['auth', 'IsLibrarian'])->group(function() {
+Route::domain('librarian.' . env('APP_DOMAIN'))->middleware(['auth', 'IsLibrarian'])->group(function() {
     Route::get('dashboard', [BookController::class, "navigateToDashboard"])->name('library.dashboard');
     Route::get('books/add', [BookController::class, "navigateToAddBooks"])->name('library.addbooks');
     Route::get('books/search', [BookController::class, 'navigateToSearch'])->name('library.search');
@@ -157,7 +162,7 @@ Route::prefix('library')->middleware(['auth', 'IsLibrarian'])->group(function() 
 });
 
 // Sport Routes
-Route::prefix('sport')->middleware(['auth', 'IsCoach'])->group(function() {
+Route::domain('coach.' . env('APP_DOMAIN'))->middleware(['auth', 'IsCoach'])->group(function() {
     Route::get('dashboard', function() {
         return view('sport.dashboard');
     })->name('sport.dashboard');
@@ -170,7 +175,7 @@ Route::prefix('sport')->middleware(['auth', 'IsCoach'])->group(function() {
 });
 
 // Zonal Routes
-Route::prefix('zonal')->group(function() {
+Route::domain('officer.' . env('APP_DOMAIN'))->group(function() {
     Route::get('dashboard', function() {
         return view('zonal.dashboard');
     })->name('zonal.dashboard');
@@ -200,6 +205,14 @@ Route::post('logout', function() {
     Auth::logout();
     return redirect(route('home.index'));
 })->name('logout');
+
+// redirect to home
+Route::get('/', function() {
+    return redirect(route('home.index'));
+});
+Route::get('/home', function() {
+    return redirect(route('home.index'));
+});
 
 // admin functions
 Route::prefix('add')->group(function() {
