@@ -54,19 +54,23 @@ class LoginController extends Controller
 
         if(Auth::attempt($validate)) {
             $path = null;
-            if(auth()->user()->role == "student") {
+            $role = auth()->user()->role;
+            if($role == "student") {
                 $path = route('student.dashboard');
-            } else if (auth()->user()->role == "teacher") {
+            } else if ($role == "teacher") {
                 $path = route('teacher.dashboard');
-            } else if (auth()->user()->role == "admin") {
+            } else if ($role == "admin") {
                 $path = route('admin.dashboard');
-            } else if (auth()->user()->role == "librarian") {
+            } else if ($role == "librarian") {
                 $path = route('library.dashboard');
-            } else if (auth()->user()->role == "coach") {
+            } else if ($role == "coach") {
                 $path = route('sport.dashboard');
-            } else if (auth()->user()->role == "developer") {
+            } else if ($role == "developer") {
                 $path = route('developer.dashboard');
-            }
+            } else if ($role == 'officer') {
+                $path = route('zonal.dashboard');
+            } 
+
             return [
                 'status' => 'success',
                 'path' => $path

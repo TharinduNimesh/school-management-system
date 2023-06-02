@@ -11,11 +11,9 @@
         @include('public_components.spinner')
         <!-- Spinner End -->
 
-
         <!-- Sidebar Start -->
         @include('zonal.components.hamburger')
         <!-- Sidebar End -->
-
 
         <!-- Content Start -->
         <div class="content">
@@ -23,25 +21,27 @@
             @include('zonal.components.navbar')
             <!-- Navbar End -->
 
-
             <!-- Table Start -->
-            <div class="container-fluid pt-4 px-4">
+            <div class="container-fluid pt-4 px-4" style="min-height: 80vh;">
                 <div class="row g-4">
                     <h3 class="mb-4 text-dark">Students Count</h3>
                     <div class="col-sm-12 col-xl-12">
                         <div class="bg-secondary rounded h-100 p-4">
                             <h6 class="mb-4 text-dark">School Search</h6>
                             <div class="row g-2">
-                                <div class="col-md-8 col-12">
+                                <div class="col-12">
                                     <div class="form-floating">
-                                        <input class="form-control text-dark bg-secondary" id="schoolName" type="text"
-                                            placeholder="Index Number">
-                                        <label for="floatingSelectGrid">School Name</label>
-                                        <div class="mt-3">
-                                            <button type="button" class="btn btn-primary btn-lg">Search<i
-                                                    class="bi bi-search ms-2"></i></button>
-                                        </div>
+                                        <select class="form-select bg-secondary text-dark" id="school"
+                                            aria-label="Floating label select example">
+                                            <option selected value="0">Select A School</option>
+                                            <option>Dharmaloka</option>
+                                            <option>Gurukula</option>
+                                        </select>
+                                        <label for="floatingSelect">School List</label>
                                     </div>
+                                </div>
+                                <div class="d-grid gap-2 col-6 mx-auto">
+                                    <button class="btn btn-primary" type="button">Search</button>
                                 </div>
                             </div>
                         </div>
@@ -98,7 +98,7 @@
     @include('public_components.js')
     <script>
         hamburger("studentCount");
-    </script>    
+    </script>
 </body>
 
 </html>

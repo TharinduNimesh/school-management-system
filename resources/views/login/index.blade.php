@@ -46,7 +46,7 @@
                                         <option>Admin</option>
                                         <option>Librarian</option>
                                         <option>Coach</option>
-                                        <option>Zonal Officer</option>
+                                        <option value="officer">Zonal Officer</option>
                                         <option>Developer</option>
                                     </select>
                                 </div>
@@ -99,10 +99,6 @@
                 return;
             }
 
-            if(role == "Zonal Officer") {
-                window.location = "{{ route('zonal.dashboard') }}"
-            }
-
             var form = new FormData();
             form.append('login', index);
             form.append('password', password);
@@ -141,6 +137,8 @@
                 img.src = "/img/Sport.jpg";
             } else if (role == 'Developer') {
                 img.src = "/img/Developer.jpg";
+            } else if (role == 'officer') {
+                img.src = "/img/Zonal.jpg";
             }
         }
 

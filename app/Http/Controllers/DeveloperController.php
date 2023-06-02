@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\School;
 use App\Models\User;
+use App\Models\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -22,7 +23,7 @@ class DeveloperController extends Controller
         $school->grades_in_school = request()->grades_in_school;
         $school->address = request()->address;
         $school->sector = request()->education_sector;
-        $school->zone = request()->education_zone;
+        $school->zone = strtolower(request()->zone);
         $school->save();
 
         return "success";
@@ -31,6 +32,7 @@ class DeveloperController extends Controller
     public function add_users() {
         $validate = User::where('index', request()->nic)
         ->where('role', strtolower(request()->role))
+        ->where('school', request()->school_id)
         ->first();
 
         if($validate != null) {
@@ -41,14 +43,31 @@ class DeveloperController extends Controller
         $user->index = request()->nic;
         $user->name = request()->name;
         $user->role = strtolower(request()->role);
-        $user->school = request()->school_id;
         $user->email = request()->email;
         $user->password = Hash::make(request()->password);
 
-        if(request()->role == "Developer" || request()->role == "Zonal Officer") {
+        if(request()->role == "developer" || request()->role == "officer") {
+            if(request()->role == "officer") {
+                $user->school = request()->school_id;
+            }
             $user->login = request()->nic;
         } else {
             $user->login = self::generateLogin(request()->nic, request()->school_id);
+            $user->school = request()->school_id;
+
+            // add staff details to staff collection
+            $staff = new Staff;
+            $staff->full_name = request()->name;
+            $staff->nic = request()->nic;
+            $staff->date_of_birth = request()->birth;
+            $staff->mobile = request()->mobile;
+            $staff->role = "Administrative staff";
+            $staff->school = auth()->user()->school;
+            $staff->start_date = strval(Date("Y-m-d"));
+            $staff->end_date = null;
+            
+            // check is staff added successfully or not
+            $staffAdded = $staff->save();
         }
 
         $user->save();
@@ -64,7 +83,10 @@ class DeveloperController extends Controller
             $response[$school["_id"]] = $school["name"] . " - " . $school["sector"] . " - " . $school["zone"];
         }
 
-        return $response;
+        return [
+            "schools" => $response,
+            "details" => $schools,
+        ];
     }
 
     public static function generateLogin($index, $school) {
@@ -76,10 +98,19 @@ class DeveloperController extends Controller
 
 
     public function navigateToUsers() {
-        $schools = self::getSchools();
+        $all = self::getSchools();
+        $schools = $all["schools"];
+        $zones = [];
+
+        foreach ($all["details"] as $school) {
+            if(!in_array(strtolower($school["zone"]), $zones)) {
+                array_push($zones, strtolower($school["zone"]));
+            }
+        }
 
         return view('developer.users', [
-            "schools" => $schools
+            "schools" => $schools,
+            "zones" => $zones,
         ]);
     }
 }

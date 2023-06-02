@@ -40,7 +40,7 @@
   :root {
       --light: rgb(255, 255, 255) !important;
       --primary: rgb(255, 255, 255);
-      --secondary: #03074e !important;
+      --secondary: #2c2c2c !important;
       --dark: linear-gradient(to right, rgb(252, 124, 92), rgb(255, 31, 31));
   }
 
@@ -61,11 +61,11 @@
   }
 
   .body {
-      background-color: #080a28 !important;
+      background-color: #000000 !important;
   }
   
   .form-control {
-      background-color: #3f3f5c;
+      background-color: #030303;
       border-color: var(--light) !important;
   }
 
@@ -80,7 +80,7 @@
   }
 
   .form-select {
-    background-color: #3f3f5c !important;
+    background-color: #000000 !important;
   }
   
 </style>

@@ -10,6 +10,7 @@ class StaffController extends Controller
     public function add(Request $request) {
         // search staff by given nic
         $validate = Staff::where('nic', $request->nic)
+        ->where('role', $request->role)
         ->where('school', auth()->user()->school)
         ->first();
 

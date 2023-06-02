@@ -57,7 +57,8 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-6 col-md-6" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <div class="col-sm-6 col-md-6" style="cursor: pointer;" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
                         <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
                             <i class="bi bi-briefcase-fill fa-2x text-primary"></i>
                             <div class="ms-3">
@@ -75,21 +76,23 @@
             {{-- resignation modeal start  --}}
             <div class="modal fade" tabindex="-1" id="exampleModal">
                 <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title text-dark">WARNING</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-dark">WARNING</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you Sure to Remove him/her from school staff ?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" id="removeButton" class="btn btn-primary" data-bs-dismiss="modal"
+                                onclick="remove(this);">Yes</button>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                      <p>Are you Sure to Remove him/her from school staff ?</p>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="button" id="removeButton" class="btn btn-primary" data-bs-dismiss="modal" onclick="remove(this);">Yes</button>
-                    </div>
-                  </div>
                 </div>
-              </div>
+            </div>
             {{-- resignation modeal end  --}}
 
             <div class="container-fluid pt-4 px-4">
@@ -98,92 +101,95 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Full Name</label>
-                                <input disabled type="text" class="form-control text-dark bg-secondary" id="displayName"
-                                    placeholder="name@example.com" value="Ex : John Doe">
+                                <input disabled type="text" class="form-control text-dark bg-secondary"
+                                    id="displayName" placeholder="name@example.com" value="Ex : John Doe">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">NIC Number</label>
-                                <input disabled type="text" class="form-control text-dark bg-secondary" id="displayNIC"
-                                    placeholder="name@example.com" value="Ex : 90123445v">
+                                <input disabled type="text" class="form-control text-dark bg-secondary"
+                                    id="displayNIC" placeholder="name@example.com" value="Ex : 90123445v">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Contact Number</label>
-                                <input disabled type="text" class="form-control text-dark bg-secondary" id="mobile"
-                                    placeholder="name@example.com" value="Ex: 0771112223">
+                                <input disabled type="text" class="form-control text-dark bg-secondary"
+                                    id="mobile" placeholder="name@example.com" value="Ex: 0771112223">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Job Role</label>
-                                <input disabled type="text" class="form-control text-dark bg-secondary" id="role"
-                                    placeholder="name@example.com" value="Ex : Administrative staff">
+                                <input disabled type="text" class="form-control text-dark bg-secondary"
+                                    id="role" placeholder="name@example.com" value="Ex : Administrative staff">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-    <hr/>  
-        <div class="container-fluid pt-4 px-4">
-        <div class="bg-secondary rounded-top p-4">
-        <form action="" id="add-staff">
-          <div class="row">
-            <h3 class="text-dark">Add Non-Academic Staff</h3>
-            <div class="col-md-6">
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control bg-secondary text-dark" name="fullName"
-                  placeholder="name@example.com">
-                <label for="floatingInput">Full Name</label>
-              </div>
+            <hr />
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary rounded-top p-4">
+                    <form action="" id="add-staff">
+                        <div class="row">
+                            <h3 class="text-dark">Add Non-Academic Staff</h3>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control bg-secondary text-dark" name="fullName"
+                                        placeholder="name@example.com">
+                                    <label for="floatingInput">Full Name</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control bg-secondary text-dark" name="nic"
+                                        placeholder="name@example.com">
+                                    <label for="floatingInput">NIC</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control bg-secondary text-dark" name="mobile"
+                                        placeholder="name@example.com">
+                                    <label for="floatingInput">Contact Number</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="date" class="form-control text-dark bg-secondary" name="date"
+                                        placeholder="name@example.com">
+                                    <label for="floatingInput">Date Of Registration</label>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="form-floating">
+                                    <select class="form-select text-dark bg-secondary" id="role" name="role"
+                                        aria-label="Floating label select example">
+                                        <option selected value="0">Open this select menu</option>
+                                        <option value="Administrative staff">Administrative staff</option>
+                                        <option value="Maintenance staff">Maintenance staff</option>
+                                        <option value="IT staff">IT staff</option>
+                                        <option value="Support staff">Support staff</option>
+                                        <option value="School nurse">School nurse</option>
+                                        <option value="Food service staff">Food service staff</option>
+                                        <option value="Transportation staff">Transportation staff</option>
+                                        <option value="Security staff">Security staff</option>
+                                        <option value="Librarian">Librarian</option>
+                                        <option value="Counselor">Counselor</option>
+                                    </select>
+                                    <label for="floatingSelect">Job Role</label>
+                                </div>
+                            </div>
+                            <div class="d-grid gap-2 col-6 mx-auto mt-3">
+                                <button class="btn btn-primary" type="button" onclick="addStaff();">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="col-md-6">
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control bg-secondary text-dark" name="nic" placeholder="name@example.com">
-                <label for="floatingInput">NIC</label>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control bg-secondary text-dark" name="mobile"
-                  placeholder="name@example.com">
-                <label for="floatingInput">Contact Number</label>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating mb-3">
-                <input type="date" class="form-control text-dark bg-secondary" name="date" placeholder="name@example.com">
-                <label for="floatingInput">Date Of Registration</label>
-              </div>
-            </div>
-            <div class="col-12 mb-3">
-              <div class="form-floating">
-                <select class="form-select text-dark bg-secondary" id="role" name="role" aria-label="Floating label select example">
-                  <option selected value="0">Open this select menu</option>
-                    <option value="Administrative staff">Administrative staff</option>
-                    <option value="Maintenance staff">Maintenance staff</option>
-                    <option value="IT staff">IT staff</option>
-                    <option value="Support staff">Support staff</option>
-                    <option value="School nurse">School nurse</option>
-                    <option value="Food service staff">Food service staff</option>
-                    <option value="Transportation staff">Transportation staff</option>
-                    <option value="Security staff">Security staff</option>
-                    <option value="Librarian">Librarian</option>
-                    <option value="Counselor">Counselor</option>
-                </select>
-                <label for="floatingSelect">Job Role</label>
-              </div>
-            </div>
-            <div class="d-grid gap-2 col-6 mx-auto mt-3">
-              <button class="btn btn-primary" type="button" onclick="addStaff();">Submit</button>
-            </div>
-          </div>
-        </form>
-        </div>
-      </div>
             @include('public_components.footer')
         </div>
         <!-- Content End -->
@@ -199,7 +205,7 @@
     hamburger("nonAcademic");
 
     function remove(Button) {
-        if(Button.dataset.index == '') {
+        if (Button.dataset.index == '') {
             Swal.fire({
                 title: 'WARNING',
                 text: 'You Must Search A Staff Member',
@@ -211,7 +217,7 @@
             form.append("id", Button.dataset.id);
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {
-                if(xhr.readyState == 4 && xhr.status == 200) {
+                if (xhr.readyState == 4 && xhr.status == 200) {
                     document.getElementById("resignation").innerHTML = xhr.responseText;
                     document.getElementById("spinner").classList.remove("show");
                 }
@@ -240,51 +246,51 @@
         });
 
         const role = document.getElementById("role");
-        if(role.value == '0') {
+        if (role.value == '0') {
             role.classList.add("d-none");
             isValid = false;
         } else {
             role.classList.remove("d-none");
         }
 
-        if(isValid) {
+        if (isValid) {
             var form = new FormData(staffForm);
             var xhr = new XMLHttpRequest();
             xhr.open("post", "{{ route('add.staff') }}");
             xhr.onreadystatechange = function() {
-                if(xhr.readyState == 4) {
-                    if(xhr.status == 200) {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
                         var response = xhr.responseText;
-                        if(response == 'error') {
+                        if (response == 'error') {
                             Swal.fire({
                                 title: 'ERROR',
                                 text: 'Error While Processing Your Request',
                                 icon: 'error',
                                 footer: "<a href='http://wa.me/94701189971'>Contact Developers Here</a>"
                             });
-                        } else if(response == 'exist') {
+                        } else if (response == 'exist') {
                             Swal.fire({
                                 title: 'WARNING',
                                 text: 'A Person Already Exist With Given NIC',
                                 icon: 'warning',
                                 footer: "<a href='http://wa.me/94701189971'>Contact Developers Here</a>"
                             });
-                        } else if(response == 'success') {
+                        } else if (response == 'success') {
                             Swal.fire({
                                 position: 'top-end',
                                 icon: 'success',
                                 title: 'Staff Added Successfully',
                                 showConfirmButton: false,
                                 timer: 1500
-                                });
+                            });
                         }
                     } else {
                         spinner.classList.remove('show');
                         Swal.fire({
-                        icon: 'error',
-                        title: 'ERROR',
-                        text: 'Internal Server Error',
-                        footer: "<a href='http://wa.me/94701189971'>Contact Developers Here</a>"
+                            icon: 'error',
+                            title: 'ERROR',
+                            text: 'Internal Server Error',
+                            footer: "<a href='http://wa.me/94701189971'>Contact Developers Here</a>"
                         });
                     }
                     spinner.classList.remove("show");
@@ -308,12 +314,11 @@
 
         if (name.trim() == '') {
             document.getElementById("item-container").innerHTML = '';
-        }
-        else {
+        } else {
             var xhr = new XMLHttpRequest();
             var form = new FormData();
             form.append("name", name);
-            xhr.onreadystatechange = function () {
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     document.getElementById("item-container").innerHTML = '';
                     var response = JSON.parse(xhr.responseText);
@@ -324,7 +329,7 @@
                         item.classList.add("list-group-item-action");
                         item.classList.add("text-dark");
                         item.dataset.nic = response[i]['nic'];
-                        item.onclick = function () {
+                        item.onclick = function() {
                             document.getElementById("name").value = this.innerHTML;
                             document.getElementById("name").dataset.nic = this.dataset.nic;
                             document.getElementById("item-container").style.display = 'none';
@@ -367,19 +372,17 @@
             registration.innerHTML = 'none';
             resignation.innerHTML = 'none';
             removeButton.dataset.id = '';
-        }
-        else {
+        } else {
             var nicNumber = '';
             if (name.value.trim() != '') {
                 nicNumber = name.dataset.nic;
-            }
-            else {
+            } else {
                 nicNumber = nic.value;
             }
             var xhr = new XMLHttpRequest();
             var form = new FormData();
             form.append("nic", nicNumber);
-            xhr.onreadystatechange = function () {
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     removeButton.dataset.id = '';
                     var response = JSON.parse(xhr.responseText);
@@ -396,15 +399,15 @@
                         role.value = "Ex : Administrative staff";
                         registration.innerHTML = 'none';
                         resignation.innerHTML = 'none';
-                    }
-                    else {
+                    } else {
                         removeButton.dataset.id = response.staff["_id"];
                         displayName.value = response.staff["full_name"];
                         displayNIC.value = response.staff["nic"];
                         mobile.value = response.staff["mobile"];
                         role.value = response.staff["role"];
                         registration.innerHTML = response.staff["start_date"];
-                        resignation.innerHTML = response.staff["end_date"] == null ? 'none' : response.staff["end_date"];
+                        resignation.innerHTML = response.staff["end_date"] == null ? 'none' : response.staff[
+                            "end_date"];
                     }
                 }
             }
