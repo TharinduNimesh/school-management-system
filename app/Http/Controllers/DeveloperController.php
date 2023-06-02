@@ -75,20 +75,6 @@ class DeveloperController extends Controller
         return "success";
     }
 
-    public static function getSchools() {
-        $schools = School::all();
-        
-        $response = [];
-        foreach ($schools as $school) {
-            $response[$school["_id"]] = $school["name"] . " - " . $school["sector"] . " - " . $school["zone"];
-        }
-
-        return [
-            "schools" => $response,
-            "details" => $schools,
-        ];
-    }
-
     public static function generateLogin($index, $school) {
         $unique_id = School::find($school)->unique_id;
         $login = "$unique_id-$index";
@@ -96,9 +82,8 @@ class DeveloperController extends Controller
         return $login;
     }
 
-
     public function navigateToUsers() {
-        $all = self::getSchools();
+        $all = SchoolController::getAllSchools();
         $schools = $all["schools"];
         $zones = [];
 

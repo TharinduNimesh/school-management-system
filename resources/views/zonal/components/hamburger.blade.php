@@ -4,7 +4,7 @@
           border-bottom-right-radius: 8px;
         ">
     <nav class="navbar bg-secondary navbar-dark">
-        <a href="{{ route('library.dashboard') }}" class="navbar-brand mx-4 mb-3">
+        <a href="{{ route('zonal.dashboard') }}" class="navbar-brand mx-4 mb-3">
             <h3 class="text-primary text-center hide-text">Sri Dharmaloka</h3>
             <h3 class="text-primary text-center hide-text">College</h3>
         </a>

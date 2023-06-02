@@ -22,6 +22,8 @@ use App\Http\Controllers\DeveloperController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TimeTableController;
+use App\Http\Controllers\NavigationController;
+use App\Http\Controllers\SchoolController;
 
 /*
 |--------------------------------------------------------------------------
@@ -179,9 +181,7 @@ Route::domain('officer.' . env('APP_DOMAIN'))->group(function() {
     Route::get('dashboard', function() {
         return view('zonal.dashboard');
     })->name('zonal.dashboard');
-    Route::get('manage/students', function() {
-        return view('zonal.students');
-    })->name('zonal.students');
+    Route::get('manage/students', [NavigationController::class, 'navigateToZonalStudent'])->name('zonal.students');
     Route::get('manage/teachers', function() {
         return view('zonal.teachers');
     })->name('zonal.teachers');
@@ -360,6 +360,9 @@ Route::middleware(['auth', 'IsDeveloper'])->group(function () {
     Route::post('add/school', [DeveloperController::class, 'add_school'])->name('add.school');
     Route::post('add/users', [DeveloperController::class, 'add_users'])->name('add.users');
 });
+
+// zonal function routes
+Route::get('get/school/student', [SchoolController::class, 'getSchoolStudent'])->name('get.school.student');
 
 Route::fallback(function() {
     return view("404");
