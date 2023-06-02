@@ -185,9 +185,7 @@ Route::domain('officer.' . env('APP_DOMAIN'))->group(function() {
     Route::get('manage/teachers', function() {
         return view('zonal.teachers');
     })->name('zonal.teachers');
-    Route::get('accessories', function() {
-        return view('zonal.accessories');
-    })->name('zonal.accessories');
+    Route::get('accessories', [NavigationController::class, 'navigateToZonalAccessories'])->name('zonal.accessories');
     Route::get('search/marks', function() {
         return view('zonal.marks');
     })->name('zonal.marks');
@@ -363,6 +361,7 @@ Route::middleware(['auth', 'IsDeveloper'])->group(function () {
 
 // zonal function routes
 Route::get('get/school/student', [SchoolController::class, 'getSchoolStudent'])->name('get.school.student');
+Route::get('get/school/accessories', [SchoolController::class, 'getSchoolAccessories'])->name('get.school.accessories');
 
 Route::fallback(function() {
     return view("404");

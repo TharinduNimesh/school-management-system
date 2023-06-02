@@ -13,4 +13,12 @@ class NavigationController extends Controller
             "schools" => $schools,
         ]);
     }
+
+    public function navigateToZonalAccessories() {
+        $schools = SchoolController::getSchool(auth()->user()->school);
+        
+        return view('zonal.accessories', [
+            "schools" => $schools,
+        ]);
+    }
 }
