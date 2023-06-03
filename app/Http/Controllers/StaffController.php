@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Staff;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class StaffController extends Controller
 {
@@ -13,6 +15,18 @@ class StaffController extends Controller
         ->where('role', $request->role)
         ->where('school', auth()->user()->school)
         ->first();
+
+        // check is staff role is administrative staff and check is there already 5 administrative staff
+        if($request->role == "Administrative staff") {
+            $users = Staff::where('role', $request->role)
+            ->where('school', auth()->user()->school)
+            ->get()
+            ->count();
+
+            if($users >= 5) {
+                return 'limit';
+            }
+        }
 
         // check staff already exist with given nic
         if($validate == null) {
@@ -30,6 +44,23 @@ class StaffController extends Controller
             // check is staff added successfully or not
             $staffAdded = $staff->save();
             if($staffAdded) {
+                // check is user role is administrative staff or librarian
+                if($request->role == "Administrative staff" || $request->role == "Librarian") {
+                    if($request->role == "Administrative staff") {
+                        $request->role = "admin";
+                    }
+                    // add new user login details to user collection
+                    $user = new User;
+                    $user->name = $request->fullName;
+                    $user->index = $request->nic;
+                    $user->email = $request->email;
+                    $user->login = DeveloperController::generateLogin($request->nic, auth()->user()->school);
+                    $user->password = Hash::make($request->password);
+                    $user->role = strtolower($request->role);
+                    $user->school = auth()->user()->school;
+
+                    $user->save();
+                }
                 return 'success';
             } 
                 // if staff didn't add to the database this will return
@@ -75,6 +106,20 @@ class StaffController extends Controller
 
     public function remove(Request $request) {
         $staff = Staff::find($request->id);
+
+        if($staff->role == "Administrative staff" || $staff->role == "Librarian") {
+            if($staff->role == "Administrative staff") {
+                $staff->role = "admin";
+            }
+            $user = User::where('index', $staff->nic)
+            ->where('school', auth()->user()->school)
+            ->where('role', strtolower($staff->role))
+            ->first();
+
+            if($user != null) {
+                $user->delete();
+            }
+        }
         
         $staff->update([
             'end_date' => strval(Date("Y-m-d"))

@@ -166,7 +166,7 @@
                             </div>
                             <div class="col-12 mb-3">
                                 <div class="form-floating">
-                                    <select class="form-select text-dark bg-secondary" id="role" name="role"
+                                    <select class="form-select text-dark bg-secondary" onchange="showPassword();" id="selectedRole" name="role"
                                         aria-label="Floating label select example">
                                         <option selected value="0">Open this select menu</option>
                                         <option value="Administrative staff">Administrative staff</option>
@@ -183,9 +183,16 @@
                                     <label for="floatingSelect">Job Role</label>
                                 </div>
                             </div>
-                            <div class="d-grid gap-2 col-6 mx-auto mt-3">
-                                <button class="btn btn-primary" type="button" onclick="addStaff();">Submit</button>
+                            <div class="d-none" id="password-container">
+                                <div class="form-floating mb-3">
+                                    <input type="password" id="password" class="form-control text-dark bg-secondary" name="password"
+                                        placeholder="name@example.com" value="password">
+                                    <label for="floatingInput">Enter A Passowrd</label>
+                                </div>
                             </div>
+                        </div>
+                        <div class="d-grid gap-2 col-6 mx-auto mt-3">
+                            <button class="btn btn-primary" type="button" onclick="addStaff();">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -229,6 +236,16 @@
         }
     }
 
+    function showPassword() {
+        const role = document.getElementById("selectedRole").value;
+        const container = document.getElementById("password-container");
+        container.classList.add("d-none");
+        if(role == "Administrative staff" || role == "Librarian") {
+            document.getElementById("password").value = "";
+            container.classList.remove("d-none");
+        }
+    }
+
     function addStaff() {
         const staffForm = document.getElementById("add-staff");
         const inputs = staffForm.querySelectorAll("input");
@@ -257,44 +274,47 @@
             var form = new FormData(staffForm);
             var xhr = new XMLHttpRequest();
             xhr.open("post", "{{ route('add.staff') }}");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4) {
-                    if (xhr.status == 200) {
-                        var response = xhr.responseText;
-                        if (response == 'error') {
-                            Swal.fire({
-                                title: 'ERROR',
-                                text: 'Error While Processing Your Request',
-                                icon: 'error',
-                                footer: "<a href='http://wa.me/94701189971'>Contact Developers Here</a>"
-                            });
-                        } else if (response == 'exist') {
-                            Swal.fire({
-                                title: 'WARNING',
-                                text: 'A Person Already Exist With Given NIC',
-                                icon: 'warning',
-                                footer: "<a href='http://wa.me/94701189971'>Contact Developers Here</a>"
-                            });
-                        } else if (response == 'success') {
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'success',
-                                title: 'Staff Added Successfully',
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
-                        }
-                    } else {
-                        spinner.classList.remove('show');
+            xhr.onload = function() {
+                if (xhr.status == 200) {
+                    var response = xhr.responseText;
+                    if (response == 'error') {
                         Swal.fire({
-                            icon: 'error',
                             title: 'ERROR',
-                            text: 'Internal Server Error',
+                            text: 'Error While Processing Your Request',
+                            icon: 'error',
                             footer: "<a href='http://wa.me/94701189971'>Contact Developers Here</a>"
                         });
+                    } else if (response == 'exist') {
+                        Swal.fire({
+                            title: 'WARNING',
+                            text: 'A Person Already Exist With Given NIC',
+                            icon: 'warning',
+                        });
+                    } else if (response == 'limit') {
+                        Swal.fire({
+                            title: 'WARNING',
+                            text: 'You Have Reached The Maximum Limit Of Administative Staff',
+                            icon: 'warning',
+                        });
+                    } else if (response == 'success') {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Staff Added Successfully',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
                     }
-                    spinner.classList.remove("show");
+                } else {
+                    spinner.classList.remove('show');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ERROR',
+                        text: 'Internal Server Error',
+                        footer: "<a href='http://wa.me/94701189971'>Contact Developers Here</a>"
+                    });
                 }
+                spinner.classList.remove("show");
             }
             xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
             xhr.send(form);
