@@ -20,102 +20,128 @@
         <div class="content">
             @include('zonal.components.navbar')
 
-            <!--Search Start-->
-            <div class="container-fluid pt-4 px-4">
-                <div class="col-sm-12 col-xl-12">
-                    <div class="bg-secondary rounded h-100 p-4">
-                        <h3 class="mb-4 text-dark">Search</h3>            
-                        <div class="row g-2">
-                            <div class="col-sm-12 col-md-6">
-                                <div class="form-floating">
-                                    <select class="form-select bg-secondary text-dark" id="term"
-                                        aria-label="Floating label select example">
-                                        <option selected value="0">Select a School</option>
-                                        <option value="1">school 1</option>
-                                        <option value="2">school 2</option>
-                                        <option value="3">school 3</option>
-                                    </select>
-                                    <label for="floatingSelect">Term List</label>
+            <div style="min-height: 80vh">
+                <!--Search Start-->
+                <div class="container-fluid pt-4 px-4">
+                    <div class="col-sm-12 col-xl-12">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h3 class="mb-4 text-dark">Mark Details</h3>
+                            <form action="{{ route('get.school.marks') }}">
+                                @if($errors->any())
+                                <div class="alert alert-danger">
+                                    <strong>Warning!</strong> Please Select All Fields.
                                 </div>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <div class="form-floating">
-                                    <select class="form-select bg-secondary text-dark" id="year"
-                                        aria-label="Floating label select example">
-                                        <option selected value="0">Select a Year</option>
-                                        {{-- @foreach ($years as $year)
-                                        <option>{{ $year }}</option>
-                                        @endforeach --}}
-                                    </select>
-                                    <label for="floatingSelect">Year List</label>
+                                @endif
+                                <div class="row g-2">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-floating">
+                                            <select class="form-select bg-secondary text-dark" name="school"
+                                                aria-label="Floating label select example">
+                                                <option selected value="0">Select a School</option>
+                                                @foreach ($schools as $key => $school)
+                                                    <option value="{{ $key }}">{{ $school }}</option>
+                                                @endforeach
+                                            </select>
+                                            <label for="floatingSelect">Term List</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-floating">
+                                            <select class="form-select bg-secondary text-dark" name="year"
+                                                aria-label="Floating label select example">
+                                                <option selected value="0">Select a Year</option>
+                                                @foreach ($years as $year)
+                                                    <option>{{ $year[0] }}</option>
+                                                @endforeach
+                                            </select>
+                                            <label for="floatingSelect">Year List</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-floating">
+                                            <select class="form-select bg-secondary text-dark" name="term"
+                                                aria-label="Floating label select example">
+                                                <option selected value="0">Select a Term</option>
+                                                <option value="1">First Term</option>
+                                                <option value="2">Second Term</option>
+                                                <option value="3">Third Term</option>
+                                            </select>
+                                            <label for="floatingSelect">Term List</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-floating">
+                                            <select class="form-select bg-secondary text-dark" name="grade"
+                                                aria-label="Floating label select example">
+                                                <option selected value="0">Select a Grade</option>
+                                                @for ($i = 1; $i < 14; $i++)
+                                                    <option>{{ $i }}</option>
+                                                @endfor
+                                            </select>
+                                            <label for="floatingSelect">Grade List</label>
+                                        </div>
+                                    </div>
+                                    <div class="d-grid gap-2 col-6 mx-auto mt-3">
+                                        <button type="submit" class="btn btn-primary col-sm-12 col-xl-12">Search<i
+                                                class="bi bi-search ms-2"></i></button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <div class="form-floating">
-                                    <select class="form-select bg-secondary text-dark" id="term"
-                                        aria-label="Floating label select example">
-                                        <option selected value="0">Select a Term</option>
-                                        <option value="1">First Term</option>
-                                        <option value="2">Second Term</option>
-                                        <option value="3">Third Term</option>
-                                    </select>
-                                    <label for="floatingSelect">Term List</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <div class="form-floating">
-                                    <select class="form-select bg-secondary text-dark" id="grade"
-                                        aria-label="Floating label select example">
-                                        <option selected value="0">Select a Grade</option>
-                                        @for ($i=1; $i<14; $i++) <option>{{ $i }}</option>
-                                            @endfor
-                                    </select>
-                                    <label for="floatingSelect">Grade List</label>
-                                </div>
-                            </div>
-                            <div class="d-grid gap-2 col-6 mx-auto mt-3">
-                                <button type="submit" class="btn btn-primary col-sm-12 col-xl-12">Search<i
-                                        class="bi bi-search ms-2"></i></button>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!--Search End-->
+                <!--Search End-->
 
 
-            <!--table Start-->
-            <div class="container-fluid pt-4 px-4">
-                <div class="col-sm-12 col-xl-12">
-                    <div class="bg-secondary rounded h-100 p-4">
-                        <h3 class="mb-4 text-dark">Mark Details</h3>
-                        <div class="table-responsive">
-                            <table class="table text-start align-middle table-bordered table-hover mb-0"
-                                id="studentTable">
-                                <thead id="tableHead">
-                                    <tr class="text-dark" id="headRow">
-                                        <th scope="col">No</th>
-                                        <th scope="col">class</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Sinhala</th>
-                                        <th scope="col">Maths</th>
-                                        <th scope="col">History</th>
-                                        <th scope="col">Science</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tableBody">
-                                    <tr style="background: orange; color: black;">
-                                        <td colspan="8">Search For Details</td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
+                @if (session('year') && session('term') && session('school'))
+                    <!--table Start-->
+                    <div class="container-fluid pt-4 px-4">
+                        <div class="col-sm-12 col-xl-12">
+                            <div class="bg-secondary rounded h-100 p-4">
+                                <p class="mb-4 text-dark">Grade <strong>{{ session('grade') }}</strong> Marks Details For <strong>{{ session('term') }}</strong> at
+                                    <strong>{{ session('year') }}</strong> in <strong>{{ session('school') }}</strong></p>
+                                <div class="table-responsive">
+                                    <table class="table text-start align-middle table-bordered table-hover mb-0"
+                                        id="studentTable">
+                                        <thead class="table-dark">
+                                            <tr id="headRow">
+                                                <th scope="col">Name</th>
+                                                @foreach (session('subjects') as $subject)
+                                                    <th class="space">{{ $subject }}</th>
+                                                @endforeach
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if(count(session('marks')) == 0)
+                                            <tr style="background: orange; color: black;">
+                                                <td colspan="{{ 2 + count(session('subjects')) }}">Search For Details</td>
+                                            </tr>
+                                            @else
+                                                @foreach (session('marks') as $key => $items)
+                                                    <tr class="text-dark">
+                                                        <th colspan="{{ 2 + count(session('subjects')) }}" class="bg-warning">
+                                                            {{ $key }}
+                                                        </th>
+                                                    </tr>
+                                                        @foreach ($items as $key => $item)
+                                                        <tr>
+                                                            <th>{{ $key }}</th>
+                                                            @foreach ($item as $marks)
+                                                                <th>{{ $marks["marks"] }}</th>
+                                                            @endforeach
+                                                        </tr>
+                                                        @endforeach
+                                                @endforeach
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
+                <!--table End-->
             </div>
-            <!--table End-->
-
             @include('public_components.footer')
         </div>
         <!-- Content End -->
@@ -128,6 +154,7 @@
     @include('public_components.js')
     <script>
         hamburger("resultsheet");
+
         function searchResult() {
             var year = document.getElementById("year");
             var term = document.getElementById("term");
@@ -145,8 +172,7 @@
                     title: 'WARNING',
                     text: "Check All Selectors Before Search",
                 });
-            }
-            else {
+            } else {
                 spinner.classList.add("show");
                 var form = new FormData();
                 form.append("year", year.value);
@@ -156,7 +182,7 @@
 
                 var req = new XMLHttpRequest();
                 var tbody = document.getElementById("tableBody");
-                req.onreadystatechange = function () {
+                req.onreadystatechange = function() {
                     if (req.readyState == 4 && req.status == 200) {
                         var response = JSON.parse(req.responseText);
 
@@ -259,8 +285,7 @@
                     txtValue = td.textContent || td.innerText;
                     if (txtValue.toUpperCase().indexOf(filter) > -1) {
                         tr[i].style.display = "";
-                    }
-                    else {
+                    } else {
                         tr[i].style.display = "none";
                     }
                 }

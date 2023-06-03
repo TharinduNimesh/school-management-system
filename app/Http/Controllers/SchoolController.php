@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\School;
 use App\Models\Student;
 use App\Models\Accessory;
+use App\Models\Marks;
 use Illuminate\Http\Request;
 
 class SchoolController extends Controller
@@ -89,6 +90,46 @@ class SchoolController extends Controller
         ]);
     }
 
+    public function getSchoolMarks() {
+        if(request()->school == '0' || request()->year == '0' || request()->term == '0' || request()->grade == '0') {
+            return redirect()->back()->withErrors(['Please select all the fields']);
+        }
+
+        $details = Marks::where('school', request()->school)
+        ->where('year', request()->year)
+        ->where('term', request()->term)
+        ->where('grade', request()->grade)
+        ->get();
+
+        $subjects = ClassController::getSubjects(request()->grade);
+        $classes = self::getClassList(request()->grade, request()->school);
+
+        $marks = [];
+        foreach ($details as $item) {
+            $marks[$item["class"]][$item["name"]] = $item["details"];
+        }
+
+        $school = School::find(request()->school)->name;
+        $term = null;
+        if(request()->term == 1) {
+            $term = "First Term";
+        } else if(request()->term == 2) {
+            $term = "Second Term";
+        } else if(request()->term == 3) {
+            $term = "Third Term";
+        }
+
+        return redirect()->back()->with([
+            "marks" => $marks,
+            "subjects" => $subjects,
+            "classes" => $classes,
+            "school" => $school,
+            "year" => request()->year,
+            "term" => $term,
+            "grade" => request()->grade,
+        ]);
+    }
+
     public static function getSchool($zone) {
         $schools = School::where('zone', $zone)
         ->orderBy('name', 'asc')
@@ -133,6 +174,7 @@ class SchoolController extends Controller
                 }
             }
         }
+        sort($classes);
         return $classes;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Marks;
 use Illuminate\Http\Request;
 
 class NavigationController extends Controller
@@ -19,6 +20,16 @@ class NavigationController extends Controller
         
         return view('zonal.accessories', [
             "schools" => $schools,
+        ]);
+    }
+
+    public function navigateToZonalMarks() {
+        $schools = SchoolController::getSchool(auth()->user()->school);
+        $years = Marks::select('year')->distinct()->get()->toArray();
+
+        return view('zonal.marks', [
+            "schools" => $schools,
+            "years" => $years,
         ]);
     }
 }
