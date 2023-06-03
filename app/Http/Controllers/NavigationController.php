@@ -32,4 +32,12 @@ class NavigationController extends Controller
             "years" => $years,
         ]);
     }
+
+    public function navigateToZonalSchools() {
+        $schools = SchoolController::getSchool(auth()->user()->school);
+
+        return view('zonal.schools', [
+            "schools" => $schools,
+        ]);
+    }
 }

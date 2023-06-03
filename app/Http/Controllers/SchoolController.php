@@ -6,6 +6,7 @@ use App\Models\School;
 use App\Models\Student;
 use App\Models\Accessory;
 use App\Models\Marks;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 
 class SchoolController extends Controller
@@ -127,6 +128,26 @@ class SchoolController extends Controller
             "year" => request()->year,
             "term" => $term,
             "grade" => request()->grade,
+        ]);
+    }
+
+    public function search() {
+        if(request()->school == '0') {
+            return redirect()->back()->withErrors(['Please select a school']);
+        }
+
+        $school = School::find(request()->school);
+        $students = Student::where('school', request()->school)
+        ->whereNull('resigned_at')
+        ->count();
+        $teachers = Teacher::where('school', request()->school)
+        ->whereNull('resigned_at')
+        ->count();
+
+        return redirect()->back()->with([
+            "details" => $school,
+            "students" => $students,
+            "teachers" => $teachers,
         ]);
     }
 

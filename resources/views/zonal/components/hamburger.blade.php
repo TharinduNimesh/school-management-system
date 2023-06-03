@@ -17,16 +17,18 @@
         <div class="navbar-nav w-100">
             <a name="ham-item" id="dashboard" href="{{ route('zonal.dashboard') }}" class="nav-item nav-link active"><i
                     class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-            <a name="ham-item" id="studentCount" href="{{ route('zonal.students') }}" class="nav-item nav-link"><i
-                    class="bi bi-book-half me-2"></i>Student Details</a>
+            <a name="ham-item" id="schools" href="{{ route('zonal.schools') }}" class="nav-item nav-link"><i
+                    class="bi bi-book-half me-2"></i>School Details</a>
             <a name="ham-item" id="subject" href="{{ route('zonal.subjects') }}" class="nav-item nav-link"><i
-                    class="bi bi-gear-wide-connected me-2"></i>Subject</a>
+                    class="bi bi-gear-wide-connected me-2"></i>Subjects Details</a>
             <a name="ham-item" id="resultsheet" href="{{ route('zonal.marks') }}" class="nav-item nav-link"><i
                     class="bi bi-collection me-2"></i>Result Sheet</a>
             <a name="ham-item" id="accessories" href="{{ route('zonal.accessories') }}" class="nav-item nav-link"><i
                     class="bi bi-card-list me-2"></i>Accessories</a>
+            <a name="ham-item" id="studentCount" href="{{ route('zonal.students') }}" class="nav-item nav-link"><i
+                    class="bi bi-book-half me-2"></i>Student Details</a>
             <a name="ham-item" id="teacherCountAdd" href="{{ route('zonal.teachers') }}" class="nav-item nav-link"><i
-                    class="bi bi-card-list me-2"></i>Teacher Count for Subject</a>
+                    class="bi bi-card-list me-2"></i>Manage Teachers</a>
         </div>
     </nav>
 </div>

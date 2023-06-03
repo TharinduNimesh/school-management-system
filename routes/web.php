@@ -190,6 +190,7 @@ Route::domain('officer.' . env('APP_DOMAIN'))->group(function() {
     Route::get('manage/subjects', function() {
         return view('zonal.subjects');
     })->name('zonal.subjects');
+    Route::get('search/schools', [NavigationController::class, 'navigateToZonalSchools'])->name('zonal.schools');
 });
 
 // login functions
@@ -361,6 +362,7 @@ Route::middleware(['auth', 'IsDeveloper'])->group(function () {
 Route::get('get/school/student', [SchoolController::class, 'getSchoolStudent'])->name('get.school.student');
 Route::get('get/school/accessories', [SchoolController::class, 'getSchoolAccessories'])->name('get.school.accessories');
 Route::get('get/school/marks', [SchoolController::class, 'getSchoolMarks'])->name('get.school.marks');
+Route::get('search/school/', [SchoolController::class, 'search'])->name('search.school');
 
 Route::fallback(function() {
     return view("404");
