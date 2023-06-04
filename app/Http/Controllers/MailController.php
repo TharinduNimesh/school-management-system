@@ -160,14 +160,4 @@ class MailController extends Controller
             Mail::to($student->emergency_email)->send(new TeacherManual($data));
         }
     }
-
-    public static function send_attendance_data($data) {
-        foreach ($data as $item) {
-            if($item["status"] == "absent"){
-                Mail::to($item["email"])->send(new AbsentStudent($item));
-            } else {
-                Mail::to($item["email"])->send(new PresentStudent($item));
-            }
-        }
-    }
 }

@@ -9,6 +9,7 @@ use App\Models\StudentAttendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Mail;
+use App\Jobs\AttendanceMailJob;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -16,15 +17,23 @@ class AttendanceController extends Controller
 {
     public function mark(Request $request) {
         $data = json_decode($request->data);
+
+        // declare present and absent arrays 
         $present = $data->present;
         $absent = $data->absent;
+
+        // get the date and year
         $date = $request->date;
         $year = \Carbon\Carbon::parse($date)->format('Y');
         $nic = auth()->user()->index;
+
+        // check if the attendance is already marked
         $validate = StudentAttendance::where('class_teacher', $nic)
                     ->where('attendance.date', $date)->first();
-        $mailable = [];
+
+        // if not marked, mark the attendance
         if($validate == null) {
+            // mark the attendance
             foreach($present as $item) {
                 $student = StudentController::getStudent($item, auth()->user()->school);
                 $attendance = StudentAttendance::where('index_number', $item)
@@ -38,23 +47,16 @@ class AttendanceController extends Controller
                     $attendance_data->class_teacher = $nic;
                     $attendance_data->year = $year;
                     $attendance_data->school = auth()->user()->school;
-                    $attendance_data->attendance = [
-                        [
-                            'date' => $date,
-                            'status' => 'present'
-                        ]
-                    ];
+                    $attendance_data->attendance = [];
                     $attendance_data->save();
 
                     $attendance = $attendance_data;
-                } else {
-                    $attendance_data = $attendance->attendance;
-                    $attendance_data[] = [
-                        'date' => $date,
-                        'status' => 'present'
-                    ];
-                    $attendance->save();
-                }
+                } 
+
+                $attendance->push('attendance', [
+                    'date' => $date,
+                    'status' => 'present'
+                ], true);
 
                 $data = [
                     "guardian_name" => $student->mother_name,
@@ -64,7 +66,7 @@ class AttendanceController extends Controller
                     "status" => 'present'
                 ];
 
-                array_push($mailable, $data);
+                dispatch(new AttendanceMailJob($data));
             }
 
             foreach($absent as $item) {
@@ -80,23 +82,16 @@ class AttendanceController extends Controller
                     $attendance_data->class_teacher = $nic;
                     $attendance_data->year = $year;
                     $attendance_data->school = auth()->user()->school;
-                    $attendance_data->attendance = [
-                        [
-                            'date' => $date,
-                            'status' => 'absent'
-                        ]
-                    ];
+                    $attendance_data->attendance = [];
                     $attendance_data->save();
 
                     $attendance = $attendance_data;
-                } else {
-                    $attendance_data = $attendance->attendance;
-                    $attendance_data[] = [
-                        'date' => $date,
-                        'status' => 'absent'
-                    ];
-                    $attendance->save();
-                }
+                } 
+
+                $attendance->push('attendance', [
+                    'date' => $date,
+                    'status' => 'absent'
+                ], true);
 
                 $data = [
                     "guardian_name" => $student->mother_name,
@@ -105,8 +100,8 @@ class AttendanceController extends Controller
                     "email" => $student->emergency_email,
                     "status" => 'absent'
                 ];
-
-                array_push($mailable, $data);
+                
+                dispatch(new AttendanceMailJob($data));
             }
 
             return 'success';

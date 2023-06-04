@@ -113,8 +113,6 @@
         hamburger('marksAttendance');
 
         function gatherAttendanceData() {
-            const spinner = document.getElementById("spinner");
-            spinner.classList.remove("d-none");
             // Select all of the checkboxes on the page
             var checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
@@ -148,7 +146,6 @@
                 // Return the attendance data array
                 allData.present = attendanceData;
                 allData.absent = absentData;
-                spinner.classList.add("d-none");
                 return allData;
             }
 
