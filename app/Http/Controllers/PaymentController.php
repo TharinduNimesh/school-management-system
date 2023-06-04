@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use App\Models\RequestedPayment;
+use App\Models\School;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class PaymentController extends Controller
 {
@@ -43,6 +47,59 @@ class PaymentController extends Controller
             return $payment["isPayment"];
         }
         return 'not_enrolled';
+    }
+
+    public function requestPayment() {
+        $validate = Validator::make(request()->all(), [
+            'subject' => 'required',
+            'description' => 'required',
+            'file' => 'required|mimes:pdf,docx,doc'
+        ]);
+
+        if($validate->fails()) {
+            return redirect()->back()->withErrors($validate);
+        }
+
+        $file = request()->file('file');
+        $file_name = uniqid() . '.' . $file->getClientOriginalExtension();
+
+        $path = $file->storeAs('public/payments/', $file_name);
+
+        if(Storage::exists($path)) {
+            $school = School::find(auth()->user()->school);
+
+            $request = new RequestedPayment();
+            $request->nic = auth()->user()->index;
+            $request->subject = request()->subject;
+            $request->description = request()->description;
+            $request->proof = $file_name;
+            $request->school = $school->name;
+            $request->zone = $school->zone;
+            $request->date = Date('Y-m-d');
+    
+            $request->save();
+    
+            return redirect()->back()->with('success', 'Payment request sent successfully!');
+        }
+        return redirect()->back()->withErrors(['file', 'Error While Uploading File. Please Try Again!']);
+    }
+
+    public function schoolPaymentAction() {
+        $validate = Validator::make(request()->all(), [
+            'id' => 'required',
+        ]);
+
+        if($validate->fails()) {
+            return redirect()->back()->withErrors($validate);
+        }
+
+        $payment = RequestedPayment::find(request()->id);
+        $payment->action_taken_at = Date("Y-m-d");
+        $payment->action_taken_nic = auth()->user()->index;
+        $payment->action_taken_by = auth()->user()->name;
+        $payment->save();
+
+        return redirect()->back()->with('success', 'Payment request successfully!');
     }
 
     public static function hasPaidFee($index, $year) {

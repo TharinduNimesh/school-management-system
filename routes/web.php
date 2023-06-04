@@ -144,6 +144,9 @@ Route::domain('admin.' . env('APP_DOMAIN'))->middleware(['auth', 'IsAdmin'])->gr
     Route::get('manage/timetable', function() {
         return view('admin.timetable');
     })->name('admin.timetable');
+    Route::get('manage/payments', function() {
+        return view('admin.payment');
+    })->name('admin.payments');
     Route::get('add/teacher/subject', [SubjectController::class, 'navigateToTeacherSubject'])->name('admin.teacher.subject');
     Route::get('manage/accessories', [AccessoryController::class, 'adminNavigateToAccessories'])->name('admin.accessories');
     Route::get("manage/class/record", [LearningController::class, 'navigateToClassRecords'])->name('admin.class.report');
@@ -190,6 +193,7 @@ Route::domain('officer.' . env('APP_DOMAIN'))->middleware(['auth', 'IsOfficer'])
     Route::get('manage/subjects', function() {
         return view('zonal.subjects');
     })->name('zonal.subjects');
+    Route::get('manage/payments', [NavigationController::class, 'navigateToZonalPayments'])->name('zonal.payments');
     Route::get('search/schools', [NavigationController::class, 'navigateToZonalSchools'])->name('zonal.schools');
 });
 
@@ -284,6 +288,7 @@ Route::post('activate/request', [SubjectController::class, 'activate'])->name('r
 Route::post("get/subjects/marks", [MarksController::class, 'getMarksForSubject'])->name('get.marks.for.subject');
 Route::post('generate/register', [ClassController::class, 'generateRegister'])->name('generate.register');
 Route::get('generate/timetable', [TimeTableController::class, 'generate'])->name('generate.time.table');
+Route::post('request/payment', [PaymentController::class, 'requestPayment'])->name('request.payment');
 
 Route::post('change/payment', [PaymentController::class, 'changePayment'])->name('change.payment');
 Route::post('update/student/profile/picture', [StudentController::class, 'updateProfilePicture'])->name('update.student.profile.picture');
@@ -363,6 +368,7 @@ Route::get('get/school/student', [SchoolController::class, 'getSchoolStudent'])-
 Route::get('get/school/accessories', [SchoolController::class, 'getSchoolAccessories'])->name('get.school.accessories');
 Route::get('get/school/marks', [SchoolController::class, 'getSchoolMarks'])->name('get.school.marks');
 Route::get('search/school/', [SchoolController::class, 'search'])->name('search.school');
+Route::get('school/payments/action', [PaymentController::class, 'schoolPaymentAction'])->name('school.payments.action');
 
 Route::fallback(function() {
     return view("404");

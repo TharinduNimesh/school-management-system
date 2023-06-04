@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Marks;
+use App\Models\RequestedPayment;
 use Illuminate\Http\Request;
 
 class NavigationController extends Controller
@@ -38,6 +39,15 @@ class NavigationController extends Controller
 
         return view('zonal.schools', [
             "schools" => $schools,
+        ]);
+    }
+
+    public function navigateToZonalPayments() {
+        $request = RequestedPayment::where('zone', auth()->user()->school)
+        ->get();
+
+        return view('zonal.payment', [
+            "requests" => $request,
         ]);
     }
 }

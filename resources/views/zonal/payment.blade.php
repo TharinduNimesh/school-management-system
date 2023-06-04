@@ -16,13 +16,11 @@
         @include('zonal.components.hamburger')
         <!-- Sidebar End -->
 
-
         <!-- Content Start -->
         <div class="content">
             <!-- Navbar Start -->
             @include('zonal.components.navbar')
             <!-- Navbar End -->
-
 
             <!-- Table Start -->
             <div class="container-fluid pt-4 px-4">
@@ -38,30 +36,50 @@
                                             <th scope="col">Subject</th>
                                             <th scope="col">Description</th>
                                             <th scope="col">Date</th>
-                                            <th scope="col">Images</th>
+                                            <th scope="col">Prooves</th>
                                             <th colspan="2" scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @if(!$requests->isEmpty())
+                                        @foreach ($requests as $request)
                                         <tr>
-                                            <td scope="row">Wahale</td>
-                                            <td scope="row">Lorem ipsum dolor, sit amet consectetur</td>
-                                            <td scope="row">2023/05/05</td>
-                                            <td scope="row">Rs.500000</td>
-                                            <td scope="row"><button type="button"
-                                                    class="btn btn-success">Download</button>
+                                            <td class="space">{{ $request["school"] }}</td>
+                                            <td class="space">{{ $request["subject"] }}</td>
+                                            <td class="space">{{ $request["description"] }}</td>
+                                            <td class="space">{{ $request["date"] }}</td>
+                                            <td class="space">
+                                                <a type="button" class="btn btn-success" href="{{ Storage::url('payments/' . $request['proof']) }}">
+                                                    <i class="bi bi-cloud-arrow-down-fill me-2"></i> Download
+                                                </a>
                                             </td>
-                                            <td><button type="button" class="btn btn-success">Get Action</button></td>
-                                            <td>
-                                                <div class="input-group">
+                                            <td class="space">
+                                                @if($request['action_taken_at'] == null)
+                                                <form action="{{ route('school.payments.action') }}">
+                                                    <input type="hidden" name="id" value="{{ $request['_id'] }}">
+                                                    <button type="submit" class="btn btn-secondary"><i class="bi bi-check2-all me-2"></i> Action taken</button>                                                    
+                                                </form>
+                                                @else
+                                                Already Taken An Action By {{ $request["action_taken_by"] }} At {{ $request["action_taken_at"] }}.
+                                                @endif
+                                            </td>
+                                            <td class="space" >
+                                                <div class="input-group" style="width: 280px;">
                                                     <input type="text" class="form-control bg-secondary text-dark"
                                                         placeholder="Amount">
                                                     <div class="input-group-append">
-                                                        <button class="btn btn-success" type="button">Submit</button>
+                                                        <button class="btn btn-warning" type="button">Submit</button>
                                                     </div>
                                                 </div>
                                             </td>
                                         </tr>
+                                        @endforeach
+                                        @else   
+                                        <tr>
+                                            <td colspan="7" class="bg-warning text-danger">There Aren't Any Requests To Display</td>
+                                        </tr>
+                                        @endif
+
                                     </tbody>
                                 </table>
                             </div>
@@ -82,24 +100,24 @@
                                 <table class="table table-bordered text-center">
                                     <thead>
                                         <tr>
-                                            <th scope="col">School</th>
-                                            <th scope="col">Subject</th>
-                                            <th scope="col">Description</th>
-                                            <th scope="col">Date</th>
-                                            <th scope="col">Amount</th>
-                                            <th scope="col">Remaining balance</th>
-                                            <th scope="col">Action</th>
+                                            <th class="space">School</th>
+                                            <th class="space">Subject</th>
+                                            <th class="space">Description</th>
+                                            <th class="space">Date</th>
+                                            <th class="space">Amount</th>
+                                            <th class="space">Remaining balance</th>
+                                            <th class="space">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td scope="row">Dharmaloka</td>
-                                            <td scope="row">Wahale</td>
-                                            <td scope="row">Lorem ipsum dolor, sit amet consectetur</td>
-                                            <td scope="row">2023/05/05</td>
-                                            <td scope="row">Rs.500000</td>
-                                            <td scope="row">Rs.500000</td>
-                                            <td scope="row"><button type="button" class="btn btn-success"
+                                            <td class="space">Dharmaloka</td>
+                                            <td class="space">Wahale</td>
+                                            <td class="space">Lorem ipsum dolor, sit amet consectetur</td>
+                                            <td class="space">2023/05/05</td>
+                                            <td class="space">Rs.500000</td>
+                                            <td class="space">Rs.500000</td>
+                                            <td class="space"><button type="button" class="btn btn-success"
                                                     data-bs-target="#viewModal" data-bs-toggle="modal">View</button>
                                             </td>
                                         </tr>
