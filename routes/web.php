@@ -177,7 +177,7 @@ Route::domain('coach.' . env('APP_DOMAIN'))->middleware(['auth', 'IsCoach'])->gr
 });
 
 // Zonal Routes
-Route::domain('officer.' . env('APP_DOMAIN'))->group(function() {
+Route::domain('officer.' . env('APP_DOMAIN'))->middleware(['auth', 'IsOfficer'])->group(function() {
     Route::get('dashboard', function() {
         return view('zonal.dashboard');
     })->name('zonal.dashboard');

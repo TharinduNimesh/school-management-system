@@ -33,6 +33,7 @@ class AttendanceController extends Controller
 
         // if not marked, mark the attendance
         if($validate == null) {
+            $teacher_class = TeacherController::getClass($nic, Date('Y'));
             // mark the attendance
             foreach($present as $item) {
                 $student = StudentController::getStudent($item, auth()->user()->school);
@@ -46,6 +47,7 @@ class AttendanceController extends Controller
                     $attendance_data->name = $student->initial_name;
                     $attendance_data->class_teacher = $nic;
                     $attendance_data->year = $year;
+                    $attendance_data->grade = $teacher_class->grade;
                     $attendance_data->school = auth()->user()->school;
                     $attendance_data->attendance = [];
                     $attendance_data->save();
@@ -81,6 +83,7 @@ class AttendanceController extends Controller
                     $attendance_data->name = $student->initial_name;
                     $attendance_data->class_teacher = $nic;
                     $attendance_data->year = $year;
+                    $attendance_data->grade = $teacher_class->grade;
                     $attendance_data->school = auth()->user()->school;
                     $attendance_data->attendance = [];
                     $attendance_data->save();
@@ -165,12 +168,13 @@ class AttendanceController extends Controller
     }
 
     public static function getSchoolHoldDateCount($year, $grade) {
-        $dates = StudentAttendance::where('year', $year)
+        $dates = StudentAttendance::select('attendance.date')
+        ->where('year', $year)
         ->where('grade', $grade)
         ->where('school', auth()->user()->school)
         ->distinct('attendance.date')
-        ->get();
-        return count($dates);
+        ->count();
+        return $dates;
     }
 
     public function navigateToStudentAttendance($year = null) {

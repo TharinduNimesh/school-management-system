@@ -416,9 +416,9 @@ class StudentController extends Controller
             }
         }
 
-        if($dateCount == 0) {
-            return 0;
-        }
+        // if($dateCount == 0) {
+        //     return 0;
+        // }
         return round(($present_count / $dateCount) * 100, 3);
     }
 

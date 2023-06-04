@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'IsAdmin' => Middleware\IsAdmin::class,
         'IsCoach' => Middleware\IsCoach::class,
         'IsDeveloper' => Middleware\IsDeveloper::class,
+        'IsOfficer' => Middleware\IsOfficer::class,
     ];
 }
