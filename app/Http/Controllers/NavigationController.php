@@ -44,10 +44,16 @@ class NavigationController extends Controller
 
     public function navigateToZonalPayments() {
         $request = RequestedPayment::where('zone', auth()->user()->school)
+        ->whereNull('amount' )
+        ->get();
+
+        $returned = RequestedPayment::where('zone', auth()->user()->school)
+        ->whereNotNull('amount' )
         ->get();
 
         return view('zonal.payment', [
             "requests" => $request,
+            "returned" => $returned,
         ]);
     }
 }

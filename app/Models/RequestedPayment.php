@@ -10,4 +10,10 @@ class RequestedPayment extends Model
     use HasFactory;
     protected $collection = 'requested_payments';
     protected $connection = 'mongodb';
+
+    protected $fillable = [
+        "amount",
+        "payed_at",
+        "payed_by"
+    ];
 }

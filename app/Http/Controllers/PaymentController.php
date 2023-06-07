@@ -102,6 +102,29 @@ class PaymentController extends Controller
         return redirect()->back()->with('success', 'Payment request successfully!');
     }
 
+    public function schoolPayment($id) {
+        $validate = Validator::make(request()->all(), [
+            'amount' => 'required|numeric',
+        ]);
+
+        if($validate->fails()) {
+            return redirect()->back()->withErrors(['amount' => $validate->errors()]);
+        }
+
+        $request = RequestedPayment::find($id);
+        if($request->action_taken_at == null) {
+            return redirect()->back()->withErrors(['action' => 'You must need to get an action before pass money!']);
+        }
+
+        $request->update([
+            "amount" => request()->amount,
+            "payed_at" => Date("Y-m-d"),
+            "payed_by" => auth()->user()->name
+        ]);
+
+        return redirect()->back()->with('success', 'Payment request successfully!');
+    }
+
     public static function hasPaidFee($index, $year) {
         $student = Student::where('index_number', $index)
         ->where('school', auth()->user()->school)

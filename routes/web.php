@@ -369,6 +369,7 @@ Route::get('get/school/accessories', [SchoolController::class, 'getSchoolAccesso
 Route::get('get/school/marks', [SchoolController::class, 'getSchoolMarks'])->name('get.school.marks');
 Route::get('search/school/', [SchoolController::class, 'search'])->name('search.school');
 Route::get('school/payments/action', [PaymentController::class, 'schoolPaymentAction'])->name('school.payments.action');
+Route::get('school/pay/{school}', [PaymentController::class, 'schoolPayment'])->name('school.payments');
 
 Route::fallback(function() {
     return view("404");
