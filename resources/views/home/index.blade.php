@@ -66,14 +66,12 @@
           <div class="features-post">
             <div class="features-content">
               <div class="content-show">
-                <h4><i class="fa fa-pencil"></i>All Courses</h4>
+                <h4><i class="fa-solid fa-user fa-beat"></i>user friendly</h4>
               </div>
               <div class="content-hide">
-                <p>Curabitur id eros vehicula, tincidunt libero eu, lobortis mi. In mollis eros a posuere imperdiet.
-                  Donec maximus elementum ex. Cras convallis ex rhoncus, laoreet libero eu, vehicula libero.</p>
-                <p class="hidden-sm">Curabitur id eros vehicula, tincidunt libero eu, lobortis mi. In mollis eros a
-                  posuere imperdiet.</p>
-                <div class="scroll-to-section"><a href="#section2">More Info.</a></div>
+                <p>School Management System are designed to be user-friendly and easy to use. They are typically designed with teachers, students and parents in mind, so they are intuitive and easy to navigate.</p>
+                <p class="hidden-sm">EverSoft.</p>
+                <div class="scroll-to-section"><a href="#section2"></a></div>
               </div>
             </div>
           </div>
@@ -82,14 +80,12 @@
           <div class="features-post second-features">
             <div class="features-content">
               <div class="content-show">
-                <h4><i class="fa fa-graduation-cap"></i>Virtual Class</h4>
+                <h4><i class="fa-sharp fa-solid fa-shield fa-beat"></i>protect privacy</h4>
               </div>
               <div class="content-hide">
-                <p>Curabitur id eros vehicula, tincidunt libero eu, lobortis mi. In mollis eros a posuere imperdiet.
-                  Donec maximus elementum ex. Cras convallis ex rhoncus, laoreet libero eu, vehicula libero.</p>
-                <p class="hidden-sm">Curabitur id eros vehicula, tincidunt libero eu, lobortis mi. In mollis eros a
-                  posuere imperdiet.</p>
-                <div class="scroll-to-section"><a href="#section3">Details</a></div>
+                <p>School Management System are protecting privacy. They are typically designed with security in mind, so they are secure and reliable. Many school management systems also offer features such as role-based access control, which allows administrators to control who has access to sensitive information.</p>
+                <p class="hidden-sm">EverSoft.</p>
+                <div class="scroll-to-section"><a href="#section3"></a></div>
               </div>
             </div>
           </div>
@@ -98,14 +94,12 @@
           <div class="features-post third-features">
             <div class="features-content">
               <div class="content-show">
-                <h4><i class="fa fa-book"></i>Real Meeting</h4>
+                <h4><i class="fa-solid fa-chart-pie fa-beat"></i>Provides data and statistics</h4>
               </div>
               <div class="content-hide">
-                <p>Curabitur id eros vehicula, tincidunt libero eu, lobortis mi. In mollis eros a posuere imperdiet.
-                  Donec maximus elementum ex. Cras convallis ex rhoncus, laoreet libero eu, vehicula libero.</p>
-                <p class="hidden-sm">Curabitur id eros vehicula, tincidunt libero eu, lobortis mi. In mollis eros a
-                  posuere imperdiet.</p>
-                <div class="scroll-to-section"><a href="#section4">Read More</a></div>
+                <p>School Management System can provide valuable data nad statistics on learning outcomes, student performance, and teacher effectiveness.</p>
+                <p class="hidden-sm">EverSoft.</p>
+                <div class="scroll-to-section"><a href="#section4"></a></div>
               </div>
             </div>
           </div>
@@ -122,15 +116,15 @@
       <div class="row">
         <div class="col-md-12">
           <div class="section-heading">
-            <h2>Why choose Grad School?</h2>
+            <h2>Why choose School Management System</h2>
           </div>
         </div>
         <div class="col-md-12">
           <div id='tabs'>
             <ul>
-              <li><a href='#tabs-1'>Best Education</a></li>
-              <li><a href='#tabs-2'>Top Management</a></li>
-              <li><a href='#tabs-3'>Quality Meeting</a></li>
+              <li><a href='#tabs-1'>Efficiency</a></li>
+              <li><a href='#tabs-2'>Improves communication</a></li>
+              <li><a href='#tabs-3'>Decision making</a></li>
             </ul>
             <section class='tabs-content'>
               <article id='tabs-1'>
@@ -139,10 +133,8 @@
                     <img src="/img/home_images/choose-us-image-01.png" alt="">
                   </div>
                   <div class="col-md-6">
-                    <h4>Best Education</h4>
-                    <p>Grad School is free educational HTML template with Bootstrap 4.5.2 CSS layout. Feel free to use
-                      it for educational or commercial purposes. You may want to make to
-                      TemplateMo. Please tell your friends about us. Thank you.</p>
+                    <h4>Efficiency</h4>
+                    <p>School Management System can help streamline administrative tasks such as attendance tracking, grade reporting and scheduling. This can help save time and reduce errors.</p>
                   </div>
                 </div>
               </article>
@@ -152,11 +144,8 @@
                     <img src="/img/home_images/choose-us-image-02.png" alt="">
                   </div>
                   <div class="col-md-6">
-                    <h4>Top Level</h4>
-                    <p>You can modify this HTML layout by editing contents and adding more pages as you needed. Since
-                      this template has options to add dropdown menus, you can put many HTML pages.</p>
-                    <p>Suspendisse tincidunt, magna ut finibus rutrum, libero dolor euismod odio, nec interdum quam
-                      felis non ante.</p>
+                    <h4>Improves communication</h4>
+                    <p>School Management System can improve communication between teachers, students and parents by providing a centralized platform for sharing information. This can help ensure that everyone is on the same page and reduce misunderstandings.</p>
                   </div>
                 </div>
               </article>
@@ -166,10 +155,8 @@
                     <img src="/img/home_images/choose-us-image-03.png" alt="">
                   </div>
                   <div class="col-md-6">
-                    <h4>Quality Meeting</h4>
-                    <p>You are NOT allowed to redistribute this template ZIP file on any template collection website.
-                      However, you can use this template to convert into a specific theme for any kind of CMS platform
-                      such as WordPress. For more information, you shall now.</p>
+                    <h4>Decision making</h4>
+                    <p>School Management System can provide valuable data and statistics on learning outcomes, student performance and teacher effectiveness. This can help school administrators make informed decisions about curriculum development, resource allocation and teacher training</p>
                   </div>
                 </div>
               </article>
