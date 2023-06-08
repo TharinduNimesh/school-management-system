@@ -37,31 +37,31 @@
                             <form action="{{ route('request.payment') }}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row g-2">
-                                    @if(!session('success') && !$errors->all()) 
-                                    <div class="alert alert-warning">
-                                        <h4 class="alert-heading">Attention</h4>
-                                        <hr>
-                                        Please add file with pdf within all images that can prove your reason for
-                                    </div>
+                                    @if (!session('success') && !$errors->has('request'))
+                                        <div class="alert alert-warning">
+                                            <h4 class="alert-heading">Attention</h4>
+                                            <hr>
+                                            Please add file with pdf within all images that can prove your reason for
+                                        </div>
                                     @endif
-                                    @if($errors->all())
-                                    <div class="alert alert-danger">
-                                        <ul>
-                                            @if($errors->has('file'))
-                                            {{ $errors->first('file') }}
-                                            @else
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                            @endif
-                                        </ul>
-                                    </div>
+                                    @if ($errors->has('request'))
+                                        <div class="alert alert-danger">
+                                            <ul>
+                                                @foreach ($errors->get('request') as $errors)
+                                                    @foreach (json_decode($errors) as $item)
+                                                        @foreach ($item as $error)
+                                                            <li>{{ $error }}</li>
+                                                        @endforeach
+                                                    @endforeach
+                                                @endforeach
+                                            </ul>
+                                        </div>
                                     @endif
 
-                                    @if(session('success'))
-                                    <div class="alert alert-success col-md-8 offset-md-2">
-                                        {{ session('success') }}
-                                    </div>
+                                    @if (session('success'))
+                                        <div class="alert alert-success col-md-8 offset-md-2">
+                                            {{ session('success') }}
+                                        </div>
                                     @endif
                                     <div class="form-floating col-12 col-md-6">
                                         <input type="text" class="form-control bg-secondary text-dark" name="subject"
@@ -97,10 +97,10 @@
                     <div class="row g-4">
                         <div class="col-sm-12 col-xl-12">
                             <div class="bg-secondary rounded h-100 p-4">
-                                <h6 class="mb-4"></h6>
+                                <h3 class="mb-4 text-dark">Money That Recieved</h3>
                                 <div class="table-responsive">
                                     <table class="table table-bordered align-middle">
-                                        <thead>
+                                        <thead class="table-dark">
                                             <tr>
                                                 <th scope="col">Subject</th>
                                                 <th scope="col">Description</th>
@@ -111,26 +111,30 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td class="space">Wahale</td>
-                                                <td class="space">Lorem ipsum dolor, sit amet consectetur</td>
-                                                <td class="space">2023/05/05</td>
-                                                <td class="space">Rs.500000</td>
-                                                <td class="space">Rs.10000</td>
-                                                <td class="space">
-                                                    <button type="button" class="btn btn-success"
-                                                        data-bs-target="#addModal" data-bs-toggle="modal">
-                                                        <i class="bi bi-plus-circle-fill me-2"></i><span>Add
-                                                            Record</span>
-                                                    </button>
-                                                </td>
-                                                <td class="space">
-                                                    <button type="button" class="btn btn-warning data"
-                                                        data-bs-toggle="modal" data-bs-target="#viewModal">
-                                                        <i class="bi bi-eye-fill me-2"></i><span>View Record</span>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                            @foreach ($requests as $request)
+                                                <tr>
+                                                    <td class="space">{{ $request['subject'] }}</td>
+                                                    <td class="space">{{ $request['description'] }}</td>
+                                                    <td class="space">Requested at {{ $request['date'] }} and money
+                                                        recieved at {{ $request['payed_at'] }}</td>
+                                                    <td class="space">Rs. {{ $request['amount'] }}</td>
+                                                    <td class="space">Rs. {{ $request['remaining'] }}</td>
+                                                    <td class="space">
+                                                        <button type="button" class="btn btn-success"
+                                                            @php($id = $request['_id'])
+                                                            onclick="showModal('{{ $id }}');">
+                                                            <i class="bi bi-plus-circle-fill me-2"></i><span>Add
+                                                                Record</span>
+                                                        </button>
+                                                    </td>
+                                                    <td class="space">
+                                                        <button type="button" class="btn btn-warning data"
+                                                            data-bs-toggle="modal" data-bs-target="#viewModal">
+                                                            <i class="bi bi-eye-fill me-2"></i><span>View Record</span>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -145,37 +149,47 @@
                 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">Add
-                                    Record</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row g-2">
-                                    <div class="col-12">
-                                        <div class="form-floating">
-                                            <textarea class="form-control bg-secondary text-dark" placeholder="Description" id="description"></textarea>
-                                            <label for="floatingTextarea">Description</label>
+                        <form action="{{ route('add.payment.record') }}" method="POST">
+                            @csrf
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">Add
+                                        Record</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="alert alert-danger">
+                                        <h5 class="alert-heading">Attention </h5>
+                                        <hr> 
+                                        please include all billing records with <strong>pdf</strong> within all images that can prove payment details.
+                                    </div>
+                                    <div class="row g-2">
+                                        <input type="hidden" name="id" id="record_id">
+                                        <div class="col-12">
+                                            <div class="form-floating">
+                                                <textarea class="form-control bg-secondary text-dark" placeholder="Description" id="description"></textarea>
+                                                <label for="floatingTextarea">Description</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-floating col-12 col-md-6">
+                                            <input type="text" class="form-control bg-secondary text-dark"
+                                                name="cost" placeholder="Cost" />
+                                            <label for="floatingSelectGrid">Cost</label>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <input class="form-control form-control-lg bg-secondary text-dark"
+                                                name="file" type="file">
                                         </div>
                                     </div>
-                                    <div class="form-floating col-12 col-md-6">
-                                        <input type="text" class="form-control bg-secondary text-dark" id="cost"
-                                            placeholder="Cost" />
-                                        <label for="floatingSelectGrid">Cost</label>
-                                    </div>
-                                    <div class="col-12 col-md-6">
-                                        <input class="form-control form-control-lg bg-secondary text-dark"
-                                            id="file" type="file">
-                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-success" onclick="">Submit</button>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-info" onclick="">Submit</button>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
                 <!-- Add Record Modal End -->
@@ -238,7 +252,12 @@
     <!-- JavaScript Libraries -->
     @include('public_components.js')
     <!-- Template Javascript -->
-
+    <script>
+        function showModal(id) {
+            document.getElementById('record_id').value = id;
+            $('#addModal').modal('show');
+        }
+    </script>
 </body>
 
 </html>

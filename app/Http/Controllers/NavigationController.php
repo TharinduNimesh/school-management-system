@@ -56,4 +56,14 @@ class NavigationController extends Controller
             "returned" => $returned,
         ]);
     }
+
+    public function navigateToAdminPayments() {
+        $requests = RequestedPayment::whereNotNull('amount')
+        ->where('school', auth()->user()->school)
+        ->get();
+
+        return view('admin.payment', [
+            "requests" => $requests,
+        ]);
+    }
 }

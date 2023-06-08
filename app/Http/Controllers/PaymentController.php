@@ -57,7 +57,7 @@ class PaymentController extends Controller
         ]);
 
         if($validate->fails()) {
-            return redirect()->back()->withErrors($validate);
+            return redirect()->back()->withErrors(['request' => json_encode($validate->errors())]);
         }
 
         $file = request()->file('file');
@@ -119,10 +119,23 @@ class PaymentController extends Controller
         $request->update([
             "amount" => request()->amount,
             "payed_at" => Date("Y-m-d"),
-            "payed_by" => auth()->user()->name
+            "payed_by" => auth()->user()->name,
+            "remaining" => $request->amount,
         ]);
 
         return redirect()->back()->with('success', 'Payment request successfully!');
+    }
+
+    public function addPaymentRecord() {
+        $validate = Validator::make(request()->all(), [
+            'id' => 'required',
+            'cost' => 'required|numeric',
+            'file' => 'required|mimes:pdf,docx,doc'
+        ]);
+
+        if($validate->fails()) {
+            return redirect()->back()->withErrors($validate);
+        }
     }
 
     public static function hasPaidFee($index, $year) {

@@ -14,6 +14,7 @@ class RequestedPayment extends Model
     protected $fillable = [
         "amount",
         "payed_at",
-        "payed_by"
+        "payed_by",
+        "remaining"
     ];
 }
