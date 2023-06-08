@@ -98,6 +98,29 @@
                         <div class="col-sm-12 col-xl-12">
                             <div class="bg-secondary rounded h-100 p-4">
                                 <h3 class="mb-4 text-dark">Money That Recieved</h3>
+                                @if ($errors->has('add'))
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->get('add') as $errors)
+                                            @foreach (json_decode($errors) as $item)
+                                                @foreach ($item as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            @endforeach
+                                        @endforeach
+                                    </ul>
+                                </div>
+
+                                @elseif($errors->has('add_file'))
+                                <div class="alert alert-danger">
+                                    {{ $errors->get()->first('add_file') }}
+                                </div>
+
+                                @elseif(session('add_success'))
+                                <div class="alert alert-success">
+                                    {{ session('add_success') }}
+                                </div>
+                                @endif
                                 <div class="table-responsive">
                                     <table class="table table-bordered align-middle">
                                         <thead class="table-dark">
@@ -149,7 +172,7 @@
                 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-lg">
-                        <form action="{{ route('add.payment.record') }}" method="POST">
+                        <form action="{{ route('add.payment.record') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -168,7 +191,7 @@
                                         <input type="hidden" name="id" id="record_id">
                                         <div class="col-12">
                                             <div class="form-floating">
-                                                <textarea class="form-control bg-secondary text-dark" placeholder="Description" id="description"></textarea>
+                                                <textarea class="form-control bg-secondary text-dark" placeholder="Description" name="description"></textarea>
                                                 <label for="floatingTextarea">Description</label>
                                             </div>
                                         </div>
@@ -179,7 +202,7 @@
                                         </div>
                                         <div class="col-12 col-md-6">
                                             <input class="form-control form-control-lg bg-secondary text-dark"
-                                                name="file" type="file">
+                                                name="invoice" type="file">
                                         </div>
                                     </div>
                                 </div>

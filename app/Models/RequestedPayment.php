@@ -15,6 +15,7 @@ class RequestedPayment extends Model
         "amount",
         "payed_at",
         "payed_by",
-        "remaining"
+        "remaining",
+        "records"
     ];
 }

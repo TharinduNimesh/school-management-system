@@ -94,7 +94,7 @@
           <div class="features-post third-features">
             <div class="features-content">
               <div class="content-show">
-                <h4><i class="fa-solid fa-chart-pie fa-beat"></i>Provides data and statistics</h4>
+                <h4><i class="fa-solid fa-chart-pie fa-beat"></i>Summarize data</h4>
               </div>
               <div class="content-hide">
                 <p>School Management System can provide valuable data nad statistics on learning outcomes, student performance, and teacher effectiveness.</p>
@@ -130,7 +130,7 @@
               <article id='tabs-1'>
                 <div class="row">
                   <div class="col-md-6">
-                    <img src="/img/home_images/image_1.png" alt="">
+                    <img src="/img/home_images/image_1.png" style="border-radius: 20px !important;">
                   </div>
                   <div class="col-md-6">
                     <h4>Efficiency</h4>
@@ -141,7 +141,7 @@
               <article id='tabs-2'>
                 <div class="row">
                   <div class="col-md-6">
-                    <img src="/img/home_images/image_2.png" alt="">
+                    <img src="/img/home_images/image_2.png" style="border-radius: 20px !important">
                   </div>
                   <div class="col-md-6">
                     <h4>Improves communication</h4>
@@ -152,7 +152,7 @@
               <article id='tabs-3'>
                 <div class="row">
                   <div class="col-md-6">
-                    <img src="/img/home_images/image_3.png" alt="">
+                    <img src="/img/home_images/image_3.png" style="border-radius: 20px !important">
                   </div>
                   <div class="col-md-6">
                     <h4>Decision making</h4>

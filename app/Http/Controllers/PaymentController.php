@@ -63,7 +63,7 @@ class PaymentController extends Controller
         $file = request()->file('file');
         $file_name = uniqid() . '.' . $file->getClientOriginalExtension();
 
-        $path = $file->storeAs('public/payments/', $file_name);
+        $path = $file->storeAs('public/payments/proves/', $file_name);
 
         if(Storage::exists($path)) {
             $school = School::find(auth()->user()->school);
@@ -130,11 +130,35 @@ class PaymentController extends Controller
         $validate = Validator::make(request()->all(), [
             'id' => 'required',
             'cost' => 'required|numeric',
-            'file' => 'required|mimes:pdf,docx,doc'
+            'description' => 'required',
+            'invoice' => 'required|mimes:pdf,docx,doc'
         ]);
 
         if($validate->fails()) {
-            return redirect()->back()->withErrors($validate);
+            return redirect()->back()->withErrors(['add' => json_encode($validate->errors())]);
+        }
+
+        $record = RequestedPayment::find(request()->id);
+        $invoice = request()->file('invoice');
+        $file_name = uniqid() . '.' . $invoice->getClientOriginalExtension();
+        $path = $invoice->storeAs('public/payments/invoices/', $file_name);
+
+        if(Storage::exists($path))  {
+            $obj = [
+                'description' => request()->description,
+                'cost' => request()->cost,
+                'date' => date("Y-m-d"),
+                'invoice' => $file_name,
+            ];
+            $record->push('records', $obj);
+
+            $record->update([
+                'remaining' => intval($record->remaining) - intval(request()->cost)
+            ]);
+
+            return redirect()->back()->with('add_success', 'Payment record added successfully!');
+        } else {
+            return redirect()->back()->withErrors(['add_file' => 'Error While Uploading File. Please Decrease Size And Try Again!']);
         }
     }
 
