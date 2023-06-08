@@ -66,7 +66,7 @@
           <div class="features-post">
             <div class="features-content">
               <div class="content-show">
-                <h4><i class="fa-solid fa-user fa-beat"></i>user friendly</h4>
+                <h4 class="text-center"><i class="fa-solid fa-user fa-beat"></i>user friendly</h4>
               </div>
               <div class="content-hide">
                 <p>School Management System are designed to be user-friendly and easy to use. They are typically designed with teachers, students and parents in mind, so they are intuitive and easy to navigate.</p>
@@ -80,7 +80,7 @@
           <div class="features-post second-features">
             <div class="features-content">
               <div class="content-show">
-                <h4><i class="fa-sharp fa-solid fa-shield fa-beat"></i>protect privacy</h4>
+                <h4 class="text-center"><i class="fa-sharp fa-solid fa-shield fa-beat"></i>protect privacy</h4>
               </div>
               <div class="content-hide">
                 <p>School Management System are protecting privacy. They are typically designed with security in mind, so they are secure and reliable. Many school management systems also offer features such as role-based access control, which allows administrators to control who has access to sensitive information.</p>
@@ -94,7 +94,7 @@
           <div class="features-post third-features">
             <div class="features-content">
               <div class="content-show">
-                <h4><i class="fa-solid fa-chart-pie fa-beat"></i>Summarize data</h4>
+                <h4 class="text-center"><i class="fa-solid fa-chart-pie fa-beat"></i>Summarize data</h4>
               </div>
               <div class="content-hide">
                 <p>School Management System can provide valuable data nad statistics on learning outcomes, student performance, and teacher effectiveness.</p>
