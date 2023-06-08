@@ -70,7 +70,7 @@
               </div>
               <div class="content-hide">
                 <p>School Management System are designed to be user-friendly and easy to use. They are typically designed with teachers, students and parents in mind, so they are intuitive and easy to navigate.</p>
-                <p class="hidden-sm">EverSoft.</p>
+                <p class="hidden-sm">School Management System are designed to be user-friendly and easy to use. They are typically designed with teachers, students and parents in mind, so they are intuitive and easy to navigate.</p>
                 <div class="scroll-to-section"><a href="#section2"></a></div>
               </div>
             </div>
@@ -84,7 +84,7 @@
               </div>
               <div class="content-hide">
                 <p>School Management System are protecting privacy. They are typically designed with security in mind, so they are secure and reliable. Many school management systems also offer features such as role-based access control, which allows administrators to control who has access to sensitive information.</p>
-                <p class="hidden-sm">EverSoft.</p>
+                <p class="hidden-sm">School Management System are protecting privacy. They are typically designed with security in mind, so they are secure and reliable. Many school management systems also offer features such as role-based access control, which allows administrators to control who has access to sensitive information.</p>
                 <div class="scroll-to-section"><a href="#section3"></a></div>
               </div>
             </div>
@@ -98,7 +98,7 @@
               </div>
               <div class="content-hide">
                 <p>School Management System can provide valuable data nad statistics on learning outcomes, student performance, and teacher effectiveness.</p>
-                <p class="hidden-sm">EverSoft.</p>
+                <p class="hidden-sm">School Management System can provide valuable data nad statistics on learning outcomes, student performance, and teacher effectiveness.</p>
                 <div class="scroll-to-section"><a href="#section4"></a></div>
               </div>
             </div>
