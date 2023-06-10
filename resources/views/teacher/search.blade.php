@@ -1215,8 +1215,8 @@
 
                         row.appendChild(competition);
                         row.appendChild(category);
-                        row.appendChild(place);
                         row.appendChild(date);
+                        row.appendChild(place);
                         row.appendChild(description);
 
                         document.getElementById("awardBody").appendChild(row);
