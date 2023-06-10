@@ -149,10 +149,14 @@
                                                         at {{ $record['action_taken_at'] }} and money passed by
                                                         {{ $record['payed_by'] }} at {{ $record['payed_at'] }}.</td>
                                                     <td class="space">Rs. {{ $record['amount'] }}</td>
-                                                    <td class="space">Rs.500000</td>
-                                                    <td class="space"><button type="button" class="btn btn-success"
-                                                            data-bs-target="#viewModal"
-                                                            data-bs-toggle="modal">View</button>
+                                                    <td class="space">Rs. {{ $record['remaining'] }}</td>
+                                                    <td class="space">
+                                                        @php($id = $record['_id'])
+                                                        <button 
+                                                            type="button" 
+                                                            class="btn btn-success"
+                                                            onclick="showModel('{{ $id }}');"
+                                                        >View</button>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -177,16 +181,43 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="row g-2">
-                                    <div class="col-12">
-                                        <label for="floatingTextarea" class="form-label">Description</label>
-                                        <textarea class="form-control bg-secondary text-dark" placeholder="Description" id="description" disabled></textarea>
-                                    </div>
-                                    <div class="col-12">
-                                        <label for="floatingSelectGrid" class="form-label">Cost</label>
-                                        <input type="text" class="form-control bg-secondary text-dark"
-                                            id="cost" placeholder="Cost" disabled />
-                                    </div>
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-striped">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Description</th>
+                                                <th>Cost</th>
+                                                <th>Invoice</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($returned as $items)
+                                            @if(isset($items['records']))
+                                            @foreach($items['records'] as $record)
+                                            <tr id="{{ $items['_id'] }}" name="invoice-records">
+                                                <td class="space">{{ $record['date'] }}</td>
+                                                <td class="space">{{ $record['description'] }}</td>
+                                                <td class="space">Rs. {{ $record['cost'] }}</td>
+                                                <td class="space">
+                                                    <a 
+                                                        type="button" class="btn btn-success"
+                                                        href="{{ Storage::url('payments/invoices/' . $record['invoice']) }}">
+                                                        <i class="bi bi-cloud-arrow-down-fill me-2"></i>
+                                                        Download
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                            @else
+                                            <tr id="{{ $items['_id'] }}" name="invoice-records">
+                                                <td colspan="4" class="bg-warning text-danger">There Aren't Any
+                                                    Records To Display</td>
+                                            </tr>
+                                            @endif
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -214,7 +245,19 @@
     <!-- JavaScript Libraries -->
     @include('public_components.js')
     <!-- Template Javascript -->
-
+    <script>
+        function showModel(id) {
+            allRecords = document.getElementsByName('invoice-records');
+            allRecords.forEach(record => {
+                if(record.id == id) {
+                    record.style.display = 'table-row';
+                } else {
+                    record.style.display = 'none';
+                }
+            });
+            $('#viewModal').modal('show');
+        }
+    </script>
 </body>
 
 </html>
