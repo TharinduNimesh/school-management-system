@@ -29,6 +29,8 @@
                     class="bi bi-book-half me-2"></i>Student Details</a>
             <a name="ham-item" id="teacherCountAdd" href="{{ route('zonal.teachers') }}" class="nav-item nav-link"><i
                     class="bi bi-card-list me-2"></i>Manage Teachers</a>
+            <a name="ham-item" id="payment" href="{{ route('zonal.payments') }}" class="nav-item nav-link"><i
+                    class="bi bi-card-list me-2"></i>Payment</a>        
         </div>
     </nav>
 </div>

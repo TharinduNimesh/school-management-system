@@ -276,6 +276,8 @@
     @include('public_components.js')
     <!-- Template Javascript -->
     <script>
+        hamburger("payment");
+
         function showModal(id) {
             document.getElementById('record_id').value = id;
             $('#addModal').modal('show');

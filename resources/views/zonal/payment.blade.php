@@ -246,6 +246,8 @@
     @include('public_components.js')
     <!-- Template Javascript -->
     <script>
+        hamburger('payment');
+
         function showModel(id) {
             allRecords = document.getElementsByName('invoice-records');
             allRecords.forEach(record => {
