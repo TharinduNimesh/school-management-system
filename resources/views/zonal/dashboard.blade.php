@@ -32,7 +32,7 @@
                             <i class="fa fa-chart-line fa-3x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">Total Teachers</p>
-                                <h6 class="mb-0 text-wite">200</h6>
+                                <h6 class="mb-0 text-dark">200</h6>
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                             <i class="fa fa-chart-area fa-3x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">Total Students</p>
-                                <h6 class="mb-0 text-wite">1000</h6>
+                                <h6 class="mb-0 text-dark">1000</h6>
                             </div>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
 
             <!-- Slider Start -->
             <div class="container-fluid pt-4 px-4 slider-show">
-                <div id="carouselExampleDark" class="carousel carousel-dark slide">
+                <div id="carouselExampleDark" class="carousel carousel-dark slide rounded">
                     <div class="carousel-indicators">
                         <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
                             aria-current="true" aria-label="Slide 1"></button>
@@ -155,7 +155,7 @@
     <!-- Template Javascript -->
     
     <script>
-        hamburger('dashboard')
+        hamburger('dashboard');
     </script>
 </body>
 
