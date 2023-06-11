@@ -27,31 +27,22 @@
             <!-- Sale & Revenue Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                    <div class="col-sm-6 col-xl-4">
+                    <div class="col-sm-6 col-xl-6">
                         <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
                             <i class="fa fa-chart-line fa-3x text-primary"></i>
                             <div class="ms-3">
-                                <p class="mb-2">Total Teachers[TWC]</p>
+                                <p class="mb-2">Total Teachers</p>
                                 <h6 class="mb-0 text-wite">200</h6>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-sm-6 col-xl-4">
+                    <div class="col-sm-6 col-xl-6">
                         <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
                             <i class="fa fa-chart-area fa-3x text-primary"></i>
                             <div class="ms-3">
-                                <p class="mb-2">Monthly Gross profit</p>
-                                <h6 class="mb-0 text-wite">Rs.100 000</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xl-4">
-                        <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                            <i class="fa fa-chart-pie fa-3x text-primary"></i>
-                            <div class="ms-3">
-                                <p class="mb-2">Monthly Expenditure</p>
-                                <h6 class="mb-0 text-wite">Rs.20 000</h6>
+                                <p class="mb-2">Total Students</p>
+                                <h6 class="mb-0 text-wite">1000</h6>
                             </div>
                         </div>
                     </div>
@@ -111,6 +102,26 @@
             </div>
 
             <!-- Slider End -->
+
+
+            <!-- Chart Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-2">
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4 text-dark">Type of Schools</h6>
+                            <canvas id="pie-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4 text-dark">Students Gender</h6>
+                            <canvas id="doughnut-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Chart End -->
 
 
             <!--calender starrt-->
