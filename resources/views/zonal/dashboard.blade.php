@@ -32,7 +32,7 @@
                             <i class="fa fa-chart-line fa-3x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">Total Teachers</p>
-                                <h6 class="mb-0 text-wite">200</h6>
+                                <h6 class="mb-0 text-dark">200</h6>
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                             <i class="fa fa-chart-area fa-3x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">Total Students</p>
-                                <h6 class="mb-0 text-wite">1000</h6>
+                                <h6 class="mb-0 text-dark">1000</h6>
                             </div>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
 
             <!-- Slider Start -->
             <div class="container-fluid pt-4 px-4 slider-show">
-                <div id="carouselExampleDark" class="carousel carousel-dark slide">
+                <div id="carouselExampleDark" class="carousel carousel-dark slide rounded">
                     <div class="carousel-indicators">
                         <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
                             aria-current="true" aria-label="Slide 1"></button>
@@ -155,67 +155,66 @@
     <!-- Template Javascript -->
 
     <script>
-            (function($) {
-                "use strict";
+        (function($) {
+            "use strict";
 
 
-                // Calender
-                $('#calender').datetimepicker({
-                    inline: true,
-                    format: 'L'
-                });
+            // Calender
+            $('#calender').datetimepicker({
+                inline: true,
+                format: 'L'
+            });
 
-                // Chart Global Color
-                Chart.defaults.color = "#6C7293";
-                Chart.defaults.borderColor = "#000000";
+            // Chart Global Color
+            Chart.defaults.color = "#6C7293";
+            Chart.defaults.borderColor = "#000000";
 
-                // Pie Chart
-                var ctx5 = $("#pie-chart").get(0).getContext("2d");
-                var myChart5 = new Chart(ctx5, {
-                    type: "pie",
-                    data: {
-                        labels: ["1A", "1B", "1C", "Type 2", "Type 3"],
-                        datasets: [{
-                            backgroundColor: [
-                                "rgba(242, 126, 53, .9)",
-                                "rgba(242, 126, 53, .7)",
-                                "rgba(242, 126, 53, .5)",
-                                "rgba(242, 126, 53, .3)",
-                                "rgba(242, 126, 53, .2)"
-                            ],
-                            data: [55, 49, 44, 24, 15]
-                        }]
-                    },
-                    options: {
-                        responsive: true
-                    }
-                });
-
-
-                // Doughnut Chart
-                var ctx6 = $("#doughnut-chart").get(0).getContext("2d");
-                var myChart6 = new Chart(ctx6, {
-                    type: "doughnut",
-                    data: {
-                        labels: ["Male", "Female"],
-                        datasets: [{
-                            backgroundColor: [
-                                "rgba(235, 22, 22, .7)",
-                                "rgba(235, 22, 22, .3)",
-                            ],
-                            data: [24, 15]
-                        }]
-                    },
-                    options: {
-                        responsive: true
-                    }
-                });
+            // Pie Chart
+            var ctx5 = $("#pie-chart").get(0).getContext("2d");
+            var myChart5 = new Chart(ctx5, {
+                type: "pie",
+                data: {
+                    labels: ["1A", "1B", "1C", "Type 2", "Type 3"],
+                    datasets: [{
+                        backgroundColor: [
+                            "rgba(242, 126, 53, .9)",
+                            "rgba(242, 126, 53, .7)",
+                            "rgba(242, 126, 53, .5)",
+                            "rgba(242, 126, 53, .3)",
+                            "rgba(242, 126, 53, .2)"
+                        ],
+                        data: [55, 49, 44, 24, 15]
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
 
 
-            })(jQuery);
+            // Doughnut Chart
+            var ctx6 = $("#doughnut-chart").get(0).getContext("2d");
+            var myChart6 = new Chart(ctx6, {
+                type: "doughnut",
+                data: {
+                    labels: ["Male", "Female"],
+                    datasets: [{
+                        backgroundColor: [
+                            "rgba(235, 22, 22, .7)",
+                            "rgba(235, 22, 22, .3)",
+                        ],
+                        data: [24, 15]
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+
+
+        })(jQuery);
 
         hamburger('dashboard')
-
     </script>
 </body>
 
