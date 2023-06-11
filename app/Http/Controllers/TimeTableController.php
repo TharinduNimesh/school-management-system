@@ -219,24 +219,24 @@ class TimeTableController extends Controller
         ];
         $approved_information = [
             'Sinhala' => [
-                'weekly' => 5,
-                'daily' => 1
+                'weekly' => 8,
+                'daily' => 2
             ],
             'English' => [
-                'weekly' => 5,
-                'daily' => 1
+                'weekly' => 8,
+                'daily' => 2
             ],
             'Mathematics' => [
-                'weekly' => 5,
-                'daily' => 1
+                'weekly' => 8,
+                'daily' => 2
             ],
             'Environment' => [
-                'weekly' => 5,
-                'daily' => 1
+                'weekly' => 8,
+                'daily' => 2
             ],
             'Tamil' => [
-                'weekly' => 5,
-                'daily' => 1
+                'weekly' => 8,
+                'daily' => 2
             ],
         ];
         $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
@@ -257,7 +257,7 @@ class TimeTableController extends Controller
                     ];
                 }
                 foreach ($days as $day) {
-                    for ($i = 0; $i < 5; $i++) {
+                    for ($i = 0; $i < 6; $i++) {
                         $subject = null;
                         $teacher = null;
 
@@ -290,9 +290,8 @@ class TimeTableController extends Controller
                                 } 
                                 if(!in_array($teacher["_id"], $teacher_availablility["period_$i"])) {
                                     break;
-                                } else {
-                                    $subject = null;
-                                }
+                                } 
+                                $subject = null;
                             } else {
                                 $subject = null;
                             }

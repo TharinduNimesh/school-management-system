@@ -8,7 +8,7 @@
 <body>
     <div class="container-fluid position-relative d-flex p-0">
         <!-- Spinner Start -->
-         @include('public_components.spinner')
+        @include('public_components.spinner')
         <!-- Spinner End -->
 
 
@@ -107,13 +107,13 @@
             <!-- Chart Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-2">
-                    <div class="col-sm-12 col-xl-6">
+                    <div class=" col-md-6">
                         <div class="bg-secondary rounded h-100 p-4">
                             <h6 class="mb-4 text-dark">Type of Schools</h6>
                             <canvas id="pie-chart"></canvas>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-xl-6">
+                    <div class=" col-md-6">
                         <div class="bg-secondary rounded h-100 p-4">
                             <h6 class="mb-4 text-dark">Students Gender</h6>
                             <canvas id="doughnut-chart"></canvas>
@@ -126,7 +126,7 @@
 
             <!--calender starrt-->
             <div class="container-fluid pt-4 px-4">
-                <div class="col-sm-12 col-md-12">
+                <div class=" col-md-12">
                     <div class="h-100 bg-secondary rounded p-4">
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <h6 class="mb-0">Calender</h6>
@@ -153,9 +153,69 @@
     <!-- JavaScript Libraries -->
     @include('public_components.js')
     <!-- Template Javascript -->
-    
+
     <script>
+            (function($) {
+                "use strict";
+
+
+                // Calender
+                $('#calender').datetimepicker({
+                    inline: true,
+                    format: 'L'
+                });
+
+                // Chart Global Color
+                Chart.defaults.color = "#6C7293";
+                Chart.defaults.borderColor = "#000000";
+
+                // Pie Chart
+                var ctx5 = $("#pie-chart").get(0).getContext("2d");
+                var myChart5 = new Chart(ctx5, {
+                    type: "pie",
+                    data: {
+                        labels: ["1A", "1B", "1C", "Type 2", "Type 3"],
+                        datasets: [{
+                            backgroundColor: [
+                                "rgba(242, 126, 53, .9)",
+                                "rgba(242, 126, 53, .7)",
+                                "rgba(242, 126, 53, .5)",
+                                "rgba(242, 126, 53, .3)",
+                                "rgba(242, 126, 53, .2)"
+                            ],
+                            data: [55, 49, 44, 24, 15]
+                        }]
+                    },
+                    options: {
+                        responsive: true
+                    }
+                });
+
+
+                // Doughnut Chart
+                var ctx6 = $("#doughnut-chart").get(0).getContext("2d");
+                var myChart6 = new Chart(ctx6, {
+                    type: "doughnut",
+                    data: {
+                        labels: ["Male", "Female"],
+                        datasets: [{
+                            backgroundColor: [
+                                "rgba(235, 22, 22, .7)",
+                                "rgba(235, 22, 22, .3)",
+                            ],
+                            data: [24, 15]
+                        }]
+                    },
+                    options: {
+                        responsive: true
+                    }
+                });
+
+
+            })(jQuery);
+
         hamburger('dashboard')
+
     </script>
 </body>
 
