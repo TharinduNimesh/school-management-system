@@ -31,15 +31,21 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($students as $key => $student)
+                                @if(empty($students))
                                     <tr>
-                                        <td>{{ $key + 1 }}</td>
-                                        <td>{{ $student->name }}</td>
-                                        <td>{{ $student->book_title }}</td>
-                                        <td>{{ $student->book_id }}</td>
-                                        <td>{{ $student->end_date }}</td>
+                                        <td colspan="5" class="text-center bg-warning text-danger">No Any Late Books From Students</td>
                                     </tr>
+                                @else
+                                @foreach ($students as $key => $student)
+                                <tr>
+                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ $student->name }}</td>
+                                    <td>{{ $student->book_title }}</td>
+                                    <td>{{ $student->book_id }}</td>
+                                    <td>{{ $student->end_date }}</td>
+                                </tr>
                                 @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -61,6 +67,11 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @if(empty($teachers))
+                                    <tr>
+                                        <td colspan="5" class="text-center bg-warning text-danger">No Any Late Books From Teachers</td>
+                                    </tr>
+                                @else
                                 @foreach ($teachers as $key => $teacher)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
@@ -70,6 +81,7 @@
                                         <td>{{ $teacher->end_date }}</td>
                                     </tr>
                                 @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -91,6 +103,11 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @if(empty($staff))
+                                    <tr>
+                                        <td colspan="5" class="text-center bg-warning text-danger">No Any Late Books From Staff</td>
+                                    </tr>
+                                @else
                                 @foreach ($staff as $key => $s)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
@@ -100,6 +117,7 @@
                                         <td>{{ $s->end_date }}</td>
                                     </tr>
                                 @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>

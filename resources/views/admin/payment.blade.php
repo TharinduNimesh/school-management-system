@@ -99,27 +99,25 @@
                             <div class="bg-secondary rounded h-100 p-4">
                                 <h3 class="mb-4 text-dark">Money That Recieved</h3>
                                 @if ($errors->has('add'))
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        @foreach ($errors->get('add') as $errors)
-                                            @foreach (json_decode($errors) as $item)
-                                                @foreach ($item as $error)
-                                                    <li>{{ $error }}</li>
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->get('add') as $errors)
+                                                @foreach (json_decode($errors) as $item)
+                                                    @foreach ($item as $error)
+                                                        <li>{{ $error }}</li>
+                                                    @endforeach
                                                 @endforeach
                                             @endforeach
-                                        @endforeach
-                                    </ul>
-                                </div>
-
+                                        </ul>
+                                    </div>
                                 @elseif($errors->has('add_file'))
-                                <div class="alert alert-danger">
-                                    {{ $errors->get()->first('add_file') }}
-                                </div>
-
+                                    <div class="alert alert-danger">
+                                        {{ $errors->get()->first('add_file') }}
+                                    </div>
                                 @elseif(session('add_success'))
-                                <div class="alert alert-success">
-                                    {{ session('add_success') }}
-                                </div>
+                                    <div class="alert alert-success">
+                                        {{ session('add_success') }}
+                                    </div>
                                 @endif
                                 <div class="table-responsive">
                                     <table class="table table-bordered align-middle">
@@ -151,8 +149,9 @@
                                                         </button>
                                                     </td>
                                                     <td class="space">
+                                                        @php($id = $request['_id'])
                                                         <button type="button" class="btn btn-warning data"
-                                                            data-bs-toggle="modal" data-bs-target="#viewModal">
+                                                            onclick="showHistory('{{ $id }}')">
                                                             <i class="bi bi-eye-fill me-2"></i><span>View Record</span>
                                                         </button>
                                                     </td>
@@ -224,36 +223,53 @@
                     <div class="modal-dialog modal-dialog-centered modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">History</h1>
+                                <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">Add
+                                    Record</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="row g-2">
-                                    <div class="col-12 col-md-6">
-                                        <label for="floatingSelectGrid" class="form-label">Cost</label>
-                                        <input type="text" class="form-control bg-secondary text-dark"
-                                            id="cost" placeholder="Cost" disabled />
-                                    </div>
-                                    <div class="col-12 col-md-6">
-                                        <label for="floatingSelectGrid" class="form-label">Date</label>
-                                        <input type="text" class="form-control bg-secondary text-dark"
-                                            id="date" placeholder="Date" disabled />
-                                    </div>
-                                    <div class="col-12">
-                                        <label for="floatingSelectGrid" class="form-label">Subject</label>
-                                        <input type="text" class="form-control bg-secondary text-dark"
-                                            id="subject" placeholder="Subject" disabled />
-                                    </div>
-                                    <div class="col-12">
-                                        <label for="floatingTextarea" class="form-label">Description</label>
-                                        <textarea class="form-control bg-secondary text-dark" placeholder="Description" id="description" disabled></textarea>
-                                    </div>
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-striped">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Description</th>
+                                                <th>Cost</th>
+                                                <th>Invoice</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($requests as $items)
+                                            @if (isset($items['records']))
+                                            @foreach ($items['records'] as $record)
+                                            <tr id="{{ $items['_id'] }}" name="invoice-records">
+                                                <td class="space">{{ $record['date'] }}</td>
+                                                <td class="space">{{ $record['description'] }}</td>
+                                                <td class="space">Rs. {{ $record['cost'] }}</td>
+                                                <td class="space">
+                                                    <a 
+                                                        type="button" class="btn btn-success"
+                                                        href="{{ Storage::url('payments/invoices/' . $record['invoice']) }}">
+                                                        <i class="bi bi-cloud-arrow-down-fill me-2"></i>
+                                                        Download
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                            @else
+                                            <tr id="{{ $items['_id'] }}" name="invoice-records">
+                                                <td colspan="4" class="bg-warning text-danger">There Aren't Any
+                                                    Records To Display</td>
+                                            </tr>
+                                            @endif
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
@@ -281,6 +297,18 @@
         function showModal(id) {
             document.getElementById('record_id').value = id;
             $('#addModal').modal('show');
+        }
+
+        function showHistory(id) {
+            allRecords = document.getElementsByName('invoice-records');
+            allRecords.forEach(record => {
+                if(record.id == id) {
+                    record.style.display = 'table-row';
+                } else {
+                    record.style.display = 'none';
+                }
+            });
+            $('#viewModal').modal('show');
         }
     </script>
 </body>

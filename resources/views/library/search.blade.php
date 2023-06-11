@@ -188,6 +188,9 @@
                 author.innerHTML = response.author;
                 author.classList.add("space");
                 borrowCount.innerHTML = response.borrowingCount;
+
+                name.classList.add("space");
+                
                 if(response.available) {
                   status.innerHTML = "Available";
                 } else {

@@ -24,7 +24,7 @@
                                 <div class="ms-3">
                                     <p class="mb-2">All Books</p>
                                     <h6 class="mb-0 text-dark">
-                                        {{ $all }}
+                                        {{ $allBooks }}
                                     </h6>
                                 </div>
                             </div>
@@ -49,7 +49,7 @@
                 <div class="container-fluid pt-4 px-4">
                     <div class="row g-2 bg-secondary rounded p-2">
                         <h3 class="text-dark">Famous Books</h3>
-                        @foreach ($books as $title => $book)
+                        @foreach ($topBooks as $title => $book)
                             <div class="col-md-10 offset-md-1">
                                 <li class="list-group-item d-flex justify-content-between align-items-start">
                                     <div class="ms-2 me-auto">

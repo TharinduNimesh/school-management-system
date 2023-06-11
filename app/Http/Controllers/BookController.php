@@ -233,6 +233,9 @@ class BookController extends Controller
             array_push($authors, $book->author);
         }
 
+        asort($titles);
+        asort($authors);
+
         $response = new \stdClass();
         $response->titles = $titles;
         $response->authors = $authors;
@@ -262,27 +265,25 @@ class BookController extends Controller
             ->where("school", auth()->user()->school)
             ->first();
             $person = null;
+            $array = null;
             if($late->role == "student") {
                 $person = StudentController::getStudent($late->holder_id, auth()->user()->school);
-                $array = $students;
+                $array = &$students;
             } else if($late->role == "teacher") {
                 $person = TeacherController::getTeacher($late->holder_id, auth()->user()->school);
-                $array = $teachers;
+                $array = &$teachers;
 
             } else if($late->role == "staff") {
                 $person = Staff::where("nic", $late->holder_id)->first();
-                $array = $staff;
+                $array = &$staff;
             }
 
-            $book = Book::where("book_id", $late->book_id)
-            ->where("school", auth()->user()->school)
-            ->first();
-            $lateData->book_name = $book->title;
+            $lateData->book_title = $book->title;
             $lateData->name = $person->full_name;
             $lateData->book_id = $late->book_id;
             $lateData->end_date = $late->need_to_return;
 
-            array_push($lateListData, $array);
+            array_push($array, $lateData);
         }
 
         return view('library.lateList', [
@@ -298,37 +299,37 @@ class BookController extends Controller
         return view('library.search', ['titles' => $data->titles, 'authors' => $data->authors]);
     }
 
-    public function navigateToDashboard() {
-        $allBooks = Book::where("school", auth()->user()->school)->get();
+    public function navigateToDashboard()
+    {
+        $userSchool = auth()->user()->school;
+    
+        $allBooks = Book::where("school", $userSchool)->get();
         $unavailable = BorrowedBook::where("returned", false)
-        ->where("school", auth()->user()->school)
-        ->get();
-        $available = count($allBooks) - count($unavailable);
+            ->where("school", $userSchool)
+            ->get();
+    
+        $borrowed = BorrowedBook::where("school", $userSchool)->get();
+    
+        $available = $allBooks->count() - $unavailable->count();
+    
         $titles = self::listAuthorsAndTitles()->titles;
-
-        $authors = array();
-        $count = array();
-        foreach ($titles as $title) {
-            $count[$title] = 0;
-            $author = $allBooks->where('title', $title)->first();
-            $authors[$title] = $author->author;
-        }
-
-        $borrowed = BorrowedBook::where("school", auth()->user()->school)->get();
-
-        foreach ($borrowed as $book) {
-            if(count($count) >= 10) {
-                break;
-            } 
-            $count[$book->title] += 1;
-        }
-        arsort($count);
-
+    
+        $bookCounts = $borrowed->groupBy('title')->map->count()->toArray();
+        arsort($bookCounts);
+        $topBooks = array_slice($bookCounts, 0, 10, true);
+    
+        $authors = Book::whereIn('title', $titles)
+            ->where('school', $userSchool)
+            ->pluck('author', 'title')
+            ->toArray();
+    
         return view('library.dashboard', [
             'available' => $available,
-            'all' => count($allBooks),
-            'books' => $count,
-            'authors' => $authors
+            'borrowed' => $borrowed->count(),
+            'topBooks' => $topBooks,
+            'authors' => $authors,
+            'allBooks' => $allBooks->count(),
         ]);
     }
+    
 }
