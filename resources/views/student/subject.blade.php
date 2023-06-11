@@ -190,7 +190,7 @@
 
 
         <!-- Grade 12 start -->
-        @if($al == null)
+        @if($al != null)
         <div class="container-fluid pt-4 px-4">
           <div class="bg-secondary rounded p-4">
             <h3 class="card-header mb-4 text-dark">Grade 12 Selection of stream Subjects</h3>
