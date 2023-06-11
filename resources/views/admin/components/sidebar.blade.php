@@ -45,7 +45,7 @@
                 Discipline</a>
             <a name="ham-item" id="record" href="{{ route('admin.class.report') }}" class="nav-item nav-link"><i class="bi bi-table me-2"></i>Class Record</a>
             <a name="ham-item" id="addNews" href="{{ route('admin.news') }}" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Add News</a>
-            <a name="ham-item" id="payment" href="{{ route('admin.payment') }}" class="nav-item nav-link"><i
+            <a name="ham-item" id="payment" href="{{ route('admin.payments') }}" class="nav-item nav-link"><i
                     class="bi bi-card-list me-2"></i>Payment</a>
 
         </div>
