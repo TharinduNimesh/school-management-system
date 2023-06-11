@@ -219,24 +219,24 @@ class TimeTableController extends Controller
         ];
         $approved_information = [
             'Sinhala' => [
-                'weekly' => 8,
-                'daily' => 2
+                'weekly' => 5,
+                'daily' => 1
             ],
             'English' => [
-                'weekly' => 8,
-                'daily' => 2
+                'weekly' => 5,
+                'daily' => 1
             ],
             'Mathematics' => [
-                'weekly' => 8,
-                'daily' => 2
+                'weekly' => 5,
+                'daily' => 1
             ],
             'Environment' => [
-                'weekly' => 8,
-                'daily' => 2
+                'weekly' => 5,
+                'daily' => 1
             ],
             'Tamil' => [
-                'weekly' => 8,
-                'daily' => 2
+                'weekly' => 5,
+                'daily' => 1
             ],
         ];
         $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
@@ -257,7 +257,7 @@ class TimeTableController extends Controller
                     ];
                 }
                 foreach ($days as $day) {
-                    for ($i = 0; $i < 6; $i++) {
+                    for ($i = 0; $i < 5; $i++) {
                         $subject = null;
                         $teacher = null;
 
