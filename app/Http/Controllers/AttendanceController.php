@@ -27,6 +27,10 @@ class AttendanceController extends Controller
         $year = \Carbon\Carbon::parse($date)->format('Y');
         $nic = auth()->user()->index;
 
+        if($date > Date('Y-m-d')) {
+            return 'future';
+        }
+
         // check if the attendance is already marked
         $validate = StudentAttendance::where('class_teacher', $nic)
                     ->where('attendance.date', $date)->first();

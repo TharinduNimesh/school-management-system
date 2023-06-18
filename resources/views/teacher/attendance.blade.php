@@ -172,6 +172,12 @@
                                 "You have already marked attendance for that day",
                                 "error"
                             );
+                        } else if (response == "future") {
+                            Swal.fire(
+                                "ERROR",
+                                "You can't mark attendance for future dates",
+                                "error"
+                            );
                         } else if (response == "success") {
                             Swal.fire({
                                 position: "top-end",
